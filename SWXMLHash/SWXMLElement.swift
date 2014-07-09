@@ -65,14 +65,22 @@ class SWXMLElement {
     }
 
     class func errorElementFor(parentElement: SWXMLElement, withKey mismatchedKey: String) -> SWXMLElement {
+        var parentErrorStack = NSMutableArray()
+        if let parentError = parentElement.error? {
+            let arr = parentError.userInfo["ParentErrorStack"] as NSArray
+            parentErrorStack.addObjectsFromArray(arr)
+            parentErrorStack.addObject(parentError.userInfo[NSLocalizedDescriptionKey])
+        }
+
         let userInfo = [
-            NSLocalizedDescriptionKey: "XML Element Error: Incorrect element \"\(mismatchedKey)\"",
+            NSLocalizedDescriptionKey: "XML Element Error: Missing element [\"\(mismatchedKey)\"] on parent [\"\(parentElement.name)\"]",
             "MismatchedKey": mismatchedKey,
-            "ParentElement": parentElement
+            "ParentElement": parentElement.name,
+            "ParentErrorStack": parentErrorStack
         ]
-        userInfo["parentElement"]
+
         let error = NSError(domain: "SWXMLDomain", code: 1000, userInfo: userInfo)
-        let errorElem = SWXMLElement(name: "error")
+        let errorElem = SWXMLElement(name: mismatchedKey)
         errorElem.error = error
         return errorElem
     }
