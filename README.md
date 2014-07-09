@@ -2,6 +2,8 @@
 
 SWXMLHash is a relatively simple way to parse XML in Swift. If you're familiar with `NSXMLParser`, this library is a simple wrapper around it. Conceptually, it provides a translation from XML to a dictionary of arrays (aka hash).
 
+The API takes a lot of inspiration from [SwiftyJSON](https://github.com/lingoer/SwiftyJSON).
+
 ## Examples
 
 All examples below are from the included specs.
