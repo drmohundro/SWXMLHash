@@ -11,6 +11,7 @@ import UIKit
 class SWXMLElement {
     var elements = Dictionary<String, Array<SWXMLElement>>()
 
+    var error: NSError?
     var text: String?
     let name: String
 
@@ -34,11 +35,30 @@ class SWXMLElement {
 
     subscript(key: String) -> SWXMLElement {
         get {
-            return elements[key]![0]
+            if elements[key] {
+                return elements[key]![0]
+            }
+            return SWXMLElement.errorElementFor(self, withKey: key)
         }
     }
 
     func group(key: String) -> Array<SWXMLElement> {
-        return elements[key]!
+        if elements[key] {
+            return elements[key]!
+        }
+        return [SWXMLElement.errorElementFor(self, withKey: key)]
+    }
+
+    class func errorElementFor(parentElement: SWXMLElement, withKey mismatchedKey: String) -> SWXMLElement {
+        let userInfo = [
+            NSLocalizedDescriptionKey: "XML Element Error: Incorrect element \"\(mismatchedKey)\"",
+            "MismatchedKey": mismatchedKey,
+            "ParentElement": parentElement
+        ]
+        userInfo["parentElement"]
+        let error = NSError(domain: "SWXMLDomain", code: 1000, userInfo: userInfo)
+        let errorElem = SWXMLElement(name: "error")
+        errorElem.error = error
+        return errorElem
     }
 }
