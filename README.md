@@ -14,7 +14,7 @@ let parser = SWXMLHash()
 
 // begin parsing
 let xml = parser.parse(xmlToParse)
-    
+
 // will return "Test Title Header"
 xml["root"]["header"]["title"].element?.text
 
@@ -35,6 +35,10 @@ case .Error(let error):
   // error is an NSError instance that you can deal with
 }
 ```
+
+## Installation
+
+My future plan is to add [CocoaPods](http://cocoapods.org/) support for this package; however, CocoaPods doesn't yet officially support Swift projects yet. Until that point, the best option would probably be to just drop the relevant source files directly into your project (all Swift files under the SWXMLHash directory).
 
 ## TODO
 
