@@ -26,8 +26,8 @@ import UIKit
 class XMLElement {
     var text: String?
     let name: String
-    var elements = Dictionary<String, Array<XMLElement>>()
-    var attributes = Dictionary<String, String>()
+    var elements = [String:[XMLElement]]()
+    var attributes = [String:String]()
 
     init(name: String) {
         self.name = name

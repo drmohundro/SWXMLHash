@@ -35,7 +35,7 @@ class SWXMLHash : NSObject, NSXMLParserDelegate {
 
     var root = XMLElement(name: "root")
     var currentNode: XMLElement
-    var parentStack = Array<XMLElement>()
+    var parentStack = [XMLElement]()
 
     func parse(xml: NSString) -> XMLIndexer {
         return parse((xml as NSString).dataUsingEncoding(NSUTF8StringEncoding))

@@ -25,7 +25,7 @@ import Foundation
 
 enum XMLIndexer {
     case Element(XMLElement)
-    case List(Array<XMLElement>)
+    case List([XMLElement])
     case Error(NSError)
 
     var element: XMLElement? {
@@ -39,7 +39,7 @@ enum XMLIndexer {
     }
     }
 
-    var all: Array<XMLIndexer> {
+    var all: [XMLIndexer] {
     get {
         switch self {
         case .List(let list):
