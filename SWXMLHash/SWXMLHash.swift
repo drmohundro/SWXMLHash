@@ -59,7 +59,7 @@ class SWXMLHash : NSObject, NSXMLParserDelegate {
 
         self.parsingElement = elementName
 
-        currentNode = parentStack[parentStack.count - 1].addElement(elementName)
+        currentNode = parentStack[parentStack.count - 1].addElement(elementName, withAttributes: attributeDict)
         parentStack.append(currentNode)
 
         lastResults = ""

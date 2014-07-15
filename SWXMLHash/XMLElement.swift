@@ -27,12 +27,13 @@ class XMLElement {
     var text: String?
     let name: String
     var elements = Dictionary<String, Array<XMLElement>>()
+    var attributes = Dictionary<String, String>()
 
     init(name: String) {
         self.name = name
     }
 
-    func addElement(name: String) -> XMLElement {
+    func addElement(name: String, withAttributes attributes: NSDictionary) -> XMLElement {
         let element = XMLElement(name: name)
 
         if var group = elements[name] {
@@ -41,6 +42,12 @@ class XMLElement {
         }
         else {
             elements[name] = [element]
+        }
+
+        for (keyAny,valueAny) in attributes {
+            let key = keyAny as String
+            let value = valueAny as String
+            element.attributes[key] = value
         }
 
         return element

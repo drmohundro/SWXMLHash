@@ -21,6 +21,9 @@ xml["root"]["header"]["title"].element?.text
 // will return "Ralls, Kim"
 xml["root"]["catalog"]["book"][1]["author"].element?.text
 
+// will return "bk102"
+xml["root"]["catalog"]["book"][1].element?.attributes["id"]
+
 // will return "Computer, Fantasy, Fantasy"
 ", ".join(xml["root"]["catalog"]["book"].all.map { elem in elem["genre"].element!.text! })
 
@@ -36,6 +39,7 @@ case .Error(let error):
 ## TODO
 
 * [x] finish implementing error handling for group indexing
-* [ ] add attribute support
+* [x] add attribute support
+* [ ] maybe add attribute look-up for elements as opposed to solely array indexing
 * [ ] add CocoaPods support once it supports Swift projects
 * [ ] more???
