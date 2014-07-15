@@ -53,18 +53,18 @@ let parser = SWXMLHash()
 parser.parse((xmlToParse as NSString).dataUsingEncoding(NSUTF8StringEncoding))
     
 // will return "Test Title Header"
-xml["root"]["header"]["title"].text
+xml["root"]["header"]["title"].element?.text
 
 // will return "Ralls, Kim"
-xml["root"]["catalog"].group("book")[1]["author"].text
+xml["root"]["catalog"]["book"][1]["author"].element?.text
 
 // will return "Computer, Fantasy, Fantasy"
-", ".join(xml["root"]["catalog"].group("book").map { elem in elem["genre"].text! })
+", ".join(xml["root"]["catalog"]["book"].all.map { elem in elem["genre"].element!.text! })
 ```
 
 ## TODO
 
-* [ ] finish implementing error handling for group indexing
+* [*] finish implementing error handling for group indexing
 * [ ] add attribute support
 * [ ] add CocoaPods support once it supports Swift projects
 * [ ] more???

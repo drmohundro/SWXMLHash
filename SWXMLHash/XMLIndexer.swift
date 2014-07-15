@@ -1,5 +1,5 @@
 //
-//  SWXMLElement.swift
+//  XMLIndexer.swift
 //
 //  Copyright (c) 2014 David Mohundro
 //
@@ -21,35 +21,7 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-import UIKit
-
-class XMLElement {
-    var text: String?
-    let name: String
-    var elements = Dictionary<String, Array<XMLElement>>()
-
-    init(name: String) {
-        self.name = name
-    }
-
-    func addElement(name: String) -> XMLElement {
-        let element = XMLElement(name: name)
-
-        if var group = elements[name] {
-            group.append(element)
-            elements[name] = group
-        }
-        else {
-            elements[name] = [element]
-        }
-
-        return element
-    }
-
-    func indexable() -> XMLIndexer {
-        return XMLIndexer(self)
-    }
-}
+import Foundation
 
 enum XMLIndexer {
     case Element(XMLElement)
@@ -123,17 +95,6 @@ enum XMLIndexer {
             default:
                 return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: userInfo))
             }
-        }
-    }
-}
-
-extension XMLIndexer: LogicValue {
-    func getLogicValue() -> Bool {
-        switch self {
-        case .Error:
-            return false
-        default:
-            return true
         }
     }
 }
