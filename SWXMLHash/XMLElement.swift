@@ -52,8 +52,4 @@ class XMLElement {
 
         return element
     }
-
-    func indexable() -> XMLIndexer {
-        return XMLIndexer(self)
-    }
 }
