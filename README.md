@@ -6,51 +6,14 @@ The API takes a lot of inspiration from [SwiftyJSON](https://github.com/lingoer/
 
 ## Examples
 
-All examples below are from the included specs.
-
-```xml
-<root>
-  <header>
-    <title>Test Title Header</title>
-  </header>
-  <catalog>
-    <book id="bk101">
-      <author>Gambardella, Matthew</author>
-      <title>XML Developer's Guide</title>
-      <genre>Computer</genre>
-      <price>44.95</price>
-      <publish_date>2000-10-01</publish_date>
-      <description>An in-depth look at creating applications with XML.</description>
-    </book>
-    <book id="bk102">
-      <author>Ralls, Kim</author>
-      <title>Midnight Rain</title>
-      <genre>Fantasy</genre>
-      <price>5.95</price>
-      <publish_date>2000-12-16</publish_date>
-      <description>A former architect battles corporate zombies, an evil sorceress, and her own childhood to become queen of the world.</description>
-    </book>
-    <book id="bk103">
-      <author>Corets, Eva</author>
-      <title>Maeve Ascendant</title>
-      <genre>Fantasy</genre>
-      <price>5.95</price>
-      <publish_date>2000-11-17</publish_date>
-      <description>After the collapse of a nanotechnology society in England, the young survivors lay the foundation for a new society.</description>
-    </book>
-  </catalog>
-</root>
-```
+All examples below can be found in the included specs.
 
 ```swift
-// assume readFile pulls in contents of XML above
-let xmlToParse = readFile()
-    
 // instantiate your SWXMLHash instance
 let parser = SWXMLHash()
 
-// begin parsing (note that the parse method currently accepts an NSData instance)
-parser.parse((xmlToParse as NSString).dataUsingEncoding(NSUTF8StringEncoding))
+// begin parsing
+let xml = parser.parse(xmlToParse)
     
 // will return "Test Title Header"
 xml["root"]["header"]["title"].element?.text
@@ -60,6 +23,14 @@ xml["root"]["catalog"]["book"][1]["author"].element?.text
 
 // will return "Computer, Fantasy, Fantasy"
 ", ".join(xml["root"]["catalog"]["book"].all.map { elem in elem["genre"].element!.text! })
+
+// error handling
+switch xml["root"]["what"]["header"]["foo"] {
+case .Element(let elem):
+  // everything is good, code away!
+case .Error(let error):
+  // error is an NSError instance that you can deal with
+}
 ```
 
 ## TODO

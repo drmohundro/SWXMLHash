@@ -37,7 +37,11 @@ class SWXMLHash : NSObject, NSXMLParserDelegate {
     var currentNode: XMLElement
     var parentStack = Array<XMLElement>()
 
-    func parse(data: NSData) -> (XMLIndexer) {
+    func parse(xml: NSString) -> XMLIndexer {
+        return parse((xml as NSString).dataUsingEncoding(NSUTF8StringEncoding))
+    }
+
+    func parse(data: NSData) -> XMLIndexer {
         // clear any prior runs of parse... expected that this won't be necessary, but you never know
         parentStack.removeAll(keepCapacity: false)
         root = XMLElement(name: "root")

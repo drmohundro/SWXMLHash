@@ -33,7 +33,7 @@ class SWXMLHashTests: QuickSpec {
         let parser = SWXMLHash()
 
         beforeEach {
-            xml = parser.parse((xmlToParse as NSString).dataUsingEncoding(NSUTF8StringEncoding))
+            xml = parser.parse(xmlToParse)
         }
 
         describe("xml parsing") {
