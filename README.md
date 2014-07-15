@@ -64,7 +64,7 @@ xml["root"]["catalog"]["book"][1]["author"].element?.text
 
 ## TODO
 
-* [*] finish implementing error handling for group indexing
+* [x] finish implementing error handling for group indexing
 * [ ] add attribute support
 * [ ] add CocoaPods support once it supports Swift projects
 * [ ] more???
