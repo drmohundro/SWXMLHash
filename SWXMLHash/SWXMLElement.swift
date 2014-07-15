@@ -23,19 +23,17 @@
 
 import UIKit
 
-class SWXMLElement {
-    var elements = Dictionary<String, Array<SWXMLElement>>()
-
-    var error: NSError?
+class XMLElement {
     var text: String?
     let name: String
+    var elements = Dictionary<String, Array<XMLElement>>()
 
     init(name: String) {
         self.name = name
     }
 
-    func addElement(name: String) -> SWXMLElement {
-        let element = SWXMLElement(name: name)
+    func addElement(name: String) -> XMLElement {
+        let element = XMLElement(name: name)
 
         if var group = elements[name] {
             group.append(element)
@@ -48,40 +46,94 @@ class SWXMLElement {
         return element
     }
 
-    subscript(key: String) -> SWXMLElement {
-        get {
-            if elements[key] {
-                return elements[key]![0]
+    func indexable() -> XMLIndexer {
+        return XMLIndexer(self)
+    }
+}
+
+enum XMLIndexer {
+    case Element(XMLElement)
+    case List(Array<XMLElement>)
+    case Error(NSError)
+
+    var element: XMLElement? {
+    get {
+        switch self {
+        case .Element(let elem):
+            return elem
+        default:
+            return nil
+        }
+    }
+    }
+
+    var all: Array<XMLIndexer> {
+    get {
+        switch self {
+        case .List(let list):
+            var xmlList = [XMLIndexer]()
+            for elem in list {
+                xmlList.append(XMLIndexer(elem))
             }
-            return SWXMLElement.errorElementFor(self, withKey: key)
+            return xmlList
+        default:
+            return []
+        }
+    }
+    }
+
+    init(_ rawObject: AnyObject) {
+        switch rawObject {
+        case let value as XMLElement:
+            self = .Element(value)
+        default:
+            self = .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: nil))
         }
     }
 
-    func group(key: String) -> Array<SWXMLElement> {
-        if elements[key] {
-            return elements[key]!
+    subscript(key: String) -> XMLIndexer {
+        get {
+            let userInfo = [NSLocalizedDescriptionKey: "XML Element Error: Incorrect key [\"\(key)\"]"]
+            switch self {
+            case .Element(let elem):
+                if let match = elem.elements[key] {
+                    if match.count == 1 {
+                        return .Element(match[0])
+                    }
+                    else {
+                        return .List(match)
+                    }
+                }
+                return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: userInfo))
+            default:
+                return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: userInfo))
+            }
         }
-        return [SWXMLElement.errorElementFor(self, withKey: key)]
     }
 
-    class func errorElementFor(parentElement: SWXMLElement, withKey mismatchedKey: String) -> SWXMLElement {
-        var parentErrorStack = NSMutableArray()
-        if let parentError = parentElement.error? {
-            let arr = parentError.userInfo["ParentErrorStack"] as NSArray
-            parentErrorStack.addObjectsFromArray(arr)
-            parentErrorStack.addObject(parentError.userInfo[NSLocalizedDescriptionKey])
+    subscript(index: Int) -> XMLIndexer {
+        get {
+            let userInfo = [NSLocalizedDescriptionKey: "XML Element Error: Incorrect index [\"\(index)\"]"]
+            switch self {
+            case .List(let list):
+                if index <= list.count {
+                    return .Element(list[index])
+                }
+                return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: userInfo))
+            default:
+                return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: userInfo))
+            }
         }
+    }
+}
 
-        let userInfo = [
-            NSLocalizedDescriptionKey: "XML Element Error: Missing element [\"\(mismatchedKey)\"] on parent [\"\(parentElement.name)\"]",
-            "MismatchedKey": mismatchedKey,
-            "ParentElement": parentElement.name,
-            "ParentErrorStack": parentErrorStack
-        ]
-
-        let error = NSError(domain: "SWXMLDomain", code: 1000, userInfo: userInfo)
-        let errorElem = SWXMLElement(name: mismatchedKey)
-        errorElem.error = error
-        return errorElem
+extension XMLIndexer: LogicValue {
+    func getLogicValue() -> Bool {
+        switch self {
+        case .Error:
+            return false
+        default:
+            return true
+        }
     }
 }

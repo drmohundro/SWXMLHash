@@ -33,18 +33,22 @@ class SWXMLHash : NSObject, NSXMLParserDelegate {
 
     var lastResults: String = ""
 
-    let root = SWXMLElement(name: "root")
-    var currentNode: SWXMLElement
-    var parentStack = Array<SWXMLElement>()
+    var root = XMLElement(name: "root")
+    var currentNode: XMLElement
+    var parentStack = Array<XMLElement>()
 
-    func parse(data: NSData) -> (SWXMLElement) {
+    func parse(data: NSData) -> (XMLIndexer) {
+        // clear any prior runs of parse... expected that this won't be necessary, but you never know
+        parentStack.removeAll(keepCapacity: false)
+        root = XMLElement(name: "root")
+
         parentStack.append(root)
 
         let parser = NSXMLParser(data: data)
         parser.delegate = self
         parser.parse()
 
-        return root
+        return XMLIndexer(root)
     }
 
     func parser(parser: NSXMLParser!, didStartElement elementName: String!, namespaceURI: String!, qualifiedName: String!, attributes attributeDict: NSDictionary!) {
