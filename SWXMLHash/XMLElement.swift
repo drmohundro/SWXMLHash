@@ -23,13 +23,13 @@
 
 import UIKit
 
-class XMLElement {
-    var text: String?
-    let name: String
+public class XMLElement {
+    public var text: String?
+    public let name: String
     var elements = [String:[XMLElement]]()
-    var attributes = [String:String]()
+    public var attributes = [String:String]()
 
-    init(name: String) {
+    public init(name: String) {
         self.name = name
     }
 

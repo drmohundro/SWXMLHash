@@ -23,12 +23,12 @@
 
 import Foundation
 
-enum XMLIndexer {
+public enum XMLIndexer {
     case Element(XMLElement)
     case List([XMLElement])
     case Error(NSError)
 
-    var element: XMLElement? {
+    public var element: XMLElement? {
     get {
         switch self {
         case .Element(let elem):
@@ -39,7 +39,7 @@ enum XMLIndexer {
     }
     }
 
-    var all: [XMLIndexer] {
+    public var all: [XMLIndexer] {
     get {
         switch self {
         case .List(let list):
@@ -54,7 +54,7 @@ enum XMLIndexer {
     }
     }
 
-    init(_ rawObject: AnyObject) {
+    public init(_ rawObject: AnyObject) {
         switch rawObject {
         case let value as XMLElement:
             self = .Element(value)
@@ -63,7 +63,7 @@ enum XMLIndexer {
         }
     }
 
-    subscript(key: String) -> XMLIndexer {
+    public subscript(key: String) -> XMLIndexer {
         get {
             let userInfo = [NSLocalizedDescriptionKey: "XML Element Error: Incorrect key [\"\(key)\"]"]
             switch self {
@@ -83,7 +83,7 @@ enum XMLIndexer {
         }
     }
 
-    subscript(index: Int) -> XMLIndexer {
+    public subscript(index: Int) -> XMLIndexer {
         get {
             let userInfo = [NSLocalizedDescriptionKey: "XML Element Error: Incorrect index [\"\(index)\"]"]
             switch self {

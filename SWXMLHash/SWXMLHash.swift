@@ -23,10 +23,10 @@
 
 import Foundation
 
-class SWXMLHash : NSObject, NSXMLParserDelegate {
+public class SWXMLHash : NSObject, NSXMLParserDelegate {
     var parsingElement: String = ""
 
-    init() {
+    public init() {
         currentNode = root
         super.init()
     }
@@ -37,11 +37,11 @@ class SWXMLHash : NSObject, NSXMLParserDelegate {
     var currentNode: XMLElement
     var parentStack = [XMLElement]()
 
-    func parse(xml: NSString) -> XMLIndexer {
+    public func parse(xml: NSString) -> XMLIndexer {
         return parse((xml as NSString).dataUsingEncoding(NSUTF8StringEncoding))
     }
 
-    func parse(data: NSData) -> XMLIndexer {
+    public func parse(data: NSData) -> XMLIndexer {
         // clear any prior runs of parse... expected that this won't be necessary, but you never know
         parentStack.removeAll(keepCapacity: false)
         root = XMLElement(name: "root")
@@ -55,7 +55,7 @@ class SWXMLHash : NSObject, NSXMLParserDelegate {
         return XMLIndexer(root)
     }
 
-    func parser(parser: NSXMLParser!, didStartElement elementName: String!, namespaceURI: String!, qualifiedName: String!, attributes attributeDict: NSDictionary!) {
+    public func parser(parser: NSXMLParser!, didStartElement elementName: String!, namespaceURI: String!, qualifiedName: String!, attributes attributeDict: NSDictionary!) {
 
         self.parsingElement = elementName
 
@@ -65,11 +65,11 @@ class SWXMLHash : NSObject, NSXMLParserDelegate {
         lastResults = ""
     }
 
-    func parser(parser: NSXMLParser!, foundCharacters string: String!) {
+    public func parser(parser: NSXMLParser!, foundCharacters string: String!) {
         lastResults += string
     }
 
-    func parser(parser: NSXMLParser!, didEndElement elementName: String!, namespaceURI: String!, qualifiedName qName: String!) {
+    public func parser(parser: NSXMLParser!, didEndElement elementName: String!, namespaceURI: String!, qualifiedName qName: String!) {
         if !lastResults.isEmpty {
             currentNode.text = lastResults
         }

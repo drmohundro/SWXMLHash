@@ -38,25 +38,25 @@ class SWXMLHashTests: QuickSpec {
 
         describe("xml parsing") {
             it("should be able to parse individual elements") {
-                expect(xml["root"]["header"]["title"].element?.text).to.equal("Test Title Header")
+                expect(xml["root"]["header"]["title"].element?.text).to(equal("Test Title Header"))
             }
 
             it("should be able to parse element groups") {
-                expect(xml["root"]["catalog"]["book"][1]["author"].element?.text).to.equal("Ralls, Kim")
+                expect(xml["root"]["catalog"]["book"][1]["author"].element?.text).to(equal("Ralls, Kim"))
             }
 
             it("should be able to parse attributes") {
-                expect(xml["root"]["catalog"]["book"][1].element?.attributes["id"]).to.equal("bk102")
+                expect(xml["root"]["catalog"]["book"][1].element?.attributes["id"]).to(equal("bk102"))
             }
 
             it("should be able to iterate element groups") {
-                expect(", ".join(xml["root"]["catalog"]["book"].all.map { elem in elem["genre"].element!.text! })).to.equal("Computer, Fantasy, Fantasy")
+                expect(", ".join(xml["root"]["catalog"]["book"].all.map { elem in elem["genre"].element!.text! })).to(equal("Computer, Fantasy, Fantasy"))
             }
         }
 
         pending("xml parsing error scenarios") {
             it("should return nil when keys don't match") {
-                expect(xml["root"]["what"]["header"]["foo"].element?.name).to.beNil()
+                expect(xml["root"]["what"]["header"]["foo"].element?.name).to(beNil())
             }
 
             it("should provide an error object when keys don't match") {
@@ -67,7 +67,7 @@ class SWXMLHashTests: QuickSpec {
                 default:
                     err = nil
                 }
-                expect(err).toNot.beNil()
+                expect(err).toNot(beNil())
             }
 
             it("should provide an error element when indexers don't match") {
@@ -78,7 +78,7 @@ class SWXMLHashTests: QuickSpec {
                 default:
                     err = nil
                 }
-                expect(err).toNot.beNil()
+                expect(err).toNot(beNil())
             }
         }
     }

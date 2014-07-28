@@ -24,7 +24,7 @@
 import Foundation
 
 extension XMLIndexer: LogicValue {
-    func getLogicValue() -> Bool {
+    public func getLogicValue() -> Bool {
         switch self {
         case .Error:
             return false
