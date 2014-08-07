@@ -11,9 +11,6 @@
 		CD6083FB196CA106000B4F8D /* SWXMLHash.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD6083EF196CA106000B4F8D /* SWXMLHash.framework */; };
 		CD608402196CA106000B4F8D /* SWXMLHashSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD608401196CA106000B4F8D /* SWXMLHashSpecs.swift */; };
 		CD60840C196CA11D000B4F8D /* SWXMLHash.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD60840B196CA11D000B4F8D /* SWXMLHash.swift */; };
-		CD644CF11974D31C00F095C8 /* XMLIndexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD644CF01974D31C00F095C8 /* XMLIndexer.swift */; };
-		CD644CFB1974D35700F095C8 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD644CFA1974D35700F095C8 /* Extensions.swift */; };
-		CDC6CB22196CA7EF001DE40C /* XMLElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC6CB21196CA7EF001DE40C /* XMLElement.swift */; };
 		CDC6CB44196CA8B6001DE40C /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDC6CB2D196CA8A0001DE40C /* Quick.framework */; };
 		CDF29204198682540038FB92 /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDF292011986822D0038FB92 /* Nimble.framework */; };
 		CDF29205198682540038FB92 /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDC6CB2D196CA8A0001DE40C /* Quick.framework */; };
@@ -93,9 +90,6 @@
 		CD608400196CA106000B4F8D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CD608401196CA106000B4F8D /* SWXMLHashSpecs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SWXMLHashSpecs.swift; sourceTree = "<group>"; };
 		CD60840B196CA11D000B4F8D /* SWXMLHash.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SWXMLHash.swift; sourceTree = "<group>"; };
-		CD644CF01974D31C00F095C8 /* XMLIndexer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XMLIndexer.swift; sourceTree = "<group>"; };
-		CD644CFA1974D35700F095C8 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
-		CDC6CB21196CA7EF001DE40C /* XMLElement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XMLElement.swift; sourceTree = "<group>"; };
 		CDC6CB23196CA8A0001DE40C /* Quick.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Quick.xcodeproj; path = Quick/Quick/Quick.xcodeproj; sourceTree = SOURCE_ROOT; };
 		CDF291F51986822D0038FB92 /* Nimble.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Nimble.xcodeproj; path = Quick/Externals/Nimble/Nimble.xcodeproj; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -146,9 +140,6 @@
 				CD6083F4196CA106000B4F8D /* SWXMLHash.h */,
 				CD6083F2196CA106000B4F8D /* Supporting Files */,
 				CD60840B196CA11D000B4F8D /* SWXMLHash.swift */,
-				CDC6CB21196CA7EF001DE40C /* XMLElement.swift */,
-				CD644CF01974D31C00F095C8 /* XMLIndexer.swift */,
-				CD644CFA1974D35700F095C8 /* Extensions.swift */,
 			);
 			path = SWXMLHash;
 			sourceTree = "<group>";
@@ -378,10 +369,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CD644CF11974D31C00F095C8 /* XMLIndexer.swift in Sources */,
-				CDC6CB22196CA7EF001DE40C /* XMLElement.swift in Sources */,
 				CD60840C196CA11D000B4F8D /* SWXMLHash.swift in Sources */,
-				CD644CFB1974D35700F095C8 /* Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

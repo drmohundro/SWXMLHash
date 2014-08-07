@@ -8,26 +8,43 @@ The API takes a lot of inspiration from [SwiftyJSON](https://github.com/lingoer/
 
 All examples below can be found in the included specs.
 
+### Initialization
+
 ```swift
 // instantiate your SWXMLHash instance
 let parser = SWXMLHash()
 
 // begin parsing
 let xml = parser.parse(xmlToParse)
+```
 
-// will return "Test Title Header"
+### Single Element Lookup
+
+```swift
 xml["root"]["header"]["title"].element?.text
+```
 
-// will return "Ralls, Kim"
+### Multiple Elements Lookup
+
+```swift
 xml["root"]["catalog"]["book"][1]["author"].element?.text
+```
 
-// will return "bk102"
+### Attributes Usage
+
+```swift
 xml["root"]["catalog"]["book"][1].element?.attributes["id"]
+```
 
-// will return "Computer, Fantasy, Fantasy"
+### Returning All Elements
+
+```swift
 ", ".join(xml["root"]["catalog"]["book"].all.map { elem in elem["genre"].element!.text! })
+```
 
-// error handling
+### Error Handling
+
+```swift
 switch xml["root"]["what"]["header"]["foo"] {
 case .Element(let elem):
   // everything is good, code away!
@@ -38,7 +55,7 @@ case .Error(let error):
 
 ## Installation
 
-My future plan is to add [CocoaPods](http://cocoapods.org/) support for this package; however, CocoaPods doesn't yet officially support Swift projects yet. Until that point, the best option would probably be to just drop the relevant source files directly into your project (all Swift files under the SWXMLHash directory).
+Ultimately, this will be distributed with [CocoaPods](http://cocoapods.org/) support; however,  CocoaPods doesn't yet support Swift projects. In the meantime, just add SWXMLHash as a git submodule and drag `SWXMLHash.swift` into your project.
 
 ## TODO
 

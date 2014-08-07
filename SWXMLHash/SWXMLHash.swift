@@ -26,7 +26,7 @@ import Foundation
 public class SWXMLHash : NSObject, NSXMLParserDelegate {
     var parsingElement: String = ""
 
-    public init() {
+    public override init() {
         currentNode = root
         super.init()
     }
@@ -75,5 +75,125 @@ public class SWXMLHash : NSObject, NSXMLParserDelegate {
         }
 
         parentStack.removeLast()
+    }
+}
+
+public enum XMLIndexer {
+    case Element(XMLElement)
+    case List([XMLElement])
+    case Error(NSError)
+
+    public var element: XMLElement? {
+    get {
+        switch self {
+        case .Element(let elem):
+            return elem
+        default:
+            return nil
+        }
+    }
+    }
+
+    public var all: [XMLIndexer] {
+    get {
+        switch self {
+        case .List(let list):
+            var xmlList = [XMLIndexer]()
+            for elem in list {
+                xmlList.append(XMLIndexer(elem))
+            }
+            return xmlList
+        default:
+            return []
+        }
+    }
+    }
+
+    public init(_ rawObject: AnyObject) {
+        switch rawObject {
+        case let value as XMLElement:
+            self = .Element(value)
+        default:
+            self = .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: nil))
+        }
+    }
+
+    public subscript(key: String) -> XMLIndexer {
+        get {
+            let userInfo = [NSLocalizedDescriptionKey: "XML Element Error: Incorrect key [\"\(key)\"]"]
+            switch self {
+            case .Element(let elem):
+                if let match = elem.elements[key] {
+                    if match.count == 1 {
+                        return .Element(match[0])
+                    }
+                    else {
+                        return .List(match)
+                    }
+                }
+                return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: userInfo))
+            default:
+                return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: userInfo))
+            }
+        }
+    }
+
+    public subscript(index: Int) -> XMLIndexer {
+        get {
+            let userInfo = [NSLocalizedDescriptionKey: "XML Element Error: Incorrect index [\"\(index)\"]"]
+            switch self {
+            case .List(let list):
+                if index <= list.count {
+                    return .Element(list[index])
+                }
+                return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: userInfo))
+            default:
+                return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: userInfo))
+            }
+        }
+    }
+}
+
+extension XMLIndexer: BooleanType {
+    public var boolValue: Bool {
+        get {
+            switch self {
+            case .Error:
+                return false
+            default:
+                return true
+            }
+        }
+    }
+}
+
+public class XMLElement {
+    public var text: String?
+    public let name: String
+    var elements = [String:[XMLElement]]()
+    public var attributes = [String:String]()
+
+    public init(name: String) {
+        self.name = name
+    }
+
+    func addElement(name: String, withAttributes attributes: NSDictionary) -> XMLElement {
+        let element = XMLElement(name: name)
+
+        if var group = elements[name] {
+            group.append(element)
+            elements[name] = group
+        }
+        else {
+            elements[name] = [element]
+        }
+
+        for (keyAny,valueAny) in attributes {
+            let key = keyAny as String
+            let value = valueAny as String
+            element.attributes[key] = value
+        }
+
+        return element
     }
 }
