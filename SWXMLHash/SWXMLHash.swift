@@ -23,10 +23,37 @@
 
 import Foundation
 
-public class SWXMLHash : NSObject, NSXMLParserDelegate {
+/// Simple XML parser.
+public class SWXMLHash {
+    /**
+        Method to parse XML passed in as a string.
+    
+        :param: xml The XML to be parsed
+    
+        :returns: An XMLIndexer instance that is used to look up elements in the XML
+    */
+    class public func parse(xml: String) -> XMLIndexer {
+        return parse((xml as NSString).dataUsingEncoding(NSUTF8StringEncoding))
+    }
+
+    /**
+        Method to parse XML passed in as an NSData instance.
+    
+        :param: xml The XML to be parsed
+    
+        :returns: An XMLIndexer instance that is used to look up elements in the XML
+    */
+    class public func parse(data: NSData) -> XMLIndexer {
+        var parser = XMLParser()
+        return parser.parse(data)
+    }
+}
+
+/// The implementation of NSXMLParserDelegate and where the parsing actually happens.
+class XMLParser : NSObject, NSXMLParserDelegate {
     var parsingElement: String = ""
 
-    public override init() {
+    override init() {
         currentNode = root
         super.init()
     }
@@ -37,11 +64,7 @@ public class SWXMLHash : NSObject, NSXMLParserDelegate {
     var currentNode: XMLElement
     var parentStack = [XMLElement]()
 
-    public func parse(xml: NSString) -> XMLIndexer {
-        return parse((xml as NSString).dataUsingEncoding(NSUTF8StringEncoding))
-    }
-
-    public func parse(data: NSData) -> XMLIndexer {
+    func parse(data: NSData) -> XMLIndexer {
         // clear any prior runs of parse... expected that this won't be necessary, but you never know
         parentStack.removeAll(keepCapacity: false)
         root = XMLElement(name: "root")
@@ -55,7 +78,7 @@ public class SWXMLHash : NSObject, NSXMLParserDelegate {
         return XMLIndexer(root)
     }
 
-    public func parser(parser: NSXMLParser!, didStartElement elementName: String!, namespaceURI: String!, qualifiedName: String!, attributes attributeDict: NSDictionary!) {
+    func parser(parser: NSXMLParser!, didStartElement elementName: String!, namespaceURI: String!, qualifiedName: String!, attributes attributeDict: NSDictionary!) {
 
         self.parsingElement = elementName
 
@@ -65,11 +88,11 @@ public class SWXMLHash : NSObject, NSXMLParserDelegate {
         lastResults = ""
     }
 
-    public func parser(parser: NSXMLParser!, foundCharacters string: String!) {
+    func parser(parser: NSXMLParser!, foundCharacters string: String!) {
         lastResults += string
     }
 
-    public func parser(parser: NSXMLParser!, didEndElement elementName: String!, namespaceURI: String!, qualifiedName qName: String!) {
+    func parser(parser: NSXMLParser!, didEndElement elementName: String!, namespaceURI: String!, qualifiedName qName: String!) {
         if !lastResults.isEmpty {
             currentNode.text = lastResults
         }
@@ -78,11 +101,13 @@ public class SWXMLHash : NSObject, NSXMLParserDelegate {
     }
 }
 
+/// Returned from SWXMLHash, allows easy element lookup into XML data.
 public enum XMLIndexer {
     case Element(XMLElement)
     case List([XMLElement])
     case Error(NSError)
 
+    /// The underlying XMLElement at the currently indexed level of XML.
     public var element: XMLElement? {
     get {
         switch self {
@@ -94,6 +119,7 @@ public enum XMLIndexer {
     }
     }
 
+    /// The underlying array of XMLElements at the currently indexed level of XML.
     public var all: [XMLIndexer] {
     get {
         switch self {
@@ -109,6 +135,13 @@ public enum XMLIndexer {
     }
     }
 
+    /**
+        Initializes the XMLIndexer
+    
+        :param: _ should be an instance of XMLElement, but supports other values for error handling
+    
+        :returns: instance of XMLIndexer
+    */
     public init(_ rawObject: AnyObject) {
         switch rawObject {
         case let value as XMLElement:
@@ -118,6 +151,13 @@ public enum XMLIndexer {
         }
     }
 
+    /**
+        Find an XML element at the current level by element name
+    
+        :param: key The element name to index by
+    
+        :returns: instance of XMLIndexer to match the element (or elements) found by key
+    */
     public subscript(key: String) -> XMLIndexer {
         get {
             let userInfo = [NSLocalizedDescriptionKey: "XML Element Error: Incorrect key [\"\(key)\"]"]
@@ -138,6 +178,13 @@ public enum XMLIndexer {
         }
     }
 
+    /**
+        Find an XML element by index within a list of XML Elements at the current level
+    
+        :param: index The 0-based index to index by
+    
+        :returns: instance of XMLIndexer to match the element (or elements) found by key
+    */
     public subscript(index: Int) -> XMLIndexer {
         get {
             let userInfo = [NSLocalizedDescriptionKey: "XML Element Error: Incorrect index [\"\(index)\"]"]
@@ -154,7 +201,9 @@ public enum XMLIndexer {
     }
 }
 
+/// XMLIndexer extensions
 extension XMLIndexer: BooleanType {
+    /// True if a valid XMLIndexer, false if an error type
     public var boolValue: Bool {
         get {
             switch self {
@@ -167,16 +216,36 @@ extension XMLIndexer: BooleanType {
     }
 }
 
+/// Models an XML element, including name, text and attributes
 public class XMLElement {
-    public var text: String?
+    /// The name of the element
     public let name: String
-    var elements = [String:[XMLElement]]()
+    /// The inner text of the element, if it exists
+    public var text: String?
+    /// The attributes of the element
     public var attributes = [String:String]()
 
-    public init(name: String) {
+    var elements = [String:[XMLElement]]()
+
+    /**
+        Initialize an XMLElement instance
+    
+        :param: name The name of the element to be initialized
+    
+        :returns: a new instance of XMLElement
+    */
+    init(name: String) {
         self.name = name
     }
 
+    /**
+        Adds a new XMLElement underneath this instance of XMLElement
+    
+        :param: name The name of the new element to be added
+        :param: withAttributes The attributes dictionary for the element being added
+    
+        :returns: The XMLElement that has now been added
+    */
     func addElement(name: String, withAttributes attributes: NSDictionary) -> XMLElement {
         let element = XMLElement(name: name)
 

@@ -11,11 +11,7 @@ All examples below can be found in the included specs.
 ### Initialization
 
 ```swift
-// instantiate your SWXMLHash instance
-let parser = SWXMLHash()
-
-// begin parsing
-let xml = parser.parse(xmlToParse)
+let xml = SWXMLHash.parse(xmlToParse)
 ```
 
 ### Single Element Lookup
