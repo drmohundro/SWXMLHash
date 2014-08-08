@@ -16,11 +16,40 @@ let xml = SWXMLHash.parse(xmlToParse)
 
 ### Single Element Lookup
 
+Given:
+
+```xml
+<root>
+  <header>
+    <title>Foo</title>
+  </header>
+  ...
+</root>
+```
+
+Will return "Foo".
+
 ```swift
 xml["root"]["header"]["title"].element?.text
 ```
 
 ### Multiple Elements Lookup
+
+Given:
+
+```xml
+<root>
+  ...
+  <catalog>
+    <book><author>Bob</author></book>
+    <book><author>John</author></book>
+    <book><author>Mark</author></book>
+  </catalog>
+  ...
+</root>
+```
+
+The below will return "John".
 
 ```swift
 xml["root"]["catalog"]["book"][1]["author"].element?.text
@@ -28,11 +57,44 @@ xml["root"]["catalog"]["book"][1]["author"].element?.text
 
 ### Attributes Usage
 
+Given:
+
+```xml
+<root>
+  ...
+  <catalog>
+    <book><author id="1">Bob</author></book>
+    <book><author id="123">John</author></book>
+    <book><author id="456">Mark</author></book>
+  </catalog>
+  ...
+</root>
+```
+
+The below will return "123".
+
 ```swift
 xml["root"]["catalog"]["book"][1].element?.attributes["id"]
 ```
 
 ### Returning All Elements
+
+Given:
+
+```xml
+<root>
+  ...
+  <catalog>
+    <book><genre>Fiction</genre></book>
+    <book><genre>Non-fiction</genre></book>
+    <book><genre>Technical</genre></book>
+  </catalog>
+  ...
+</root>
+```
+
+The below will return "Fiction, Non-fiction, Technical".
+
 
 ```swift
 ", ".join(xml["root"]["catalog"]["book"].all.map { elem in elem["genre"].element!.text! })
