@@ -52,8 +52,12 @@ class SWXMLHashTests: QuickSpec {
                 expect(", ".join(xml["root"]["catalog"]["book"].all.map { elem in elem["genre"].element!.text! })).to(equal("Computer, Fantasy, Fantasy"))
             }
 
-            it("should be able to iterate elemnent groups even if only one element is found") {
+            it("should be able to iterate element groups even if only one element is found") {
                 expect(xml["root"]["header"]["title"].all.count).to(equal(1))
+            }
+
+            it("should be able to index element groups even if only one element is found") {
+                expect(xml["root"]["header"]["title"][0].element?.text).to(equal("Test Title Header"))
             }
         }
 

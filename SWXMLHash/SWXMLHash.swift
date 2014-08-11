@@ -196,6 +196,13 @@ public enum XMLIndexer {
                     return .Element(list[index])
                 }
                 return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: userInfo))
+            case .Element(let elem):
+                if index == 0 {
+                    return .Element(elem)
+                }
+                else {
+                    return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: userInfo))
+                }
             default:
                 return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: userInfo))
             }
