@@ -129,6 +129,8 @@ public enum XMLIndexer {
                 xmlList.append(XMLIndexer(elem))
             }
             return xmlList
+        case .Element(let elem):
+            return [XMLIndexer(elem)]
         default:
             return []
         }
