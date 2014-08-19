@@ -33,7 +33,7 @@ public class SWXMLHash {
         :returns: An XMLIndexer instance that is used to look up elements in the XML
     */
     class public func parse(xml: String) -> XMLIndexer {
-        return parse((xml as NSString).dataUsingEncoding(NSUTF8StringEncoding))
+        return parse((xml as NSString).dataUsingEncoding(NSUTF8StringEncoding)!)
     }
 
     /**
