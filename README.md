@@ -4,6 +4,10 @@ SWXMLHash is a relatively simple way to parse XML in Swift. If you're familiar w
 
 The API takes a lot of inspiration from [SwiftyJSON](https://github.com/lingoer/SwiftyJSON).
 
+## Installation
+
+Ultimately, this will be distributed with [CocoaPods](http://cocoapods.org/) support; however,  CocoaPods doesn't yet support Swift projects. In the meantime, just add SWXMLHash as a git submodule and drag `SWXMLHash.swift` into your project.
+
 ## Examples
 
 All examples below can be found in the included specs.
@@ -120,10 +124,6 @@ case .Error(let error):
 }
 ```
 
-## Installation
-
-Ultimately, this will be distributed with [CocoaPods](http://cocoapods.org/) support; however,  CocoaPods doesn't yet support Swift projects. In the meantime, just add SWXMLHash as a git submodule and drag `SWXMLHash.swift` into your project.
-
 ## TODO
 
 * [x] finish implementing error handling for group indexing
@@ -131,3 +131,7 @@ Ultimately, this will be distributed with [CocoaPods](http://cocoapods.org/) sup
 * [ ] maybe add attribute look-up for elements as opposed to solely array indexing
 * [ ] add CocoaPods support once it supports Swift projects
 * [ ] more???
+
+## License
+
+SWXMLHash is released under the MIT license. See [LICENSE](LICENSE) for details.
