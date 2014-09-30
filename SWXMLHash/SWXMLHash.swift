@@ -102,7 +102,7 @@ class XMLParser : NSObject, NSXMLParserDelegate {
 }
 
 /// Returned from SWXMLHash, allows easy element lookup into XML data.
-public enum XMLIndexer {
+public enum XMLIndexer : SequenceType {
     case Element(XMLElement)
     case List([XMLElement])
     case Error(NSError)
@@ -207,6 +207,12 @@ public enum XMLIndexer {
                 return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: userInfo))
             }
         }
+    }
+
+    typealias GeneratorType = XMLIndexer
+
+    public func generate() -> IndexingGenerator<[XMLIndexer]> {
+        return all.generate()
     }
 }
 

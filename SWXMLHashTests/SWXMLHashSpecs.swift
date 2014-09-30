@@ -59,6 +59,15 @@ class SWXMLHashTests: QuickSpec {
             it("should be able to index element groups even if only one element is found") {
                 expect(xml["root"]["header"]["title"][0].element?.text).to(equal("Test Title Header"))
             }
+
+            it("should be able to iterate using for-in") {
+                var count = 0
+                for elem in xml["root"]["catalog"]["book"] {
+                    count++
+                }
+
+                expect(count).to(equal(3))
+            }
         }
 
         pending("xml parsing error scenarios") {
