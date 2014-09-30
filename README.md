@@ -93,11 +93,20 @@ Given:
 </root>
 ```
 
-The below will return "Fiction, Non-fiction, Technical".
-
+The below will return "Fiction, Non-fiction, Technical" (note the `all` method).
 
 ```swift
-", ".join(xml["root"]["catalog"]["book"].all.map { elem in elem["genre"].element!.text! })
+", ".join(xml["root"]["catalog"]["book"].all.map { elem in
+  elem["genre"].element!.text!
+})
+```
+
+Alternatively, you can just iterate over the elements using `for-in` directly against an element.
+
+```swift
+for elem in xml["root"]["catalog"]["book"] {
+  NSLog(elem["genre"].element!.text!)
+}
 ```
 
 ### Error Handling
