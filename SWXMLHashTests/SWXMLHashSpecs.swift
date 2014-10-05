@@ -70,7 +70,15 @@ class SWXMLHashTests: QuickSpec {
             }
         }
 
-        pending("xml parsing error scenarios") {
+        describe("github issues") {
+            it("issue #6") {
+                let issueXml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><niotemplate version=\"1.0\"><section><textfield id=\"title\" tinted=\"true\" size=\"15\"><placeholder><en>Title</en></placeholder></textfield><constraint>V:|-10-[title]-10-|</constraint><constraint>H:|-15-[title]-15-|</constraint></section><section><textview id=\"content\" parser=\"markdown\" editable=\"true\" size=\"14\" auto-height=\"true\"/><constraint>H:|-15-[content]-15-|</constraint><constraint>V:|-10-[content]-10-|</constraint></section></niotemplate>"
+                let parsed = SWXMLHash.parse(issueXml)
+                expect(parsed["niotemplate"]["section"][0]["constraint"][1].element?.text).to(equal("H:|-15-[title]-15-|"))
+            }
+        }
+
+        describe("xml parsing error scenarios") {
             it("should return nil when keys don't match") {
                 expect(xml["root"]["what"]["header"]["foo"].element?.name).to(beNil())
             }

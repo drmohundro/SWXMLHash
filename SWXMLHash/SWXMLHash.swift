@@ -71,7 +71,7 @@ class XMLParser : NSObject, NSXMLParserDelegate {
 
         parentStack.append(root)
 
-        let parser = NSXMLParser(data: data)
+        let parser = NSXMLParser(data: data)!
         parser.delegate = self
         parser.parse()
 

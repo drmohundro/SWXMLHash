@@ -1,3 +1,9 @@
+## v0.5.1 (October 5, 2014)
+
+* XCode 6.1 compatibility - added explicit unwrapping of `NSXMLParser`.
+* Updated to latest Quick, Nimble for 6.1 compilation.
+* Added specs to try to help with issue #6.
+
 ## v0.5.0 (September 30, 2014)
 
 * Made `XMLIndexer` implement the `SequenceType` protocol to allow for for-in usage over it. The `all` method still exists as an option, but isn't necessary for simply iterating over sequences.
