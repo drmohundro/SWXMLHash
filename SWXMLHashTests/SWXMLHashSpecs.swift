@@ -68,13 +68,34 @@ class SWXMLHashTests: QuickSpec {
 
                 expect(count).to(equal(3))
             }
+
+            it("should be able to handle whitespace in XML") {
+                var bundle = NSBundle(forClass: SWXMLHashTests.self)
+                var path = bundle.pathForResource("test", ofType: "xml")
+                var data = NSData(contentsOfFile: path!)
+                let parsed = SWXMLHash.parse(data!)
+                expect(parsed["niotemplate"]["section"][0]["constraint"][1].element?.text).to(equal("H:|-15-[title]-15-|"))
+
+                expect(parsed["niotemplate"]["other"].element?.text).to(equal("this\n  has\n  white\n  space"))
+            }
         }
 
-        describe("github issues") {
-            it("issue #6") {
-                let issueXml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><niotemplate version=\"1.0\"><section><textfield id=\"title\" tinted=\"true\" size=\"15\"><placeholder><en>Title</en></placeholder></textfield><constraint>V:|-10-[title]-10-|</constraint><constraint>H:|-15-[title]-15-|</constraint></section><section><textview id=\"content\" parser=\"markdown\" editable=\"true\" size=\"14\" auto-height=\"true\"/><constraint>H:|-15-[content]-15-|</constraint><constraint>V:|-10-[content]-10-|</constraint></section></niotemplate>"
-                let parsed = SWXMLHash.parse(issueXml)
-                expect(parsed["niotemplate"]["section"][0]["constraint"][1].element?.text).to(equal("H:|-15-[title]-15-|"))
+        describe("white space parsing") {
+            var xml = XMLIndexer("to be set")
+
+            beforeEach {
+                var bundle = NSBundle(forClass: SWXMLHashTests.self)
+                var path = bundle.pathForResource("test", ofType: "xml")
+                var data = NSData(contentsOfFile: path!)
+                xml = SWXMLHash.parse(data!)
+            }
+
+            it("should be able to pull text between elements without whitespace (issue #6)") {
+                expect(xml["niotemplate"]["section"][0]["constraint"][1].element?.text).to(equal("H:|-15-[title]-15-|"))
+            }
+
+            it("should be able to correctly parse CDATA sections *with* whitespace") {
+                expect(xml["niotemplate"]["other"].element?.text).to(equal("this\n  has\n  white\n  space"))
             }
         }
 

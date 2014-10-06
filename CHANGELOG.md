@@ -1,3 +1,9 @@
+## v0.5.2 (October 6, 2014)
+
+* Fix handling of whitespace in XML which resolves issue #6.
+	* Apparently the `foundCharacters` method of `NSXMLParser` also gets called for whitespace between elements.
+	* There are now specs to account for this issue as well as a spec to document CDATA usage, too.
+
 ## v0.5.1 (October 5, 2014)
 
 * XCode 6.1 compatibility - added explicit unwrapping of `NSXMLParser`.

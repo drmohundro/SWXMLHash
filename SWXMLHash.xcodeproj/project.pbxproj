@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CD4B5F3A19E2C42D005C1F33 /* test.xml in Resources */ = {isa = PBXBuildFile; fileRef = CD4B5F3919E2C42D005C1F33 /* test.xml */; };
 		CD6083F5196CA106000B4F8D /* SWXMLHash.h in Headers */ = {isa = PBXBuildFile; fileRef = CD6083F4196CA106000B4F8D /* SWXMLHash.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CD6083FB196CA106000B4F8D /* SWXMLHash.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD6083EF196CA106000B4F8D /* SWXMLHash.framework */; };
 		CD608402196CA106000B4F8D /* SWXMLHashSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD608401196CA106000B4F8D /* SWXMLHashSpecs.swift */; };
@@ -82,6 +83,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		CD4B5F3919E2C42D005C1F33 /* test.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = test.xml; path = SWXMLHashTests/test.xml; sourceTree = SOURCE_ROOT; };
 		CD6083EF196CA106000B4F8D /* SWXMLHash.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SWXMLHash.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD6083F3196CA106000B4F8D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CD6083F4196CA106000B4F8D /* SWXMLHash.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SWXMLHash.h; sourceTree = "<group>"; };
@@ -156,6 +158,7 @@
 				CD69FE6D19952B3E00D9628E /* Nimble.xcodeproj */,
 				CD69FE5D19952B3300D9628E /* Quick.xcodeproj */,
 				CD608401196CA106000B4F8D /* SWXMLHashSpecs.swift */,
+				CD4B5F3919E2C42D005C1F33 /* test.xml */,
 				CD6083FF196CA106000B4F8D /* Supporting Files */,
 			);
 			path = SWXMLHashTests;
@@ -357,6 +360,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CD4B5F3A19E2C42D005C1F33 /* test.xml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

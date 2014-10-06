@@ -89,10 +89,14 @@ class XMLParser : NSObject, NSXMLParserDelegate {
     }
 
     func parser(parser: NSXMLParser!, foundCharacters string: String!) {
-        lastResults += string
+        if parsingElement == currentNode.name {
+            lastResults += string.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+        }
     }
 
     func parser(parser: NSXMLParser!, didEndElement elementName: String!, namespaceURI: String!, qualifiedName qName: String!) {
+        parsingElement = elementName
+
         if !lastResults.isEmpty {
             currentNode.text = lastResults
         }
