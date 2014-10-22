@@ -1,3 +1,7 @@
+## v0.5.3 (October 21, 2014)
+
+* XCode 6.1 is out on the app store now and I had to make a minor tweak to get the code to compile.
+
 ## v0.5.2 (October 6, 2014)
 
 * Fix handling of whitespace in XML which resolves issue #6.
