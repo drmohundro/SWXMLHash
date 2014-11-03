@@ -81,6 +81,12 @@ The below will return "123".
 xml["root"]["catalog"]["book"][1].element?.attributes["id"]
 ```
 
+Alternatively, you can look up an element with specific attributes. The below will return "John".
+
+```swift
+xml["root"]["catalog"]["book"].withAttr("id", "123").element?.text
+```
+
 ### Returning All Elements
 
 Given:
@@ -128,7 +134,7 @@ case .Error(let error):
 
 * [x] finish implementing error handling for group indexing
 * [x] add attribute support
-* [ ] maybe add attribute look-up for elements as opposed to solely array indexing
+* [x] maybe add attribute look-up for elements as opposed to solely array indexing
 * [ ] add CocoaPods support once it supports Swift projects
 * [ ] more???
 

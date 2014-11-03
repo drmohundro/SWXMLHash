@@ -48,6 +48,10 @@ class SWXMLHashTests: QuickSpec {
                 expect(xml["root"]["catalog"]["book"][1].element?.attributes["id"]).to(equal("bk102"))
             }
 
+            it("should be able to look up elements by name and attribute") {
+                expect(xml["root"]["catalog"]["book"].withAttr("id", "bk102")["author"].element?.text).to(equal("Ralls, Kim"))
+            }
+
             it("should be able to iterate element groups") {
                 expect(", ".join(xml["root"]["catalog"]["book"].all.map { elem in elem["genre"].element!.text! })).to(equal("Computer, Fantasy, Fantasy"))
             }

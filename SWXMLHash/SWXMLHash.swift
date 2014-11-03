@@ -27,9 +27,9 @@ import Foundation
 public class SWXMLHash {
     /**
         Method to parse XML passed in as a string.
-    
+
         :param: xml The XML to be parsed
-    
+
         :returns: An XMLIndexer instance that is used to look up elements in the XML
     */
     class public func parse(xml: String) -> XMLIndexer {
@@ -38,9 +38,9 @@ public class SWXMLHash {
 
     /**
         Method to parse XML passed in as an NSData instance.
-    
+
         :param: xml The XML to be parsed
-    
+
         :returns: An XMLIndexer instance that is used to look up elements in the XML
     */
     class public func parse(data: NSData) -> XMLIndexer {
@@ -142,10 +142,40 @@ public enum XMLIndexer : SequenceType {
     }
 
     /**
+        Allows for element lookup by matching attribute values.
+
+        :param: attr should the name of the attribute to match on
+        :param: _ should be the value of the attribute to match on
+
+        :returns: instance of XMLIndexer
+    */
+    public func withAttr(attr: String, _ value: String) -> XMLIndexer {
+        let attrUserInfo = [NSLocalizedDescriptionKey: "XML Attribute Error: Missing attribute [\"\(attr)\"]"]
+        let valueUserInfo = [NSLocalizedDescriptionKey: "XML Attribute Error: Missing attribute [\"\(attr)\"] with value [\"\(value)\"]"]
+        switch self {
+        case .List(let list):
+            if let elem = list.filter({$0.attributes[attr] == value}).first {
+                return .Element(elem)
+            }
+            return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: valueUserInfo))
+        case .Element(let elem):
+            if let attr = elem.attributes[attr] {
+                if attr == value {
+                    return .Element(elem)
+                }
+                return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: valueUserInfo))
+            }
+            return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: attrUserInfo))
+        default:
+            return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: attrUserInfo))
+        }
+    }
+
+    /**
         Initializes the XMLIndexer
-    
+
         :param: _ should be an instance of XMLElement, but supports other values for error handling
-    
+
         :returns: instance of XMLIndexer
     */
     public init(_ rawObject: AnyObject) {
@@ -159,9 +189,9 @@ public enum XMLIndexer : SequenceType {
 
     /**
         Find an XML element at the current level by element name
-    
+
         :param: key The element name to index by
-    
+
         :returns: instance of XMLIndexer to match the element (or elements) found by key
     */
     public subscript(key: String) -> XMLIndexer {
@@ -186,9 +216,9 @@ public enum XMLIndexer : SequenceType {
 
     /**
         Find an XML element by index within a list of XML Elements at the current level
-    
+
         :param: index The 0-based index to index by
-    
+
         :returns: instance of XMLIndexer to match the element (or elements) found by key
     */
     public subscript(index: Int) -> XMLIndexer {
@@ -248,9 +278,9 @@ public class XMLElement {
 
     /**
         Initialize an XMLElement instance
-    
+
         :param: name The name of the element to be initialized
-    
+
         :returns: a new instance of XMLElement
     */
     init(name: String) {
@@ -259,10 +289,10 @@ public class XMLElement {
 
     /**
         Adds a new XMLElement underneath this instance of XMLElement
-    
+
         :param: name The name of the new element to be added
         :param: withAttributes The attributes dictionary for the element being added
-    
+
         :returns: The XMLElement that has now been added
     */
     func addElement(name: String, withAttributes attributes: NSDictionary) -> XMLElement {
