@@ -67,9 +67,9 @@ Given:
 <root>
   ...
   <catalog>
-    <book><author id="1">Bob</author></book>
-    <book><author id="123">John</author></book>
-    <book><author id="456">Mark</author></book>
+    <book id="1"><author>Bob</author></book>
+    <book id="123"><author>John</author></book>
+    <book id="456"><author>Mark</author></book>
   </catalog>
   ...
 </root>
@@ -84,7 +84,7 @@ xml["root"]["catalog"]["book"][1].element?.attributes["id"]
 Alternatively, you can look up an element with specific attributes. The below will return "John".
 
 ```swift
-xml["root"]["catalog"]["book"].withAttr("id", "123").element?.text
+xml["root"]["catalog"]["book"].withAttr("id", "123")["author"].element?.text
 ```
 
 ### Returning All Elements
