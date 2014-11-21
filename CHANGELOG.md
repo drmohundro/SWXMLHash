@@ -45,7 +45,7 @@
 
 ## v0.2.0 (July 14, 2014)
 
-* Heavy refactoring to introduce enum-based code (based on [SwiftyJSON](https://github.com/lingoer/SwiftyJSON)).
+* Heavy refactoring to introduce enum-based code (based on [SwiftyJSON](https://github.com/SwiftyJSON/SwiftyJSON)).
 * The public `parse` method now takes a string in addition to `NSData`.
 * Initial attribute support added.
 
