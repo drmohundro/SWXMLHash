@@ -93,6 +93,7 @@
 		CD60840B196CA11D000B4F8D /* SWXMLHash.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SWXMLHash.swift; sourceTree = "<group>"; };
 		CD69FE5D19952B3300D9628E /* Quick.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Quick.xcodeproj; path = Quick/Quick/Quick.xcodeproj; sourceTree = SOURCE_ROOT; };
 		CD69FE6D19952B3E00D9628E /* Nimble.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Nimble.xcodeproj; path = Quick/Externals/Nimble/Nimble.xcodeproj; sourceTree = SOURCE_ROOT; };
+		CDD367381A2584A400807984 /* SWXMLHashPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = SWXMLHashPlayground.playground; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,6 +120,7 @@
 		CD6083E5196CA106000B4F8D = {
 			isa = PBXGroup;
 			children = (
+				CDD367381A2584A400807984 /* SWXMLHashPlayground.playground */,
 				CD6083F1196CA106000B4F8D /* SWXMLHash */,
 				CD6083FE196CA106000B4F8D /* SWXMLHashTests */,
 				CD6083F0196CA106000B4F8D /* Products */,
