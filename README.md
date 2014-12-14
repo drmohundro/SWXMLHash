@@ -8,6 +8,12 @@ The API takes a lot of inspiration from [SwiftyJSON](https://github.com/SwiftyJS
 
 Ultimately, this will be distributed with [CocoaPods](http://cocoapods.org/) support; however,  CocoaPods doesn't yet support Swift projects. In the meantime, just add SWXMLHash as a git submodule and drag `SWXMLHash.swift` into your project.
 
+## Getting Started
+
+If you're just getting started with SWXMLHash, I'd recommend cloning the repository down and opening the workspace. I've included a Swift playground in the workspace which makes it *very* easy to experiment with the API and the calls.
+
+<img src="https://raw.githubusercontent.com/drmohundro/SWXMLHash/assets/swift-playground@2x.png" width="600" alt="Swift Playground" />
+
 ## Examples
 
 All examples below can be found in the included specs.
