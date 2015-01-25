@@ -1,3 +1,7 @@
+## v0.5.5 (January 25, 2015)
+
+* Added OSX target, should allow SWXMLHash to work in OSX as well as iOS.
+
 ## v0.5.4 (November 2, 2014)
 
 * Added the `withAttr` method to allow for lookup by an attribute and its value. See README or specs for details.
