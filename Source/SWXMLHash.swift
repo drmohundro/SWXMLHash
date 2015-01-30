@@ -123,7 +123,7 @@ public enum XMLIndexer : SequenceType {
         }
     }
 
-    /// The underlying array of XMLElements at the currently indexed level of XML.
+    /// All elements at the currently indexed level
     public var all: [XMLIndexer] {
         get {
             switch self {
@@ -140,6 +140,20 @@ public enum XMLIndexer : SequenceType {
             }
         }
     }
+
+    /// All child elements from the currently indexed level
+    public var children: [XMLIndexer] {
+        get {
+            var list = [XMLIndexer]()
+            for elem in all.map({ $0.element! }) {
+                for keyVal in elem.children.values {
+                    for elem in keyVal {
+                        list.append(XMLIndexer(elem))
+                    }
+                }
+            }
+            return list
+        }
     }
 
     /**

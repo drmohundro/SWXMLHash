@@ -93,7 +93,7 @@ Alternatively, you can look up an element with specific attributes. The below wi
 xml["root"]["catalog"]["book"].withAttr("id", "123")["author"].element?.text
 ```
 
-### Returning All Elements
+### Returning All Elements At Current Level
 
 Given:
 
@@ -123,6 +123,35 @@ Alternatively, you can just iterate over the elements using `for-in` directly ag
 for elem in xml["root"]["catalog"]["book"] {
   NSLog(elem["genre"].element!.text!)
 }
+```
+
+### Returning All Child Elements At Current Level
+
+Given:
+
+```xml
+<root>
+  <catalog>
+    <book>
+      <genre>Fiction</genre>
+      <title>Book</title>
+      <date>1/1/2015</date>
+    </book>
+  </catalog>
+</root>
+```
+
+The below will `NSLog` "root", "catalog", "book", "genre", "title", and "date" (note the `children` method).
+
+```swift
+func enumerate(indexer: XMLIndexer) {
+  for child in indexer.children {
+    NSLog(child.element!.name)
+    enumerate(child)
+  }
+}
+
+enumerate(xml)
 ```
 
 ### Error Handling

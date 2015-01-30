@@ -53,7 +53,7 @@ class SWXMLHashTests: QuickSpec {
             }
 
             it("should be able to iterate element groups") {
-                expect(", ".join(xml["root"]["catalog"]["book"].all.map { elem in elem["genre"].element!.text! })).to(equal("Computer, Fantasy, Fantasy"))
+                expect(", ".join(xml["root"]["catalog"]["book"].all.map { $0["genre"].element!.text! })).to(equal("Computer, Fantasy, Fantasy"))
             }
 
             it("should be able to iterate element groups even if only one element is found") {
@@ -81,6 +81,10 @@ class SWXMLHashTests: QuickSpec {
                 expect(parsed["niotemplate"]["section"][0]["constraint"][1].element?.text).to(equal("H:|-15-[title]-15-|"))
 
                 expect(parsed["niotemplate"]["other"].element?.text).to(equal("this\n  has\n  white\n  space"))
+            }
+
+            it("should be able to enumerate children") {
+                expect(", ".join(xml["root"]["catalog"]["book"][0].children.map{ $0.element!.name })).to(equal("author, title, genre, price, publish_date, description"))
             }
         }
 

@@ -1,3 +1,7 @@
+## v0.6.0 (January 30, 2015)
+
+* Added `children` property to allow for enumerating all child elements.
+
 ## v0.5.5 (January 25, 2015)
 
 * Added OSX target, should allow SWXMLHash to work in OSX as well as iOS.

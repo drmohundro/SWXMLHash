@@ -25,3 +25,24 @@ let count = xml["root"].all.count
 
 // "Apples"
 xml["root"]["h:table"]["h:tr"]["h:td"][0].element!.text!
+
+
+// enumerate all child elements (procedurally)
+func enumerate(indexer: XMLIndexer, level: Int) {
+    for child in indexer.children {
+        var name = child.element!.name
+        NSLog("\(level) \(name)")
+
+        enumerate(child, level + 1)
+    }
+}
+
+enumerate(xml, 0)
+
+
+// enumerate all child elements (functionally)
+func reduceName(names: String, elem: XMLIndexer) -> String {
+    return names + elem.element!.name + elem.children.reduce(", ", combine: reduceName)
+}
+
+xml.children.reduce("elements: ", combine: reduceName)
