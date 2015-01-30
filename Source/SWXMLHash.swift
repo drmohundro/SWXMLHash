@@ -26,22 +26,22 @@ import Foundation
 /// Simple XML parser.
 public class SWXMLHash {
     /**
-        Method to parse XML passed in as a string.
+    Method to parse XML passed in as a string.
 
-        :param: xml The XML to be parsed
+    :param: xml The XML to be parsed
 
-        :returns: An XMLIndexer instance that is used to look up elements in the XML
+    :returns: An XMLIndexer instance that is used to look up elements in the XML
     */
     class public func parse(xml: String) -> XMLIndexer {
         return parse((xml as NSString).dataUsingEncoding(NSUTF8StringEncoding)!)
     }
 
     /**
-        Method to parse XML passed in as an NSData instance.
+    Method to parse XML passed in as an NSData instance.
 
-        :param: xml The XML to be parsed
+    :param: xml The XML to be parsed
 
-        :returns: An XMLIndexer instance that is used to look up elements in the XML
+    :returns: An XMLIndexer instance that is used to look up elements in the XML
     */
     class public func parse(data: NSData) -> XMLIndexer {
         var parser = XMLParser()
@@ -113,41 +113,42 @@ public enum XMLIndexer : SequenceType {
 
     /// The underlying XMLElement at the currently indexed level of XML.
     public var element: XMLElement? {
-    get {
-        switch self {
-        case .Element(let elem):
-            return elem
-        default:
-            return nil
+        get {
+            switch self {
+            case .Element(let elem):
+                return elem
+            default:
+                return nil
+            }
         }
-    }
     }
 
     /// The underlying array of XMLElements at the currently indexed level of XML.
     public var all: [XMLIndexer] {
-    get {
-        switch self {
-        case .List(let list):
-            var xmlList = [XMLIndexer]()
-            for elem in list {
-                xmlList.append(XMLIndexer(elem))
+        get {
+            switch self {
+            case .List(let list):
+                var xmlList = [XMLIndexer]()
+                for elem in list {
+                    xmlList.append(XMLIndexer(elem))
+                }
+                return xmlList
+            case .Element(let elem):
+                return [XMLIndexer(elem)]
+            default:
+                return []
             }
-            return xmlList
-        case .Element(let elem):
-            return [XMLIndexer(elem)]
-        default:
-            return []
         }
     }
     }
 
     /**
-        Allows for element lookup by matching attribute values.
+    Allows for element lookup by matching attribute values.
 
-        :param: attr should the name of the attribute to match on
-        :param: _ should be the value of the attribute to match on
+    :param: attr should the name of the attribute to match on
+    :param: _ should be the value of the attribute to match on
 
-        :returns: instance of XMLIndexer
+    :returns: instance of XMLIndexer
     */
     public func withAttr(attr: String, _ value: String) -> XMLIndexer {
         let attrUserInfo = [NSLocalizedDescriptionKey: "XML Attribute Error: Missing attribute [\"\(attr)\"]"]
@@ -172,11 +173,11 @@ public enum XMLIndexer : SequenceType {
     }
 
     /**
-        Initializes the XMLIndexer
+    Initializes the XMLIndexer
 
-        :param: _ should be an instance of XMLElement, but supports other values for error handling
+    :param: _ should be an instance of XMLElement, but supports other values for error handling
 
-        :returns: instance of XMLIndexer
+    :returns: instance of XMLIndexer
     */
     public init(_ rawObject: AnyObject) {
         switch rawObject {
@@ -188,18 +189,18 @@ public enum XMLIndexer : SequenceType {
     }
 
     /**
-        Find an XML element at the current level by element name
+    Find an XML element at the current level by element name
 
-        :param: key The element name to index by
+    :param: key The element name to index by
 
-        :returns: instance of XMLIndexer to match the element (or elements) found by key
+    :returns: instance of XMLIndexer to match the element (or elements) found by key
     */
     public subscript(key: String) -> XMLIndexer {
         get {
             let userInfo = [NSLocalizedDescriptionKey: "XML Element Error: Incorrect key [\"\(key)\"]"]
             switch self {
             case .Element(let elem):
-                if let match = elem.elements[key] {
+                if let match = elem.children[key] {
                     if match.count == 1 {
                         return .Element(match[0])
                     }
@@ -215,11 +216,11 @@ public enum XMLIndexer : SequenceType {
     }
 
     /**
-        Find an XML element by index within a list of XML Elements at the current level
+    Find an XML element by index within a list of XML Elements at the current level
 
-        :param: index The 0-based index to index by
+    :param: index The 0-based index to index by
 
-        :returns: instance of XMLIndexer to match the element (or elements) found by key
+    :returns: instance of XMLIndexer to match the element (or elements) found by key
     */
     public subscript(index: Int) -> XMLIndexer {
         get {
@@ -274,36 +275,36 @@ public class XMLElement {
     /// The attributes of the element
     public var attributes = [String:String]()
 
-    var elements = [String:[XMLElement]]()
+    var children = [String:[XMLElement]]()
 
     /**
-        Initialize an XMLElement instance
+    Initialize an XMLElement instance
 
-        :param: name The name of the element to be initialized
+    :param: name The name of the element to be initialized
 
-        :returns: a new instance of XMLElement
+    :returns: a new instance of XMLElement
     */
     init(name: String) {
         self.name = name
     }
 
     /**
-        Adds a new XMLElement underneath this instance of XMLElement
+    Adds a new XMLElement underneath this instance of XMLElement
 
-        :param: name The name of the new element to be added
-        :param: withAttributes The attributes dictionary for the element being added
+    :param: name The name of the new element to be added
+    :param: withAttributes The attributes dictionary for the element being added
 
-        :returns: The XMLElement that has now been added
+    :returns: The XMLElement that has now been added
     */
     func addElement(name: String, withAttributes attributes: NSDictionary) -> XMLElement {
         let element = XMLElement(name: name)
 
-        if var group = elements[name] {
+        if var group = children[name] {
             group.append(element)
-            elements[name] = group
+            children[name] = group
         }
         else {
-            elements[name] = [element]
+            children[name] = [element]
         }
 
         for (keyAny,valueAny) in attributes {
