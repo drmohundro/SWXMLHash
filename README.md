@@ -6,7 +6,28 @@ The API takes a lot of inspiration from [SwiftyJSON](https://github.com/SwiftyJS
 
 ## Installation
 
-Ultimately, this will be distributed with [CocoaPods](http://cocoapods.org/) support; however,  CocoaPods doesn't yet support Swift projects. In the meantime, just add SWXMLHash as a git submodule and drag `SWXMLHash.swift` into your project.
+The recommended means of installing SWXMLHash is using [CocoaPods](http://cocoapods.org/). As of CocoaPods 0.36 beta, Swift projects are supported.
+
+To install the beta of CocoaPods, run:
+
+```bash
+$ gem install cocoapods --pre
+```
+
+Then create a `Podfile` with the following contents:
+
+```ruby
+source 'https://github.com/CocoaPods/Specs.git'
+platform :ios, '8.0'
+
+pod 'SWXMLHash', '~> 0.6.0'
+```
+
+Finally, run the following command to install it:
+
+```bash
+$ pod install
+```
 
 ## Getting Started
 
@@ -170,7 +191,7 @@ case .Error(let error):
 * [x] finish implementing error handling for group indexing
 * [x] add attribute support
 * [x] maybe add attribute look-up for elements as opposed to solely array indexing
-* [ ] add CocoaPods support once it supports Swift projects
+* [x] add CocoaPods support once it supports Swift projects
 * [ ] more???
 
 ## License

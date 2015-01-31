@@ -1,6 +1,7 @@
 ## v0.6.0 (January 30, 2015)
 
 * Added `children` property to allow for enumerating all child elements.
+* CocoaPods support is live (see current [docset on CocoaPods](http://cocoadocs.org/docsets/SWXMLHash/0.6.0/))
 
 ## v0.5.5 (January 25, 2015)
 
