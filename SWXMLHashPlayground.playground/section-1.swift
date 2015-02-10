@@ -1,7 +1,7 @@
 // Playground - noun: a place where people can play
 
 import SWXMLHash
-import UIKit
+import Foundation
 
 let xmlWithNamespace = "<root xmlns:h=\"http://www.w3.org/TR/html4/\"" +
 "  xmlns:f=\"http://www.w3schools.com/furniture\">" +
