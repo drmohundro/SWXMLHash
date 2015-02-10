@@ -1,3 +1,7 @@
+## v0.6.2 (February 9, 2015)
+
+* Published version 0.6.2 CocoaPod. (yes, it should have gone with 0.6.1 but I tagged it too early)
+
 ## v0.6.1 (February 9, 2015)
 
 * Fixed bug with `children` so that XML element order is preserved when enumerating XML child elements.
