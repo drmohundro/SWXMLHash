@@ -146,7 +146,7 @@ public enum XMLIndexer : SequenceType {
         get {
             var list = [XMLIndexer]()
             for elem in all.map({ $0.element! }) {
-                for keyVal in elem.children.values {
+                for keyVal in elem.children {
                     for elem in keyVal {
                         list.append(XMLIndexer(elem))
                     }
@@ -280,6 +280,60 @@ extension XMLIndexer: BooleanType {
     }
 }
 
+class OrderedDictionary<KeyType: Hashable, ValueType> : SequenceType, GeneratorType {
+    typealias Key = KeyType
+    typealias Value = ValueType
+    typealias Element = ValueType
+
+    private final var dictionary = [KeyType: ValueType]()
+    private final var orderedKeys = [KeyType]()
+
+    var loopCounter: Int = 0
+
+    init() {
+    }
+
+    subscript(key: KeyType) -> ValueType? {
+        get {
+            return dictionary[key]
+        }
+
+        set (newValue) {
+            if (orderedKeys.filter({$0 == key}).count == 0) {
+                orderedKeys.append(key)
+            }
+
+            dictionary[key] = newValue
+        }
+    }
+
+    subscript(index: Int) -> ValueType? {
+        get {
+            var key = orderedKeys[index]
+            return dictionary[key]
+        }
+
+        set (newValue) {
+            var key = orderedKeys[index]
+            dictionary[key] = newValue
+        }
+    }
+
+    func next() -> Element? {
+        if loopCounter >= orderedKeys.count {
+            return nil
+        }
+        let elem = dictionary[orderedKeys[loopCounter]]
+        loopCounter++
+        return elem
+    }
+
+    func generate() -> Self {
+        loopCounter = 0
+        return self
+    }
+}
+
 /// Models an XML element, including name, text and attributes
 public class XMLElement {
     /// The name of the element
@@ -289,7 +343,9 @@ public class XMLElement {
     /// The attributes of the element
     public var attributes = [String:String]()
 
-    var children = [String:[XMLElement]]()
+    var children = OrderedDictionary<String, [XMLElement]>()
+    var count: Int = 0
+    var index: Int
 
     /**
     Initialize an XMLElement instance
@@ -298,8 +354,9 @@ public class XMLElement {
 
     :returns: a new instance of XMLElement
     */
-    init(name: String) {
+    init(name: String, index: Int = 0) {
         self.name = name
+        self.index = index
     }
 
     /**
@@ -311,7 +368,8 @@ public class XMLElement {
     :returns: The XMLElement that has now been added
     */
     func addElement(name: String, withAttributes attributes: NSDictionary) -> XMLElement {
-        let element = XMLElement(name: name)
+        let element = XMLElement(name: name, index: count)
+        count++
 
         if var group = children[name] {
             group.append(element)

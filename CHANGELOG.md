@@ -1,3 +1,8 @@
+## v0.6.1 (February 9, 2015)
+
+* Fixed bug with `children` so that XML element order is preserved when enumerating XML child elements.
+* Only require Foundation.h instead of UIKit.h.
+
 ## v0.6.0 (January 30, 2015)
 
 * Added `children` property to allow for enumerating all child elements.
