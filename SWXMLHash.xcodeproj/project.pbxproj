@@ -18,7 +18,7 @@
 		CD7934C41A7581E600867857 /* test.xml in Resources */ = {isa = PBXBuildFile; fileRef = CD4B5F3919E2C42D005C1F33 /* test.xml */; };
 		CD7934C51A7581F200867857 /* SWXMLHash.h in Headers */ = {isa = PBXBuildFile; fileRef = CD6083F4196CA106000B4F8D /* SWXMLHash.h */; };
 		CD7934C61A7581F500867857 /* SWXMLHash.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD60840B196CA11D000B4F8D /* SWXMLHash.swift */; };
-		CD9D05371A757D8B003CCB21 /* SWXMLHashOSX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD9D052C1A757D8B003CCB21 /* SWXMLHashOSX.framework */; };
+		CD9D05371A757D8B003CCB21 /* SWXMLHash.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD9D052C1A757D8B003CCB21 /* SWXMLHash.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -105,7 +105,7 @@
 		CD60840B196CA11D000B4F8D /* SWXMLHash.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SWXMLHash.swift; sourceTree = "<group>"; };
 		CD69FE5D19952B3300D9628E /* Quick.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Quick.xcodeproj; path = Quick/Quick/Quick.xcodeproj; sourceTree = SOURCE_ROOT; };
 		CD69FE6D19952B3E00D9628E /* Nimble.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Nimble.xcodeproj; path = Quick/Externals/Nimble/Nimble.xcodeproj; sourceTree = SOURCE_ROOT; };
-		CD9D052C1A757D8B003CCB21 /* SWXMLHashOSX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SWXMLHashOSX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CD9D052C1A757D8B003CCB21 /* SWXMLHash.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SWXMLHash.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD9D05361A757D8B003CCB21 /* SWXMLHashOSXTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SWXMLHashOSXTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDD367381A2584A400807984 /* SWXMLHashPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = SWXMLHashPlayground.playground; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -139,7 +139,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CD9D05371A757D8B003CCB21 /* SWXMLHashOSX.framework in Frameworks */,
+				CD9D05371A757D8B003CCB21 /* SWXMLHash.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -161,7 +161,7 @@
 			children = (
 				CD6083EF196CA106000B4F8D /* SWXMLHash.framework */,
 				CD6083FA196CA106000B4F8D /* SWXMLHashTests.xctest */,
-				CD9D052C1A757D8B003CCB21 /* SWXMLHashOSX.framework */,
+				CD9D052C1A757D8B003CCB21 /* SWXMLHash.framework */,
 				CD9D05361A757D8B003CCB21 /* SWXMLHashOSXTests.xctest */,
 			);
 			name = Products;
@@ -300,7 +300,7 @@
 			);
 			name = SWXMLHashOSX;
 			productName = SWXMLHashOSX;
-			productReference = CD9D052C1A757D8B003CCB21 /* SWXMLHashOSX.framework */;
+			productReference = CD9D052C1A757D8B003CCB21 /* SWXMLHash.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		CD9D05351A757D8B003CCB21 /* SWXMLHashOSXTests */ = {
@@ -672,7 +672,6 @@
 		CD9D05401A757D8B003CCB21 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -687,7 +686,8 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_MODULE_NAME = SWXMLHash;
+				PRODUCT_NAME = SWXMLHash;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 			};
@@ -696,7 +696,6 @@
 		CD9D05411A757D8B003CCB21 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
@@ -708,7 +707,8 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_MODULE_NAME = SWXMLHash;
+				PRODUCT_NAME = SWXMLHash;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 			};
