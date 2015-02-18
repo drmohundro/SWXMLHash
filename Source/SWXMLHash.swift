@@ -78,15 +78,7 @@ class XMLParser : NSObject, NSXMLParserDelegate {
         return XMLIndexer(root)
     }
 
-/*    func parser(parser: NSXMLParser!, didStartElement elementName: String!, namespaceURI: String!, qualifiedName: String!, attributes attributeDict: NSDictionary!) {
 
-        self.parsingElement = elementName
-
-        currentNode = parentStack[parentStack.count - 1].addElement(elementName, withAttributes: attributeDict)
-        parentStack.append(currentNode)
-
-        lastResults = ""
-    } */
     
     func parser(parser: NSXMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [NSObject : AnyObject]) {
         self.parsingElement = elementName
