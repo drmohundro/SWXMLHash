@@ -152,5 +152,12 @@ class SWXMLHashTests: QuickSpec {
                 expect(err).toNot(beNil())
             }
         }
+
+        describe("lazy loading xml parsing") {
+            it("should parse the xml lazily") {
+                let xml = SWXMLHash.lazy("<root><content>foo</content></root>")
+                expect(xml["root"]["content"].element?.text).to(equal("foo"))
+            }
+        }
     }
 }
