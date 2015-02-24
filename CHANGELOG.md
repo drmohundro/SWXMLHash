@@ -1,3 +1,8 @@
+## v0.6.3 (February 23, 2015)
+
+* Fixed bug where mixed content wasn't supported (i.e. elements with both text and child elements).
+* Published version 0.6.3 CocoaPod.
+
 ## v0.6.2 (February 9, 2015)
 
 * Published version 0.6.2 CocoaPod. (yes, it should have gone with 0.6.1 but I tagged it too early)

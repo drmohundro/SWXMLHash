@@ -49,27 +49,38 @@ public class SWXMLHash {
     }
 }
 
+struct Stack<T> {
+    var items = [T]()
+    mutating func push(item: T) {
+        items.append(item)
+    }
+    mutating func pop() -> T {
+        return items.removeLast()
+    }
+    mutating func removeAll() {
+        items.removeAll(keepCapacity: false)
+    }
+    func top() -> T {
+        return items[items.count - 1]
+    }
+}
+
 /// The implementation of NSXMLParserDelegate and where the parsing actually happens.
 class XMLParser : NSObject, NSXMLParserDelegate {
-    var parsingElement: String = ""
-
     override init() {
-        currentNode = root
         super.init()
     }
 
-    var lastResults: String = ""
-
     var root = XMLElement(name: "root")
-    var currentNode: XMLElement
-    var parentStack = [XMLElement]()
+    var parentStack = Stack<XMLElement>()
 
     func parse(data: NSData) -> XMLIndexer {
         // clear any prior runs of parse... expected that this won't be necessary, but you never know
-        parentStack.removeAll(keepCapacity: false)
+        parentStack.removeAll()
+
         root = XMLElement(name: "root")
 
-        parentStack.append(root)
+        parentStack.push(root)
 
         let parser = NSXMLParser(data: data)
         parser.delegate = self
@@ -81,29 +92,26 @@ class XMLParser : NSObject, NSXMLParserDelegate {
 
     
     func parser(parser: NSXMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [NSObject : AnyObject]) {
-        self.parsingElement = elementName
-        
-        currentNode = parentStack[parentStack.count - 1].addElement(elementName, withAttributes: attributeDict)
-        parentStack.append(currentNode)
-        
-        lastResults = ""
+
+        let currentNode = parentStack.top().addElement(elementName, withAttributes: attributeDict)
+        parentStack.push(currentNode)
+
 
     }
 
     func parser(parser: NSXMLParser, foundCharacters string: String?) {
-        if parsingElement == currentNode.name {
-            lastResults += string!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+        let current = parentStack.top()
+        if current.text == nil {
+            current.text = ""
         }
+
+        parentStack.top().text! += string!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
     }
 
     func parser(parser: NSXMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
-        parsingElement = elementName
-        
-        if !lastResults.isEmpty {
-            currentNode.text = lastResults
-        }
-        
-        parentStack.removeLast()
+
+
+        parentStack.pop()
     }
 }
 
