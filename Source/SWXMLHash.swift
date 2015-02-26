@@ -156,10 +156,8 @@ public enum XMLIndexer : SequenceType {
         get {
             var list = [XMLIndexer]()
             for elem in all.map({ $0.element! }) {
-                for keyVal in elem.children {
-                    for elem in keyVal {
-                        list.append(XMLIndexer(elem))
-                    }
+                for elem in elem.children {
+                    list.append(XMLIndexer(elem))
                 }
             }
             return list
@@ -224,7 +222,8 @@ public enum XMLIndexer : SequenceType {
             let userInfo = [NSLocalizedDescriptionKey: "XML Element Error: Incorrect key [\"\(key)\"]"]
             switch self {
             case .Element(let elem):
-                if let match = elem.children[key] {
+                let match = elem.children.filter({ $0.name == key })
+                if match.count > 0 {
                     if match.count == 1 {
                         return .Element(match[0])
                     }
@@ -290,60 +289,6 @@ extension XMLIndexer: BooleanType {
     }
 }
 
-class OrderedDictionary<KeyType: Hashable, ValueType> : SequenceType, GeneratorType {
-    typealias Key = KeyType
-    typealias Value = ValueType
-    typealias Element = ValueType
-
-    private final var dictionary = [KeyType: ValueType]()
-    private final var orderedKeys = [KeyType]()
-
-    var loopCounter: Int = 0
-
-    init() {
-    }
-
-    subscript(key: KeyType) -> ValueType? {
-        get {
-            return dictionary[key]
-        }
-
-        set (newValue) {
-            if (orderedKeys.filter({$0 == key}).count == 0) {
-                orderedKeys.append(key)
-            }
-
-            dictionary[key] = newValue
-        }
-    }
-
-    subscript(index: Int) -> ValueType? {
-        get {
-            var key = orderedKeys[index]
-            return dictionary[key]
-        }
-
-        set (newValue) {
-            var key = orderedKeys[index]
-            dictionary[key] = newValue
-        }
-    }
-
-    func next() -> Element? {
-        if loopCounter >= orderedKeys.count {
-            return nil
-        }
-        let elem = dictionary[orderedKeys[loopCounter]]
-        loopCounter++
-        return elem
-    }
-
-    func generate() -> Self {
-        loopCounter = 0
-        return self
-    }
-}
-
 /// Models an XML element, including name, text and attributes
 public class XMLElement {
     /// The name of the element
@@ -353,7 +298,7 @@ public class XMLElement {
     /// The attributes of the element
     public var attributes = [String:String]()
 
-    var children = OrderedDictionary<String, [XMLElement]>()
+    var children = [XMLElement]()
     var count: Int = 0
     var index: Int
 
@@ -381,13 +326,7 @@ public class XMLElement {
         let element = XMLElement(name: name, index: count)
         count++
 
-        if var group = children[name] {
-            group.append(element)
-            children[name] = group
-        }
-        else {
-            children[name] = [element]
-        }
+        children.append(element)
 
         for (keyAny,valueAny) in attributes {
             let key = keyAny as! String

@@ -90,6 +90,13 @@ class SWXMLHashTests: QuickSpec {
             it("should be able to handle mixed content") {
                 expect(xml["root"]["header"].element?.text).to(equal("header mixed contentmore mixed content"))
             }
+
+            it("should handle interleaving XML elements") {
+                let interleavedXml = "<html><body><p>one</p><div>two</div><p>three</p><div>four</div></body></html>"
+                let parsed = SWXMLHash.parse(interleavedXml)
+
+                expect(", ".join(parsed["html"]["body"].children.map{ $0.element!.text! })).to(equal("one, two, three, four"))
+            }
         }
 
         describe("white space parsing") {
