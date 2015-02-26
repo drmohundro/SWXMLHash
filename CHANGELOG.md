@@ -1,3 +1,8 @@
+## v0.6.4 (February 26, 2015)
+
+* Fixed bug with interleaved XML (issue #19)
+* Published version 0.6.4 CocoaPod.
+
 ## v0.6.3 (February 23, 2015)
 
 * Fixed bug where mixed content wasn't supported (i.e. elements with both text and child elements).
