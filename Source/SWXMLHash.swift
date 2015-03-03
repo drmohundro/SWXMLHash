@@ -114,9 +114,6 @@ class XMLParser : NSObject, NSXMLParserDelegate {
         // clear any prior runs of parse... expected that this won't be necessary, but you never know
         parentStack.removeAll()
 
-        //elements.push("root")
-        //parentStack.push(root)
-
         self.data = data
 
         return XMLIndexer(self)
@@ -161,26 +158,20 @@ class XMLParser : NSObject, NSXMLParserDelegate {
                 return
             }
 
-            // TODO: detect when we we've found our results and abort early!
-
+            let key = ops[parentStack.count].key
+            if key != elementName { return }
             if parentStack.count > 0 {
-                let key = ops[parentStack.count].key
-                if (key == elementName) {
-                    let currentNode = parentStack.top().addElement(elementName, withAttributes: attributeDict)
-                    parentStack.push(currentNode)
-                }
+                let currentNode = parentStack.top().addElement(elementName, withAttributes: attributeDict)
+                parentStack.push(currentNode)
             }
             else {
-                let key = ops[0].key
-                if (key == elementName) {
-                    let currentNode = XMLElement(name: elementName, index: 0)
-                    for (keyAny,valueAny) in attributeDict {
-                        let key = keyAny as! String
-                        let value = valueAny as! String
-                        currentNode.attributes[key] = value
-                    }
-                    parentStack.push(currentNode)
+                let currentNode = XMLElement(name: elementName, index: 0)
+                for (keyAny,valueAny) in attributeDict {
+                    let key = keyAny as! String
+                    let value = valueAny as! String
+                    currentNode.attributes[key] = value
                 }
+                parentStack.push(currentNode)
             }
         }
         else {
@@ -191,9 +182,7 @@ class XMLParser : NSObject, NSXMLParserDelegate {
 
     func parser(parser: NSXMLParser, foundCharacters string: String?) {
         if lazyLoad {
-            println("foundCharacters \(elements.top()): \(elements.count) \(parentStack.count) ... \(parentStack.top().name)")
             if onElementMatch() {
-                println("setting text")
                 let current = parentStack.top()
                 if current.text == nil {
                     current.text = ""
@@ -217,12 +206,10 @@ class XMLParser : NSObject, NSXMLParserDelegate {
             logElement(elementName, last: true)
             if onElementMatch() {
                 if onLazyMatch() {
-                    println("DONE")
                     parser.abortParsing()
                     return
                 }
 
-                println("popping")
                 parentStack.pop()
             }
             elements.pop()
@@ -237,10 +224,13 @@ class XMLParser : NSObject, NSXMLParserDelegate {
             return false
         }
 
-        let elems = "/".join(elements.items)
-        let stack = "/".join(parentStack.items.map { $0.name })
+        for var i = elements.count - 1; i >= 0; i-- {
+            if elements.items[i] != parentStack.items[i].name {
+                return false
+            }
+        }
 
-        return elems == stack
+        return true
     }
 
     func onLazyMatch() -> Bool {
@@ -248,10 +238,21 @@ class XMLParser : NSObject, NSXMLParserDelegate {
             return false
         }
 
-        let lazyFilter = "/".join(ops.map { $0.key })
-        let stack = "/".join(parentStack.items.map { $0.name })
+        println(ops.map { $0.toString() })
 
-        return lazyFilter == stack
+        for var i = ops.count - 1; i >= 0; i-- {
+            if ops[i].key != parentStack.items[i].name {
+                return false
+            }
+
+            if ops[i].index != -1 && i > 0 {
+                if ops[i].index >= parentStack.items[i - 1].children.count {
+                    return false
+                }
+            }
+        }
+
+        return true
     }
 }
 
