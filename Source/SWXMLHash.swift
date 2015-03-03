@@ -23,6 +23,8 @@
 
 import Foundation
 
+let rootElementName = "SWXMLHash_Root_Element"
+
 /// Simple XML parser.
 public class SWXMLHash {
     /**
@@ -71,14 +73,12 @@ class XMLParser : NSObject, NSXMLParserDelegate {
         super.init()
     }
 
-    var root = XMLElement(name: "root")
+    var root = XMLElement(name: rootElementName)
     var parentStack = Stack<XMLElement>()
 
     func parse(data: NSData) -> XMLIndexer {
         // clear any prior runs of parse... expected that this won't be necessary, but you never know
         parentStack.removeAll()
-
-        root = XMLElement(name: "root")
 
         parentStack.push(root)
 
@@ -288,12 +288,12 @@ extension XMLIndexer: Printable {
         get {
             switch self {
             case .List(let list):
-                var xmlList = [String]()
-                for elem in list {
-                    xmlList.append(elem.description)
-                }
-                return "\n".join(xmlList)
+                return "\n".join(list.map { $0.description })
             case .Element(let elem):
+                if elem.name == rootElementName {
+                    return "\n".join(elem.children.map { $0.description })
+                }
+
                 return elem.description
             default:
                 return ""
@@ -351,20 +351,22 @@ public class XMLElement {
     }
 }
 
-extension XMLElement:Printable {
+extension XMLElement: Printable {
     public var description:String {
         get {
             var attributesStringList = [String]()
-            if(!attributes.isEmpty) {
-                for (key,val) in attributes {
+            if !attributes.isEmpty {
+                for (key, val) in attributes {
                     attributesStringList.append("\(key)=\"\(val)\"")
                 }
             }
+            
             var attributesString = " ".join(attributesStringList)
-            if(!attributesString.isEmpty) {
+            if (!attributesString.isEmpty) {
                 attributesString = " " + attributesString
             }
-            if(children.count > 0) {
+            
+            if children.count > 0 {
                 var xmlReturn = [String]()
                 xmlReturn.append("<\(name)\(attributesString)>")
                 for child in children {
@@ -373,9 +375,11 @@ extension XMLElement:Printable {
                 xmlReturn.append("</\(name)>")
                 return "\n".join(xmlReturn)
             }
-            if((text) != nil) {
+            
+            if text != nil {
                 return "<\(name)\(attributesString)>\(text!)</\(name)>"
-            } else {
+            }
+            else {
                 return "<\(name)\(attributesString)/>"
             }
         }

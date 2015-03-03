@@ -97,6 +97,13 @@ class SWXMLHashTests: QuickSpec {
 
                 expect(", ".join(parsed["html"]["body"].children.map{ $0.element!.text! })).to(equal("one, two, three, four"))
             }
+
+            it("should be able to provide a description for the document") {
+                let descriptionXml = "<root><foo><what id=\"myId\">puppies</what></foo></root>"
+                let parsed = SWXMLHash.parse(descriptionXml)
+
+                expect(parsed.description).to(equal("<root>\n<foo>\n<what id=\"myId\">puppies</what>\n</foo>\n</root>"))
+            }
         }
 
         describe("white space parsing") {
