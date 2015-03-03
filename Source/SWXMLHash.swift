@@ -283,6 +283,25 @@ extension XMLIndexer: BooleanType {
     }
 }
 
+extension XMLIndexer: Printable {
+    public var description: String {
+        get {
+            switch self {
+            case .List(let list):
+                var xmlList = [String]()
+                for elem in list {
+                    xmlList.append(elem.description)
+                }
+                return "\n".join(xmlList)
+            case .Element(let elem):
+                return elem.description
+            default:
+                return ""
+            }
+        }
+    }
+}
+
 /// Models an XML element, including name, text and attributes
 public class XMLElement {
     /// The name of the element
@@ -329,5 +348,36 @@ public class XMLElement {
         }
 
         return element
+    }
+}
+
+extension XMLElement:Printable {
+    public var description:String {
+        get {
+            var attributesStringList = [String]()
+            if(!attributes.isEmpty) {
+                for (key,val) in attributes {
+                    attributesStringList.append("\(key)=\"\(val)\"")
+                }
+            }
+            var attributesString = " ".join(attributesStringList)
+            if(!attributesString.isEmpty) {
+                attributesString = " " + attributesString
+            }
+            if(children.count > 0) {
+                var xmlReturn = [String]()
+                xmlReturn.append("<\(name)\(attributesString)>")
+                for child in children {
+                    xmlReturn.append(child.description)
+                }
+                xmlReturn.append("</\(name)>")
+                return "\n".join(xmlReturn)
+            }
+            if((text) != nil) {
+                return "<\(name)\(attributesString)>\(text!)</\(name)>"
+            } else {
+                return "<\(name)\(attributesString)/>"
+            }
+        }
     }
 }
