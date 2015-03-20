@@ -29,24 +29,24 @@ let rootElementName = "SWXMLHash_Root_Element"
 public class SWXMLHash {
     /**
     Method to parse XML passed in as a string.
-
+    
     :param: xml The XML to be parsed
-
+    
     :returns: An XMLIndexer instance that is used to look up elements in the XML
     */
-    class public func parse(xml: String) -> XMLIndexer {
-        return parse((xml as NSString).dataUsingEncoding(NSUTF8StringEncoding)!)
+    class public func parse(xml: String, trimwhitespaceAndNewline: Bool = true) -> XMLIndexer {
+        return parse((xml as NSString).dataUsingEncoding(NSUTF8StringEncoding)!, trimwhitespaceAndNewline: trimwhitespaceAndNewline)
     }
-
+    
     /**
     Method to parse XML passed in as an NSData instance.
-
+    
     :param: xml The XML to be parsed
-
+    
     :returns: An XMLIndexer instance that is used to look up elements in the XML
     */
-    class public func parse(data: NSData) -> XMLIndexer {
-        var parser = XMLParser()
+    class public func parse(data: NSData, trimwhitespaceAndNewline: Bool = true) -> XMLIndexer {
+        var parser = XMLParser(trimwhitespaceAndNewline: trimwhitespaceAndNewline)
         return parser.parse(data)
     }
 }
@@ -69,41 +69,48 @@ struct Stack<T> {
 
 /// The implementation of NSXMLParserDelegate and where the parsing actually happens.
 class XMLParser : NSObject, NSXMLParserDelegate {
+    var trimwhitespaceAndNewline: Bool = true
+    
+    init(trimwhitespaceAndNewline: Bool) {
+        self.trimwhitespaceAndNewline = trimwhitespaceAndNewline
+        super.init()
+    }
+    
     override init() {
         super.init()
     }
-
+    
     var root = XMLElement(name: rootElementName)
     var parentStack = Stack<XMLElement>()
-
+    
     func parse(data: NSData) -> XMLIndexer {
         // clear any prior runs of parse... expected that this won't be necessary, but you never know
         parentStack.removeAll()
-
+        
         parentStack.push(root)
-
+        
         let parser = NSXMLParser(data: data)
         parser.delegate = self
         parser.parse()
-
+        
         return XMLIndexer(root)
     }
-
+    
     func parser(parser: NSXMLParser!, didStartElement elementName: String!, namespaceURI: String!, qualifiedName: String!, attributes attributeDict: NSDictionary!) {
-
+        
         let currentNode = parentStack.top().addElement(elementName, withAttributes: attributeDict)
         parentStack.push(currentNode)
     }
-
+    
     func parser(parser: NSXMLParser!, foundCharacters string: String!) {
         let current = parentStack.top()
         if current.text? == nil {
             current.text = ""
         }
-
-        parentStack.top().text! += string.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+        
+        parentStack.top().text! += trimwhitespaceAndNewline ? string.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) : string
     }
-
+    
     func parser(parser: NSXMLParser!, didEndElement elementName: String!, namespaceURI: String!, qualifiedName qName: String!) {
         parentStack.pop()
     }
@@ -114,7 +121,7 @@ public enum XMLIndexer : SequenceType {
     case Element(XMLElement)
     case List([XMLElement])
     case Error(NSError)
-
+    
     /// The underlying XMLElement at the currently indexed level of XML.
     public var element: XMLElement? {
         get {
@@ -126,7 +133,7 @@ public enum XMLIndexer : SequenceType {
             }
         }
     }
-
+    
     /// All elements at the currently indexed level
     public var all: [XMLIndexer] {
         get {
@@ -144,7 +151,7 @@ public enum XMLIndexer : SequenceType {
             }
         }
     }
-
+    
     /// All child elements from the currently indexed level
     public var children: [XMLIndexer] {
         get {
@@ -157,13 +164,13 @@ public enum XMLIndexer : SequenceType {
             return list
         }
     }
-
+    
     /**
     Allows for element lookup by matching attribute values.
-
+    
     :param: attr should the name of the attribute to match on
     :param: _ should be the value of the attribute to match on
-
+    
     :returns: instance of XMLIndexer
     */
     public func withAttr(attr: String, _ value: String) -> XMLIndexer {
@@ -187,12 +194,12 @@ public enum XMLIndexer : SequenceType {
             return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: attrUserInfo))
         }
     }
-
+    
     /**
     Initializes the XMLIndexer
-
+    
     :param: _ should be an instance of XMLElement, but supports other values for error handling
-
+    
     :returns: instance of XMLIndexer
     */
     public init(_ rawObject: AnyObject) {
@@ -203,12 +210,12 @@ public enum XMLIndexer : SequenceType {
             self = .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: nil))
         }
     }
-
+    
     /**
     Find an XML element at the current level by element name
-
+    
     :param: key The element name to index by
-
+    
     :returns: instance of XMLIndexer to match the element (or elements) found by key
     */
     public subscript(key: String) -> XMLIndexer {
@@ -231,12 +238,12 @@ public enum XMLIndexer : SequenceType {
             }
         }
     }
-
+    
     /**
     Find an XML element by index within a list of XML Elements at the current level
-
+    
     :param: index The 0-based index to index by
-
+    
     :returns: instance of XMLIndexer to match the element (or elements) found by key
     */
     public subscript(index: Int) -> XMLIndexer {
@@ -260,9 +267,9 @@ public enum XMLIndexer : SequenceType {
             }
         }
     }
-
+    
     typealias GeneratorType = XMLIndexer
-
+    
     public func generate() -> IndexingGenerator<[XMLIndexer]> {
         return all.generate()
     }
@@ -293,7 +300,7 @@ extension XMLIndexer: Printable {
                 if elem.name == rootElementName {
                     return "\n".join(elem.children.map { $0.description })
                 }
-
+                
                 return elem.description
             default:
                 return ""
@@ -310,43 +317,43 @@ public class XMLElement {
     public var text: String?
     /// The attributes of the element
     public var attributes = [String:String]()
-
+    
     var children = [XMLElement]()
     var count: Int = 0
     var index: Int
-
+    
     /**
     Initialize an XMLElement instance
-
+    
     :param: name The name of the element to be initialized
-
+    
     :returns: a new instance of XMLElement
     */
     init(name: String, index: Int = 0) {
         self.name = name
         self.index = index
     }
-
+    
     /**
     Adds a new XMLElement underneath this instance of XMLElement
-
+    
     :param: name The name of the new element to be added
     :param: withAttributes The attributes dictionary for the element being added
-
+    
     :returns: The XMLElement that has now been added
     */
     func addElement(name: String, withAttributes attributes: NSDictionary) -> XMLElement {
         let element = XMLElement(name: name, index: count)
         count++
-
+        
         children.append(element)
-
+        
         for (keyAny,valueAny) in attributes {
             let key = keyAny as String
             let value = valueAny as String
             element.attributes[key] = value
         }
-
+        
         return element
     }
 }
