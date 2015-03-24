@@ -152,13 +152,6 @@ class SWXMLHashTests: QuickSpec {
                 expect(err).toNot(beNil())
             }
         }
-
-        describe("lazy loading xml parsing") {
-            it("should parse the xml lazily") {
-                let xml = SWXMLHash.lazy("<root><content>foo</content></root>")
-                expect(xml["root"]["content"].element?.text).to(equal("foo"))
-            }
-        }
     }
 }
 
@@ -172,7 +165,7 @@ class SWXMLHashLazyTests: QuickSpec {
             xml = SWXMLHash.lazy(xmlToParse)
         }
 
-        describe("xml parsing") {
+        describe("lazy xml parsing") {
             it("should be able to parse individual elements") {
                 expect(xml["root"]["header"]["title"].element?.text).to(equal("Test Title Header"))
             }
@@ -190,7 +183,7 @@ class SWXMLHashLazyTests: QuickSpec {
             }
 
             it("should be able to iterate element groups") {
-                expect(", ".join(xml["root"]["catalog"]["book"].all.map { $0["genre"].element!.text! })).to(equal("Computer, Fantasy, Fantasy"))
+                expect(", ".join(xml["root"]["catalog"]["book"].all.map { $0["genre"].element?.text ?? "" })).to(equal("Computer, Fantasy, Fantasy"))
             }
 
             it("should be able to iterate element groups even if only one element is found") {
@@ -221,7 +214,7 @@ class SWXMLHashLazyTests: QuickSpec {
             }
 
             it("should be able to enumerate children") {
-                expect(", ".join(xml["root"]["catalog"]["book"][0].children.map{ $0.element!.name })).to(equal("author, title, genre, price, publish_date, description"))
+                expect(", ".join(xml["root"]["catalog"]["book"][0].children.map{ $0.element?.name ?? "" })).to(equal("author, title, genre, price, publish_date, description"))
             }
 
             it("should be able to handle mixed content") {
@@ -232,7 +225,7 @@ class SWXMLHashLazyTests: QuickSpec {
                 let interleavedXml = "<html><body><p>one</p><div>two</div><p>three</p><div>four</div></body></html>"
                 let parsed = SWXMLHash.lazy(interleavedXml)
 
-                expect(", ".join(parsed["html"]["body"].children.map{ $0.element!.text! })).to(equal("one, two, three, four"))
+                expect(", ".join(parsed["html"]["body"].children.map{ $0.element?.text ?? "" })).to(equal("one, two, three, four"))
             }
         }
 

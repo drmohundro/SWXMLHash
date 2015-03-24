@@ -55,9 +55,8 @@ public class SWXMLHash {
     }
 
     class public func lazy(data: NSData) -> XMLIndexer {
-        var parser = XMLParser()
-        parser.lazyLoad = true
-        return parser.lazyParse(data)
+        var parser = LazyXMLParser()
+        return parser.parse(data)
     }
 }
 
@@ -75,10 +74,74 @@ struct Stack<T> {
     func top() -> T {
         return items[items.count - 1]
     }
-    var count: Int {
-        get {
-            return items.count
+}
+
+class LazyXMLParser : NSObject, NSXMLParserDelegate {
+    override init() {
+        super.init()
+    }
+
+    var root = XMLElement(name: rootElementName)
+    var parentStack = Stack<XMLElement>()
+    var elementStack = Stack<String>()
+
+    var data: NSData?
+    var ops: [IndexOp] = []
+
+    func parse(data: NSData) -> XMLIndexer {
+        // clear any prior runs of parse... expected that this won't be necessary, but you never know
+        parentStack.removeAll()
+
+        self.data = data
+
+        parentStack.push(root)
+
+        return XMLIndexer(self)
+    }
+
+    func startParsing(ops: [IndexOp]) {
+        self.ops = ops
+        let parser = NSXMLParser(data: data!)
+        parser.delegate = self
+        parser.parse()
+    }
+
+    func parser(parser: NSXMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [NSObject : AnyObject]) {
+
+        elementStack.push(elementName)
+
+        if !onMatch() {
+            return
         }
+        let currentNode = parentStack.top().addElement(elementName, withAttributes: attributeDict)
+        parentStack.push(currentNode)
+    }
+
+    func parser(parser: NSXMLParser, foundCharacters string: String?) {
+        if !onMatch() {
+            return
+        }
+
+        let current = parentStack.top()
+        if current.text == nil {
+            current.text = ""
+        }
+
+        parentStack.top().text! += string!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+    }
+
+    func parser(parser: NSXMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
+        let match = onMatch()
+
+        elementStack.pop()
+
+        if match {
+            parentStack.pop()
+        }
+    }
+
+    func onMatch() -> Bool {
+        return startsWith(ops.map { $0.key }, elementStack.items)
     }
 }
 
@@ -87,8 +150,6 @@ class XMLParser : NSObject, NSXMLParserDelegate {
     override init() {
         super.init()
     }
-
-    var lazyLoad: Bool = false
 
     var root = XMLElement(name: rootElementName)
     var parentStack = Stack<XMLElement>()
@@ -106,153 +167,23 @@ class XMLParser : NSObject, NSXMLParserDelegate {
         return XMLIndexer(root)
     }
 
-
-    var data: NSData?
-    var ops: [IndexOp] = []
-
-    func lazyParse(data: NSData) -> XMLIndexer {
-        // clear any prior runs of parse... expected that this won't be necessary, but you never know
-        parentStack.removeAll()
-
-        self.data = data
-
-        return XMLIndexer(self)
-    }
-
-
-    func startLazyParse(ops: [IndexOp]) -> XMLElement? {
-        self.ops = ops
-
-        let parser = NSXMLParser(data: data!)
-        parser.delegate = self
-        parser.parse()
-
-        if parentStack.count == 0 {
-            return nil
-        }
-        else {
-            return parentStack.pop()
-        }
-    }
-
-    var elements = Stack<String>()
-
-    func logElement(elementName: String, last: Bool = false) {
-        let spaces = String(count: elements.count * 2, repeatedValue: Character(" "))
-        let lastStr: String
-        if last {
-            lastStr = "/"
-        }
-        else {
-            lastStr = ""
-        }
-        println("\(spaces)<\(lastStr)\(elementName)>")
-    }
-
     func parser(parser: NSXMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [NSObject : AnyObject]) {
-        if lazyLoad {
-            elements.push(elementName)
-            logElement(elementName)
 
-            if (parentStack.count >= ops.count) {
-                return
-            }
-
-            let key = ops[parentStack.count].key
-            if key != elementName { return }
-            if parentStack.count > 0 {
-                let currentNode = parentStack.top().addElement(elementName, withAttributes: attributeDict)
-                parentStack.push(currentNode)
-            }
-            else {
-                let currentNode = XMLElement(name: elementName, index: 0)
-                for (keyAny,valueAny) in attributeDict {
-                    let key = keyAny as! String
-                    let value = valueAny as! String
-                    currentNode.attributes[key] = value
-                }
-                parentStack.push(currentNode)
-            }
-        }
-        else {
-            let currentNode = parentStack.top().addElement(elementName, withAttributes: attributeDict)
-            parentStack.push(currentNode)
-        }
+        let currentNode = parentStack.top().addElement(elementName, withAttributes: attributeDict)
+        parentStack.push(currentNode)
     }
 
     func parser(parser: NSXMLParser, foundCharacters string: String?) {
-        if lazyLoad {
-            if onElementMatch() {
-                let current = parentStack.top()
-                if current.text == nil {
-                    current.text = ""
-                }
-
-                parentStack.top().text! += string!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
-            }
+        let current = parentStack.top()
+        if current.text == nil {
+            current.text = ""
         }
-        else {
-            let current = parentStack.top()
-            if current.text == nil {
-                current.text = ""
-            }
 
-            parentStack.top().text! += string!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
-        }
+        parentStack.top().text! += string!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
     }
 
     func parser(parser: NSXMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
-        if lazyLoad {
-            logElement(elementName, last: true)
-            if onElementMatch() {
-                if onLazyMatch() {
-                    parser.abortParsing()
-                    return
-                }
-
-                parentStack.pop()
-            }
-            elements.pop()
-        }
-        else {
-            parentStack.pop()
-        }
-    }
-
-    func onElementMatch() -> Bool {
-        if parentStack.count != elements.count {
-            return false
-        }
-
-        for var i = elements.count - 1; i >= 0; i-- {
-            if elements.items[i] != parentStack.items[i].name {
-                return false
-            }
-        }
-
-        return true
-    }
-
-    func onLazyMatch() -> Bool {
-        if parentStack.count != ops.count {
-            return false
-        }
-
-        println(ops.map { $0.toString() })
-
-        for var i = ops.count - 1; i >= 0; i-- {
-            if ops[i].key != parentStack.items[i].name {
-                return false
-            }
-
-            if ops[i].index != -1 && i > 0 {
-                if ops[i].index >= parentStack.items[i - 1].children.count {
-                    return false
-                }
-            }
-        }
-
-        return true
+        parentStack.pop()
     }
 }
 
@@ -277,15 +208,25 @@ public class IndexOp {
 public class IndexOps {
     var ops: [IndexOp] = []
 
-    let parser: XMLParser
+    let parser: LazyXMLParser
 
-    init(parser: XMLParser) {
+    init(parser: LazyXMLParser) {
         self.parser = parser
     }
 
-    func findElement() -> XMLElement? {
-        println("PATH TO SEARCH: \(stringify())")
-        return parser.startLazyParse(ops)
+    func findElements() -> XMLIndexer {
+        parser.startParsing(self.ops)
+        let indexer = XMLIndexer(parser.root)
+        var childIndex = indexer
+        for op in ops {
+            childIndex = childIndex[op.key]
+            if op.index >= 0 {
+                childIndex = childIndex[op.index]
+            }
+        }
+        println(stringify())
+        dump(parser.root)
+        return childIndex
     }
 
     func stringify() -> String {
@@ -311,7 +252,8 @@ public enum XMLIndexer : SequenceType {
             case .Element(let elem):
                 return elem
             case .Stream(let ops):
-                return ops.findElement()
+                let list = ops.findElements()
+                return list.element
             default:
                 return nil
             }
@@ -331,8 +273,8 @@ public enum XMLIndexer : SequenceType {
             case .Element(let elem):
                 return [XMLIndexer(elem)]
             case .Stream(let ops):
-                // TODO: implement `all` support with lazy parsing
-                return []
+                let list = ops.findElements()
+                return list.all
             default:
                 return []
             }
@@ -364,6 +306,12 @@ public enum XMLIndexer : SequenceType {
         let attrUserInfo = [NSLocalizedDescriptionKey: "XML Attribute Error: Missing attribute [\"\(attr)\"]"]
         let valueUserInfo = [NSLocalizedDescriptionKey: "XML Attribute Error: Missing attribute [\"\(attr)\"] with value [\"\(value)\"]"]
         switch self {
+        case .Stream(let ops):
+            /*
+            let list = ops.findElements()
+            return list.withAttr(attr, value)
+            */
+            return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: valueUserInfo))
         case .List(let list):
             if let elem = list.filter({$0.attributes[attr] == value}).first {
                 return .Element(elem)
@@ -393,7 +341,7 @@ public enum XMLIndexer : SequenceType {
         switch rawObject {
         case let value as XMLElement:
             self = .Element(value)
-        case let value as XMLParser:
+        case let value as LazyXMLParser:
             self = .Stream(IndexOps(parser: value))
         default:
             self = .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: nil))
@@ -563,12 +511,12 @@ extension XMLElement: Printable {
                     attributesStringList.append("\(key)=\"\(val)\"")
                 }
             }
-            
+
             var attributesString = " ".join(attributesStringList)
             if (!attributesString.isEmpty) {
                 attributesString = " " + attributesString
             }
-            
+
             if children.count > 0 {
                 var xmlReturn = [String]()
                 xmlReturn.append("<\(name)\(attributesString)>")
@@ -578,7 +526,7 @@ extension XMLElement: Printable {
                 xmlReturn.append("</\(name)>")
                 return "\n".join(xmlReturn)
             }
-            
+
             if text != nil {
                 return "<\(name)\(attributesString)>\(text!)</\(name)>"
             }
