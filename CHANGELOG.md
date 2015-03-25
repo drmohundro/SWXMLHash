@@ -1,3 +1,7 @@
+## Pre-release changes... only in Xcode 6.3 branch
+
+* Lazy loading support is available ([issue #11](https://github.com/drmohundro/SWXMLHash/issues/11))
+
 ## v0.6.4 (February 26, 2015)
 
 * Fixed bug with interleaved XML (issue #19)

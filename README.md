@@ -4,6 +4,13 @@ SWXMLHash is a relatively simple way to parse XML in Swift. If you're familiar w
 
 The API takes a lot of inspiration from [SwiftyJSON](https://github.com/SwiftyJSON/SwiftyJSON).
 
+## Contents
+
+* [Installation](#installation)
+* [Getting Started](#getting-started)
+* [Examples](#examples)
+* [License](#license)
+
 ## Installation
 
 The recommended means of installing SWXMLHash is using [CocoaPods](http://cocoapods.org/). As of CocoaPods 0.36 beta, Swift projects are supported.
@@ -20,7 +27,7 @@ Then create a `Podfile` with the following contents:
 source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '8.0'
 
-pod 'SWXMLHash', '~> 0.6.0'
+pod 'SWXMLHash', '~> 0.6.4'
 ```
 
 Finally, run the following command to install it:
@@ -43,6 +50,12 @@ All examples below can be found in the included specs.
 
 ```swift
 let xml = SWXMLHash.parse(xmlToParse)
+```
+
+Alternatively, for lazy parsing support, you call `lazy` instead of `parse`. Lazy loading avoids loading the entire XML document into memory, so it could be preferable for performance reasons. See the error handling for one caveat regarding lazy loading.
+
+```swift
+let xml = SWXMLHash.lazy(xmlToParse)
 ```
 
 ### Single Element Lookup
@@ -186,13 +199,7 @@ case .Error(let error):
 }
 ```
 
-## TODO
-
-* [x] finish implementing error handling for group indexing
-* [x] add attribute support
-* [x] maybe add attribute look-up for elements as opposed to solely array indexing
-* [x] add CocoaPods support once it supports Swift projects
-* [ ] more???
+Note that error handling as show above will not work with lazy loaded XML. The lazy parsing doesn't actually occur until the `element` or `all` method are called - as a result, there isn't any way to know prior to asking for an element if it exists or not.
 
 ## License
 
