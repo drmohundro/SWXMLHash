@@ -89,17 +89,16 @@ class LazyXMLParser : NSObject, NSXMLParserDelegate {
     var ops: [IndexOp] = []
 
     func parse(data: NSData) -> XMLIndexer {
-        // clear any prior runs of parse... expected that this won't be necessary, but you never know
-        parentStack.removeAll()
-
         self.data = data
-
-        parentStack.push(root)
-
         return XMLIndexer(self)
     }
 
     func startParsing(ops: [IndexOp]) {
+        // clear any prior runs of parse... expected that this won't be necessary, but you never know
+        parentStack.removeAll()
+        root = XMLElement(name: rootElementName)
+        parentStack.push(root)
+
         self.ops = ops
         let parser = NSXMLParser(data: data!)
         parser.delegate = self
@@ -141,7 +140,14 @@ class LazyXMLParser : NSObject, NSXMLParserDelegate {
     }
 
     func onMatch() -> Bool {
-        return startsWith(ops.map { $0.key }, elementStack.items)
+        // we typically want to compare against the elementStack to see if it matches ops, *but*
+        // if we're on the first element, we'll instead compare the other direction.
+        if elementStack.items.count > ops.count {
+            return startsWith(elementStack.items, ops.map { $0.key })
+        }
+        else {
+            return startsWith(ops.map { $0.key }, elementStack.items)
+        }
     }
 }
 
@@ -215,7 +221,7 @@ public class IndexOps {
     }
 
     func findElements() -> XMLIndexer {
-        parser.startParsing(self.ops)
+        parser.startParsing(ops)
         let indexer = XMLIndexer(parser.root)
         var childIndex = indexer
         for op in ops {
@@ -224,8 +230,7 @@ public class IndexOps {
                 childIndex = childIndex[op.index]
             }
         }
-        println(stringify())
-        dump(parser.root)
+        ops.removeAll(keepCapacity: false)
         return childIndex
     }
 
@@ -306,12 +311,10 @@ public enum XMLIndexer : SequenceType {
         let attrUserInfo = [NSLocalizedDescriptionKey: "XML Attribute Error: Missing attribute [\"\(attr)\"]"]
         let valueUserInfo = [NSLocalizedDescriptionKey: "XML Attribute Error: Missing attribute [\"\(attr)\"] with value [\"\(value)\"]"]
         switch self {
-        case .Stream(let ops):
-            /*
-            let list = ops.findElements()
-            return list.withAttr(attr, value)
-            */
-            return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: valueUserInfo))
+        case .Stream(let opStream):
+            opStream.stringify()
+            let match = opStream.findElements()
+            return match.withAttr(attr, value)
         case .List(let list):
             if let elem = list.filter({$0.attributes[attr] == value}).first {
                 return .Element(elem)
@@ -359,10 +362,10 @@ public enum XMLIndexer : SequenceType {
         get {
             let userInfo = [NSLocalizedDescriptionKey: "XML Element Error: Incorrect key [\"\(key)\"]"]
             switch self {
-            case .Stream(let elem):
+            case .Stream(let opStream):
                 let op = IndexOp(key)
-                elem.ops.append(op)
-                return .Stream(elem)
+                opStream.ops.append(op)
+                return .Stream(opStream)
             case .Element(let elem):
                 let match = elem.children.filter({ $0.name == key })
                 if match.count > 0 {
@@ -391,9 +394,9 @@ public enum XMLIndexer : SequenceType {
         get {
             let userInfo = [NSLocalizedDescriptionKey: "XML Element Error: Incorrect index [\"\(index)\"]"]
             switch self {
-            case .Stream(let elem):
-                elem.ops[elem.ops.count - 1].index = index
-                return .Stream(elem)
+            case .Stream(let opStream):
+                opStream.ops[opStream.ops.count - 1].index = index
+                return .Stream(opStream)
             case .List(let list):
                 if index <= list.count {
                     return .Element(list[index])
