@@ -252,28 +252,6 @@ class SWXMLHashLazyTests: QuickSpec {
             it("should return nil when keys don't match") {
                 expect(xml["root"]["what"]["header"]["foo"].element?.name).to(beNil())
             }
-
-            it("should provide an error object when keys don't match") {
-                var err: NSError? = nil
-                switch xml["root"]["what"]["header"]["foo"] {
-                case .Error(let error):
-                    err = error
-                default:
-                    err = nil
-                }
-                expect(err).toNot(beNil())
-            }
-
-            it("should provide an error element when indexers don't match") {
-                var err: NSError? = nil
-                switch xml["what"]["subelement"][5]["nomatch"] {
-                case .Error(let error):
-                    err = error
-                default:
-                    err = nil
-                }
-                expect(err).toNot(beNil())
-            }
         }
     }
 }
