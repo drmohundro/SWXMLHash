@@ -49,6 +49,15 @@ public class SWXMLHash {
         var parser = XMLParser()
         return parser.parse(data)
     }
+
+    class public func lazy(xml: String) -> XMLIndexer {
+        return lazy((xml as NSString).dataUsingEncoding(NSUTF8StringEncoding)!)
+    }
+
+    class public func lazy(data: NSData) -> XMLIndexer {
+        var parser = LazyXMLParser()
+        return parser.parse(data)
+    }
 }
 
 struct Stack<T> {
@@ -64,6 +73,81 @@ struct Stack<T> {
     }
     func top() -> T {
         return items[items.count - 1]
+    }
+}
+
+class LazyXMLParser : NSObject, NSXMLParserDelegate {
+    override init() {
+        super.init()
+    }
+
+    var root = XMLElement(name: rootElementName)
+    var parentStack = Stack<XMLElement>()
+    var elementStack = Stack<String>()
+
+    var data: NSData?
+    var ops: [IndexOp] = []
+
+    func parse(data: NSData) -> XMLIndexer {
+        self.data = data
+        return XMLIndexer(self)
+    }
+
+    func startParsing(ops: [IndexOp]) {
+        // clear any prior runs of parse... expected that this won't be necessary, but you never know
+        parentStack.removeAll()
+        root = XMLElement(name: rootElementName)
+        parentStack.push(root)
+
+        self.ops = ops
+        let parser = NSXMLParser(data: data!)
+        parser.delegate = self
+        parser.parse()
+    }
+
+    func parser(parser: NSXMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [NSObject : AnyObject]) {
+
+        elementStack.push(elementName)
+
+        if !onMatch() {
+            return
+        }
+        let currentNode = parentStack.top().addElement(elementName, withAttributes: attributeDict)
+        parentStack.push(currentNode)
+    }
+
+    func parser(parser: NSXMLParser, foundCharacters string: String?) {
+        if !onMatch() {
+            return
+        }
+
+        let current = parentStack.top()
+        if current.text == nil {
+            current.text = ""
+        }
+
+        parentStack.top().text! += string!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+    }
+
+    func parser(parser: NSXMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
+        let match = onMatch()
+
+        elementStack.pop()
+
+        if match {
+            parentStack.pop()
+        }
+    }
+
+    func onMatch() -> Bool {
+        // we typically want to compare against the elementStack to see if it matches ops, *but*
+        // if we're on the first element, we'll instead compare the other direction.
+        if elementStack.items.count > ops.count {
+            return startsWith(elementStack.items, ops.map { $0.key })
+        }
+        else {
+            return startsWith(ops.map { $0.key }, elementStack.items)
+        }
     }
 }
 
@@ -89,23 +173,73 @@ class XMLParser : NSObject, NSXMLParserDelegate {
         return XMLIndexer(root)
     }
 
-    func parser(parser: NSXMLParser!, didStartElement elementName: String!, namespaceURI: String!, qualifiedName: String!, attributes attributeDict: NSDictionary!) {
+    func parser(parser: NSXMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [NSObject : AnyObject]) {
 
         let currentNode = parentStack.top().addElement(elementName, withAttributes: attributeDict)
         parentStack.push(currentNode)
     }
 
-    func parser(parser: NSXMLParser!, foundCharacters string: String!) {
+    func parser(parser: NSXMLParser, foundCharacters string: String?) {
         let current = parentStack.top()
-        if current.text? == nil {
+        if current.text == nil {
             current.text = ""
         }
 
-        parentStack.top().text! += string.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+        parentStack.top().text! += string!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
     }
 
-    func parser(parser: NSXMLParser!, didEndElement elementName: String!, namespaceURI: String!, qualifiedName qName: String!) {
+    func parser(parser: NSXMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
         parentStack.pop()
+    }
+}
+
+public class IndexOp {
+    var index: Int
+    let key: String
+
+    init(_ key: String) {
+        self.key = key
+        self.index = -1
+    }
+
+    func toString() -> String {
+        if index >= 0 {
+            return key + " " + index.description
+        }
+
+        return key
+    }
+}
+
+public class IndexOps {
+    var ops: [IndexOp] = []
+
+    let parser: LazyXMLParser
+
+    init(parser: LazyXMLParser) {
+        self.parser = parser
+    }
+
+    func findElements() -> XMLIndexer {
+        parser.startParsing(ops)
+        let indexer = XMLIndexer(parser.root)
+        var childIndex = indexer
+        for op in ops {
+            childIndex = childIndex[op.key]
+            if op.index >= 0 {
+                childIndex = childIndex[op.index]
+            }
+        }
+        ops.removeAll(keepCapacity: false)
+        return childIndex
+    }
+
+    func stringify() -> String {
+        var s = ""
+        for op in ops {
+            s += "[" + op.toString() + "]"
+        }
+        return s
     }
 }
 
@@ -113,6 +247,7 @@ class XMLParser : NSObject, NSXMLParserDelegate {
 public enum XMLIndexer : SequenceType {
     case Element(XMLElement)
     case List([XMLElement])
+    case Stream(IndexOps)
     case Error(NSError)
 
     /// The underlying XMLElement at the currently indexed level of XML.
@@ -121,6 +256,9 @@ public enum XMLIndexer : SequenceType {
             switch self {
             case .Element(let elem):
                 return elem
+            case .Stream(let ops):
+                let list = ops.findElements()
+                return list.element
             default:
                 return nil
             }
@@ -139,6 +277,9 @@ public enum XMLIndexer : SequenceType {
                 return xmlList
             case .Element(let elem):
                 return [XMLIndexer(elem)]
+            case .Stream(let ops):
+                let list = ops.findElements()
+                return list.all
             default:
                 return []
             }
@@ -170,6 +311,10 @@ public enum XMLIndexer : SequenceType {
         let attrUserInfo = [NSLocalizedDescriptionKey: "XML Attribute Error: Missing attribute [\"\(attr)\"]"]
         let valueUserInfo = [NSLocalizedDescriptionKey: "XML Attribute Error: Missing attribute [\"\(attr)\"] with value [\"\(value)\"]"]
         switch self {
+        case .Stream(let opStream):
+            opStream.stringify()
+            let match = opStream.findElements()
+            return match.withAttr(attr, value)
         case .List(let list):
             if let elem = list.filter({$0.attributes[attr] == value}).first {
                 return .Element(elem)
@@ -199,6 +344,8 @@ public enum XMLIndexer : SequenceType {
         switch rawObject {
         case let value as XMLElement:
             self = .Element(value)
+        case let value as LazyXMLParser:
+            self = .Stream(IndexOps(parser: value))
         default:
             self = .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: nil))
         }
@@ -215,6 +362,10 @@ public enum XMLIndexer : SequenceType {
         get {
             let userInfo = [NSLocalizedDescriptionKey: "XML Element Error: Incorrect key [\"\(key)\"]"]
             switch self {
+            case .Stream(let opStream):
+                let op = IndexOp(key)
+                opStream.ops.append(op)
+                return .Stream(opStream)
             case .Element(let elem):
                 let match = elem.children.filter({ $0.name == key })
                 if match.count > 0 {
@@ -243,6 +394,9 @@ public enum XMLIndexer : SequenceType {
         get {
             let userInfo = [NSLocalizedDescriptionKey: "XML Element Error: Incorrect index [\"\(index)\"]"]
             switch self {
+            case .Stream(let opStream):
+                opStream.ops[opStream.ops.count - 1].index = index
+                return .Stream(opStream)
             case .List(let list):
                 if index <= list.count {
                     return .Element(list[index])
@@ -342,8 +496,8 @@ public class XMLElement {
         children.append(element)
 
         for (keyAny,valueAny) in attributes {
-            let key = keyAny as String
-            let value = valueAny as String
+            let key = keyAny as! String
+            let value = valueAny as! String
             element.attributes[key] = value
         }
 
@@ -360,12 +514,12 @@ extension XMLElement: Printable {
                     attributesStringList.append("\(key)=\"\(val)\"")
                 }
             }
-            
+
             var attributesString = " ".join(attributesStringList)
             if (!attributesString.isEmpty) {
                 attributesString = " " + attributesString
             }
-            
+
             if children.count > 0 {
                 var xmlReturn = [String]()
                 xmlReturn.append("<\(name)\(attributesString)>")
@@ -375,7 +529,7 @@ extension XMLElement: Printable {
                 xmlReturn.append("</\(name)>")
                 return "\n".join(xmlReturn)
             }
-            
+
             if text != nil {
                 return "<\(name)\(attributesString)>\(text!)</\(name)>"
             }
