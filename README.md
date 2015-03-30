@@ -4,6 +4,8 @@ SWXMLHash is a relatively simple way to parse XML in Swift. If you're familiar w
 
 The API takes a lot of inspiration from [SwiftyJSON](https://github.com/SwiftyJSON/SwiftyJSON).
 
+__NOTE:__ Working with Xcode 6.3 and Swift 1.2? Check out the [xcode-6.3 branch](https://github.com/drmohundro/swxmlhash/tree/xcode-6.3). It will be merged in when Xcode 6.3 is released.
+
 ## Installation
 
 The recommended means of installing SWXMLHash is using [CocoaPods](http://cocoapods.org/). As of CocoaPods 0.36 beta, Swift projects are supported.
