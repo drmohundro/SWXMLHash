@@ -73,16 +73,6 @@ class SWXMLHashTests: QuickSpec {
                 expect(count).to(equal(3))
             }
 
-            it("should be able to handle whitespace in XML") {
-                var bundle = NSBundle(forClass: SWXMLHashTests.self)
-                var path = bundle.pathForResource("test", ofType: "xml")
-                var data = NSData(contentsOfFile: path!)
-                let parsed = SWXMLHash.parse(data!)
-                expect(parsed["niotemplate"]["section"][0]["constraint"][1].element?.text).to(equal("H:|-15-[title]-15-|"))
-
-                expect(parsed["niotemplate"]["other"].element?.text).to(equal("this\n  has\n  white\n  space"))
-            }
-
             it("should be able to enumerate children") {
                 expect(", ".join(xml["root"]["catalog"]["book"][0].children.map{ $0.element!.name })).to(equal("author, title, genre, price, publish_date, description"))
             }
@@ -121,7 +111,7 @@ class SWXMLHashTests: QuickSpec {
             }
 
             it("should be able to correctly parse CDATA sections *with* whitespace") {
-                expect(xml["niotemplate"]["other"].element?.text).to(equal("this\n  has\n  white\n  space"))
+                expect(xml["niotemplate"]["other"].element?.text).to(equal("\n        \n  this\n  has\n  white\n  space\n        \n    "))
             }
         }
 
@@ -203,16 +193,6 @@ class SWXMLHashLazyTests: QuickSpec {
                 expect(count).to(equal(3))
             }
 
-            it("should be able to handle whitespace in XML") {
-                var bundle = NSBundle(forClass: SWXMLHashTests.self)
-                var path = bundle.pathForResource("test", ofType: "xml")
-                var data = NSData(contentsOfFile: path!)
-                let parsed = SWXMLHash.lazy(data!)
-                expect(parsed["niotemplate"]["section"][0]["constraint"][1].element?.text).to(equal("H:|-15-[title]-15-|"))
-
-                expect(parsed["niotemplate"]["other"].element?.text).to(equal("this\n  has\n  white\n  space"))
-            }
-
             it("should be able to enumerate children") {
                 expect(", ".join(xml["root"]["catalog"]["book"][0].children.map{ $0.element?.name ?? "" })).to(equal("author, title, genre, price, publish_date, description"))
             }
@@ -244,7 +224,7 @@ class SWXMLHashLazyTests: QuickSpec {
             }
 
             it("should be able to correctly parse CDATA sections *with* whitespace") {
-                expect(xml["niotemplate"]["other"].element?.text).to(equal("this\n  has\n  white\n  space"))
+                expect(xml["niotemplate"]["other"].element?.text).to(equal("\n        \n  this\n  has\n  white\n  space\n        \n    "))
             }
         }
 
