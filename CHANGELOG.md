@@ -1,6 +1,10 @@
 ## Pre-release changes... only in Xcode 6.3 branch
 
 * Lazy loading support is available ([issue #11](https://github.com/drmohundro/SWXMLHash/issues/11))
+* See [PR #26](https://github.com/drmohundro/SWXMLHash/pull/26) for details on these:
+  * Remove automatic whitespace trimming - that will be a responsibility of the caller.
+  * Make umbrella header public.
+  * Introduce shared schemes.
 
 ## v0.6.4 (February 26, 2015)
 
@@ -41,8 +45,8 @@
 ## v0.5.2 (October 6, 2014)
 
 * Fix handling of whitespace in XML which resolves issue #6.
-	* Apparently the `foundCharacters` method of `NSXMLParser` also gets called for whitespace between elements.
-	* There are now specs to account for this issue as well as a spec to document CDATA usage, too.
+  * Apparently the `foundCharacters` method of `NSXMLParser` also gets called for whitespace between elements.
+  * There are now specs to account for this issue as well as a spec to document CDATA usage, too.
 
 ## v0.5.1 (October 5, 2014)
 
