@@ -18,7 +18,7 @@
 		CD741F201A9794460096D5CA /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD741F031A9793E30096D5CA /* Quick.framework */; };
 		CD7934C31A7581DF00867857 /* SWXMLHashSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD608401196CA106000B4F8D /* SWXMLHashSpecs.swift */; };
 		CD7934C41A7581E600867857 /* test.xml in Resources */ = {isa = PBXBuildFile; fileRef = CD4B5F3919E2C42D005C1F33 /* test.xml */; };
-		CD7934C51A7581F200867857 /* SWXMLHash.h in Headers */ = {isa = PBXBuildFile; fileRef = CD6083F4196CA106000B4F8D /* SWXMLHash.h */; };
+		CD7934C51A7581F200867857 /* SWXMLHash.h in Headers */ = {isa = PBXBuildFile; fileRef = CD6083F4196CA106000B4F8D /* SWXMLHash.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CD7934C61A7581F500867857 /* SWXMLHash.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD60840B196CA11D000B4F8D /* SWXMLHash.swift */; };
 		CD9D05371A757D8B003CCB21 /* SWXMLHash.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD9D052C1A757D8B003CCB21 /* SWXMLHash.framework */; };
 /* End PBXBuildFile section */
