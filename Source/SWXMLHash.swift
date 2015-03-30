@@ -126,7 +126,7 @@ class LazyXMLParser : NSObject, NSXMLParserDelegate {
             current.text = ""
         }
 
-        parentStack.top().text! += string!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+        parentStack.top().text! += string!
     }
 
     func parser(parser: NSXMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
@@ -185,7 +185,7 @@ class XMLParser : NSObject, NSXMLParserDelegate {
             current.text = ""
         }
 
-        parentStack.top().text! += string!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+        parentStack.top().text! += string!
     }
 
     func parser(parser: NSXMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
