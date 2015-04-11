@@ -7,6 +7,7 @@
   * Remove automatic whitespace trimming - that will be a responsibility of the caller.
   * Make umbrella header public.
   * Introduce shared schemes.
+* Xcode 6.3 and Swift 1.2 support.
 * Published version 1.0.0 CocoaPod.
 
 ## v0.6.4 (February 26, 2015)
