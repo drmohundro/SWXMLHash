@@ -1,10 +1,13 @@
-## Pre-release changes... only in Xcode 6.3 branch
+## 1.0 (April 10, 2015)
 
 * Lazy loading support is available ([issue #11](https://github.com/drmohundro/SWXMLHash/issues/11))
+  * Call `.lazy` instead of `.parse`
+  * Performance can be drastically improved when doing lazy parsing.
 * See [PR #26](https://github.com/drmohundro/SWXMLHash/pull/26) for details on these:
   * Remove automatic whitespace trimming - that will be a responsibility of the caller.
   * Make umbrella header public.
   * Introduce shared schemes.
+* Published version 1.0.0 CocoaPod.
 
 ## v0.6.4 (February 26, 2015)
 
