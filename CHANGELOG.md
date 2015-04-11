@@ -1,4 +1,4 @@
-## 1.0 (April 10, 2015)
+## v1.0.0 (April 10, 2015)
 
 * Lazy loading support is available ([issue #11](https://github.com/drmohundro/SWXMLHash/issues/11))
   * Call `.lazy` instead of `.parse`
