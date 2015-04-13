@@ -9,6 +9,7 @@ The API takes a lot of inspiration from [SwiftyJSON](https://github.com/SwiftyJS
 * [Installation](#installation)
 * [Getting Started](#getting-started)
 * [Examples](#examples)
+* [Changelog](#changelog)
 * [License](#license)
 
 ## Installation
@@ -200,6 +201,10 @@ case .Error(let error):
 ```
 
 Note that error handling as show above will not work with lazy loaded XML. The lazy parsing doesn't actually occur until the `element` or `all` method are called - as a result, there isn't any way to know prior to asking for an element if it exists or not.
+
+## Changelog
+
+See [CHANGELOG](CHANGELOG.md) for a list of all changes and their corresponding versions.
 
 ## License
 
