@@ -14,7 +14,9 @@ The API takes a lot of inspiration from [SwiftyJSON](https://github.com/SwiftyJS
 
 ## Installation
 
-The recommended means of installing SWXMLHash is using [CocoaPods](http://cocoapods.org/).
+SWXMLHash can be installed using [CocoaPods](http://cocoapods.org/), [Carthage](https://github.com/Carthage/Carthage), or manually.
+
+### CocoaPods
 
 To install CocoaPods, run:
 
@@ -36,6 +38,25 @@ Finally, run the following command to install it:
 ```bash
 $ pod install
 ```
+
+### Carthage
+
+To install Carthage, run (using Homebrew):
+
+```bash
+$ brew update
+$ brew install carthage
+```
+
+Then add the following line to your `Cartfile`:
+
+```
+github "drmohundro/SWXMLHash" >= 1.0
+```
+
+### Manual Installation
+
+To install manually, you'll need to clone the SWXMLHash repository. You can do this in a separate directory or you can make use of git submodules - in this case, git submodules are recommended so that your repository has details about which commit of SWXMLHash you're using. Once this is done, you can just drop the `SWXMLHash.swift` file into your project.
 
 ## Getting Started
 
