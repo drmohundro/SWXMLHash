@@ -51,7 +51,7 @@ $ brew install carthage
 Then add the following line to your `Cartfile`:
 
 ```
-github "drmohundro/SWXMLHash" >= 1.0
+github "drmohundro/SWXMLHash" ~> 1.0
 ```
 
 ### Manual Installation
