@@ -12,6 +12,7 @@ The API takes a lot of inspiration from [SwiftyJSON](https://github.com/SwiftyJS
 * [Getting Started](#getting-started)
 * [Examples](#examples)
 * [Changelog](#changelog)
+* [Contributing](#contributing)
 * [License](#license)
 
 ## Installation
@@ -228,6 +229,12 @@ Note that error handling as show above will not work with lazy loaded XML. The l
 ## Changelog
 
 See [CHANGELOG](CHANGELOG.md) for a list of all changes and their corresponding versions.
+
+## Contributing
+
+This framework uses [Quick](https://github.com/Quick/Quick) and [Nimble](https://github.com/Quick/Nimble) for its tests. To get these dependencies, you'll need to have [Carthage](https://github.com/Carthage/Carthage) installed. Once it is installed, you should be able to just run `carthage update`.
+
+To run the tests, you can either run them from within Xcode or you can run `rake test`.
 
 ## License
 
