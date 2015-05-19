@@ -1,3 +1,7 @@
+## v1.0.1 (May 18, 2015)
+
+* Quick/Nimble are no longer used via git submodules, but are instead being pulled in via Carthage.
+
 ## v1.0.0 (April 10, 2015)
 
 * Lazy loading support is available ([issue #11](https://github.com/drmohundro/SWXMLHash/issues/11))
