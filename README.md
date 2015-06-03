@@ -239,6 +239,8 @@ This framework uses [Quick](https://github.com/Quick/Quick) and [Nimble](https:/
 
 To run the tests, you can either run them from within Xcode or you can run `rake test`.
 
+The code loosely follows GitHub's [Swift Styleguide](https://github.com/github/swift-style-guide). The line length recommendations aren't strictly followed and the codebase is currently using spaces over tabs. I'm using [SwiftLint](https://github.com/realm/SwiftLint) to catch issues with style.
+
 ## License
 
 SWXMLHash is released under the MIT license. See [LICENSE](LICENSE) for details.

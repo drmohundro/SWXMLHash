@@ -76,7 +76,7 @@ struct Stack<T> {
     }
 }
 
-class LazyXMLParser : NSObject, NSXMLParserDelegate {
+class LazyXMLParser: NSObject, NSXMLParserDelegate {
     override init() {
         super.init()
     }
@@ -152,7 +152,7 @@ class LazyXMLParser : NSObject, NSXMLParserDelegate {
 }
 
 /// The implementation of NSXMLParserDelegate and where the parsing actually happens.
-class XMLParser : NSObject, NSXMLParserDelegate {
+class XMLParser: NSObject, NSXMLParserDelegate {
     override init() {
         super.init()
     }
@@ -244,7 +244,7 @@ public class IndexOps {
 }
 
 /// Returned from SWXMLHash, allows easy element lookup into XML data.
-public enum XMLIndexer : SequenceType {
+public enum XMLIndexer: SequenceType {
     case Element(XMLElement)
     case List([XMLElement])
     case Stream(IndexOps)
@@ -252,51 +252,45 @@ public enum XMLIndexer : SequenceType {
 
     /// The underlying XMLElement at the currently indexed level of XML.
     public var element: XMLElement? {
-        get {
-            switch self {
-            case .Element(let elem):
-                return elem
-            case .Stream(let ops):
-                let list = ops.findElements()
-                return list.element
-            default:
-                return nil
-            }
+        switch self {
+        case .Element(let elem):
+            return elem
+        case .Stream(let ops):
+            let list = ops.findElements()
+            return list.element
+        default:
+            return nil
         }
     }
 
     /// All elements at the currently indexed level
     public var all: [XMLIndexer] {
-        get {
-            switch self {
-            case .List(let list):
-                var xmlList = [XMLIndexer]()
-                for elem in list {
-                    xmlList.append(XMLIndexer(elem))
-                }
-                return xmlList
-            case .Element(let elem):
-                return [XMLIndexer(elem)]
-            case .Stream(let ops):
-                let list = ops.findElements()
-                return list.all
-            default:
-                return []
+        switch self {
+        case .List(let list):
+            var xmlList = [XMLIndexer]()
+            for elem in list {
+                xmlList.append(XMLIndexer(elem))
             }
+            return xmlList
+        case .Element(let elem):
+            return [XMLIndexer(elem)]
+        case .Stream(let ops):
+            let list = ops.findElements()
+            return list.all
+        default:
+            return []
         }
     }
 
     /// All child elements from the currently indexed level
     public var children: [XMLIndexer] {
-        get {
-            var list = [XMLIndexer]()
-            for elem in all.map({ $0.element! }) {
-                for elem in elem.children {
-                    list.append(XMLIndexer(elem))
-                }
+        var list = [XMLIndexer]()
+        for elem in all.map({ $0.element! }) {
+            for elem in elem.children {
+                list.append(XMLIndexer(elem))
             }
-            return list
         }
+        return list
     }
 
     /**
@@ -359,27 +353,25 @@ public enum XMLIndexer : SequenceType {
     :returns: instance of XMLIndexer to match the element (or elements) found by key
     */
     public subscript(key: String) -> XMLIndexer {
-        get {
-            let userInfo = [NSLocalizedDescriptionKey: "XML Element Error: Incorrect key [\"\(key)\"]"]
-            switch self {
-            case .Stream(let opStream):
-                let op = IndexOp(key)
-                opStream.ops.append(op)
-                return .Stream(opStream)
-            case .Element(let elem):
-                let match = elem.children.filter({ $0.name == key })
-                if match.count > 0 {
-                    if match.count == 1 {
-                        return .Element(match[0])
-                    }
-                    else {
-                        return .List(match)
-                    }
+        let userInfo = [NSLocalizedDescriptionKey: "XML Element Error: Incorrect key [\"\(key)\"]"]
+        switch self {
+        case .Stream(let opStream):
+            let op = IndexOp(key)
+            opStream.ops.append(op)
+            return .Stream(opStream)
+        case .Element(let elem):
+            let match = elem.children.filter({ $0.name == key })
+            if match.count > 0 {
+                if match.count == 1 {
+                    return .Element(match[0])
                 }
-                return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: userInfo))
-            default:
-                return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: userInfo))
+                else {
+                    return .List(match)
+                }
             }
+            return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: userInfo))
+        default:
+            return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: userInfo))
         }
     }
 
@@ -391,27 +383,25 @@ public enum XMLIndexer : SequenceType {
     :returns: instance of XMLIndexer to match the element (or elements) found by key
     */
     public subscript(index: Int) -> XMLIndexer {
-        get {
-            let userInfo = [NSLocalizedDescriptionKey: "XML Element Error: Incorrect index [\"\(index)\"]"]
-            switch self {
-            case .Stream(let opStream):
-                opStream.ops[opStream.ops.count - 1].index = index
-                return .Stream(opStream)
-            case .List(let list):
-                if index <= list.count {
-                    return .Element(list[index])
-                }
-                return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: userInfo))
-            case .Element(let elem):
-                if index == 0 {
-                    return .Element(elem)
-                }
-                else {
-                    return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: userInfo))
-                }
-            default:
+        let userInfo = [NSLocalizedDescriptionKey: "XML Element Error: Incorrect index [\"\(index)\"]"]
+        switch self {
+        case .Stream(let opStream):
+            opStream.ops[opStream.ops.count - 1].index = index
+            return .Stream(opStream)
+        case .List(let list):
+            if index <= list.count {
+                return .Element(list[index])
+            }
+            return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: userInfo))
+        case .Element(let elem):
+            if index == 0 {
+                return .Element(elem)
+            }
+            else {
                 return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: userInfo))
             }
+        default:
+            return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: userInfo))
         }
     }
 
@@ -426,32 +416,28 @@ public enum XMLIndexer : SequenceType {
 extension XMLIndexer: BooleanType {
     /// True if a valid XMLIndexer, false if an error type
     public var boolValue: Bool {
-        get {
-            switch self {
-            case .Error:
-                return false
-            default:
-                return true
-            }
+        switch self {
+        case .Error:
+            return false
+        default:
+            return true
         }
     }
 }
 
 extension XMLIndexer: Printable {
     public var description: String {
-        get {
-            switch self {
-            case .List(let list):
-                return "\n".join(list.map { $0.description })
-            case .Element(let elem):
-                if elem.name == rootElementName {
-                    return "\n".join(elem.children.map { $0.description })
-                }
-
-                return elem.description
-            default:
-                return ""
+        switch self {
+        case .List(let list):
+            return "\n".join(list.map { $0.description })
+        case .Element(let elem):
+            if elem.name == rootElementName {
+                return "\n".join(elem.children.map { $0.description })
             }
+
+            return elem.description
+        default:
+            return ""
         }
     }
 }
@@ -496,9 +482,10 @@ public class XMLElement {
         children.append(element)
 
         for (keyAny,valueAny) in attributes {
-            let key = keyAny as! String
-            let value = valueAny as! String
-            element.attributes[key] = value
+            if let key = keyAny as? String,
+                let value = valueAny as? String {
+                element.attributes[key] = value
+            }
         }
 
         return element
@@ -506,36 +493,34 @@ public class XMLElement {
 }
 
 extension XMLElement: Printable {
-    public var description:String {
-        get {
-            var attributesStringList = [String]()
-            if !attributes.isEmpty {
-                for (key, val) in attributes {
-                    attributesStringList.append("\(key)=\"\(val)\"")
-                }
+    public var description: String {
+        var attributesStringList = [String]()
+        if !attributes.isEmpty {
+            for (key, val) in attributes {
+                attributesStringList.append("\(key)=\"\(val)\"")
             }
+        }
 
-            var attributesString = " ".join(attributesStringList)
-            if (!attributesString.isEmpty) {
-                attributesString = " " + attributesString
-            }
+        var attributesString = " ".join(attributesStringList)
+        if !attributesString.isEmpty {
+            attributesString = " " + attributesString
+        }
 
-            if children.count > 0 {
-                var xmlReturn = [String]()
-                xmlReturn.append("<\(name)\(attributesString)>")
-                for child in children {
-                    xmlReturn.append(child.description)
-                }
-                xmlReturn.append("</\(name)>")
-                return "\n".join(xmlReturn)
+        if children.count > 0 {
+            var xmlReturn = [String]()
+            xmlReturn.append("<\(name)\(attributesString)>")
+            for child in children {
+                xmlReturn.append(child.description)
             }
+            xmlReturn.append("</\(name)>")
+            return "\n".join(xmlReturn)
+        }
 
-            if text != nil {
-                return "<\(name)\(attributesString)>\(text!)</\(name)>"
-            }
-            else {
-                return "<\(name)\(attributesString)/>"
-            }
+        if text != nil {
+            return "<\(name)\(attributesString)>\(text!)</\(name)>"
+        }
+        else {
+            return "<\(name)\(attributesString)/>"
         }
     }
 }
