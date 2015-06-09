@@ -46,7 +46,7 @@ public class SWXMLHash {
     :returns: An XMLIndexer instance that is used to look up elements in the XML
     */
     class public func parse(data: NSData) -> XMLIndexer {
-        var parser = XMLParser()
+        let parser = XMLParser()
         return parser.parse(data)
     }
 
@@ -55,7 +55,7 @@ public class SWXMLHash {
     }
 
     class public func lazy(data: NSData) -> XMLIndexer {
-        var parser = LazyXMLParser()
+        let parser = LazyXMLParser()
         return parser.parse(data)
     }
 }
@@ -105,7 +105,8 @@ class LazyXMLParser: NSObject, NSXMLParserDelegate {
         parser.parse()
     }
 
-    func parser(parser: NSXMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [NSObject : AnyObject]) {
+    
+    func parser(parser: NSXMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String]) {
 
         elementStack.push(elementName)
 
@@ -116,7 +117,7 @@ class LazyXMLParser: NSObject, NSXMLParserDelegate {
         parentStack.push(currentNode)
     }
 
-    func parser(parser: NSXMLParser, foundCharacters string: String?) {
+    func parser(parser: NSXMLParser, foundCharacters string: String) {
         if !onMatch() {
             return
         }
@@ -126,7 +127,7 @@ class LazyXMLParser: NSObject, NSXMLParserDelegate {
             current.text = ""
         }
 
-        parentStack.top().text! += string!
+        parentStack.top().text! += string
     }
 
     func parser(parser: NSXMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
@@ -143,10 +144,10 @@ class LazyXMLParser: NSObject, NSXMLParserDelegate {
         // we typically want to compare against the elementStack to see if it matches ops, *but*
         // if we're on the first element, we'll instead compare the other direction.
         if elementStack.items.count > ops.count {
-            return startsWith(elementStack.items, ops.map { $0.key })
+            return elementStack.items.startsWith(ops.map { $0.key} )
         }
         else {
-            return startsWith(ops.map { $0.key }, elementStack.items)
+            return ops.map{ $0.key }.startsWith(elementStack.items)
         }
     }
 }
@@ -173,19 +174,19 @@ class XMLParser: NSObject, NSXMLParserDelegate {
         return XMLIndexer(root)
     }
 
-    func parser(parser: NSXMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [NSObject : AnyObject]) {
+    func parser(parser: NSXMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String]) {
 
         let currentNode = parentStack.top().addElement(elementName, withAttributes: attributeDict)
         parentStack.push(currentNode)
     }
 
-    func parser(parser: NSXMLParser, foundCharacters string: String?) {
+    func parser(parser: NSXMLParser, foundCharacters string: String) {
         let current = parentStack.top()
         if current.text == nil {
             current.text = ""
         }
 
-        parentStack.top().text! += string!
+        parentStack.top().text! += string
     }
 
     func parser(parser: NSXMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
@@ -425,7 +426,7 @@ extension XMLIndexer: BooleanType {
     }
 }
 
-extension XMLIndexer: Printable {
+extension XMLIndexer: CustomStringConvertible {
     public var description: String {
         switch self {
         case .List(let list):
@@ -492,7 +493,7 @@ public class XMLElement {
     }
 }
 
-extension XMLElement: Printable {
+extension XMLElement: CustomStringConvertible {
     public var description: String {
         var attributesStringList = [String]()
         if !attributes.isEmpty {
