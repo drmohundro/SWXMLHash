@@ -66,7 +66,7 @@ class SWXMLHashTests: QuickSpec {
 
             it("should be able to iterate using for-in") {
                 var count = 0
-                for elem in xml["root"]["catalog"]["book"] {
+                for _ in xml["root"]["catalog"]["book"] {
                     count++
                 }
 
@@ -100,9 +100,9 @@ class SWXMLHashTests: QuickSpec {
             var xml = XMLIndexer("to be set")
 
             beforeEach {
-                var bundle = NSBundle(forClass: SWXMLHashTests.self)
-                var path = bundle.pathForResource("test", ofType: "xml")
-                var data = NSData(contentsOfFile: path!)
+                let bundle = NSBundle(forClass: SWXMLHashTests.self)
+                let path = bundle.pathForResource("test", ofType: "xml")
+                let data = NSData(contentsOfFile: path!)
                 xml = SWXMLHash.parse(data!)
             }
 
@@ -186,7 +186,7 @@ class SWXMLHashLazyTests: QuickSpec {
 
             it("should be able to iterate using for-in") {
                 var count = 0
-                for elem in xml["root"]["catalog"]["book"] {
+                for _ in xml["root"]["catalog"]["book"] {
                     count++
                 }
 
@@ -213,9 +213,9 @@ class SWXMLHashLazyTests: QuickSpec {
             var xml = XMLIndexer("to be set")
 
             beforeEach {
-                var bundle = NSBundle(forClass: SWXMLHashTests.self)
-                var path = bundle.pathForResource("test", ofType: "xml")
-                var data = NSData(contentsOfFile: path!)
+                let bundle = NSBundle(forClass: SWXMLHashTests.self)
+                let path = bundle.pathForResource("test", ofType: "xml")
+                let data = NSData(contentsOfFile: path!)
                 xml = SWXMLHash.lazy(data!)
             }
 
