@@ -31,7 +31,7 @@ xml["root"]["h:table"]["h:tr"]["h:td"][0].element!.text!
 func enumerate(indexer: XMLIndexer, level: Int) {
     for child in indexer.children {
         var name = child.element!.name
-        NSLog("\(level) \(name)")
+        print("\(level) \(name)")
 
         enumerate(child, level + 1)
     }
