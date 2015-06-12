@@ -235,3 +235,30 @@ class SWXMLHashLazyTests: QuickSpec {
         }
     }
 }
+
+class SWXMLHashConfigSpecs: QuickSpec {
+    override func spec() {
+        describe("optional configuration options for NSXMLParser") {
+            var parser = XMLIndexer("not set")
+            let xmlWithNamespace = "<root xmlns:h=\"http://www.w3.org/TR/html4/\"" +
+                "  xmlns:f=\"http://www.w3schools.com/furniture\">" +
+                "  <h:table>" +
+                "    <h:tr>" +
+                "      <h:td>Apples</h:td>" +
+                "      <h:td>Bananas</h:td>" +
+                "    </h:tr>" +
+                "  </h:table>" +
+            "</root>"
+
+            beforeEach {
+                parser = SWXMLHash.config { conf in
+                    conf.shouldProcessNamespaces = true
+                }.parse(xmlWithNamespace)
+            }
+
+            it("should allow processing namespaces or not") {
+                expect(parser["root"]["table"]["tr"]["td"][0].element?.text).to(equal("Apples"))
+            }
+        }
+    }
+}

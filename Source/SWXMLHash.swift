@@ -25,8 +25,40 @@ import Foundation
 
 let rootElementName = "SWXMLHash_Root_Element"
 
-/// Simple XML parser.
+/// Parser options
+public class SWXMLHashOptions {
+    internal init() {}
+
+    /// determines whether to parse the XML with lazy parsing or not
+    public var shouldProcessLazily = false
+
+    /// determines whether to parse XML namespaces or not (forwards to `NSXMLParser.shouldProcessNamespaces`)
+    public var shouldProcessNamespaces = false
+}
+
+/// Simple XML parser
 public class SWXMLHash {
+    let options: SWXMLHashOptions
+
+    private init(_ options: SWXMLHashOptions = SWXMLHashOptions()) {
+        self.options = options
+    }
+
+    class public func config(configAction: (SWXMLHashOptions) -> ()) -> SWXMLHash {
+        var opts = SWXMLHashOptions()
+        configAction(opts)
+        return SWXMLHash(opts)
+    }
+
+    public func parse(xml: String) -> XMLIndexer {
+        return parse((xml as NSString).dataUsingEncoding(NSUTF8StringEncoding)!)
+    }
+
+    public func parse(data: NSData) -> XMLIndexer {
+        let parser: SimpleXmlParser = options.shouldProcessLazily ? LazyXMLParser(options) : XMLParser(options)
+        return parser.parse(data)
+    }
+
     /**
     Method to parse XML passed in as a string.
 
@@ -35,7 +67,7 @@ public class SWXMLHash {
     :returns: An XMLIndexer instance that is used to look up elements in the XML
     */
     class public func parse(xml: String) -> XMLIndexer {
-        return parse((xml as NSString).dataUsingEncoding(NSUTF8StringEncoding)!)
+        return SWXMLHash().parse(xml)
     }
 
     /**
@@ -46,17 +78,29 @@ public class SWXMLHash {
     :returns: An XMLIndexer instance that is used to look up elements in the XML
     */
     class public func parse(data: NSData) -> XMLIndexer {
-        var parser = XMLParser()
-        return parser.parse(data)
+        return SWXMLHash().parse(data)
     }
 
+    /**
+    Method to lazily parse XML passed in as a string.
+
+    :param: xml The XML to be parsed
+
+    :returns: An XMLIndexer instance that is used to look up elements in the XML
+    */
     class public func lazy(xml: String) -> XMLIndexer {
-        return lazy((xml as NSString).dataUsingEncoding(NSUTF8StringEncoding)!)
+        return config { conf in conf.shouldProcessLazily = true }.parse(xml)
     }
 
+    /**
+    Method to lazily parse XML passed in as an NSData instance.
+
+    :param: xml The XML to be parsed
+
+    :returns: An XMLIndexer instance that is used to look up elements in the XML
+    */
     class public func lazy(data: NSData) -> XMLIndexer {
-        var parser = LazyXMLParser()
-        return parser.parse(data)
+        return config { conf in conf.shouldProcessLazily = true }.parse(data)
     }
 }
 
@@ -76,8 +120,15 @@ struct Stack<T> {
     }
 }
 
-class LazyXMLParser: NSObject, NSXMLParserDelegate {
-    override init() {
+protocol SimpleXmlParser {
+    init(_ options: SWXMLHashOptions)
+    func parse(data: NSData) -> XMLIndexer
+}
+
+/// The implementation of NSXMLParserDelegate and where the lazy parsing actually happens.
+class LazyXMLParser: NSObject, SimpleXmlParser, NSXMLParserDelegate {
+    required init(_ options: SWXMLHashOptions) {
+        self.options = options
         super.init()
     }
 
@@ -87,6 +138,7 @@ class LazyXMLParser: NSObject, NSXMLParserDelegate {
 
     var data: NSData?
     var ops: [IndexOp] = []
+    let options: SWXMLHashOptions
 
     func parse(data: NSData) -> XMLIndexer {
         self.data = data
@@ -101,6 +153,7 @@ class LazyXMLParser: NSObject, NSXMLParserDelegate {
 
         self.ops = ops
         let parser = NSXMLParser(data: data!)
+        parser.shouldProcessNamespaces = options.shouldProcessNamespaces
         parser.delegate = self
         parser.parse()
     }
@@ -152,13 +205,15 @@ class LazyXMLParser: NSObject, NSXMLParserDelegate {
 }
 
 /// The implementation of NSXMLParserDelegate and where the parsing actually happens.
-class XMLParser: NSObject, NSXMLParserDelegate {
-    override init() {
+class XMLParser: NSObject, SimpleXmlParser, NSXMLParserDelegate {
+    required init(_ options: SWXMLHashOptions) {
+        self.options = options
         super.init()
     }
 
     var root = XMLElement(name: rootElementName)
     var parentStack = Stack<XMLElement>()
+    let options: SWXMLHashOptions
 
     func parse(data: NSData) -> XMLIndexer {
         // clear any prior runs of parse... expected that this won't be necessary, but you never know
@@ -167,6 +222,7 @@ class XMLParser: NSObject, NSXMLParserDelegate {
         parentStack.push(root)
 
         let parser = NSXMLParser(data: data)
+        parser.shouldProcessNamespaces = options.shouldProcessNamespaces
         parser.delegate = self
         parser.parse()
 
