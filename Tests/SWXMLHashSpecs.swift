@@ -152,7 +152,7 @@ class SWXMLHashLazyTests: QuickSpec {
         var xml = XMLIndexer("to be set")
 
         beforeEach {
-            xml = SWXMLHash.lazy(xmlToParse)
+            xml = SWXMLHash.config { config in config.shouldProcessLazily = true }.parse(xmlToParse)
         }
 
         describe("lazy xml parsing") {
@@ -231,6 +231,33 @@ class SWXMLHashLazyTests: QuickSpec {
         describe("xml parsing error scenarios") {
             it("should return nil when keys don't match") {
                 expect(xml["root"]["what"]["header"]["foo"].element?.name).to(beNil())
+            }
+        }
+    }
+}
+
+class SWXMLHashConfigSpecs: QuickSpec {
+    override func spec() {
+        describe("optional configuration options for NSXMLParser") {
+            var parser = XMLIndexer("not set")
+            let xmlWithNamespace = "<root xmlns:h=\"http://www.w3.org/TR/html4/\"" +
+                "  xmlns:f=\"http://www.w3schools.com/furniture\">" +
+                "  <h:table>" +
+                "    <h:tr>" +
+                "      <h:td>Apples</h:td>" +
+                "      <h:td>Bananas</h:td>" +
+                "    </h:tr>" +
+                "  </h:table>" +
+            "</root>"
+
+            beforeEach {
+                parser = SWXMLHash.config { conf in
+                    conf.shouldProcessNamespaces = true
+                }.parse(xmlWithNamespace)
+            }
+
+            it("should allow processing namespaces or not") {
+                expect(parser["root"]["table"]["tr"]["td"][0].element?.text).to(equal("Apples"))
             }
         }
     }
