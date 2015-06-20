@@ -1,4 +1,4 @@
-## v1.2.0 (June 20, 2015)
+## v1.1.0 (June 20, 2015)
 
 * Add `configure` method off of `SWXMLHash` to allow for setting variable number of options.
     * At this time, the only options are `shouldProcessLazily` and `shouldProcessNamespaces`.
