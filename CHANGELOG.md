@@ -1,3 +1,10 @@
+## v1.1.0 (June 20, 2015)
+
+* Add `configure` method off of `SWXMLHash` to allow for setting variable number of options.
+    * At this time, the only options are `shouldProcessLazily` and `shouldProcessNamespaces`.
+    * `shouldProcessLazily` provides the same parsing as directly calling `lazy`. I'm considering deprecating the top-level `lazy` method in favor of having it be set in `configure`, but I'm open to suggestions here (as well as to suggestions regarding the `configure` method in general).
+    * `shouldProcessNamespaces` provides the functionality requested in [issue #30](https://github.com/drmohundro/SWXMLHash/issues/30).
+
 ## v1.0.1 (May 18, 2015)
 
 * Quick/Nimble are no longer used via git submodules, but are instead being pulled in via Carthage.

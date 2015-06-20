@@ -13,6 +13,7 @@ The API takes a lot of inspiration from [SwiftyJSON](https://github.com/SwiftyJS
 
 * [Installation](#installation)
 * [Getting Started](#getting-started)
+* [Configuration](#configuration)
 * [Examples](#examples)
 * [Changelog](#changelog)
 * [Contributing](#contributing)
@@ -36,7 +37,7 @@ Then create a `Podfile` with the following contents:
 source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '8.0'
 
-pod 'SWXMLHash', '~> 1.0.0'
+pod 'SWXMLHash', '~> 1.1.0'
 ```
 
 Finally, run the following command to install it:
@@ -57,7 +58,7 @@ $ brew install carthage
 Then add the following line to your `Cartfile`:
 
 ```
-github "drmohundro/SWXMLHash" ~> 1.0
+github "drmohundro/SWXMLHash" ~> 1.1
 ```
 
 ### Manual Installation
@@ -70,6 +71,26 @@ If you're just getting started with SWXMLHash, I'd recommend cloning the reposit
 
 <img src="https://raw.githubusercontent.com/drmohundro/SWXMLHash/assets/swift-playground@2x.png" width="600" alt="Swift Playground" />
 
+## Configuration
+
+SWXMLHash allows for limited configuration in terms of its approach to parsing. To set any of the configuration options, you use the `configure` method, like so:
+
+```swift
+let xml = SWXMLHash.config {
+              config in
+              // set any config options here
+          }.parse(xmlToParse)
+```
+
+The available options at this time are:
+
+* `shouldProcessLazily`
+    * This determines whether not to use lazy loading of the XML. It can significantly increase the performance of parsing if your XML is very large.
+    * Defaults to `false`
+* `shouldProcessNamespaces`
+    * This setting is forwarded on to the internal `NSXMLParser` instance. It will return any XML elements without their namespace parts (i.e. "\<h:table\>" will be returned as "\<table\>")
+    * Defaults to `false`
+
 ## Examples
 
 All examples below can be found in the included specs.
@@ -80,7 +101,16 @@ All examples below can be found in the included specs.
 let xml = SWXMLHash.parse(xmlToParse)
 ```
 
-Alternatively, for lazy parsing support, you call `lazy` instead of `parse`. Lazy loading avoids loading the entire XML document into memory, so it could be preferable for performance reasons. See the error handling for one caveat regarding lazy loading.
+Alternatively, if you're parsing a large XML file and need the best performance, you may wish to configure the parsing to be processed lazily. Lazy processing avoids loading the entire XML document into memory, so it could be preferable for performance reasons. See the error handling for one caveat regarding lazy loading.
+
+```swift
+let xml = SWXMLHash.config {
+              config in
+              config.shouldProcessLazily = true
+          }.parse(xmlToParse)
+```
+
+The above approach uses the new config method, but there is also a `lazy` method directly off of `SWXMLHash`.
 
 ```swift
 let xml = SWXMLHash.lazy(xmlToParse)
