@@ -152,7 +152,7 @@ class SWXMLHashLazyTests: QuickSpec {
         var xml = XMLIndexer("to be set")
 
         beforeEach {
-            xml = SWXMLHash.lazy(xmlToParse)
+            xml = SWXMLHash.config { config in config.shouldProcessLazily = true }.parse(xmlToParse)
         }
 
         describe("lazy xml parsing") {
