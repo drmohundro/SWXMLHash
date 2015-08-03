@@ -335,8 +335,8 @@
 			projectRoot = "";
 			targets = (
 				CD6083EE196CA106000B4F8D /* SWXMLHash */,
-				CD6083F9196CA106000B4F8D /* SWXMLHashTests */,
 				CD9D052B1A757D8B003CCB21 /* SWXMLHashOSX */,
+				CD6083F9196CA106000B4F8D /* SWXMLHashTests */,
 				CD9D05351A757D8B003CCB21 /* SWXMLHashOSXTests */,
 			);
 		};
@@ -536,7 +536,7 @@
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -588,6 +588,7 @@
 		CD9D05401A757D8B003CCB21 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -613,6 +614,7 @@
 		CD9D05411A757D8B003CCB21 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
