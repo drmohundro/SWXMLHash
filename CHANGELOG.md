@@ -1,3 +1,7 @@
+## v1.1.1 (August 3, 2015)
+
+* Changed code signing options on the project to not code sign for OSX and to target iOS Developer.
+
 ## v1.1.0 (June 20, 2015)
 
 * Add `configure` method off of `SWXMLHash` to allow for setting variable number of options.
