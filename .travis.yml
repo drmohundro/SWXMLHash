@@ -2,7 +2,7 @@ language: objective-c
 osx_image: xcode6.4
 
 before_install:
-  - brew update
+  - brew update; brew update
   - brew upgrade xctool
   - brew install carthage
 
