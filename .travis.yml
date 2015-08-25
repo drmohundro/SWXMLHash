@@ -1,5 +1,13 @@
 language: objective-c
 osx_image: xcode6.4
 
+before_install:
+  - brew update
+  - brew upgrade xctool
+  - brew install carthage
+
+  - carthage bootstrap --no-build
+  - carthage build --no-skip-current
+
 script:
-- ./Scripts/build.sh
+  - ./Scripts/build.sh
