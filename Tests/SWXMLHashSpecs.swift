@@ -53,7 +53,8 @@ class SWXMLHashTests: QuickSpec {
             }
 
             it("should be able to iterate element groups") {
-                expect(", ".join(xml["root"]["catalog"]["book"].all.map { $0["genre"].element!.text! })).to(equal("Computer, Fantasy, Fantasy"))
+                let result = xml["root"]["catalog"]["book"].all.map({ $0["genre"].element!.text! }).joinWithSeparator(", ")
+                expect(result).to(equal("Computer, Fantasy, Fantasy"))
             }
 
             it("should be able to iterate element groups even if only one element is found") {
@@ -74,7 +75,8 @@ class SWXMLHashTests: QuickSpec {
             }
 
             it("should be able to enumerate children") {
-                expect(", ".join(xml["root"]["catalog"]["book"][0].children.map{ $0.element!.name })).to(equal("author, title, genre, price, publish_date, description"))
+                let result = xml["root"]["catalog"]["book"][0].children.map({ $0.element!.name }).joinWithSeparator(", ")
+                expect(result).to(equal("author, title, genre, price, publish_date, description"))
             }
 
             it("should be able to handle mixed content") {
@@ -85,7 +87,8 @@ class SWXMLHashTests: QuickSpec {
                 let interleavedXml = "<html><body><p>one</p><div>two</div><p>three</p><div>four</div></body></html>"
                 let parsed = SWXMLHash.parse(interleavedXml)
 
-                expect(", ".join(parsed["html"]["body"].children.map{ $0.element!.text! })).to(equal("one, two, three, four"))
+                let result = parsed["html"]["body"].children.map({ $0.element!.text! }).joinWithSeparator(", ")
+                expect(result).to(equal("one, two, three, four"))
             }
 
             it("should be able to provide a description for the document") {
@@ -173,7 +176,8 @@ class SWXMLHashLazyTests: QuickSpec {
             }
 
             it("should be able to iterate element groups") {
-                expect(", ".join(xml["root"]["catalog"]["book"].all.map { $0["genre"].element?.text ?? "" })).to(equal("Computer, Fantasy, Fantasy"))
+                let result = xml["root"]["catalog"]["book"].all.map({ $0["genre"].element?.text ?? "" }).joinWithSeparator(", ")
+                expect(result).to(equal("Computer, Fantasy, Fantasy"))
             }
 
             it("should be able to iterate element groups even if only one element is found") {
@@ -194,7 +198,8 @@ class SWXMLHashLazyTests: QuickSpec {
             }
 
             it("should be able to enumerate children") {
-                expect(", ".join(xml["root"]["catalog"]["book"][0].children.map{ $0.element?.name ?? "" })).to(equal("author, title, genre, price, publish_date, description"))
+                let result = xml["root"]["catalog"]["book"][0].children.map({ $0.element?.name ?? "" }).joinWithSeparator(", ")
+                expect(result).to(equal("author, title, genre, price, publish_date, description"))
             }
 
             it("should be able to handle mixed content") {
@@ -205,7 +210,8 @@ class SWXMLHashLazyTests: QuickSpec {
                 let interleavedXml = "<html><body><p>one</p><div>two</div><p>three</p><div>four</div></body></html>"
                 let parsed = SWXMLHash.lazy(interleavedXml)
 
-                expect(", ".join(parsed["html"]["body"].children.map{ $0.element?.text ?? "" })).to(equal("one, two, three, four"))
+                let result = parsed["html"]["body"].children.map({ $0.element?.text ?? "" }).joinWithSeparator(", ")
+                expect(result).to(equal("one, two, three, four"))
             }
         }
 

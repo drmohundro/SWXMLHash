@@ -485,10 +485,11 @@ extension XMLIndexer: CustomStringConvertible {
     public var description: String {
         switch self {
         case .List(let list):
-            return "\n".join(list.map { $0.description })
+            
+            return list.map { $0.description }.joinWithSeparator("\n")
         case .Element(let elem):
             if elem.name == rootElementName {
-                return "\n".join(elem.children.map { $0.description })
+                return elem.children.map { $0.description }.joinWithSeparator("\n")
             }
 
             return elem.description
@@ -557,7 +558,7 @@ extension XMLElement: CustomStringConvertible {
             }
         }
 
-        var attributesString = " ".join(attributesStringList)
+        var attributesString = attributesStringList.joinWithSeparator(" ")
         if !attributesString.isEmpty {
             attributesString = " " + attributesString
         }
@@ -569,7 +570,7 @@ extension XMLElement: CustomStringConvertible {
                 xmlReturn.append(child.description)
             }
             xmlReturn.append("</\(name)>")
-            return "\n".join(xmlReturn)
+            return xmlReturn.joinWithSeparator("\n")
         }
 
         if text != nil {
