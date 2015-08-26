@@ -65,6 +65,8 @@ github "drmohundro/SWXMLHash" ~> 1.1
 
 To install manually, you'll need to clone the SWXMLHash repository. You can do this in a separate directory or you can make use of git submodules - in this case, git submodules are recommended so that your repository has details about which commit of SWXMLHash you're using. Once this is done, you can just drop the `SWXMLHash.swift` file into your project.
 
+> NOTE: if you're targeting iOS 7, you'll have to install manually because embedded frameworks require a minimum deployment target of iOS 8 or OSX Mavericks.
+
 ## Getting Started
 
 If you're just getting started with SWXMLHash, I'd recommend cloning the repository down and opening the workspace. I've included a Swift playground in the workspace which makes it *very* easy to experiment with the API and the calls.
