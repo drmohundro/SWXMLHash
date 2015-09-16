@@ -304,9 +304,9 @@ public enum XMLIndexer: SequenceType {
     case Element(XMLElement)
     case List([XMLElement])
     case Stream(IndexOps)
-    case Error(XMLIndexerError)
+    case XMLError(Error)
     
-    public enum XMLIndexerError: ErrorType {
+    public enum Error: ErrorType {
         case Attribute(attr: String)
         case AttributeValue(attr: String, value: String)
         case Key(key: String)
@@ -376,17 +376,17 @@ public enum XMLIndexer: SequenceType {
             if let elem = list.filter({$0.attributes[attr] == value}).first {
                 return .Element(elem)
             }
-            throw XMLIndexerError.AttributeValue(attr: attr, value: value)
+            throw Error.AttributeValue(attr: attr, value: value)
         case .Element(let elem):
             if let attr = elem.attributes[attr] {
                 if attr == value {
                     return .Element(elem)
                 }
-                throw XMLIndexerError.AttributeValue(attr: attr, value: value)
+                throw Error.AttributeValue(attr: attr, value: value)
             }
             fallthrough
         default:
-            throw XMLIndexerError.Attribute(attr: attr)
+            throw Error.Attribute(attr: attr)
         }
     }
     
@@ -404,7 +404,7 @@ public enum XMLIndexer: SequenceType {
         case let value as LazyXMLParser:
             self = .Stream(IndexOps(parser: value))
         default:
-            throw XMLIndexerError.Init(instance: rawObject)
+            throw Error.Init(instance: rawObject)
         }
     }
     
@@ -428,9 +428,10 @@ public enum XMLIndexer: SequenceType {
 
     */
     
-    //Because Swift 2 does not support throwing subscripts I added an function that throws.
-    //Maybe can be change in the future if support for throwing subscripts is added.
-    public func key(key: String) throws -> XMLIndexer {
+    // Because Swift 2 does not support throwing subscripts use the byKey and byIndex function instead
+    // TODO: Change to throwing subscripts if avaiable in futher releases
+    
+    public func byKey(key: String) throws -> XMLIndexer {
         switch self {
         case .Stream(let opStream):
             let op = IndexOp(key)
@@ -448,7 +449,7 @@ public enum XMLIndexer: SequenceType {
             }
             fallthrough
         default:
-            throw XMLIndexerError.Key(key: key)
+            throw Error.Key(key: key)
         }
     }
     
@@ -463,11 +464,11 @@ public enum XMLIndexer: SequenceType {
     
     public subscript(key: String) -> XMLIndexer {
         do {
-           return try self.key(key)
-        } catch let error as XMLIndexerError {
-            return .Error(error)
+           return try self.byKey(key)
+        } catch let error as Error {
+            return .XMLError(error)
         } catch {
-            return .Error(.Key(key: key))
+            return .XMLError(.Key(key: key))
         }
     }
     
@@ -479,8 +480,9 @@ public enum XMLIndexer: SequenceType {
     - returns: instance of XMLIndexer to match the element (or elements) found by key
     */
     
-    //Because Swift 2 does not support throwing subscripts I added an function that throws.
-    public func idx(index: Int) throws -> XMLIndexer {
+    // TODO: Change to throwing subscripts if avaiable in futher releases
+    
+    public func byIndex(index: Int) throws -> XMLIndexer {
         switch self {
         case .Stream(let opStream):
             opStream.ops[opStream.ops.count - 1].index = index
@@ -489,24 +491,24 @@ public enum XMLIndexer: SequenceType {
             if index <= list.count {
                 return .Element(list[index])
             }
-            return .Error(.Index(idx: index))
+            return .XMLError(.Index(idx: index))
         case .Element(let elem):
             if index == 0 {
                 return .Element(elem)
             }
             fallthrough
         default:
-            return .Error(.Index(idx: index))
+            return .XMLError(.Index(idx: index))
         }
     }
     
     public subscript(index: Int) -> XMLIndexer {
         do {
-            return try idx(index)
-        }  catch let error as XMLIndexerError {
-            return .Error(error)
+            return try byIndex(index)
+        }  catch let error as Error {
+            return .XMLError(error)
         } catch {
-            return .Error(.Index(idx: index))
+            return .XMLError(.Index(idx: index))
         }
     }
     
@@ -522,7 +524,7 @@ extension XMLIndexer: BooleanType {
     /// True if a valid XMLIndexer, false if an error type
     public var boolValue: Bool {
         switch self {
-        case .Error:
+        case .XMLError:
             return false
         default:
             return true
@@ -534,10 +536,10 @@ extension XMLIndexer: CustomStringConvertible {
     public var description: String {
         switch self {
         case .List(let list):
-            return "\n".join(list.map { $0.description })
+            return list.map { $0.description }.joinWithSeparator("\n")
         case .Element(let elem):
             if elem.name == rootElementName {
-                return "\n".join(elem.children.map { $0.description })
+                return elem.children.map { $0.description }.joinWithSeparator("\n")
             }
             
             return elem.description
@@ -547,7 +549,7 @@ extension XMLIndexer: CustomStringConvertible {
     }
 }
 
-extension XMLIndexer.XMLIndexerError: CustomStringConvertible {
+extension XMLIndexer.Error: CustomStringConvertible {
     public var description: String {
         switch self {
         case .Attribute(let attr):
@@ -625,7 +627,7 @@ extension XMLElement: CustomStringConvertible {
             }
         }
         
-        var attributesString = " ".join(attributesStringList)
+        var attributesString = attributesStringList.joinWithSeparator(" ")
         if !attributesString.isEmpty {
             attributesString = " " + attributesString
         }
@@ -637,7 +639,7 @@ extension XMLElement: CustomStringConvertible {
                 xmlReturn.append(child.description)
             }
             xmlReturn.append("</\(name)>")
-            return "\n".join(xmlReturn)
+            return xmlReturn.joinWithSeparator("\n")
         }
         
         if text != nil {

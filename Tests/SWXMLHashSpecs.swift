@@ -122,26 +122,26 @@ class SWXMLHashTests: QuickSpec {
             }
 
             it("should provide an error object when keys don't match") {
-                var err: XMLIndexer.XMLIndexerError?
+                var err: XMLIndexer.Error?
                 defer {
                     expect(err).toNot(beNil())
                 }
                 do {
-                    try xml!.key("root").key("what").key("header").key("foo")
-                } catch let error as XMLIndexer.XMLIndexerError {
+                    try xml!.byKey("root").byKey("what").byKey("header").byKey("foo")
+                } catch let error as XMLIndexer.Error {
                     err = error
                 } catch { err = nil }
                 
             }
 
             it("should provide an error element when indexers don't match") {
-                var err: XMLIndexer.XMLIndexerError?
+                var err: XMLIndexer.Error?
                 defer {
                     expect(err).toNot(beNil())
                 }
                 do {
-                    try xml!.key("what").key("subelement").idx(5).key("nomatch")
-                } catch let error as XMLIndexer.XMLIndexerError {
+                    try xml!.byKey("what").byKey("subelement").byIndex(5).byKey("nomatch")
+                } catch let error as XMLIndexer.Error {
                     err = error
                 } catch { err = nil }
             }
