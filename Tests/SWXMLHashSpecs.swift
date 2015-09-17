@@ -146,6 +146,17 @@ class SWXMLHashTests: QuickSpec {
                     err = error
                 } catch { err = nil }
             }
+
+            it("should still return errors when accessing via subscripting") {
+                var err: XMLIndexer.Error? = nil
+                switch xml!["what"]["subelement"][5]["nomatch"] {
+                case .XMLError(let error):
+                    err = error
+                default:
+                    err = nil
+                }
+                expect(err).toNot(beNil())
+            }
         }
     }
 }
