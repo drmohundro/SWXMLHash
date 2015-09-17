@@ -29,7 +29,7 @@ class SWXMLHashTests: QuickSpec {
     override func spec() {
         let xmlToParse = "<root><header>header mixed content<title>Test Title Header</title>more mixed content</header><catalog><book id=\"bk101\"><author>Gambardella, Matthew</author><title>XML Developer's Guide</title><genre>Computer</genre><price>44.95</price><publish_date>2000-10-01</publish_date><description>An in-depth look at creating applications with XML.</description></book><book id=\"bk102\"><author>Ralls, Kim</author><title>Midnight Rain</title><genre>Fantasy</genre><price>5.95</price><publish_date>2000-12-16</publish_date><description>A former architect battles corporate zombies, an evil sorceress, and her own childhood to become queen of the world.</description></book><book id=\"bk103\"><author>Corets, Eva</author><title>Maeve Ascendant</title><genre>Fantasy</genre><price>5.95</price><publish_date>2000-11-17</publish_date><description>After the collapse of a nanotechnology society in England, the young survivors lay the foundation for a new society.</description></book></catalog></root>"
 
-        var xml = XMLIndexer("to be set")
+        var xml: XMLIndexer?
 
         beforeEach {
             xml = SWXMLHash.parse(xmlToParse)
@@ -37,37 +37,37 @@ class SWXMLHashTests: QuickSpec {
 
         describe("xml parsing") {
             it("should be able to parse individual elements") {
-                expect(xml["root"]["header"]["title"].element?.text).to(equal("Test Title Header"))
+                expect(xml!["root"]["header"]["title"].element?.text).to(equal("Test Title Header"))
             }
 
             it("should be able to parse element groups") {
-                expect(xml["root"]["catalog"]["book"][1]["author"].element?.text).to(equal("Ralls, Kim"))
+                expect(xml!["root"]["catalog"]["book"][1]["author"].element?.text).to(equal("Ralls, Kim"))
             }
 
             it("should be able to parse attributes") {
-                expect(xml["root"]["catalog"]["book"][1].element?.attributes["id"]).to(equal("bk102"))
+                expect(xml!["root"]["catalog"]["book"][1].element?.attributes["id"]).to(equal("bk102"))
             }
 
             it("should be able to look up elements by name and attribute") {
-                expect(xml["root"]["catalog"]["book"].withAttr("id", "bk102")["author"].element?.text).to(equal("Ralls, Kim"))
+                expect(try! xml!["root"]["catalog"]["book"].withAttr("id", "bk102")["author"].element?.text).to(equal("Ralls, Kim"))
             }
 
             it("should be able to iterate element groups") {
-                let result = xml["root"]["catalog"]["book"].all.map({ $0["genre"].element!.text! }).joinWithSeparator(", ")
+                let result = xml!["root"]["catalog"]["book"].all.map({ $0["genre"].element!.text! }).joinWithSeparator(", ")
                 expect(result).to(equal("Computer, Fantasy, Fantasy"))
             }
 
             it("should be able to iterate element groups even if only one element is found") {
-                expect(xml["root"]["header"]["title"].all.count).to(equal(1))
+                expect(xml!["root"]["header"]["title"].all.count).to(equal(1))
             }
 
             it("should be able to index element groups even if only one element is found") {
-                expect(xml["root"]["header"]["title"][0].element?.text).to(equal("Test Title Header"))
+                expect(xml!["root"]["header"]["title"][0].element?.text).to(equal("Test Title Header"))
             }
 
             it("should be able to iterate using for-in") {
                 var count = 0
-                for _ in xml["root"]["catalog"]["book"] {
+                for _ in xml!["root"]["catalog"]["book"] {
                     count++
                 }
 
@@ -75,12 +75,12 @@ class SWXMLHashTests: QuickSpec {
             }
 
             it("should be able to enumerate children") {
-                let result = xml["root"]["catalog"]["book"][0].children.map({ $0.element!.name }).joinWithSeparator(", ")
+                let result = xml!["root"]["catalog"]["book"][0].children.map({ $0.element!.name }).joinWithSeparator(", ")
                 expect(result).to(equal("author, title, genre, price, publish_date, description"))
             }
 
             it("should be able to handle mixed content") {
-                expect(xml["root"]["header"].element?.text).to(equal("header mixed contentmore mixed content"))
+                expect(xml!["root"]["header"].element?.text).to(equal("header mixed contentmore mixed content"))
             }
 
             it("should handle interleaving XML elements") {
@@ -100,7 +100,7 @@ class SWXMLHashTests: QuickSpec {
         }
 
         describe("white space parsing") {
-            var xml = XMLIndexer("to be set")
+            var xml: XMLIndexer?
 
             beforeEach {
                 let bundle = NSBundle(forClass: SWXMLHashTests.self)
@@ -110,39 +110,41 @@ class SWXMLHashTests: QuickSpec {
             }
 
             it("should be able to pull text between elements without whitespace (issue #6)") {
-                expect(xml["niotemplate"]["section"][0]["constraint"][1].element?.text).to(equal("H:|-15-[title]-15-|"))
+                expect(xml!["niotemplate"]["section"][0]["constraint"][1].element?.text).to(equal("H:|-15-[title]-15-|"))
             }
 
             it("should be able to correctly parse CDATA sections *with* whitespace") {
-                expect(xml["niotemplate"]["other"].element?.text).to(equal("\n        \n  this\n  has\n  white\n  space\n        \n    "))
+                expect(xml!["niotemplate"]["other"].element?.text).to(equal("\n        \n  this\n  has\n  white\n  space\n        \n    "))
             }
         }
 
         describe("xml parsing error scenarios") {
             it("should return nil when keys don't match") {
-                expect(xml["root"]["what"]["header"]["foo"].element?.name).to(beNil())
+                expect(xml!["root"]["what"]["header"]["foo"].element?.name).to(beNil())
             }
 
             it("should provide an error object when keys don't match") {
-                var err: NSError? = nil
-                switch xml["root"]["what"]["header"]["foo"] {
-                case .Error(let error):
-                    err = error
-                default:
-                    err = nil
+                var err: XMLIndexer.Error?
+                defer {
+                    expect(err).toNot(beNil())
                 }
-                expect(err).toNot(beNil())
+                do {
+                    try xml!.byKey("root").byKey("what").byKey("header").byKey("foo")
+                } catch let error as XMLIndexer.Error {
+                    err = error
+                } catch { err = nil }   
             }
 
             it("should provide an error element when indexers don't match") {
-                var err: NSError? = nil
-                switch xml["what"]["subelement"][5]["nomatch"] {
-                case .Error(let error):
-                    err = error
-                default:
-                    err = nil
+                var err: XMLIndexer.Error?
+                defer {
+                    expect(err).toNot(beNil())
                 }
-                expect(err).toNot(beNil())
+                do {
+                    try xml!.byKey("what").byKey("subelement").byIndex(5).byKey("nomatch")
+                } catch let error as XMLIndexer.Error {
+                    err = error
+                } catch { err = nil }
             }
         }
     }
@@ -152,7 +154,7 @@ class SWXMLHashLazyTests: QuickSpec {
     override func spec() {
         let xmlToParse = "<root><header>header mixed content<title>Test Title Header</title>more mixed content</header><catalog><book id=\"bk101\"><author>Gambardella, Matthew</author><title>XML Developer's Guide</title><genre>Computer</genre><price>44.95</price><publish_date>2000-10-01</publish_date><description>An in-depth look at creating applications with XML.</description></book><book id=\"bk102\"><author>Ralls, Kim</author><title>Midnight Rain</title><genre>Fantasy</genre><price>5.95</price><publish_date>2000-12-16</publish_date><description>A former architect battles corporate zombies, an evil sorceress, and her own childhood to become queen of the world.</description></book><book id=\"bk103\"><author>Corets, Eva</author><title>Maeve Ascendant</title><genre>Fantasy</genre><price>5.95</price><publish_date>2000-11-17</publish_date><description>After the collapse of a nanotechnology society in England, the young survivors lay the foundation for a new society.</description></book></catalog></root>"
 
-        var xml = XMLIndexer("to be set")
+        var xml: XMLIndexer?
 
         beforeEach {
             xml = SWXMLHash.config { config in config.shouldProcessLazily = true }.parse(xmlToParse)
@@ -160,37 +162,37 @@ class SWXMLHashLazyTests: QuickSpec {
 
         describe("lazy xml parsing") {
             it("should be able to parse individual elements") {
-                expect(xml["root"]["header"]["title"].element?.text).to(equal("Test Title Header"))
+                expect(xml!["root"]["header"]["title"].element?.text).to(equal("Test Title Header"))
             }
 
             it("should be able to parse element groups") {
-                expect(xml["root"]["catalog"]["book"][1]["author"].element?.text).to(equal("Ralls, Kim"))
+                expect(xml!["root"]["catalog"]["book"][1]["author"].element?.text).to(equal("Ralls, Kim"))
             }
 
             it("should be able to parse attributes") {
-                expect(xml["root"]["catalog"]["book"][1].element?.attributes["id"]).to(equal("bk102"))
+                expect(xml!["root"]["catalog"]["book"][1].element?.attributes["id"]).to(equal("bk102"))
             }
 
             it("should be able to look up elements by name and attribute") {
-                expect(xml["root"]["catalog"]["book"].withAttr("id", "bk102")["author"].element?.text).to(equal("Ralls, Kim"))
+                expect(try! xml!["root"]["catalog"]["book"].withAttr("id", "bk102")["author"].element?.text).to(equal("Ralls, Kim"))
             }
 
             it("should be able to iterate element groups") {
-                let result = xml["root"]["catalog"]["book"].all.map({ $0["genre"].element?.text ?? "" }).joinWithSeparator(", ")
+                let result = xml!["root"]["catalog"]["book"].all.map({ $0["genre"].element?.text ?? "" }).joinWithSeparator(", ")
                 expect(result).to(equal("Computer, Fantasy, Fantasy"))
             }
 
             it("should be able to iterate element groups even if only one element is found") {
-                expect(xml["root"]["header"]["title"].all.count).to(equal(1))
+                expect(xml!["root"]["header"]["title"].all.count).to(equal(1))
             }
 
             it("should be able to index element groups even if only one element is found") {
-                expect(xml["root"]["header"]["title"][0].element?.text).to(equal("Test Title Header"))
+                expect(xml!["root"]["header"]["title"][0].element?.text).to(equal("Test Title Header"))
             }
 
             it("should be able to iterate using for-in") {
                 var count = 0
-                for _ in xml["root"]["catalog"]["book"] {
+                for _ in xml!["root"]["catalog"]["book"] {
                     count++
                 }
 
@@ -198,12 +200,12 @@ class SWXMLHashLazyTests: QuickSpec {
             }
 
             it("should be able to enumerate children") {
-                let result = xml["root"]["catalog"]["book"][0].children.map({ $0.element?.name ?? "" }).joinWithSeparator(", ")
+                let result = xml!["root"]["catalog"]["book"][0].children.map({ $0.element?.name ?? "" }).joinWithSeparator(", ")
                 expect(result).to(equal("author, title, genre, price, publish_date, description"))
             }
 
             it("should be able to handle mixed content") {
-                expect(xml["root"]["header"].element?.text).to(equal("header mixed contentmore mixed content"))
+                expect(xml!["root"]["header"].element?.text).to(equal("header mixed contentmore mixed content"))
             }
 
             it("should handle interleaving XML elements") {
@@ -216,7 +218,7 @@ class SWXMLHashLazyTests: QuickSpec {
         }
 
         describe("white space parsing") {
-            var xml = XMLIndexer("to be set")
+            var xml: XMLIndexer?
 
             beforeEach {
                 let bundle = NSBundle(forClass: SWXMLHashTests.self)
@@ -226,17 +228,17 @@ class SWXMLHashLazyTests: QuickSpec {
             }
 
             it("should be able to pull text between elements without whitespace (issue #6)") {
-                expect(xml["niotemplate"]["section"][0]["constraint"][1].element?.text).to(equal("H:|-15-[title]-15-|"))
+                expect(xml!["niotemplate"]["section"][0]["constraint"][1].element?.text).to(equal("H:|-15-[title]-15-|"))
             }
 
             it("should be able to correctly parse CDATA sections *with* whitespace") {
-                expect(xml["niotemplate"]["other"].element?.text).to(equal("\n        \n  this\n  has\n  white\n  space\n        \n    "))
+                expect(xml!["niotemplate"]["other"].element?.text).to(equal("\n        \n  this\n  has\n  white\n  space\n        \n    "))
             }
         }
 
         describe("xml parsing error scenarios") {
             it("should return nil when keys don't match") {
-                expect(xml["root"]["what"]["header"]["foo"].element?.name).to(beNil())
+                expect(xml!["root"]["what"]["header"]["foo"].element?.name).to(beNil())
             }
         }
     }
@@ -245,7 +247,7 @@ class SWXMLHashLazyTests: QuickSpec {
 class SWXMLHashConfigSpecs: QuickSpec {
     override func spec() {
         describe("optional configuration options for NSXMLParser") {
-            var parser = XMLIndexer("not set")
+            var parser: XMLIndexer?
             let xmlWithNamespace = "<root xmlns:h=\"http://www.w3.org/TR/html4/\"" +
                 "  xmlns:f=\"http://www.w3schools.com/furniture\">" +
                 "  <h:table>" +
@@ -263,7 +265,7 @@ class SWXMLHashConfigSpecs: QuickSpec {
             }
 
             it("should allow processing namespaces or not") {
-                expect(parser["root"]["table"]["tr"]["td"][0].element?.text).to(equal("Apples"))
+                expect(parser!["root"]["table"]["tr"]["td"][0].element?.text).to(equal("Apples"))
             }
         }
     }

@@ -304,7 +304,16 @@ public enum XMLIndexer: SequenceType {
     case Element(XMLElement)
     case List([XMLElement])
     case Stream(IndexOps)
-    case Error(NSError)
+    case XMLError(Error)
+
+    public enum Error: ErrorType {
+        case Attribute(attr: String)
+        case AttributeValue(attr: String, value: String)
+        case Key(key: String)
+        case Index(idx: Int)
+        case Init(instance: AnyObject)
+        case Error
+    }
 
     /// The underlying XMLElement at the currently indexed level of XML.
     public var element: XMLElement? {
@@ -357,29 +366,27 @@ public enum XMLIndexer: SequenceType {
 
     - returns: instance of XMLIndexer
     */
-    public func withAttr(attr: String, _ value: String) -> XMLIndexer {
-        let attrUserInfo = [NSLocalizedDescriptionKey: "XML Attribute Error: Missing attribute [\"\(attr)\"]"]
-        let valueUserInfo = [NSLocalizedDescriptionKey: "XML Attribute Error: Missing attribute [\"\(attr)\"] with value [\"\(value)\"]"]
+    public func withAttr(attr: String, _ value: String) throws -> XMLIndexer {
         switch self {
         case .Stream(let opStream):
             opStream.stringify()
             let match = opStream.findElements()
-            return match.withAttr(attr, value)
+            return try match.withAttr(attr, value)
         case .List(let list):
             if let elem = list.filter({$0.attributes[attr] == value}).first {
                 return .Element(elem)
             }
-            return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: valueUserInfo))
+            throw Error.AttributeValue(attr: attr, value: value)
         case .Element(let elem):
             if let attr = elem.attributes[attr] {
                 if attr == value {
                     return .Element(elem)
                 }
-                return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: valueUserInfo))
+                throw Error.AttributeValue(attr: attr, value: value)
             }
-            return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: attrUserInfo))
+            fallthrough
         default:
-            return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: attrUserInfo))
+            throw Error.Attribute(attr: attr)
         }
     }
 
@@ -390,26 +397,40 @@ public enum XMLIndexer: SequenceType {
 
     - returns: instance of XMLIndexer
     */
-    public init(_ rawObject: AnyObject) {
+    public init(_ rawObject: AnyObject) throws {
         switch rawObject {
         case let value as XMLElement:
             self = .Element(value)
         case let value as LazyXMLParser:
             self = .Stream(IndexOps(parser: value))
         default:
-            self = .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: nil))
+            throw Error.Init(instance: rawObject)
         }
     }
 
+    public init(_ el: XMLElement) {
+        self = .Element(el)
+    }
+
+    init(_ stream: LazyXMLParser) {
+        self = .Stream(IndexOps(parser: stream))
+    }
+    
     /**
     Find an XML element at the current level by element name
 
     - parameter key: The element name to index by
 
     - returns: instance of XMLIndexer to match the element (or elements) found by key
+
+    - errors: throws a XMLIndexerError.Key if no element was found
+
     */
-    public subscript(key: String) -> XMLIndexer {
-        let userInfo = [NSLocalizedDescriptionKey: "XML Element Error: Incorrect key [\"\(key)\"]"]
+    
+    // Because Swift 2 does not support throwing subscripts use the byKey and byIndex function instead
+    // TODO: Change to throwing subscripts if avaiable in futher releases
+
+    public func byKey(key: String) throws -> XMLIndexer {
         switch self {
         case .Stream(let opStream):
             let op = IndexOp(key)
@@ -425,9 +446,28 @@ public enum XMLIndexer: SequenceType {
                     return .List(match)
                 }
             }
-            return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: userInfo))
+            fallthrough
         default:
-            return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: userInfo))
+            throw Error.Key(key: key)
+        }
+    }
+
+    /**
+    Find an XML element at the current level by element name
+
+    - parameter key: The element name to index by
+
+    - returns: instance of XMLIndexer to match the element (or elements) found by
+
+    */
+
+    public subscript(key: String) -> XMLIndexer {
+        do {
+           return try self.byKey(key)
+        } catch let error as Error {
+            return .XMLError(error)
+        } catch {
+            return .XMLError(.Key(key: key))
         }
     }
 
@@ -438,8 +478,10 @@ public enum XMLIndexer: SequenceType {
 
     - returns: instance of XMLIndexer to match the element (or elements) found by key
     */
-    public subscript(index: Int) -> XMLIndexer {
-        let userInfo = [NSLocalizedDescriptionKey: "XML Element Error: Incorrect index [\"\(index)\"]"]
+
+    // TODO: Change to throwing subscripts if avaiable in futher releases
+
+    public func byIndex(index: Int) throws -> XMLIndexer {
         switch self {
         case .Stream(let opStream):
             opStream.ops[opStream.ops.count - 1].index = index
@@ -448,16 +490,24 @@ public enum XMLIndexer: SequenceType {
             if index <= list.count {
                 return .Element(list[index])
             }
-            return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: userInfo))
+            return .XMLError(.Index(idx: index))
         case .Element(let elem):
             if index == 0 {
                 return .Element(elem)
             }
-            else {
-                return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: userInfo))
-            }
+            fallthrough
         default:
-            return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: userInfo))
+            return .XMLError(.Index(idx: index))
+        }
+    }
+
+    public subscript(index: Int) -> XMLIndexer {
+        do {
+            return try byIndex(index)
+        }  catch let error as Error {
+            return .XMLError(error)
+        } catch {
+            return .XMLError(.Index(idx: index))
         }
     }
 
@@ -473,7 +523,7 @@ extension XMLIndexer: BooleanType {
     /// True if a valid XMLIndexer, false if an error type
     public var boolValue: Bool {
         switch self {
-        case .Error:
+        case .XMLError:
             return false
         default:
             return true
@@ -485,7 +535,6 @@ extension XMLIndexer: CustomStringConvertible {
     public var description: String {
         switch self {
         case .List(let list):
-            
             return list.map { $0.description }.joinWithSeparator("\n")
         case .Element(let elem):
             if elem.name == rootElementName {
@@ -495,6 +544,25 @@ extension XMLIndexer: CustomStringConvertible {
             return elem.description
         default:
             return ""
+        }
+    }
+}
+
+extension XMLIndexer.Error: CustomStringConvertible {
+    public var description: String {
+        switch self {
+        case .Attribute(let attr):
+            return "XML Attribute Error: Missing attribute [\"\(attr)\"]"
+        case .AttributeValue(let attr, let value):
+            return "XML Attribute Error: Missing attribute [\"\(attr)\"] with value [\"\(value)\"]"
+        case .Key(let key):
+            return "XML Element Error: Incorrect key [\"\(key)\"]"
+        case .Index(let index):
+            return "XML Element Error: Incorrect index [\"\(index)\"]"
+        case .Init(let instance):
+            return "XML Indexer Error: initialization with Object [\"\(instance)\"]"
+        case .Error:
+            return "Unknown Error"
         }
     }
 }
