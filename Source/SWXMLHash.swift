@@ -45,7 +45,7 @@ public class SWXMLHash {
     }
 
     class public func config(configAction: (SWXMLHashOptions) -> ()) -> SWXMLHash {
-        var opts = SWXMLHashOptions()
+        let opts = SWXMLHashOptions()
         configAction(opts)
         return SWXMLHash(opts)
     }
@@ -62,9 +62,9 @@ public class SWXMLHash {
     /**
     Method to parse XML passed in as a string.
 
-    :param: xml The XML to be parsed
+    - parameter xml: The XML to be parsed
 
-    :returns: An XMLIndexer instance that is used to look up elements in the XML
+    - returns: An XMLIndexer instance that is used to look up elements in the XML
     */
     class public func parse(xml: String) -> XMLIndexer {
         return SWXMLHash().parse(xml)
@@ -73,9 +73,9 @@ public class SWXMLHash {
     /**
     Method to parse XML passed in as an NSData instance.
 
-    :param: xml The XML to be parsed
+    - parameter xml: The XML to be parsed
 
-    :returns: An XMLIndexer instance that is used to look up elements in the XML
+    - returns: An XMLIndexer instance that is used to look up elements in the XML
     */
     class public func parse(data: NSData) -> XMLIndexer {
         return SWXMLHash().parse(data)
@@ -158,7 +158,7 @@ class LazyXMLParser: NSObject, SimpleXmlParser, NSXMLParserDelegate {
         parser.parse()
     }
 
-    func parser(parser: NSXMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [NSObject : AnyObject]) {
+    func parser(parser: NSXMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String: String]) {
 
         elementStack.push(elementName)
 
@@ -169,7 +169,7 @@ class LazyXMLParser: NSObject, SimpleXmlParser, NSXMLParserDelegate {
         parentStack.push(currentNode)
     }
 
-    func parser(parser: NSXMLParser, foundCharacters string: String?) {
+    func parser(parser: NSXMLParser, foundCharacters string: String) {
         if !onMatch() {
             return
         }
@@ -179,7 +179,7 @@ class LazyXMLParser: NSObject, SimpleXmlParser, NSXMLParserDelegate {
             current.text = ""
         }
 
-        parentStack.top().text! += string!
+        parentStack.top().text! += string
     }
 
     func parser(parser: NSXMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
@@ -196,10 +196,10 @@ class LazyXMLParser: NSObject, SimpleXmlParser, NSXMLParserDelegate {
         // we typically want to compare against the elementStack to see if it matches ops, *but*
         // if we're on the first element, we'll instead compare the other direction.
         if elementStack.items.count > ops.count {
-            return startsWith(elementStack.items, ops.map { $0.key })
+            return elementStack.items.startsWith(ops.map { $0.key })
         }
         else {
-            return startsWith(ops.map { $0.key }, elementStack.items)
+            return ops.map { $0.key }.startsWith(elementStack.items)
         }
     }
 }
@@ -229,19 +229,19 @@ class XMLParser: NSObject, SimpleXmlParser, NSXMLParserDelegate {
         return XMLIndexer(root)
     }
 
-    func parser(parser: NSXMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [NSObject : AnyObject]) {
+    func parser(parser: NSXMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String: String]) {
 
         let currentNode = parentStack.top().addElement(elementName, withAttributes: attributeDict)
         parentStack.push(currentNode)
     }
 
-    func parser(parser: NSXMLParser, foundCharacters string: String?) {
+    func parser(parser: NSXMLParser, foundCharacters string: String) {
         let current = parentStack.top()
         if current.text == nil {
             current.text = ""
         }
 
-        parentStack.top().text! += string!
+        parentStack.top().text! += string
     }
 
     func parser(parser: NSXMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
@@ -304,7 +304,16 @@ public enum XMLIndexer: SequenceType {
     case Element(XMLElement)
     case List([XMLElement])
     case Stream(IndexOps)
-    case Error(NSError)
+    case XMLError(Error)
+
+    public enum Error: ErrorType {
+        case Attribute(attr: String)
+        case AttributeValue(attr: String, value: String)
+        case Key(key: String)
+        case Index(idx: Int)
+        case Init(instance: AnyObject)
+        case Error
+    }
 
     /// The underlying XMLElement at the currently indexed level of XML.
     public var element: XMLElement? {
@@ -352,64 +361,76 @@ public enum XMLIndexer: SequenceType {
     /**
     Allows for element lookup by matching attribute values.
 
-    :param: attr should the name of the attribute to match on
-    :param: _ should be the value of the attribute to match on
+    - parameter attr: should the name of the attribute to match on
+    - parameter value: should be the value of the attribute to match on
 
-    :returns: instance of XMLIndexer
+    - returns: instance of XMLIndexer
     */
-    public func withAttr(attr: String, _ value: String) -> XMLIndexer {
-        let attrUserInfo = [NSLocalizedDescriptionKey: "XML Attribute Error: Missing attribute [\"\(attr)\"]"]
-        let valueUserInfo = [NSLocalizedDescriptionKey: "XML Attribute Error: Missing attribute [\"\(attr)\"] with value [\"\(value)\"]"]
+    public func withAttr(attr: String, _ value: String) throws -> XMLIndexer {
         switch self {
         case .Stream(let opStream):
             opStream.stringify()
             let match = opStream.findElements()
-            return match.withAttr(attr, value)
+            return try match.withAttr(attr, value)
         case .List(let list):
             if let elem = list.filter({$0.attributes[attr] == value}).first {
                 return .Element(elem)
             }
-            return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: valueUserInfo))
+            throw Error.AttributeValue(attr: attr, value: value)
         case .Element(let elem):
             if let attr = elem.attributes[attr] {
                 if attr == value {
                     return .Element(elem)
                 }
-                return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: valueUserInfo))
+                throw Error.AttributeValue(attr: attr, value: value)
             }
-            return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: attrUserInfo))
+            fallthrough
         default:
-            return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: attrUserInfo))
+            throw Error.Attribute(attr: attr)
         }
     }
 
     /**
     Initializes the XMLIndexer
 
-    :param: _ should be an instance of XMLElement, but supports other values for error handling
+    - parameter _: should be an instance of XMLElement, but supports other values for error handling
 
-    :returns: instance of XMLIndexer
+    - returns: instance of XMLIndexer
     */
-    public init(_ rawObject: AnyObject) {
+    public init(_ rawObject: AnyObject) throws {
         switch rawObject {
         case let value as XMLElement:
             self = .Element(value)
         case let value as LazyXMLParser:
             self = .Stream(IndexOps(parser: value))
         default:
-            self = .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: nil))
+            throw Error.Init(instance: rawObject)
         }
+    }
+
+    public init(_ el: XMLElement) {
+        self = .Element(el)
+    }
+
+    init(_ stream: LazyXMLParser) {
+        self = .Stream(IndexOps(parser: stream))
     }
 
     /**
     Find an XML element at the current level by element name
 
-    :param: key The element name to index by
+    - parameter key: The element name to index by
 
-    :returns: instance of XMLIndexer to match the element (or elements) found by key
+    - returns: instance of XMLIndexer to match the element (or elements) found by key
+
+    - errors: throws a XMLIndexerError.Key if no element was found
+
     */
-    public subscript(key: String) -> XMLIndexer {
-        let userInfo = [NSLocalizedDescriptionKey: "XML Element Error: Incorrect key [\"\(key)\"]"]
+
+    // Because Swift 2 does not support throwing subscripts use the byKey and byIndex function instead
+    // TODO: Change to throwing subscripts if avaiable in futher releases
+
+    public func byKey(key: String) throws -> XMLIndexer {
         switch self {
         case .Stream(let opStream):
             let op = IndexOp(key)
@@ -425,21 +446,42 @@ public enum XMLIndexer: SequenceType {
                     return .List(match)
                 }
             }
-            return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: userInfo))
+            fallthrough
         default:
-            return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: userInfo))
+            throw Error.Key(key: key)
+        }
+    }
+
+    /**
+    Find an XML element at the current level by element name
+
+    - parameter key: The element name to index by
+
+    - returns: instance of XMLIndexer to match the element (or elements) found by
+
+    */
+
+    public subscript(key: String) -> XMLIndexer {
+        do {
+           return try self.byKey(key)
+        } catch let error as Error {
+            return .XMLError(error)
+        } catch {
+            return .XMLError(.Key(key: key))
         }
     }
 
     /**
     Find an XML element by index within a list of XML Elements at the current level
 
-    :param: index The 0-based index to index by
+    - parameter index: The 0-based index to index by
 
-    :returns: instance of XMLIndexer to match the element (or elements) found by key
+    - returns: instance of XMLIndexer to match the element (or elements) found by key
     */
-    public subscript(index: Int) -> XMLIndexer {
-        let userInfo = [NSLocalizedDescriptionKey: "XML Element Error: Incorrect index [\"\(index)\"]"]
+
+    // TODO: Change to throwing subscripts if avaiable in futher releases
+
+    public func byIndex(index: Int) throws -> XMLIndexer {
         switch self {
         case .Stream(let opStream):
             opStream.ops[opStream.ops.count - 1].index = index
@@ -448,16 +490,24 @@ public enum XMLIndexer: SequenceType {
             if index <= list.count {
                 return .Element(list[index])
             }
-            return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: userInfo))
+            return .XMLError(.Index(idx: index))
         case .Element(let elem):
             if index == 0 {
                 return .Element(elem)
             }
-            else {
-                return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: userInfo))
-            }
+            fallthrough
         default:
-            return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: userInfo))
+            return .XMLError(.Index(idx: index))
+        }
+    }
+
+    public subscript(index: Int) -> XMLIndexer {
+        do {
+            return try byIndex(index)
+        }  catch let error as Error {
+            return .XMLError(error)
+        } catch {
+            return .XMLError(.Index(idx: index))
         }
     }
 
@@ -473,7 +523,7 @@ extension XMLIndexer: BooleanType {
     /// True if a valid XMLIndexer, false if an error type
     public var boolValue: Bool {
         switch self {
-        case .Error:
+        case .XMLError:
             return false
         default:
             return true
@@ -481,19 +531,38 @@ extension XMLIndexer: BooleanType {
     }
 }
 
-extension XMLIndexer: Printable {
+extension XMLIndexer: CustomStringConvertible {
     public var description: String {
         switch self {
         case .List(let list):
-            return "\n".join(list.map { $0.description })
+            return list.map { $0.description }.joinWithSeparator("\n")
         case .Element(let elem):
             if elem.name == rootElementName {
-                return "\n".join(elem.children.map { $0.description })
+                return elem.children.map { $0.description }.joinWithSeparator("\n")
             }
 
             return elem.description
         default:
             return ""
+        }
+    }
+}
+
+extension XMLIndexer.Error: CustomStringConvertible {
+    public var description: String {
+        switch self {
+        case .Attribute(let attr):
+            return "XML Attribute Error: Missing attribute [\"\(attr)\"]"
+        case .AttributeValue(let attr, let value):
+            return "XML Attribute Error: Missing attribute [\"\(attr)\"] with value [\"\(value)\"]"
+        case .Key(let key):
+            return "XML Element Error: Incorrect key [\"\(key)\"]"
+        case .Index(let index):
+            return "XML Element Error: Incorrect index [\"\(index)\"]"
+        case .Init(let instance):
+            return "XML Indexer Error: initialization with Object [\"\(instance)\"]"
+        case .Error:
+            return "Unknown Error"
         }
     }
 }
@@ -514,9 +583,9 @@ public class XMLElement {
     /**
     Initialize an XMLElement instance
 
-    :param: name The name of the element to be initialized
+    - parameter name: The name of the element to be initialized
 
-    :returns: a new instance of XMLElement
+    - returns: a new instance of XMLElement
     */
     init(name: String, index: Int = 0) {
         self.name = name
@@ -526,10 +595,10 @@ public class XMLElement {
     /**
     Adds a new XMLElement underneath this instance of XMLElement
 
-    :param: name The name of the new element to be added
-    :param: withAttributes The attributes dictionary for the element being added
+    - parameter name: The name of the new element to be added
+    - parameter withAttributes: The attributes dictionary for the element being added
 
-    :returns: The XMLElement that has now been added
+    - returns: The XMLElement that has now been added
     */
     func addElement(name: String, withAttributes attributes: NSDictionary) -> XMLElement {
         let element = XMLElement(name: name, index: count)
@@ -548,7 +617,7 @@ public class XMLElement {
     }
 }
 
-extension XMLElement: Printable {
+extension XMLElement: CustomStringConvertible {
     public var description: String {
         var attributesStringList = [String]()
         if !attributes.isEmpty {
@@ -557,7 +626,7 @@ extension XMLElement: Printable {
             }
         }
 
-        var attributesString = " ".join(attributesStringList)
+        var attributesString = attributesStringList.joinWithSeparator(" ")
         if !attributesString.isEmpty {
             attributesString = " " + attributesString
         }
@@ -569,7 +638,7 @@ extension XMLElement: Printable {
                 xmlReturn.append(child.description)
             }
             xmlReturn.append("</\(name)>")
-            return "\n".join(xmlReturn)
+            return xmlReturn.joinWithSeparator("\n")
         }
 
         if text != nil {

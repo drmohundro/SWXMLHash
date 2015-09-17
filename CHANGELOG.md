@@ -1,3 +1,11 @@
+## v2.0.0 (September 16, 2015)
+
+* Added Swift 2.0 / Xcode 7.0 support
+    * While API parity should exist between v1 and v2, the library attempts to support the new error handling support in Swift 2.0 when you call the `byIndex`/`byKey` methods respectively (the subscript methods don't currently support throwing exceptions).
+    * Note that the existing subscript methods can still be used, though.
+* Changed `.Error` to `.XMLError` - this is part of handling Swift 2.0's new error handling support.
+    * The prior `.Error` case received an `NSError` type whereas the new `.XMLError` case receives an `Error` which is an `ErrorType` with various cases to show which part of the parsing threw an error (i.e. `Attribute`, `AttributeValue`, `Key`, `Index`, or `Init`).
+
 ## v1.1.1 (August 3, 2015)
 
 * Changed code signing options on the project to not code sign for OSX and to target iOS Developer.
