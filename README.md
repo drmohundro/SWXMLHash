@@ -37,7 +37,7 @@ Then create a `Podfile` with the following contents:
 source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '8.0'
 
-pod 'SWXMLHash', '~> 1.1.0'
+pod 'SWXMLHash', '~> 2.0.0'
 ```
 
 Finally, run the following command to install it:
@@ -58,7 +58,7 @@ $ brew install carthage
 Then add the following line to your `Cartfile`:
 
 ```
-github "drmohundro/SWXMLHash" ~> 1.1
+github "drmohundro/SWXMLHash" ~> 2.0
 ```
 
 ### Manual Installation
@@ -250,16 +250,28 @@ enumerate(xml)
 
 ### Error Handling
 
+Using Swift 2.0's new error handling feature:
+
+```swift
+do {
+  try xml!.byKey("root").byKey("what").byKey("header").byKey("foo")
+} catch let error as XMLIndexer.Error {
+  // error is an XMLIndexer.Error instance that you can deal with
+}
+```
+
+__Or__ using the existing indexing functionality (__NOTE__ that the `.Error` case has been renamed to `.XMLError` so as to not conflict with the `XMLIndexer.Error` error type):
+
 ```swift
 switch xml["root"]["what"]["header"]["foo"] {
 case .Element(let elem):
   // everything is good, code away!
-case .Error(let error):
-  // error is an NSError instance that you can deal with
+case .XMLError(let error):
+  // error is an XMLIndexer.Error instance that you can deal with
 }
 ```
 
-Note that error handling as show above will not work with lazy loaded XML. The lazy parsing doesn't actually occur until the `element` or `all` method are called - as a result, there isn't any way to know prior to asking for an element if it exists or not.
+Note that error handling as shown above will not work with lazy loaded XML. The lazy parsing doesn't actually occur until the `element` or `all` method are called - as a result, there isn't any way to know prior to asking for an element if it exists or not.
 
 ## Changelog
 
