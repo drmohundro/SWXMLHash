@@ -1,3 +1,7 @@
+## v2.0.1 (September 22, 2015)
+
+* Added `watchos` deployment target for CocoaPods and watchOS support
+
 ## v2.0.0 (September 16, 2015)
 
 * Added Swift 2.0 / Xcode 7.0 support
