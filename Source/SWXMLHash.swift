@@ -179,7 +179,7 @@ class LazyXMLParser: NSObject, SimpleXmlParser, NSXMLParserDelegate {
             current.text = ""
         }
 
-        parentStack.top().text! += string
+        current.text! += string
     }
 
     func parser(parser: NSXMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
@@ -241,7 +241,7 @@ class XMLParser: NSObject, SimpleXmlParser, NSXMLParserDelegate {
             current.text = ""
         }
 
-        parentStack.top().text! += string
+        current.text! += string
     }
 
     func parser(parser: NSXMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
