@@ -62,9 +62,9 @@ public class SWXMLHash {
     /**
     Method to parse XML passed in as a string.
 
-    - parameter xml: The XML to be parsed
+    :param: xml The XML to be parsed
 
-    - returns: An XMLIndexer instance that is used to look up elements in the XML
+    :returns: An XMLIndexer instance that is used to look up elements in the XML
     */
     class public func parse(xml: String) -> XMLIndexer {
         return SWXMLHash().parse(xml)
@@ -73,9 +73,9 @@ public class SWXMLHash {
     /**
     Method to parse XML passed in as an NSData instance.
 
-    - parameter xml: The XML to be parsed
+    :param: xml The XML to be parsed
 
-    - returns: An XMLIndexer instance that is used to look up elements in the XML
+    :returns: An XMLIndexer instance that is used to look up elements in the XML
     */
     class public func parse(data: NSData) -> XMLIndexer {
         return SWXMLHash().parse(data)
@@ -361,10 +361,10 @@ public enum XMLIndexer: SequenceType {
     /**
     Allows for element lookup by matching attribute values.
 
-    - parameter attr: should the name of the attribute to match on
-    - parameter value: should be the value of the attribute to match on
+    :param attr should the name of the attribute to match on
+    :param value should be the value of the attribute to match on
 
-    - returns: instance of XMLIndexer
+    :returns: instance of XMLIndexer
     */
     public func withAttr(attr: String, _ value: String) throws -> XMLIndexer {
         switch self {
@@ -393,9 +393,9 @@ public enum XMLIndexer: SequenceType {
     /**
     Initializes the XMLIndexer
 
-    - parameter _: should be an instance of XMLElement, but supports other values for error handling
+    :param: _ should be an instance of XMLElement, but supports other values for error handling
 
-    - returns: instance of XMLIndexer
+    :returns: instance of XMLIndexer
     */
     public init(_ rawObject: AnyObject) throws {
         switch rawObject {
@@ -419,11 +419,11 @@ public enum XMLIndexer: SequenceType {
     /**
     Find an XML element at the current level by element name
 
-    - parameter key: The element name to index by
+    :parameter: key The element name to index by
 
-    - returns: instance of XMLIndexer to match the element (or elements) found by key
+    :returns: instance of XMLIndexer to match the element (or elements) found by key
 
-    - errors: throws a XMLIndexerError.Key if no element was found
+    :errors: throws a XMLIndexerError.Key if no element was found
 
     */
 
@@ -455,9 +455,9 @@ public enum XMLIndexer: SequenceType {
     /**
     Find an XML element at the current level by element name
 
-    - parameter key: The element name to index by
+    :param: key The element name to index by
 
-    - returns: instance of XMLIndexer to match the element (or elements) found by
+    :returns: instance of XMLIndexer to match the element (or elements) found by
 
     */
 
@@ -474,9 +474,9 @@ public enum XMLIndexer: SequenceType {
     /**
     Find an XML element by index within a list of XML Elements at the current level
 
-    - parameter index: The 0-based index to index by
+    :parameter: index The 0-based index to index by
 
-    - returns: instance of XMLIndexer to match the element (or elements) found by key
+    :returns: instance of XMLIndexer to match the element (or elements) found by key
     */
 
     // TODO: Change to throwing subscripts if avaiable in futher releases
@@ -583,9 +583,9 @@ public class XMLElement {
     /**
     Initialize an XMLElement instance
 
-    - parameter name: The name of the element to be initialized
+    :param: name The name of the element to be initialized
 
-    - returns: a new instance of XMLElement
+    :returns: a new instance of XMLElement
     */
     init(name: String, index: Int = 0) {
         self.name = name
@@ -595,10 +595,10 @@ public class XMLElement {
     /**
     Adds a new XMLElement underneath this instance of XMLElement
 
-    - parameter name: The name of the new element to be added
-    - parameter withAttributes: The attributes dictionary for the element being added
+    :param: name The name of the new element to be added
+    :param: withAttributes The attributes dictionary for the element being added
 
-    - returns: The XMLElement that has now been added
+    :returns: The XMLElement that has now been added
     */
     func addElement(name: String, withAttributes attributes: NSDictionary) -> XMLElement {
         let element = XMLElement(name: name, index: count)
