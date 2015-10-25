@@ -1,3 +1,12 @@
+## v2.0.3 (October 25, 2015)
+
+* Added support for Carthage builds with bitcode
+* Bumped to `xcode7.1` usage of Quick and Nimble
+
+## v2.0.2 (October 21, 2015)
+
+* Added `tvOS` deployment target for CocoaPods and tvOS support
+
 ## v2.0.1 (September 22, 2015)
 
 * Added `watchos` deployment target for CocoaPods and watchOS support
