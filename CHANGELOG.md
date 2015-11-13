@@ -1,3 +1,7 @@
+## v2.0.4 (November 13, 2015)
+
+* Add explicit `watchOS` and `tvOS` targets to the project for better Carthage support
+
 ## v2.0.3 (October 25, 2015)
 
 * Added support for Carthage builds with bitcode
