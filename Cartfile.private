@@ -1,2 +1,2 @@
-github "Quick/Quick" "xcode7.1"
-github "Quick/Nimble" "xcode7.1"
+github "Quick/Quick"
+github "Quick/Nimble"
