@@ -11,8 +11,8 @@ The API takes a lot of inspiration from [SwiftyJSON](https://github.com/SwiftyJS
 
 ## Contents
 
-* [Installation](#installation)
 * [Requirements](#requirements)
+* [Installation](#installation)
 * [Getting Started](#getting-started)
 * [Configuration](#configuration)
 * [Examples](#examples)
