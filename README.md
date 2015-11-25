@@ -12,12 +12,18 @@ The API takes a lot of inspiration from [SwiftyJSON](https://github.com/SwiftyJS
 ## Contents
 
 * [Installation](#installation)
+* [Requirements](#requirements)
 * [Getting Started](#getting-started)
 * [Configuration](#configuration)
 * [Examples](#examples)
 * [Changelog](#changelog)
 * [Contributing](#contributing)
 * [License](#license)
+
+## Requirements
+
+- iOS 8.0+ / Mac OS X 10.9+ / tvOS 9.0+ / watchOS 2.0+
+- Xcode 7.1+
 
 ## Installation
 
