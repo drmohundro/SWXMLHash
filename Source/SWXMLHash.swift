@@ -582,7 +582,7 @@ public class XMLElement {
     */
     func addElement(name: String, withAttributes attributes: NSDictionary) -> XMLElement {
         let element = XMLElement(name: name, index: count)
-        count++
+        count += 1
 
         children.append(element)
 
