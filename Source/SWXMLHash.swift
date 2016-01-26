@@ -171,11 +171,8 @@ class LazyXMLParser: NSObject, SimpleXmlParser, NSXMLParserDelegate {
         }
 
         let current = parentStack.top()
-        if current.text == nil {
-            current.text = ""
-        }
 
-        current.text! += string
+        current.addText(string)
     }
 
     func parser(parser: NSXMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
@@ -233,11 +230,8 @@ class XMLParser: NSObject, SimpleXmlParser, NSXMLParserDelegate {
 
     func parser(parser: NSXMLParser, foundCharacters string: String) {
         let current = parentStack.top()
-        if current.text == nil {
-            current.text = ""
-        }
 
-        current.text! += string
+        current.addText(string)
     }
 
     func parser(parser: NSXMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
@@ -346,8 +340,8 @@ public enum XMLIndexer: SequenceType {
     /// All child elements from the currently indexed level
     public var children: [XMLIndexer] {
         var list = [XMLIndexer]()
-        for elem in all.map({ $0.element! }) {
-            for elem in elem.children {
+        for elem in all.map({ $0.element! }).flatMap({ $0 }) {
+            for elem in elem.xmlChildren {
                 list.append(XMLIndexer(elem))
             }
         }
@@ -425,7 +419,7 @@ public enum XMLIndexer: SequenceType {
             opStream.ops.append(op)
             return .Stream(opStream)
         case .Element(let elem):
-            let match = elem.children.filter({ $0.name == key })
+            let match = elem.xmlChildren.filter({ $0.name == key })
             if match.count > 0 {
                 if match.count == 1 {
                     return .Element(match[0])
@@ -517,10 +511,10 @@ extension XMLIndexer: CustomStringConvertible {
     public var description: String {
         switch self {
         case .List(let list):
-            return list.map { $0.description }.joinWithSeparator("\n")
+            return list.map { $0.description }.joinWithSeparator("")
         case .Element(let elem):
             if elem.name == rootElementName {
-                return elem.children.map { $0.description }.joinWithSeparator("\n")
+                return elem.children.map { $0.description }.joinWithSeparator("")
             }
 
             return elem.description
@@ -549,18 +543,37 @@ extension XMLIndexer.Error: CustomStringConvertible {
     }
 }
 
+/// Models content for an XML doc, whether it is text or XML
+public protocol XMLContent: CustomStringConvertible {
+}
+
+/// Models a text element
+public class TextElement: XMLContent {
+    public let text: String
+    init(text: String) {
+        self.text = text
+    }
+}
+
 /// Models an XML element, including name, text and attributes
-public class XMLElement {
+public class XMLElement: XMLContent {
     /// The name of the element
     public let name: String
-    /// The inner text of the element, if it exists
-    public var text: String?
     /// The attributes of the element
     public var attributes = [String:String]()
 
-    var children = [XMLElement]()
+    /// The inner text of the element, if it exists
+    public var text: String? {
+        return children.map({ $0 as? TextElement }).flatMap({ $0 }).reduce("", combine: { $0 + $1!.text })
+    }
+
+    var children = [XMLContent]()
     var count: Int = 0
     var index: Int
+
+    var xmlChildren: [XMLElement] {
+        return children.map { $0 as? XMLElement }.flatMap { $0 }
+    }
 
     /**
     Initialize an XMLElement instance
@@ -595,6 +608,18 @@ public class XMLElement {
 
         return element
     }
+
+    func addText(text: String) {
+        let elem = TextElement(text: text)
+
+        children.append(elem)
+    }
+}
+
+extension TextElement: CustomStringConvertible {
+    public var description: String {
+        return text
+    }
 }
 
 extension XMLElement: CustomStringConvertible {
@@ -618,7 +643,7 @@ extension XMLElement: CustomStringConvertible {
                 xmlReturn.append(child.description)
             }
             xmlReturn.append("</\(name)>")
-            return xmlReturn.joinWithSeparator("\n")
+            return xmlReturn.joinWithSeparator("")
         }
 
         if text != nil {

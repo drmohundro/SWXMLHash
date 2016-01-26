@@ -2,4 +2,4 @@
 
 set -ev
 
-xctool -scheme SWXMLHash clean build test -sdk iphonesimulator
+xctool -scheme "SWXMLHash iOS" clean build test -sdk iphonesimulator
