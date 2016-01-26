@@ -30,14 +30,14 @@ xml["root"]["h:table"]["h:tr"]["h:td"][0].element!.text!
 // enumerate all child elements (procedurally)
 func enumerate(indexer: XMLIndexer, level: Int) {
     for child in indexer.children {
-        var name = child.element!.name
+        let name = child.element!.name
         print("\(level) \(name)")
 
-        enumerate(child, level + 1)
+        enumerate(child, level: level + 1)
     }
 }
 
-enumerate(xml, 0)
+enumerate(xml, level: 0)
 
 
 // enumerate all child elements (functionally)
