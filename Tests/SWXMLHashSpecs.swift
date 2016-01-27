@@ -95,7 +95,7 @@ class SWXMLHashTests: QuickSpec {
                 let descriptionXml = "<root><foo><what id=\"myId\">puppies</what></foo></root>"
                 let parsed = SWXMLHash.parse(descriptionXml)
 
-                expect(parsed.description).to(equal("<root>\n<foo>\n<what id=\"myId\">puppies</what>\n</foo>\n</root>"))
+                expect(parsed.description).to(equal("<root><foo><what id=\"myId\">puppies</what></foo></root>"))
             }
         }
 
@@ -156,6 +156,19 @@ class SWXMLHashTests: QuickSpec {
                     err = nil
                 }
                 expect(err).toNot(beNil())
+            }
+        }
+
+        describe("mixed text with XML elements") {
+            var xml: XMLIndexer?
+
+            beforeEach {
+                let xmlContent = "<everything><news><content>Here is a cool thing <a href=\"google.com\">A</a> and second cool thing <a href=\"fb.com\">B</a></content></news></everything>"
+                xml = SWXMLHash.parse(xmlContent)
+            }
+
+            it("should be able to get all contents inside of an element") {
+                expect(xml!["everything"]["news"]["content"].description).to(equal("<content>Here is a cool thing <a href=\"google.com\">A</a> and second cool thing <a href=\"fb.com\">B</a></content>"))
             }
         }
     }
