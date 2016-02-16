@@ -1,5 +1,7 @@
 // Playground - noun: a place where people can play
 
+// swiftlint:disable force_unwrapping
+
 import SWXMLHash
 import Foundation
 
