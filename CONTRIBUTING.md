@@ -20,7 +20,7 @@ When reporting issues, please include:
 * Any stack trace or compiler error
 * Code snippets that reproduce the behavior
 
-Bug reports are welcome!
+Both bug reports and feature requests are welcome!
 
 ## Development
 
