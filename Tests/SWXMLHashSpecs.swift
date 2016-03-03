@@ -299,3 +299,188 @@ class SWXMLHashConfigSpecs: QuickSpec {
         }
     }
 }
+
+class SWXMLHashTypeConversionSpecs: QuickSpec {
+    override func spec() {
+        describe("basic types conversion") {
+            var parser: XMLIndexer?
+            let xmlWithBasicTypes = "<root>" +
+                "  <string>the string value</string>" +
+                "  <int>100</int>" +
+                "  <double>100.45</double>" +
+                "  <empty></empty>" +
+                "  <basicItem>" +
+                "    <name>the name of basic item</name>" +
+                "    <price>99.14</price>" +
+                "  </basicItem>" +
+                "</root>"
+            
+            beforeEach {
+                parser = SWXMLHash.parse(xmlWithBasicTypes)
+            }
+            
+            describe("when parsing String") {
+                it("should convert `value` to non-optional") {
+                    let value: String = try! parser!["root"]["string"].value()
+                    expect(value) == "the string value"
+                }
+                
+                it("should convert `empty` to non-optional") {
+                    let value: String = try! parser!["root"]["empty"].value()
+                    expect(value) == ""
+                }
+                
+                it("should throw when converting `missing` to non-optional") {
+                    expect{ try (parser!["root"]["missing"].value() as String) }.to(
+                        throwError(errorType: XMLDeserializationError.self)
+                    )
+                }
+                
+                it("should convert `value` to optional") {
+                    let value: String? = try! parser!["root"]["string"].value()
+                    expect(value) == "the string value"
+                }
+                
+                it("should convert `empty` to optional") {
+                    let value: String? = try! parser!["root"]["empty"].value()
+                    expect(value) == ""
+                }
+                
+                it("should convert `missing` to optional") {
+                    let value: String? = try! parser!["root"]["missing"].value()
+                    expect(value).to(beNil())
+                }
+            }
+            
+            describe("when parsing Int") {
+                it("should convert `value` to non-optional") {
+                    let value: Int = try! parser!["root"]["int"].value()
+                    expect(value) == 100
+                }
+                
+                it("should throw when converting `empty` to non-optional") {
+                    expect{ try (parser!["root"]["empty"].value() as Int) }.to(
+                        throwError(errorType: XMLDeserializationError.self)
+                    )
+                }
+                
+                it("should throw when converting `missing` to non-optional") {
+                    expect{ try (parser!["root"]["missing"].value() as Int) }.to(
+                        throwError(errorType: XMLDeserializationError.self)
+                    )
+                }
+                
+                it("should convert `value` to optional") {
+                    let value: Int? = try! parser!["root"]["int"].value()
+                    expect(value) == 100
+                }
+                
+                it("should convert `empty` to optional") {
+                    expect{ try (parser!["root"]["empty"].value() as Int?) }.to(
+                        throwError(errorType: XMLDeserializationError.self)
+                    )
+                }
+                
+                it("should convert `missing` to optional") {
+                    let value: Int? = try! parser!["root"]["missing"].value()
+                    expect(value).to(beNil())
+                }
+            }
+            
+            describe("when parsing Double") {
+                it("should convert `value` to non-optional") {
+                    let value: Double = try! parser!["root"]["double"].value()
+                    expect(value) == 100.45
+                }
+                
+                it("should throw when converting `empty` to non-optional") {
+                    expect{ try (parser!["root"]["empty"].value() as Double) }.to(
+                        throwError(errorType: XMLDeserializationError.self)
+                    )
+                }
+                
+                it("should throw when converting `missing` to non-optional") {
+                    expect{ try (parser!["root"]["missing"].value() as Double) }.to(
+                        throwError(errorType: XMLDeserializationError.self)
+                    )
+                }
+                
+                it("should convert `value` to optional") {
+                    let value: Double? = try! parser!["root"]["double"].value()
+                    expect(value) == 100.45
+                }
+                
+                it("should convert `empty` to optional") {
+                    expect{ try (parser!["root"]["empty"].value() as Double?) }.to(
+                        throwError(errorType: XMLDeserializationError.self)
+                    )
+                }
+                
+                it("should convert `missing` to optional") {
+                    let value: Double? = try! parser!["root"]["missing"].value()
+                    expect(value).to(beNil())
+                }
+            }
+            
+            describe("when parsing BasicItem") {
+                
+                let correctBasicItem = BasicItem(name: "the name of basic item", price: 99.14)
+                
+                it("should convert `basicItem` to non-optional") {
+                    let value: BasicItem = try! parser!["root"]["basicItem"].value()
+                    expect(value) == correctBasicItem
+                }
+                
+                it("should throw when converting `empty` to non-optional") {
+                    expect{ try (parser!["root"]["empty"].value() as BasicItem) }.to(
+                        throwError(errorType: XMLDeserializationError.self)
+                    )
+                }
+                
+                it("should throw when converting `missing` to non-optional") {
+                    expect{ try (parser!["root"]["missing"].value() as BasicItem) }.to(
+                        throwError(errorType: XMLDeserializationError.self)
+                    )
+                }
+                
+                it("should convert `basicItem` to optional") {
+                    let value: BasicItem? = try! parser!["root"]["basicItem"].value()
+                    expect(value) == correctBasicItem
+                }
+                
+                it("should convert `empty` to optional") {
+                    expect{ try (parser!["root"]["empty"].value() as BasicItem?) }.to(
+                        throwError(errorType: XMLDeserializationError.self)
+                    )
+                }
+                
+                it("should convert `missing` to optional") {
+                    let value: BasicItem? = try! parser!["root"]["missing"].value()
+                    expect(value).to(beNil())
+                }
+            }
+
+        }
+    }
+}
+
+struct BasicItem: XMLIndexerDeserializable {
+    let name: String
+    let price: Double
+    
+    
+    // MARK: - XMLIndexerDeserializable
+    
+    static func deserialize(node: XMLIndexer) throws -> BasicItem {
+        return try BasicItem(
+            name: node["name"].value(),
+            price: node["price"].value()
+        )
+    }
+}
+
+extension BasicItem: Equatable {}
+
+func == (a: BasicItem, b: BasicItem) -> Bool {
+    return a.name == b.name && a.price == b.price
+}

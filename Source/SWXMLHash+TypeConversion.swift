@@ -92,11 +92,21 @@ public extension XMLIndexer {
     // MARK: - XMLIndexerDeserializable
     
     func value<T: XMLIndexerDeserializable>() throws -> T {
-        return try T.deserialize(self)
+        switch self {
+        case .Element:
+            return try T.deserialize(self)
+        default:
+            throw XMLDeserializationError.InvalidNode(node: self)
+        }
     }
     
     func value<T: XMLIndexerDeserializable>() throws -> T? {
-        return try T.deserialize(self)
+        switch self {
+        case .Element:
+            return try T.deserialize(self)
+        default:
+            return nil
+        }
     }
     
     func value<T where T: XMLIndexerDeserializable>() throws -> [T] {
