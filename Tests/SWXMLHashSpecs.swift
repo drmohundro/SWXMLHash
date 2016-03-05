@@ -299,3 +299,22 @@ class SWXMLHashConfigSpecs: QuickSpec {
         }
     }
 }
+
+class CrashSpecs: QuickSpec {
+    override func spec() {
+        describe("byte order mark crash testing") {
+            var xml: XMLIndexer?
+
+            beforeEach {
+                let bundle = NSBundle(forClass: SWXMLHashTests.self)
+                let path = bundle.pathForResource("bom-test", ofType: "xml")
+                let data = NSData(contentsOfFile: path!)
+                xml = SWXMLHash.lazy(data!)
+            }
+
+            it("should not explode") {
+                expect(true)
+            }
+        }
+    }
+}
