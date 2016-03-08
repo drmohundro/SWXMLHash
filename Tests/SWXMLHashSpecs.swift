@@ -459,7 +459,80 @@ class SWXMLHashTypeConversionSpecs: QuickSpec {
                     expect(value).to(beNil())
                 }
             }
+        }
 
+        describe("complex types conversion") {
+            
+            var parser: XMLIndexer?
+            let xmlWithComplexType = "<root>" +
+                "  <complexItem>" +
+                "    <name>the name of complex item</name>" +
+                "    <price>1024</price>" +
+                "    <basicItems>" +
+                "       <basicItem>" +
+                "          <name>item 1</name>" +
+                "          <price>1</price>" +
+                "       </basicItem>" +
+                "       <basicItem>" +
+                "          <name>item 2</name>" +
+                "          <price>2</price>" +
+                "       </basicItem>" +
+                "       <basicItem>" +
+                "          <name>item 3</name>" +
+                "          <price>3</price>" +
+                "       </basicItem>" +
+                "    </basicItems>" +
+                "  </complexItem>" +
+                "  <empty></empty>" +
+                "</root>"
+            
+            let correctComplexItem = ComplexItem(
+                name: "the name of complex item",
+                priceOptional: 1024,
+                basics: [
+                    BasicItem(name: "item 1", price: 1),
+                    BasicItem(name: "item 2", price: 2),
+                    BasicItem(name: "item 3", price: 3),
+                ]
+            )
+            
+            beforeEach {
+                parser = SWXMLHash.parse(xmlWithComplexType)
+            }
+            
+            
+            it("should convert `complexItem` to non-optional") {
+                let value: ComplexItem = try! parser!["root"]["complexItem"].value()
+                expect(value) == correctComplexItem
+            }
+            
+            it("should throw when converting `empty` to non-optional") {
+                expect{ try (parser!["root"]["empty"].value() as ComplexItem) }.to(
+                    throwError(errorType: XMLDeserializationError.self)
+                )
+            }
+            
+            it("should throw when converting `missing` to non-optional") {
+                expect{ try (parser!["root"]["missing"].value() as ComplexItem) }.to(
+                    throwError(errorType: XMLDeserializationError.self)
+                )
+            }
+            
+            it("should convert `complexItem` to optional") {
+                let value: ComplexItem? = try! parser!["root"]["complexItem"].value()
+                expect(value) == correctComplexItem
+            }
+            
+            it("should convert `empty` to optional") {
+                expect{ try (parser!["root"]["empty"].value() as ComplexItem?) }.to(
+                    throwError(errorType: XMLDeserializationError.self)
+                )
+            }
+            
+            it("should convert `missing` to optional") {
+                let value: ComplexItem? = try! parser!["root"]["missing"].value()
+                expect(value).to(beNil())
+            }
         }
     }
 }
@@ -483,4 +556,27 @@ extension BasicItem: Equatable {}
 
 func == (a: BasicItem, b: BasicItem) -> Bool {
     return a.name == b.name && a.price == b.price
+}
+
+struct ComplexItem: XMLIndexerDeserializable {
+    let name: String
+    let priceOptional: Double?
+    let basics: [BasicItem]
+    
+    
+    // MARK: - XMLIndexerDeserializable
+    
+    static func deserialize(node: XMLIndexer) throws -> ComplexItem {
+        return try ComplexItem(
+            name: node["name"].value(),
+            priceOptional: node["price"].value(),
+            basics: node["basicItems"]["basicItem"].value()
+        )
+    }
+}
+
+extension ComplexItem: Equatable {}
+
+func == (a: ComplexItem, b: ComplexItem) -> Bool {
+    return a.name == b.name && a.priceOptional == b.priceOptional && a.basics == b.basics
 }
