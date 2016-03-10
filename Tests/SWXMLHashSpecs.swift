@@ -534,6 +534,93 @@ class SWXMLHashTypeConversionSpecs: QuickSpec {
                 expect(value).to(beNil())
             }
         }
+        
+        describe("array of primitive types conversion") {
+            
+            var parser: XMLIndexer?
+            let xmlWithArraysOfTypes = "<root>" +
+                "<arrayOfGoodInts>" +
+                "   <int>0</int> <int>1</int> <int>2</int> <int>3</int>" +
+                "</arrayOfGoodInts>" +
+                "<arrayOfBadInts>" +
+                "   <int></int> <int>boom</int>" +
+                "</arrayOfBadInts>" +
+                "<arrayOfMixedInts>" +
+                "   <int>0</int> <int>boom</int> <int>2</int> <int>3</int>" +
+                "</arrayOfMixedInts>" +
+                "<empty></empty>" +
+                "</root>"
+            
+            beforeEach {
+                parser = SWXMLHash.parse(xmlWithArraysOfTypes)
+            }
+            
+            it("should convert array of good Ints to non-optional") {
+                let value: [Int] = try! parser!["root"]["arrayOfGoodInts"]["int"].value()
+                expect(value) == [0, 1, 2, 3]
+            }
+            
+            it("should convert array of good Ints to optional") {
+                let value: [Int]? = try! parser!["root"]["arrayOfGoodInts"]["int"].value()
+                expect(value) == [0, 1, 2, 3]
+            }
+
+            it("should convert array of good Ints to array of optionals") {
+                let value: [Int?] = try! parser!["root"]["arrayOfGoodInts"]["int"].value()
+                expect(value.flatMap({ $0 })) == [0, 1, 2, 3]
+            }
+            
+            it("should throw when converting array of bad Ints to non-optional") {
+                expect{ try (parser!["root"]["arrayOfBadInts"]["int"].value() as [Int]) }.to(
+                    throwError(errorType: XMLDeserializationError.self)
+                )
+            }
+            
+            it("should throw when converting array of bad Ints to optional") {
+                expect{ try (parser!["root"]["arrayOfBadInts"]["int"].value() as [Int]?) }.to(
+                    throwError(errorType: XMLDeserializationError.self)
+                )
+            }
+            
+            it("should throw when converting array of bad Ints to array of optionals") {
+                expect{ try (parser!["root"]["arrayOfBadInts"]["int"].value() as [Int?]) }.to(
+                    throwError(errorType: XMLDeserializationError.self)
+                )
+            }
+            
+            it("should throw when converting array of mixed Ints to non-optional") {
+                expect{ try (parser!["root"]["arrayOfMixedInts"]["int"].value() as [Int]) }.to(
+                    throwError(errorType: XMLDeserializationError.self)
+                )
+            }
+            
+            it("should throw when converting array of mixed Ints to optional") {
+                expect{ try (parser!["root"]["arrayOfMixedInts"]["int"].value() as [Int]?) }.to(
+                    throwError(errorType: XMLDeserializationError.self)
+                )
+            }
+            
+            it("should throw when converting array of mixed Ints to array of optionals") {
+                expect{ try (parser!["root"]["arrayOfMixedInts"]["int"].value() as [Int?]) }.to(
+                    throwError(errorType: XMLDeserializationError.self)
+                )
+            }
+            
+            it("should convert empty array of Ints to non-optional") {
+                let value: [Int] = try! parser!["root"]["empty"]["int"].value()
+                expect(value) == []
+            }
+            
+            it("should convert empty array of Ints to optional") {
+                let value: [Int]? = try! parser!["root"]["empty"]["int"].value()
+                expect(value).to(beNil())
+            }
+
+            it("should convert empty array of Ints to array of optionals") {
+                let value: [Int?] = try! parser!["root"]["empty"]["int"].value()
+                expect(value.count) == 0
+            }
+        }
     }
 }
 
