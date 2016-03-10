@@ -116,7 +116,7 @@ public extension XMLIndexer {
         case .Element(let element):
             return try [element].map { try T.deserialize( XMLIndexer($0) ) }
         default:
-            return []
+            throw XMLDeserializationError.InvalidNode(node: self)
         }
     }
     
@@ -127,7 +127,7 @@ public extension XMLIndexer {
         case .Element(let element):
             return try [element].map { try T.deserialize( XMLIndexer($0) ) }
         default:
-            return nil
+            throw XMLDeserializationError.InvalidNode(node: self)
         }
     }
     
@@ -138,7 +138,7 @@ public extension XMLIndexer {
         case .Element(let element):
             return try [element].map{ try T.deserialize( XMLIndexer($0) ) }
         default:
-            return []
+            throw XMLDeserializationError.InvalidNode(node: self)
         }
     }
 }
