@@ -621,6 +621,82 @@ class SWXMLHashTypeConversionSpecs: QuickSpec {
                 expect(value.count) == 0
             }
         }
+        
+        describe("array of non-primitive types conversion") {
+            
+            var parser: XMLIndexer?
+            let xmlWithArraysOfTypes = "<root>" +
+                "<arrayOfGoodBasicItems>" +
+                "   <basicItem>" +
+                "      <name>item 1</name>" +
+                "      <price>1</price>" +
+                "   </basicItem>" +
+                "   <basicItem>" +
+                "      <name>item 2</name>" +
+                "      <price>2</price>" +
+                "   </basicItem>" +
+                "   <basicItem>" +
+                "      <name>item 3</name>" +
+                "      <price>3</price>" +
+                "   </basicItem>" +
+                "</arrayOfBadBasicItems>" +
+                "   <basicItem>" +
+                "      <name>item 1</name>" +
+                "      <price>1</price>" +
+                "   </basicItem>" +
+                "   <basicItem>" +  // it's missing the `name` node
+                "      <price>2</price>" +
+                "   </basicItem>" +
+                "   <basicItem>" +
+                "      <name>item 3</name>" +
+                "      <price>3</price>" +
+                "   </basicItem>" +
+                "</arrayOfBadBasicItems>" +
+                "</root>"
+            
+            let correctBasicItems = [
+                BasicItem(name: "item 1", price: 1),
+                BasicItem(name: "item 2", price: 2),
+                BasicItem(name: "item 3", price: 3),
+            ]
+            
+            beforeEach {
+                parser = SWXMLHash.parse(xmlWithArraysOfTypes)
+            }
+            
+            it("should convert array of good BasicItems items to non-optional") {
+                let value: [BasicItem] = try! parser!["root"]["arrayOfGoodBasicItems"]["basicItem"].value()
+                expect(value) == correctBasicItems
+            }
+            
+            it("should convert array of good BasicItems items to optional") {
+                let value: [BasicItem]? = try! parser!["root"]["arrayOfGoodBasicItems"]["basicItem"].value()
+                expect(value) == correctBasicItems
+            }
+            
+            it("should convert array of good BasicItems items to array of optionals") {
+                let value: [BasicItem?] = try! parser!["root"]["arrayOfGoodBasicItems"]["basicItem"].value()
+                expect(value.flatMap({ $0 })) == correctBasicItems
+            }
+            
+            it("should throw when converting array of bad BasicItems to non-optional") {
+                expect{ try (parser!["root"]["arrayOfBadBasicItems"]["basicItem"].value() as [BasicItem]) }.to(
+                    throwError(errorType: XMLDeserializationError.self)
+                )
+            }
+            
+            it("should throw when converting array of bad BasicItems to non-optional") {
+                expect{ try (parser!["root"]["arrayOfBadBasicItems"]["basicItem"].value() as [BasicItem]?) }.to(
+                    throwError(errorType: XMLDeserializationError.self)
+                )
+            }
+            
+            it("should throw when converting array of bad BasicItems to array of optionals") {
+                expect{ try (parser!["root"]["arrayOfBadBasicItems"]["basicItem"].value() as [BasicItem?]) }.to(
+                    throwError(errorType: XMLDeserializationError.self)
+                )
+            }
+        }
     }
 }
 
