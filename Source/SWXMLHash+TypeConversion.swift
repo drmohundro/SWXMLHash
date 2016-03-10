@@ -62,16 +62,16 @@ public extension XMLIndexer {
         case .Element(let element):
             return try [element].map{ try T.deserialize($0) }
         default:
-            throw XMLDeserializationError.InvalidNode(node: self)
+            return []
         }
     }
     
     func value<T: XMLElementDeserializable>() throws -> [T]? {
         switch self {
         case .List(let elements):
-            return try? elements.map{ try T.deserialize($0) }
+            return try elements.map{ try T.deserialize($0) }
         case .Element(let element):
-            return try? [element].map{ try T.deserialize($0) }
+            return try [element].map{ try T.deserialize($0) }
         default:
             return nil
         }
@@ -80,9 +80,9 @@ public extension XMLIndexer {
     func value<T: XMLElementDeserializable>() throws -> [T?] {
         switch self {
         case .List(let elements):
-            return elements.map{ try? T.deserialize($0) }
+            return try elements.map{ try T.deserialize($0) }
         case .Element(let element):
-            return [element].map{ try? T.deserialize($0) }
+            return try [element].map{ try T.deserialize($0) }
         default:
             return []
         }
@@ -116,16 +116,16 @@ public extension XMLIndexer {
         case .Element(let element):
             return try [element].map { try T.deserialize( XMLIndexer($0) ) }
         default:
-            throw XMLDeserializationError.InvalidNode(node: self)
+            return []
         }
     }
     
     func value<T: XMLIndexerDeserializable>() throws -> [T]? {
         switch self {
         case .List(let elements):
-            return try? elements.map { try T.deserialize( XMLIndexer($0) ) }
+            return try elements.map { try T.deserialize( XMLIndexer($0) ) }
         case .Element(let element):
-            return try? [element].map { try T.deserialize( XMLIndexer($0) ) }
+            return try [element].map { try T.deserialize( XMLIndexer($0) ) }
         default:
             return nil
         }
@@ -134,9 +134,9 @@ public extension XMLIndexer {
     func value<T: XMLIndexerDeserializable>() throws -> [T?] {
         switch self {
         case .List(let elements):
-            return elements.map{ try? T.deserialize( XMLIndexer($0) ) }
+            return try elements.map{  try T.deserialize( XMLIndexer($0) ) }
         case .Element(let element):
-            return [element].map{ try? T.deserialize( XMLIndexer($0) ) }
+            return try [element].map{ try T.deserialize( XMLIndexer($0) ) }
         default:
             return []
         }
