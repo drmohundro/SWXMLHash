@@ -13,7 +13,7 @@ public protocol XMLIndexerDeserializable {
     static func deserialize(element: XMLIndexer) throws -> Self
 }
 
-extension XMLIndexerDeserializable {
+public extension XMLIndexerDeserializable {
     static func deserialize(element: XMLIndexer) throws -> Self {
         throw XMLDeserializationError.MissingDeserializationMethod(method: "XMLIndexerDeserializable.deserialize(element: XMLIndexer)")
     }
@@ -26,7 +26,7 @@ public protocol XMLElementDeserializable {
     static func deserialize(element: XMLElement) throws -> Self
 }
 
-extension XMLElementDeserializable {
+public extension XMLElementDeserializable {
     static func deserialize(element: XMLElement) throws -> Self {
         throw XMLDeserializationError.MissingDeserializationMethod(method: "XMLElementDeserializable.deserialize(element: XMLElement)")
     }
