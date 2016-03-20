@@ -15,7 +15,7 @@ public protocol XMLIndexerDeserializable {
 
 public extension XMLIndexerDeserializable {
     static func deserialize(element: XMLIndexer) throws -> Self {
-        throw XMLDeserializationError.MissingDeserializationMethod(method: "XMLIndexerDeserializable.deserialize(element: XMLIndexer)")
+        throw XMLDeserializationError.ImplementationIsMissing(method: "XMLIndexerDeserializable.deserialize(element: XMLIndexer)")
     }
 }
 
@@ -28,7 +28,7 @@ public protocol XMLElementDeserializable {
 
 public extension XMLElementDeserializable {
     static func deserialize(element: XMLElement) throws -> Self {
-        throw XMLDeserializationError.MissingDeserializationMethod(method: "XMLElementDeserializable.deserialize(element: XMLElement)")
+        throw XMLDeserializationError.ImplementationIsMissing(method: "XMLElementDeserializable.deserialize(element: XMLElement)")
     }
 }
 
@@ -42,7 +42,7 @@ public extension XMLIndexer {
         case .Element(let element):
             return try T.deserialize(element)
         default:
-            throw XMLDeserializationError.InvalidNode(node: self)
+            throw XMLDeserializationError.NodeIsInvalid(node: self)
         }
     }
     
@@ -96,7 +96,7 @@ public extension XMLIndexer {
         case .Element:
             return try T.deserialize(self)
         default:
-            throw XMLDeserializationError.InvalidNode(node: self)
+            throw XMLDeserializationError.NodeIsInvalid(node: self)
         }
     }
     
@@ -116,7 +116,7 @@ public extension XMLIndexer {
         case .Element(let element):
             return try [element].map { try T.deserialize( XMLIndexer($0) ) }
         default:
-            throw XMLDeserializationError.InvalidNode(node: self)
+            throw XMLDeserializationError.NodeIsInvalid(node: self)
         }
     }
     
@@ -127,7 +127,7 @@ public extension XMLIndexer {
         case .Element(let element):
             return try [element].map { try T.deserialize( XMLIndexer($0) ) }
         default:
-            throw XMLDeserializationError.InvalidNode(node: self)
+            throw XMLDeserializationError.NodeIsInvalid(node: self)
         }
     }
     
@@ -138,7 +138,7 @@ public extension XMLIndexer {
         case .Element(let element):
             return try [element].map{ try T.deserialize( XMLIndexer($0) ) }
         default:
-            throw XMLDeserializationError.InvalidNode(node: self)
+            throw XMLDeserializationError.NodeIsInvalid(node: self)
         }
     }
 }
@@ -147,29 +147,26 @@ private extension XMLElement {
     func nonEmptyTextOrThrow() throws -> String {
         if let text = self.text where text.characters.count > 0 {
             return text
-        } else { throw XMLDeserializationError.EmptyNodeValue }
+        } else { throw XMLDeserializationError.NodeHasNoValue }
     }
 }
 
 public enum XMLDeserializationError: ErrorType, CustomStringConvertible {
-    case InvalidNode(node: XMLIndexer)
-    case InvalidElement(element: XMLElement)
-    case TypeConversion(type: String, element: XMLElement)
-    case EmptyNodeValue
-    case MissingDeserializationMethod(method: String)
+    case ImplementationIsMissing(method: String)
+    case NodeIsInvalid(node: XMLIndexer)
+    case NodeHasNoValue
+    case TypeConversionFailed(type: String, element: XMLElement)
     
     public var description: String {
         switch self {
-        case .InvalidNode(let node):
-            return "Invalid node: \(node)"
-        case .InvalidElement(let element):
-            return "Invalid element: \(element)"
-        case .TypeConversion(let type, let node):
-            return "Can't convert \(node) to \(type)"
-        case .EmptyNodeValue:
-            return "Empty node value"
-        case .MissingDeserializationMethod(let method):
-            return "Missing deserialization method: \(method)"
+        case .ImplementationIsMissing(let method):
+            return "This deserialization method is not implemented: \(method)"
+        case .NodeIsInvalid(let node):
+            return "This node is invalid: \(node)"
+        case .NodeHasNoValue:
+            return "This node is empty"
+        case .TypeConversionFailed(let type, let node):
+            return "Can't convert node \(node) to value of type \(type)"
         }
     }
 }
@@ -180,7 +177,7 @@ public enum XMLDeserializationError: ErrorType, CustomStringConvertible {
 extension String: XMLElementDeserializable {
     public static func deserialize(element: XMLElement) throws -> String {
         guard let text = element.text
-        else { throw XMLDeserializationError.TypeConversion(type: "String", element: element) }
+        else { throw XMLDeserializationError.TypeConversionFailed(type: "String", element: element) }
         return text
     }
 }
@@ -188,7 +185,7 @@ extension String: XMLElementDeserializable {
 extension Int: XMLElementDeserializable {
     public static func deserialize(element: XMLElement) throws -> Int {
         guard let value = Int(try element.nonEmptyTextOrThrow())
-        else { throw XMLDeserializationError.TypeConversion(type: "Int", element: element) }
+        else { throw XMLDeserializationError.TypeConversionFailed(type: "Int", element: element) }
         return value
     }
 }
@@ -196,7 +193,7 @@ extension Int: XMLElementDeserializable {
 extension Double: XMLElementDeserializable {
     public static func deserialize(element: XMLElement) throws -> Double {
         guard let value = Double(try element.nonEmptyTextOrThrow())
-        else { throw XMLDeserializationError.TypeConversion(type: "Double", element: element) }
+        else { throw XMLDeserializationError.TypeConversionFailed(type: "Double", element: element) }
         return value
     }
 }
