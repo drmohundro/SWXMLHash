@@ -308,6 +308,7 @@ class SWXMLHashTypeConversionSpecs: QuickSpec {
                 "  <string>the string value</string>" +
                 "  <int>100</int>" +
                 "  <double>100.45</double>" +
+                "  <float>44.12</float>" +
                 "  <empty></empty>" +
                 "  <basicItem>" +
                 "    <name>the name of basic item</name>" +
@@ -418,6 +419,41 @@ class SWXMLHashTypeConversionSpecs: QuickSpec {
                 
                 it("should convert `missing` to optional") {
                     let value: Double? = try! parser!["root"]["missing"].value()
+                    expect(value).to(beNil())
+                }
+            }
+            
+            describe("when parsing Float") {
+                it("should convert `value` to non-optional") {
+                    let value: Float = try! parser!["root"]["float"].value()
+                    expect(value) == 44.12
+                }
+                
+                it("should throw when converting `empty` to non-optional") {
+                    expect{ try (parser!["root"]["empty"].value() as Float) }.to(
+                        throwError(errorType: XMLDeserializationError.self)
+                    )
+                }
+                
+                it("should throw when converting `missing` to non-optional") {
+                    expect{ try (parser!["root"]["missing"].value() as Float) }.to(
+                        throwError(errorType: XMLDeserializationError.self)
+                    )
+                }
+                
+                it("should convert `value` to optional") {
+                    let value: Float? = try! parser!["root"]["float"].value()
+                    expect(value) == 44.12
+                }
+                
+                it("should convert `empty` to optional") {
+                    expect{ try (parser!["root"]["empty"].value() as Float?) }.to(
+                        throwError(errorType: XMLDeserializationError.self)
+                    )
+                }
+                
+                it("should convert `missing` to optional") {
+                    let value: Float? = try! parser!["root"]["missing"].value()
                     expect(value).to(beNil())
                 }
             }

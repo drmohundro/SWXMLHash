@@ -197,3 +197,11 @@ extension Double: XMLElementDeserializable {
         return value
     }
 }
+
+extension Float: XMLElementDeserializable {
+    public static func deserialize(element: XMLElement) throws -> Float {
+        guard let value = Float(try element.nonEmptyTextOrThrow())
+        else { throw XMLDeserializationError.TypeConversionFailed(type: "Float", element: element) }
+        return value
+    }
+}
