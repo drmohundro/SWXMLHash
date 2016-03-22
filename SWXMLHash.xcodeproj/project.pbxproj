@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		54B83CC51C849D9B00D588B5 /* SWXMLHash+TypeConversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B83CC41C849D9B00D588B5 /* SWXMLHash+TypeConversion.swift */; };
+		54B83CC61C849D9B00D588B5 /* SWXMLHash+TypeConversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B83CC41C849D9B00D588B5 /* SWXMLHash+TypeConversion.swift */; };
+		54B83CC71C849D9B00D588B5 /* SWXMLHash+TypeConversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B83CC41C849D9B00D588B5 /* SWXMLHash+TypeConversion.swift */; };
+		54B83CC81C849D9B00D588B5 /* SWXMLHash+TypeConversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B83CC41C849D9B00D588B5 /* SWXMLHash+TypeConversion.swift */; };
 		CD291F1C1BF635B3009A1FA6 /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD291F1A1BF635B3009A1FA6 /* Nimble.framework */; };
 		CD291F1D1BF635B3009A1FA6 /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD291F1B1BF635B3009A1FA6 /* Quick.framework */; };
 		CD291F201BF63613009A1FA6 /* Nimble.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = CD291F1A1BF635B3009A1FA6 /* Nimble.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -99,6 +103,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		54B83CC41C849D9B00D588B5 /* SWXMLHash+TypeConversion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SWXMLHash+TypeConversion.swift"; sourceTree = "<group>"; };
 		CD291F1A1BF635B3009A1FA6 /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = ../Carthage/Build/tvOS/Nimble.framework; sourceTree = "<group>"; };
 		CD291F1B1BF635B3009A1FA6 /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = ../Carthage/Build/tvOS/Quick.framework; sourceTree = "<group>"; };
 		CD4B5F3919E2C42D005C1F33 /* test.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = test.xml; path = Tests/test.xml; sourceTree = SOURCE_ROOT; };
@@ -222,6 +227,7 @@
 				CD6083F4196CA106000B4F8D /* SWXMLHash.h */,
 				CD6083F2196CA106000B4F8D /* Supporting Files */,
 				CD60840B196CA11D000B4F8D /* SWXMLHash.swift */,
+				54B83CC41C849D9B00D588B5 /* SWXMLHash+TypeConversion.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -557,6 +563,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CD60840C196CA11D000B4F8D /* SWXMLHash.swift in Sources */,
+				54B83CC51C849D9B00D588B5 /* SWXMLHash+TypeConversion.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -573,6 +580,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CD7934C61A7581F500867857 /* SWXMLHash.swift in Sources */,
+				54B83CC61C849D9B00D588B5 /* SWXMLHash+TypeConversion.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -589,6 +597,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CDEA72731C00B0D900C10B28 /* SWXMLHash.swift in Sources */,
+				54B83CC71C849D9B00D588B5 /* SWXMLHash+TypeConversion.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -605,6 +614,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CDEA72741C00B0E300C10B28 /* SWXMLHash.swift in Sources */,
+				54B83CC81C849D9B00D588B5 /* SWXMLHash+TypeConversion.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -280,6 +280,67 @@ case .XMLError(let error):
 
 Note that error handling as shown above will not work with lazy loaded XML. The lazy parsing doesn't actually occur until the `element` or `all` method are called - as a result, there isn't any way to know prior to asking for an element if it exists or not.
 
+### Types conversion
+
+Given:
+
+```xml
+<root>
+  <books>
+    <book>
+      <title>Book A</title>
+      <price>12.5</price>
+      <year>2015</year>
+    </book>
+    <book>
+      <title>Book B</title>
+      <price>10</price>
+      <year>1988</year>
+    </book>
+    <book>
+      <title>Book C</title>
+      <price>8.33</price>
+      <year>1990</year>
+      <amount>10</amount>
+    </book>
+  <books>
+</root>
+```
+with `Book` struct implementing `XMLIndexerDeserializable`:
+
+```swift
+struct Book: XMLIndexerDeserializable {
+    let title: String
+    let price: Double
+    let year: Int
+    let amount: Int?
+    
+    static func deserialize(node: XMLIndexer) throws -> Book {
+        return try Book(
+            title: node["title"].value(),
+            price: node["price"].value(),
+            year: node["year"].value(),
+            amount: node["amount"].value()
+        )
+    }
+}
+```
+
+The below will return array of `Book` structs:
+
+```swift
+let books: [Book] = try xml["root"]["books"]["book"].value()
+```
+
+<img src="https://raw.githubusercontent.com/ncreated/SWXMLHash/assets/types-conversion%402x.png" width="600" alt="Types Conversion" />
+
+Build-in, leaf-nodes converters support `Int`, `Double`, `Float` and `String` values (both non- and -optional variants). Custom converters can be added by implementing `XMLElementDeserializable`.
+
+You can convert any XML to your custom type by implementing `XMLIndexerDeserializable`.
+
+Types conversion supports error handling, optionals and arrays. For more examples, look into `SWXMLHashTests.swift` or play with types conversion directly in the Swift playground.
+
+
 ## Changelog
 
 See [CHANGELOG](CHANGELOG.md) for a list of all changes and their corresponding versions.
