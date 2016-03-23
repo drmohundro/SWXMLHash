@@ -77,7 +77,7 @@ struct Book: XMLIndexerDeserializable {
     let price: Double
     let year: Int
     let amount: Int?
-    
+
     static func deserialize(node: XMLIndexer) throws -> Book {
         return try Book(
             title: node["title"].value(),
@@ -91,4 +91,3 @@ struct Book: XMLIndexerDeserializable {
 xml = SWXMLHash.parse(booksXML)
 
 let books: [Book] = try xml["root"]["books"]["book"].value()
-
