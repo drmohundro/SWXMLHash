@@ -325,3 +325,19 @@ extension Float: XMLElementDeserializable {
         return value
     }
 }
+
+extension Bool: XMLElementDeserializable {
+    /**
+     Attempts to deserialize XML element content to a Bool. This uses NSString's 'boolValue' described
+     [here](https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Classes/NSString_Class/#//apple_ref/occ/instp/NSString/boolValue)
+
+     - parameters:
+     - element: the XMLElement to be deserialized
+     - throws: an XMLDeserializationError.TypeConversionFailed if the element cannot be deserialized
+     - returns: the deserialized Bool value
+     */
+    public static func deserialize(element: XMLElement) throws -> Bool {
+        let value = Bool(NSString(string: try element.nonEmptyTextOrThrow()).boolValue)
+        return value
+    }
+}

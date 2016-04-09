@@ -314,7 +314,7 @@ struct Book: XMLIndexerDeserializable {
     let price: Double
     let year: Int
     let amount: Int?
-    
+
     static func deserialize(node: XMLIndexer) throws -> Book {
         return try Book(
             title: node["title"].value(),
@@ -334,7 +334,7 @@ let books: [Book] = try xml["root"]["books"]["book"].value()
 
 <img src="https://raw.githubusercontent.com/ncreated/SWXMLHash/assets/types-conversion%402x.png" width="600" alt="Types Conversion" />
 
-Build-in, leaf-nodes converters support `Int`, `Double`, `Float` and `String` values (both non- and -optional variants). Custom converters can be added by implementing `XMLElementDeserializable`.
+Build-in, leaf-nodes converters support `Int`, `Double`, `Float`, `Bool`, and `String` values (both non- and -optional variants). Custom converters can be added by implementing `XMLElementDeserializable`.
 
 You can convert any XML to your custom type by implementing `XMLIndexerDeserializable`.
 
