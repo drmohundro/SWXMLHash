@@ -44,7 +44,7 @@ Then create a `Podfile` with the following contents:
 source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '8.0'
 
-pod 'SWXMLHash', '~> 2.1.0'
+pod 'SWXMLHash', '~> 2.3.0'
 ```
 
 Finally, run the following command to install it:
@@ -65,7 +65,7 @@ $ brew install carthage
 Then add the following line to your `Cartfile`:
 
 ```
-github "drmohundro/SWXMLHash" ~> 2.1
+github "drmohundro/SWXMLHash" ~> 2.3
 ```
 
 ### Manual Installation
@@ -334,7 +334,7 @@ let books: [Book] = try xml["root"]["books"]["book"].value()
 
 <img src="https://raw.githubusercontent.com/ncreated/SWXMLHash/assets/types-conversion%402x.png" width="600" alt="Types Conversion" />
 
-Build-in, leaf-nodes converters support `Int`, `Double`, `Float`, `Bool`, and `String` values (both non- and -optional variants). Custom converters can be added by implementing `XMLElementDeserializable`.
+Built-in, leaf-nodes converters support `Int`, `Double`, `Float`, `Bool`, and `String` values (both non- and -optional variants). Custom converters can be added by implementing `XMLElementDeserializable`.
 
 You can convert any XML to your custom type by implementing `XMLIndexerDeserializable`.
 

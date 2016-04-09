@@ -1,3 +1,8 @@
+## v2.3.0 (April 9, 2016)
+
+* Added built-in bool support for deserialization.
+  * See corresponding [issue #70](https://github.com/drmohundro/SWXMLHash/issues/70) and [pull request #71](https://github.com/drmohundro/SWXMLHash/pull/71).
+
 ## v2.2.0 (March 23, 2016)
 
 * Added deserialization / type transformer support.
