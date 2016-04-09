@@ -312,6 +312,8 @@ class SWXMLHashTypeConversionSpecs: QuickSpec {
                 "  <int>100</int>" +
                 "  <double>100.45</double>" +
                 "  <float>44.12</float>" +
+                "  <bool1>0</bool1>" +
+                "  <bool2>true</bool2>" +
                 "  <empty></empty>" +
                 "  <basicItem>" +
                 "    <name>the name of basic item</name>" +
@@ -457,6 +459,45 @@ class SWXMLHashTypeConversionSpecs: QuickSpec {
 
                 it("should convert `missing` to optional") {
                     let value: Float? = try! parser!["root"]["missing"].value()
+                    expect(value).to(beNil())
+                }
+            }
+
+            describe("when parsing Bool") {
+                it("should convert `value` to non-optional") {
+                    let value1: Bool = try! parser!["root"]["bool1"].value()
+                    let value2: Bool = try! parser!["root"]["bool2"].value()
+                    expect(value1) == false
+                    expect(value2) == true
+                }
+
+                it("should throw when converting `empty` to non-optional") {
+                    expect { try (parser!["root"]["empty"].value() as Bool) }.to(
+                        throwError(errorType: XMLDeserializationError.self)
+                    )
+                }
+
+                it("should throw when converting `missing` to non-optional") {
+                    expect { try (parser!["root"]["missing"].value() as Bool) }.to(
+                        throwError(errorType: XMLDeserializationError.self)
+                    )
+                }
+
+                it("should convert `value` to optional") {
+                    let value1: Bool? = try! parser!["root"]["bool1"].value()
+                    expect(value1) == false
+                    let value2: Bool? = try! parser!["root"]["bool2"].value()
+                    expect(value2) == true
+                }
+
+                it("should convert `empty` to optional") {
+                    expect { try (parser!["root"]["empty"].value() as Bool?) }.to(
+                        throwError(errorType: XMLDeserializationError.self)
+                    )
+                }
+
+                it("should convert `missing` to optional") {
+                    let value: Bool? = try! parser!["root"]["missing"].value()
                     expect(value).to(beNil())
                 }
             }
