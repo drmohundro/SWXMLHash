@@ -1,3 +1,8 @@
+## v2.3.1 (April 10, 2016)
+
+* Fixed issue with Swift Package Manager
+  * See [PR #72](https://github.com/drmohundro/SWXMLHash/pull/72).
+
 ## v2.3.0 (April 9, 2016)
 
 * Added built-in bool support for deserialization.
