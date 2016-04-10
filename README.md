@@ -17,6 +17,7 @@ The API takes a lot of inspiration from [SwiftyJSON](https://github.com/SwiftyJS
 * [Getting Started](#getting-started)
 * [Configuration](#configuration)
 * [Examples](#examples)
+* [FAQ](#faq)
 * [Changelog](#changelog)
 * [Contributing](#contributing)
 * [License](#license)
@@ -340,6 +341,36 @@ You can convert any XML to your custom type by implementing `XMLIndexerDeseriali
 
 Types conversion supports error handling, optionals and arrays. For more examples, look into `SWXMLHashTests.swift` or play with types conversion directly in the Swift playground.
 
+
+## FAQ
+
+### Does SWXMLHash handle URLs for me?
+
+No - SWXMLHash only handles parsing of XML. If you have a URL that has XML content on it, I'd recommend using a library like [AlamoFire](https://github.com/Alamofire/Alamofire) to download the content into a string and then parsing it.
+
+### Does SWXMLHash support writing XML content?
+
+No, not at the moment - SWXMLHash only supports parsing XML (via indexing, deserialization, etc.).
+
+### I'm getting an "Ambiguous reference to member 'subscript'" when I call `.value()`.
+
+`.value()` is used for deserialization - you have to have something that implements `XMLIndexerDeserializable` and that can handle deserialization to the left-hand side of expression.
+
+For example, given the following:
+
+```swift
+let dateValue: NSDate = try! xml["root"]["date"].value()
+```
+
+You'll get an error because there isn't any built-in deserializer for `NSDate`. See the above documentation on adding your own deserialization support.
+
+### I'm getting an `EXC_BAD_ACCESS (SIGSEGV)` when I call `parse()`
+
+Chances are very good that your XML content has what is called a "byte order mark" or BOM. SWXMLHash uses `NSXMLParser` for its parsing logic and there are issues with it and handling BOM characters. See [issue #65](https://github.com/drmohundro/SWXMLHash/issues/65) for more details. Others who have run into this problem have just rstripped the BOM out of their content prior to parsing.
+
+### Have a different question?
+
+Feel free to shoot me an email, post a [question on StackOverflow](http://stackoverflow.com/questions/tagged/swxmlhash), or open an issue if you think you've found a bug. I'm happy to try to help!
 
 ## Changelog
 
