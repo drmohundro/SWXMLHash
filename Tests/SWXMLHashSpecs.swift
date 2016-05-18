@@ -52,8 +52,12 @@ class SWXMLHashTests: QuickSpec {
                 expect(xml!["root"]["catalog"]["book"][1]["author"].element?.text).to(equal("Ralls, Kim"))
             }
 
-            it("should be able to parse attributes") {
+            it("should be able to parse attributes (with deprecated approach)") {
                 expect(xml!["root"]["catalog"]["book"][1].element?.attributes["id"]).to(equal("bk102"))
+            }
+
+            it("should be able to parse attributes") {
+                expect(xml!["root"]["catalog"]["book"][1].element!.attribute(by: "id")!.text).to(equal("bk102"))
             }
 
             it("should be able to look up elements by name and attribute") {
@@ -347,6 +351,13 @@ class SWXMLHashTypeConversionSpecs: QuickSpec {
                 "    <name>the name of basic item</name>" +
                 "    <price>99.14</price>" +
                 "  </basicItem>" +
+                "  <attributeElement " +
+                "    stringAttr=\"stringValue\"" +
+                "    intAttr=\"5\"" +
+                "    doubleAttr=\"100.45\"" +
+                "    floatAttr=\"44.12\"" +
+                "    boolAttr=\"false\"" +
+                "  />" +
                 "</root>"
 
             beforeEach {
@@ -565,6 +576,38 @@ class SWXMLHashTypeConversionSpecs: QuickSpec {
                 it("should convert `missing` to optional") {
                     let value: BasicItem? = try! parser!["root"]["missing"].value()
                     expect(value).to(beNil())
+                }
+            }
+
+            describe("when parsing attributes") {
+                it("should parse string values") {
+                    let value: String = parser!["root"]["attributeElement"].element!.attribute(by: "stringAttr")!.value()
+                    expect(value) == "stringValue"
+                }
+
+                it("should parse int values") {
+                    let value: Int = parser!["root"]["attributeElement"].element!.attribute(by: "intAttr")!.value()
+                    expect(value) == 5
+                }
+
+                it("should parse double values") {
+                    let value: Int = parser!["root"]["attributeElement"].element!.attribute(by: "intAttr")!.value()
+                    expect(value) == 5
+                }
+
+                it("should parse double values") {
+                    let value: Double = parser!["root"]["attributeElement"].element!.attribute(by: "doubleAttr")!.value()
+                    expect(value) == 100.45
+                }
+
+                it("should parse float values") {
+                    let value: Float = parser!["root"]["attributeElement"].element!.attribute(by: "floatAttr")!.value()
+                    expect(value) == 44.12
+                }
+
+                it("should parse bool values") {
+                    let value: Bool = parser!["root"]["attributeElement"].element!.attribute(by: "boolAttr")!.value()
+                    expect(value) == false
                 }
             }
         }

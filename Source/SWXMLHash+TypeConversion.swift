@@ -55,6 +55,18 @@ public extension XMLElementDeserializable {
     }
 }
 
+// MARK: - XMLAttributeDeserializable
+
+public protocol XMLAttributeDeserializable {
+    static func deserialize(attribute: XMLAttribute) throws -> Self
+}
+
+public extension XMLAttributeDeserializable {
+    static func deserialize(attribute: XMLAttribute) throws -> Self {
+        throw XMLDeserializationError.ImplementationIsMissing(
+            method: "XMLAttributeDeserializable(element: XMLAttribute)")
+    }
+}
 
 public extension XMLIndexer {
 
@@ -235,7 +247,7 @@ public extension XMLIndexer {
     func value<T: XMLIndexerDeserializable>() throws -> [T?] {
         switch self {
         case .List(let elements):
-            return try elements.map {  try T.deserialize( XMLIndexer($0) ) }
+            return try elements.map { try T.deserialize( XMLIndexer($0) ) }
         case .Element(let element):
             return try [element].map { try T.deserialize( XMLIndexer($0) ) }
         case .Stream(let opStream):
@@ -260,6 +272,7 @@ public enum XMLDeserializationError: ErrorType, CustomStringConvertible {
     case NodeIsInvalid(node: XMLIndexer)
     case NodeHasNoValue
     case TypeConversionFailed(type: String, element: XMLElement)
+    case AttributeDeserializationFailed(type: String, attribute: XMLAttribute)
 
     /// The text description for the error thrown
     public var description: String {
@@ -272,6 +285,8 @@ public enum XMLDeserializationError: ErrorType, CustomStringConvertible {
             return "This node is empty"
         case .TypeConversionFailed(let type, let node):
             return "Can't convert node \(node) to value of type \(type)"
+        case .AttributeDeserializationFailed(let type, let attribute):
+            return "Can't convert attribute \(attribute) to value of type \(type)"
         }
     }
 }
@@ -279,7 +294,7 @@ public enum XMLDeserializationError: ErrorType, CustomStringConvertible {
 
 // MARK: - Common types deserialization
 
-extension String: XMLElementDeserializable {
+extension String: XMLElementDeserializable, XMLAttributeDeserializable {
     /**
     Attempts to deserialize XML element content to a String
 
@@ -295,9 +310,13 @@ extension String: XMLElementDeserializable {
         }
         return text
     }
+
+    public static func deserialize(attribute: XMLAttribute) throws -> String {
+        return attribute.text
+    }
 }
 
-extension Int: XMLElementDeserializable {
+extension Int: XMLElementDeserializable, XMLAttributeDeserializable {
     /**
     Attempts to deserialize XML element content to a Int
 
@@ -311,9 +330,15 @@ extension Int: XMLElementDeserializable {
         else { throw XMLDeserializationError.TypeConversionFailed(type: "Int", element: element) }
         return value
     }
+
+    public static func deserialize(attribute: XMLAttribute) throws -> Int {
+        guard let value = Int(attribute.text)
+        else { throw XMLDeserializationError.AttributeDeserializationFailed(type: "Int", attribute: attribute) }
+        return value
+    }
 }
 
-extension Double: XMLElementDeserializable {
+extension Double: XMLElementDeserializable, XMLAttributeDeserializable {
     /**
     Attempts to deserialize XML element content to a Double
 
@@ -329,9 +354,15 @@ extension Double: XMLElementDeserializable {
         }
         return value
     }
+
+    public static func deserialize(attribute: XMLAttribute) throws -> Double {
+        guard let value = Double(attribute.text)
+        else { throw XMLDeserializationError.AttributeDeserializationFailed(type: "Double", attribute: attribute) }
+        return value
+    }
 }
 
-extension Float: XMLElementDeserializable {
+extension Float: XMLElementDeserializable, XMLAttributeDeserializable {
     /**
     Attempts to deserialize XML element content to a Float
 
@@ -345,20 +376,37 @@ extension Float: XMLElementDeserializable {
         else { throw XMLDeserializationError.TypeConversionFailed(type: "Float", element: element) }
         return value
     }
+
+    public static func deserialize(attribute: XMLAttribute) throws -> Float {
+        guard let value = Float(attribute.text)
+        else { throw XMLDeserializationError.AttributeDeserializationFailed(type: "Float", attribute: attribute) }
+        return value
+    }
 }
 
-extension Bool: XMLElementDeserializable {
+extension Bool: XMLElementDeserializable, XMLAttributeDeserializable {
     /**
      Attempts to deserialize XML element content to a Bool. This uses NSString's 'boolValue' described
      [here](https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Classes/NSString_Class/#//apple_ref/occ/instp/NSString/boolValue)
 
      - parameters:
-     - element: the XMLElement to be deserialized
+        - element: the XMLElement to be deserialized
      - throws: an XMLDeserializationError.TypeConversionFailed if the element cannot be deserialized
      - returns: the deserialized Bool value
      */
     public static func deserialize(element: XMLElement) throws -> Bool {
         let value = Bool(NSString(string: try element.nonEmptyTextOrThrow()).boolValue)
         return value
+    }
+
+    public static func deserialize(attribute: XMLAttribute) throws -> Bool {
+        let value = Bool(NSString(string: attribute.text).boolValue)
+        return value
+    }
+}
+
+public extension XMLAttribute {
+    func value<T: XMLAttributeDeserializable>() -> T {
+        return try! T.deserialize(self)
     }
 }
