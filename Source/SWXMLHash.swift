@@ -73,8 +73,8 @@ public class SWXMLHash {
         string containing XML.
     - returns: an `XMLIndexer` instance that can be iterated over
     */
-    public func parse(xml: String) -> XMLIndexer {
-        return parse((xml as NSString).dataUsingEncoding(NSUTF8StringEncoding)!)
+    public func parse(_ xml: String) -> XMLIndexer {
+        return parse((xml as NSString).data(using: NSUTF8StringEncoding)!)
     }
 
     /**
@@ -84,11 +84,11 @@ public class SWXMLHash {
         - data: an `NSData` instance containing XML
         - returns: an `XMLIndexer` instance that can be iterated over
     */
-    public func parse(data: NSData) -> XMLIndexer {
+    public func parse(_ data: NSData) -> XMLIndexer {
         let parser: SimpleXmlParser = options.shouldProcessLazily
             ? LazyXMLParser(options)
             : XMLParser(options)
-        return parser.parse(data)
+        return parser.parse(data: data)
     }
 
     /**
@@ -97,7 +97,7 @@ public class SWXMLHash {
     - parameter xml: The XML to be parsed
     - returns: An XMLIndexer instance that is used to look up elements in the XML
     */
-    class public func parse(xml: String) -> XMLIndexer {
+    class public func parse(_ xml: String) -> XMLIndexer {
         return SWXMLHash().parse(xml)
     }
 
@@ -107,7 +107,7 @@ public class SWXMLHash {
     - parameter data: The XML to be parsed
     - returns: An XMLIndexer instance that is used to look up elements in the XML
     */
-    class public func parse(data: NSData) -> XMLIndexer {
+    class public func parse(_ data: NSData) -> XMLIndexer {
         return SWXMLHash().parse(data)
     }
 
@@ -141,7 +141,7 @@ struct Stack<T> {
         return items.removeLast()
     }
     mutating func removeAll() {
-        items.removeAll(keepCapacity: false)
+        items.removeAll(keepingCapacity: false)
     }
     func top() -> T {
         return items[items.count - 1]
@@ -178,7 +178,7 @@ class LazyXMLParser: NSObject, SimpleXmlParser, NSXMLParserDelegate {
         // but you never know
         parentStack.removeAll()
         root = XMLElement(name: rootElementName)
-        parentStack.push(root)
+        parentStack.push(item: root)
 
         self.ops = ops
         let parser = NSXMLParser(data: data!)
@@ -187,42 +187,42 @@ class LazyXMLParser: NSObject, SimpleXmlParser, NSXMLParserDelegate {
         parser.parse()
     }
 
-    func parser(parser: NSXMLParser,
+    func parser(_ parser: NSXMLParser,
                 didStartElement elementName: String,
                 namespaceURI: String?,
                 qualifiedName qName: String?,
                 attributes attributeDict: [String: String]) {
 
-        elementStack.push(elementName)
+        elementStack.push(item: elementName)
 
         if !onMatch() {
             return
         }
-        let currentNode = parentStack.top().addElement(elementName, withAttributes: attributeDict)
-        parentStack.push(currentNode)
+        let currentNode = parentStack.top().addElement(name: elementName, withAttributes: attributeDict)
+        parentStack.push(item: currentNode)
     }
 
-    func parser(parser: NSXMLParser, foundCharacters string: String) {
+    func parser(_ parser: NSXMLParser, foundCharacters string: String) {
         if !onMatch() {
             return
         }
 
         let current = parentStack.top()
 
-        current.addText(string)
+        current.addText(text: string)
     }
 
-    func parser(parser: NSXMLParser,
+    func parser(_ parser: NSXMLParser,
                 didEndElement elementName: String,
                 namespaceURI: String?,
                 qualifiedName qName: String?) {
 
         let match = onMatch()
 
-        elementStack.pop()
+        _ = elementStack.pop()
 
         if match {
-            parentStack.pop()
+            _ = parentStack.pop()
         }
     }
 
@@ -230,9 +230,9 @@ class LazyXMLParser: NSObject, SimpleXmlParser, NSXMLParserDelegate {
         // we typically want to compare against the elementStack to see if it matches ops, *but*
         // if we're on the first element, we'll instead compare the other direction.
         if elementStack.items.count > ops.count {
-            return elementStack.items.startsWith(ops.map { $0.key })
+            return elementStack.items.starts(with: ops.map { $0.key })
         } else {
-            return ops.map { $0.key }.startsWith(elementStack.items)
+            return ops.map { $0.key }.starts(with: elementStack.items)
         }
     }
 }
@@ -253,7 +253,7 @@ class XMLParser: NSObject, SimpleXmlParser, NSXMLParserDelegate {
         // but you never know
         parentStack.removeAll()
 
-        parentStack.push(root)
+        parentStack.push(item: root)
 
         let parser = NSXMLParser(data: data)
         parser.shouldProcessNamespaces = options.shouldProcessNamespaces
@@ -263,28 +263,28 @@ class XMLParser: NSObject, SimpleXmlParser, NSXMLParserDelegate {
         return XMLIndexer(root)
     }
 
-    func parser(parser: NSXMLParser,
+    func parser(_ parser: NSXMLParser,
                 didStartElement elementName: String,
                 namespaceURI: String?,
                 qualifiedName qName: String?,
                 attributes attributeDict: [String: String]) {
 
-        let currentNode = parentStack.top().addElement(elementName, withAttributes: attributeDict)
-        parentStack.push(currentNode)
+        let currentNode = parentStack.top().addElement(name: elementName, withAttributes: attributeDict)
+        parentStack.push(item: currentNode)
     }
 
-    func parser(parser: NSXMLParser, foundCharacters string: String) {
+    func parser(_ parser: NSXMLParser, foundCharacters string: String) {
         let current = parentStack.top()
 
-        current.addText(string)
+        current.addText(text: string)
     }
 
-    func parser(parser: NSXMLParser,
+    func parser(_ parser: NSXMLParser,
                 didEndElement elementName: String,
                 namespaceURI: String?,
                 qualifiedName qName: String?) {
 
-        parentStack.pop()
+        _ = parentStack.pop()
     }
 }
 
@@ -319,7 +319,7 @@ public class IndexOps {
     }
 
     func findElements() -> XMLIndexer {
-        parser.startParsing(ops)
+        parser.startParsing(ops: ops)
         let indexer = XMLIndexer(parser.root)
         var childIndex = indexer
         for op in ops {
@@ -328,7 +328,7 @@ public class IndexOps {
                 childIndex = childIndex[op.index]
             }
         }
-        ops.removeAll(keepCapacity: false)
+        ops.removeAll(keepingCapacity: false)
         return childIndex
     }
 
@@ -342,14 +342,14 @@ public class IndexOps {
 }
 
 /// Returned from SWXMLHash, allows easy element lookup into XML data.
-public enum XMLIndexer: SequenceType {
+public enum XMLIndexer: Sequence {
     case Element(XMLElement)
     case List([XMLElement])
     case Stream(IndexOps)
     case XMLError(Error)
 
     /// Error type that is thrown when an indexing or parsing operation fails.
-    public enum Error: ErrorType {
+    public enum Error: ErrorProtocol {
         case Attribute(attr: String)
         case AttributeValue(attr: String, value: String)
         case Key(key: String)
@@ -413,9 +413,9 @@ public enum XMLIndexer: SequenceType {
     public func withAttr(attr: String, _ value: String) throws -> XMLIndexer {
         switch self {
         case .Stream(let opStream):
-            opStream.stringify()
+            _ = opStream.stringify()
             let match = opStream.findElements()
-            return try match.withAttr(attr, value)
+            return try match.withAttr(attr: attr, value)
         case .List(let list):
             if let elem = list.filter({$0.attributes[attr] == value}).first {
                 return .Element(elem)
@@ -500,7 +500,7 @@ public enum XMLIndexer: SequenceType {
     */
     public subscript(key: String) -> XMLIndexer {
         do {
-           return try self.byKey(key)
+           return try self.byKey(key: key)
         } catch let error as Error {
             return .XMLError(error)
         } catch {
@@ -543,7 +543,7 @@ public enum XMLIndexer: SequenceType {
     */
     public subscript(index: Int) -> XMLIndexer {
         do {
-            return try byIndex(index)
+            return try byIndex(index: index)
         } catch let error as Error {
             return .XMLError(error)
         } catch {
@@ -558,13 +558,13 @@ public enum XMLIndexer: SequenceType {
 
     - returns: an array of `XMLIndexer` instances
     */
-    public func generate() -> IndexingGenerator<[XMLIndexer]> {
-        return all.generate()
+    public func makeIterator() -> IndexingIterator<[XMLIndexer]> {
+        return all.makeIterator()
     }
 }
 
 /// XMLIndexer extensions
-extension XMLIndexer: BooleanType {
+extension XMLIndexer: Boolean {
     /// True if a valid XMLIndexer, false if an error type
     public var boolValue: Bool {
         switch self {
@@ -581,10 +581,10 @@ extension XMLIndexer: CustomStringConvertible {
     public var description: String {
         switch self {
         case .List(let list):
-            return list.map { $0.description }.joinWithSeparator("")
+            return list.map { $0.description }.joined(separator: "")
         case .Element(let elem):
             if elem.name == rootElementName {
-                return elem.children.map { $0.description }.joinWithSeparator("")
+                return elem.children.map { $0.description }.joined(separator: "")
             }
 
             return elem.description
@@ -709,7 +709,7 @@ extension XMLElement: CustomStringConvertible {
             }
         }
 
-        var attributesString = attributesStringList.joinWithSeparator(" ")
+        var attributesString = attributesStringList.joined(separator: " ")
         if !attributesString.isEmpty {
             attributesString = " " + attributesString
         }
@@ -721,7 +721,7 @@ extension XMLElement: CustomStringConvertible {
                 xmlReturn.append(child.description)
             }
             xmlReturn.append("</\(name)>")
-            return xmlReturn.joinWithSeparator("")
+            return xmlReturn.joined(separator: "")
         }
 
         if text != nil {
