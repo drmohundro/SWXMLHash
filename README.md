@@ -27,6 +27,8 @@ The API takes a lot of inspiration from [SwiftyJSON](https://github.com/SwiftyJS
 - iOS 8.0+ / Mac OS X 10.9+ / tvOS 9.0+ / watchOS 2.0+
 - Xcode 7.1+
 
+(note that Xcode 8 beta and Swift 3 support are being tracked in [PR 78](https://github.com/drmohundro/SWXMLHash/pull/78))
+
 ## Installation
 
 SWXMLHash can be installed using [CocoaPods](http://cocoapods.org/), [Carthage](https://github.com/Carthage/Carthage), or manually.
