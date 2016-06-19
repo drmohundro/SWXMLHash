@@ -35,11 +35,11 @@ func enumerate(indexer: XMLIndexer, level: Int) {
         let name = child.element!.name
         print("\(level) \(name)")
 
-        enumerate(child, level: level + 1)
+        enumerate(indexer: child, level: level + 1)
     }
 }
 
-enumerate(xml, level: 0)
+enumerate(indexer: xml, level: 0)
 
 
 // enumerate all child elements (functionally)

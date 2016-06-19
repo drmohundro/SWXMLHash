@@ -61,7 +61,7 @@ class SWXMLHashTests: QuickSpec {
             }
 
             it("should be able to iterate element groups") {
-                let result = xml!["root"]["catalog"]["book"].all.map({ $0["genre"].element!.text! }).joinWithSeparator(", ")
+                let result = xml!["root"]["catalog"]["book"].all.map({ $0["genre"].element!.text! }).joined(separator: ", ")
                 expect(result).to(equal("Computer, Fantasy, Fantasy"))
             }
 
@@ -83,7 +83,7 @@ class SWXMLHashTests: QuickSpec {
             }
 
             it("should be able to enumerate children") {
-                let result = xml!["root"]["catalog"]["book"][0].children.map({ $0.element!.name }).joinWithSeparator(", ")
+                let result = xml!["root"]["catalog"]["book"][0].children.map({ $0.element!.name }).joined(separator: ", ")
                 expect(result).to(equal("author, title, genre, price, publish_date, description"))
             }
 
@@ -95,7 +95,7 @@ class SWXMLHashTests: QuickSpec {
                 let interleavedXml = "<html><body><p>one</p><div>two</div><p>three</p><div>four</div></body></html>"
                 let parsed = SWXMLHash.parse(interleavedXml)
 
-                let result = parsed["html"]["body"].children.map({ $0.element!.text! }).joinWithSeparator(", ")
+                let result = parsed["html"]["body"].children.map({ $0.element!.text! }).joined(separator: ", ")
                 expect(result).to(equal("one, two, three, four"))
             }
 
@@ -111,9 +111,9 @@ class SWXMLHashTests: QuickSpec {
             var xml: XMLIndexer?
 
             beforeEach {
-                let bundle = NSBundle(forClass: SWXMLHashTests.self)
+                let bundle = Bundle(for: SWXMLHashTests.self)
                 let path = bundle.pathForResource("test", ofType: "xml")
-                let data = NSData(contentsOfFile: path!)
+                let data = try? Data(contentsOf: URL(fileURLWithPath: path!))
                 xml = SWXMLHash.parse(data!)
             }
 
@@ -132,33 +132,33 @@ class SWXMLHashTests: QuickSpec {
             }
 
             it("should provide an error object when keys don't match") {
-                var err: XMLIndexer.Error?
+                var err: XMLIndexer.SWXMLHash.Error?
                 defer {
                     expect(err).toNot(beNil())
                 }
                 do {
                     try xml!.byKey("root").byKey("what").byKey("header").byKey("foo")
-                } catch let error as XMLIndexer.Error {
+                } catch let error as XMLIndexer.SWXMLHash.Error {
                     err = error
                 } catch { err = nil }
             }
 
             it("should provide an error element when indexers don't match") {
-                var err: XMLIndexer.Error?
+                var err: XMLIndexer.SWXMLHash.Error?
                 defer {
                     expect(err).toNot(beNil())
                 }
                 do {
                     try xml!.byKey("what").byKey("subelement").byIndex(5).byKey("nomatch")
-                } catch let error as XMLIndexer.Error {
+                } catch let error as XMLIndexer.SWXMLHash.Error {
                     err = error
                 } catch { err = nil }
             }
 
             it("should still return errors when accessing via subscripting") {
-                var err: XMLIndexer.Error? = nil
+                var err: XMLIndexer.SWXMLHash.Error? = nil
                 switch xml!["what"]["subelement"][5]["nomatch"] {
-                case .XMLError(let error):
+                case .xmlError(let error):
                     err = error
                 default:
                     err = nil
@@ -210,7 +210,7 @@ class SWXMLHashLazyTests: QuickSpec {
             }
 
             it("should be able to iterate element groups") {
-                let result = xml!["root"]["catalog"]["book"].all.map({ $0["genre"].element?.text ?? "" }).joinWithSeparator(", ")
+                let result = xml!["root"]["catalog"]["book"].all.map({ $0["genre"].element?.text ?? "" }).joined(separator: ", ")
                 expect(result).to(equal("Computer, Fantasy, Fantasy"))
             }
 
@@ -232,7 +232,7 @@ class SWXMLHashLazyTests: QuickSpec {
             }
 
             it("should be able to enumerate children") {
-                let result = xml!["root"]["catalog"]["book"][0].children.map({ $0.element?.name ?? "" }).joinWithSeparator(", ")
+                let result = xml!["root"]["catalog"]["book"][0].children.map({ $0.element?.name ?? "" }).joined(separator: ", ")
                 expect(result).to(equal("author, title, genre, price, publish_date, description"))
             }
 
@@ -244,7 +244,7 @@ class SWXMLHashLazyTests: QuickSpec {
                 let interleavedXml = "<html><body><p>one</p><div>two</div><p>three</p><div>four</div></body></html>"
                 let parsed = SWXMLHash.lazy(interleavedXml)
 
-                let result = parsed["html"]["body"].children.map({ $0.element?.text ?? "" }).joinWithSeparator(", ")
+                let result = parsed["html"]["body"].children.map({ $0.element?.text ?? "" }).joined(separator: ", ")
                 expect(result).to(equal("one, two, three, four"))
             }
         }
@@ -253,9 +253,9 @@ class SWXMLHashLazyTests: QuickSpec {
             var xml: XMLIndexer?
 
             beforeEach {
-                let bundle = NSBundle(forClass: SWXMLHashTests.self)
+                let bundle = Bundle(for: SWXMLHashTests.self)
                 let path = bundle.pathForResource("test", ofType: "xml")
-                let data = NSData(contentsOfFile: path!)
+                let data = try? Data(contentsOf: URL(fileURLWithPath: path!))
                 xml = SWXMLHash.lazy(data!)
             }
 
@@ -787,7 +787,7 @@ struct BasicItem: XMLIndexerDeserializable {
 
     // MARK: - XMLIndexerDeserializable
 
-    static func deserialize(node: XMLIndexer) throws -> BasicItem {
+    static func deserialize(_ node: XMLIndexer) throws -> BasicItem {
         return try BasicItem(
             name: node["name"].value(),
             price: node["price"].value()
@@ -809,7 +809,7 @@ struct ComplexItem: XMLIndexerDeserializable {
 
     // MARK: - XMLIndexerDeserializable
 
-    static func deserialize(node: XMLIndexer) throws -> ComplexItem {
+    static func deserialize(_ node: XMLIndexer) throws -> ComplexItem {
         return try ComplexItem(
             name: node["name"].value(),
             priceOptional: node["price"].value(),
