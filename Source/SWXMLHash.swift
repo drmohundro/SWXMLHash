@@ -413,7 +413,6 @@ public enum XMLIndexer: SequenceType {
     public func withAttr(attr: String, _ value: String) throws -> XMLIndexer {
         switch self {
         case .Stream(let opStream):
-            opStream.stringify()
             let match = opStream.findElements()
             return try match.withAttr(attr, value)
         case .List(let list):
