@@ -305,6 +305,34 @@ class SWXMLHashConfigSpecs: QuickSpec {
 
 class SWXMLHashTypeConversionSpecs: QuickSpec {
     override func spec() {
+        describe("lazy types conversion") {
+            var parser: XMLIndexer?
+            let xmlWithBasicTypes = "<root>" +
+                "  <string>the string value</string>" +
+                "  <int>100</int>" +
+                "  <double>100.45</double>" +
+                "  <float>44.12</float>" +
+                "  <bool1>0</bool1>" +
+                "  <bool2>true</bool2>" +
+                "  <empty></empty>" +
+                "  <basicItem>" +
+                "    <name>the name of basic item</name>" +
+                "    <price>99.14</price>" +
+                "  </basicItem>" +
+            "</root>"
+
+            beforeEach {
+                parser = SWXMLHash.config { cfg in cfg.shouldProcessLazily = true }.parse(xmlWithBasicTypes)
+            }
+
+            describe("when parsing String") {
+                it("should convert `value` to non-optional") {
+                    let value: String = try! parser!["root"]["string"].value()
+                    expect(value) == "the string value"
+                }
+            }
+        }
+
         describe("basic types conversion") {
             var parser: XMLIndexer?
             let xmlWithBasicTypes = "<root>" +

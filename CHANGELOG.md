@@ -1,3 +1,8 @@
+## v2.3.2 (June 23, 2016)
+
+* Fixed issue with lazy loading and serialization support
+  * See [issue #79](https://github.com/drmohundro/SWXMLHash/issues/79).
+
 ## v2.3.1 (April 10, 2016)
 
 * Fixed issue with Swift Package Manager
