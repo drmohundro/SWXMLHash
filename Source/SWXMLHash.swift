@@ -39,7 +39,7 @@ public class SWXMLHashOptions {
     public var shouldProcessLazily = false
 
     /// determines whether to parse XML namespaces or not (forwards to
-    /// `NSXMLParser.shouldProcessNamespaces`)
+    /// `XMLParser.shouldProcessNamespaces`)
     public var shouldProcessNamespaces = false
 }
 
@@ -74,7 +74,7 @@ public class SWXMLHash {
     - returns: an `XMLIndexer` instance that can be iterated over
     */
     public func parse(_ xml: String) -> XMLIndexer {
-        return parse((xml as NSString).data(using: NSUTF8StringEncoding)!)
+        return parse(xml.data(using: String.Encoding.utf8)!)
     }
 
     /**
@@ -87,7 +87,7 @@ public class SWXMLHash {
     public func parse(_ data: NSData) -> XMLIndexer {
         let parser: SimpleXmlParser = options.shouldProcessLazily
             ? LazyXMLParser(options)
-            : XMLParser(options)
+            : SWXMLParser(options)
         return parser.parse(data: data)
     }
 
@@ -153,8 +153,8 @@ protocol SimpleXmlParser {
     func parse(data: NSData) -> XMLIndexer
 }
 
-/// The implementation of NSXMLParserDelegate and where the lazy parsing actually happens.
-class LazyXMLParser: NSObject, SimpleXmlParser, NSXMLParserDelegate {
+/// The implementation of XMLParserDelegate and where the lazy parsing actually happens.
+class LazyXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
     required init(_ options: SWXMLHashOptions) {
         self.options = options
         super.init()
@@ -181,13 +181,13 @@ class LazyXMLParser: NSObject, SimpleXmlParser, NSXMLParserDelegate {
         parentStack.push(item: root)
 
         self.ops = ops
-        let parser = NSXMLParser(data: data!)
+        let parser = XMLParser(data: data! as Data)
         parser.shouldProcessNamespaces = options.shouldProcessNamespaces
         parser.delegate = self
         parser.parse()
     }
 
-    func parser(_ parser: NSXMLParser,
+    func parser(_ parser: XMLParser,
                 didStartElement elementName: String,
                 namespaceURI: String?,
                 qualifiedName qName: String?,
@@ -202,7 +202,7 @@ class LazyXMLParser: NSObject, SimpleXmlParser, NSXMLParserDelegate {
         parentStack.push(item: currentNode)
     }
 
-    func parser(_ parser: NSXMLParser, foundCharacters string: String) {
+    func parser(_ parser: XMLParser, foundCharacters string: String) {
         if !onMatch() {
             return
         }
@@ -212,7 +212,7 @@ class LazyXMLParser: NSObject, SimpleXmlParser, NSXMLParserDelegate {
         current.addText(text: string)
     }
 
-    func parser(_ parser: NSXMLParser,
+    func parser(_ parser: XMLParser,
                 didEndElement elementName: String,
                 namespaceURI: String?,
                 qualifiedName qName: String?) {
@@ -237,8 +237,8 @@ class LazyXMLParser: NSObject, SimpleXmlParser, NSXMLParserDelegate {
     }
 }
 
-/// The implementation of NSXMLParserDelegate and where the parsing actually happens.
-class XMLParser: NSObject, SimpleXmlParser, NSXMLParserDelegate {
+/// The implementation of XMLParserDelegate and where the parsing actually happens.
+class SWXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
     required init(_ options: SWXMLHashOptions) {
         self.options = options
         super.init()
@@ -255,7 +255,7 @@ class XMLParser: NSObject, SimpleXmlParser, NSXMLParserDelegate {
 
         parentStack.push(item: root)
 
-        let parser = NSXMLParser(data: data)
+        let parser = XMLParser(data: data as Data)
         parser.shouldProcessNamespaces = options.shouldProcessNamespaces
         parser.delegate = self
         parser.parse()
@@ -263,7 +263,7 @@ class XMLParser: NSObject, SimpleXmlParser, NSXMLParserDelegate {
         return XMLIndexer(root)
     }
 
-    func parser(_ parser: NSXMLParser,
+    func parser(_ parser: XMLParser,
                 didStartElement elementName: String,
                 namespaceURI: String?,
                 qualifiedName qName: String?,
@@ -273,13 +273,13 @@ class XMLParser: NSObject, SimpleXmlParser, NSXMLParserDelegate {
         parentStack.push(item: currentNode)
     }
 
-    func parser(_ parser: NSXMLParser, foundCharacters string: String) {
+    func parser(_ parser: XMLParser, foundCharacters string: String) {
         let current = parentStack.top()
 
         current.addText(text: string)
     }
 
-    func parser(_ parser: NSXMLParser,
+    func parser(_ parser: XMLParser,
                 didEndElement elementName: String,
                 namespaceURI: String?,
                 qualifiedName qName: String?) {

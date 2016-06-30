@@ -278,7 +278,7 @@ class SWXMLHashLazyTests: QuickSpec {
 
 class SWXMLHashConfigSpecs: QuickSpec {
     override func spec() {
-        describe("optional configuration options for NSXMLParser") {
+        describe("optional configuration options for XMLParser") {
             var parser: XMLIndexer?
             let xmlWithNamespace = "<root xmlns:h=\"http://www.w3.org/TR/html4/\"" +
                 "  xmlns:f=\"http://www.w3schools.com/furniture\">" +
