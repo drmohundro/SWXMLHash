@@ -81,10 +81,10 @@ public class SWXMLHash {
     Begins parsing the passed in XML string.
 
     - parameters:
-        - data: an `NSData` instance containing XML
+        - data: a `Data` instance containing XML
         - returns: an `XMLIndexer` instance that can be iterated over
     */
-    public func parse(_ data: NSData) -> XMLIndexer {
+    public func parse(_ data: Data) -> XMLIndexer {
         let parser: SimpleXmlParser = options.shouldProcessLazily
             ? LazyXMLParser(options)
             : SWXMLParser(options)
@@ -102,12 +102,12 @@ public class SWXMLHash {
     }
 
     /**
-    Method to parse XML passed in as an NSData instance.
+    Method to parse XML passed in as a Data instance.
 
     - parameter data: The XML to be parsed
     - returns: An XMLIndexer instance that is used to look up elements in the XML
     */
-    class public func parse(_ data: NSData) -> XMLIndexer {
+    class public func parse(_ data: Data) -> XMLIndexer {
         return SWXMLHash().parse(data)
     }
 
@@ -122,12 +122,12 @@ public class SWXMLHash {
     }
 
     /**
-    Method to lazily parse XML passed in as an NSData instance.
+    Method to lazily parse XML passed in as a Data instance.
 
     - parameter data: The XML to be parsed
     - returns: An XMLIndexer instance that is used to look up elements in the XML
     */
-    class public func lazy(data: NSData) -> XMLIndexer {
+    class public func lazy(data: Data) -> XMLIndexer {
         return config { conf in conf.shouldProcessLazily = true }.parse(data)
     }
 }
@@ -150,7 +150,7 @@ struct Stack<T> {
 
 protocol SimpleXmlParser {
     init(_ options: SWXMLHashOptions)
-    func parse(data: NSData) -> XMLIndexer
+    func parse(data: Data) -> XMLIndexer
 }
 
 extension XMLParserDelegate {
@@ -206,11 +206,11 @@ class LazyXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
     var parentStack = Stack<XMLElement>()
     var elementStack = Stack<String>()
 
-    var data: NSData?
+    var data: Data?
     var ops: [IndexOp] = []
     let options: SWXMLHashOptions
 
-    func parse(data: NSData) -> XMLIndexer {
+    func parse(data: Data) -> XMLIndexer {
         self.data = data
         return XMLIndexer(self)
     }
@@ -290,7 +290,7 @@ class SWXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
     var parentStack = Stack<XMLElement>()
     let options: SWXMLHashOptions
 
-    func parse(data: NSData) -> XMLIndexer {
+    func parse(data: Data) -> XMLIndexer {
         // clear any prior runs of parse... expected that this won't be necessary,
         // but you never know
         parentStack.removeAll()
