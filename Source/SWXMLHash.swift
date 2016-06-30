@@ -226,7 +226,7 @@ class LazyXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
         let parser = XMLParser(data: data! as Data)
         parser.shouldProcessNamespaces = options.shouldProcessNamespaces
         parser.delegate = self
-        parser.parse()
+        _ = parser.parse()
     }
 
     func parser(_ parser: XMLParser,
@@ -240,8 +240,12 @@ class LazyXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
         if !onMatch() {
             return
         }
+        #if os(Linux)
         let attributeNSDict = NSDictionary(objects: attributeDict.values.map({ $0 as! AnyObject }), forKeys: attributeDict.keys.map({ NSString(string: $0) as NSObject }))
         let currentNode = parentStack.top().addElement(name: elementName, withAttributes: attributeNSDict)
+        #else
+        let currentNode = parentStack.top().addElement(name: elementName, withAttributes: attributeDict)
+        #endif
         parentStack.push(item: currentNode)
     }
 
@@ -301,7 +305,7 @@ class SWXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
         let parser = XMLParser(data: data as Data)
         parser.shouldProcessNamespaces = options.shouldProcessNamespaces
         parser.delegate = self
-        parser.parse()
+        _ = parser.parse()
 
         return XMLIndexer(root)
     }
@@ -311,9 +315,12 @@ class SWXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
                 namespaceURI: String?,
                 qualifiedName qName: String?,
                 attributes attributeDict: [String: String]) {
-
+        #if os(Linux)
         let attributeNSDict = NSDictionary(objects: attributeDict.values.map({ $0 as! AnyObject }), forKeys: attributeDict.keys.map({ NSString(string: $0) as NSObject }))
         let currentNode = parentStack.top().addElement(name: elementName, withAttributes: attributeNSDict)
+        #else
+        let currentNode = parentStack.top().addElement(name: elementName, withAttributes: attributeDict)
+        #endif
         parentStack.push(item: currentNode)
     }
 
