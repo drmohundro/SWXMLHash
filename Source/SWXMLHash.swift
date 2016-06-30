@@ -222,11 +222,12 @@ class LazyXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
         current.addText(text: string)
     }
 
+    #if os(Linux)
     func parser(_ parser: XMLParser,
                 didEndElement elementName: String,
                 namespaceURI: String?,
-                qualifiedName qName: String?) {
-
+                qualifiedName qName: String?,
+                attributes attributeDict: [String : String]) {
         let match = onMatch()
 
         _ = elementStack.pop()
@@ -235,6 +236,20 @@ class LazyXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
             _ = parentStack.pop()
         }
     }
+    #else
+    func parser(_ parser: XMLParser,
+                didEndElement elementName: String,
+                namespaceURI: String?,
+                qualifiedName qName: String?) {
+        let match = onMatch()
+
+        _ = elementStack.pop()
+
+        if match {
+            _ = parentStack.pop()
+        }
+    }
+    #endif
 
     func onMatch() -> Bool {
         // we typically want to compare against the elementStack to see if it matches ops, *but*
