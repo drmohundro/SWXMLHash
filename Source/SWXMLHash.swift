@@ -187,6 +187,16 @@ class LazyXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
         parser.parse()
     }
 
+#if os(Linux)
+    func parserDidStartDocument(_ parser: XMLParser) {
+        // nothing to do here
+    }
+
+    func parserDidEndDocument(_ parser: XMLParser) {
+        // nothing to do here
+    }
+#endif
+
     func parser(_ parser: XMLParser,
                 didStartElement elementName: String,
                 namespaceURI: String?,
