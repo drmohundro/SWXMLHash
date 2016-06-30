@@ -153,6 +153,48 @@ protocol SimpleXmlParser {
     func parse(data: NSData) -> XMLIndexer
 }
 
+extension XMLParserDelegate {
+
+    func parserDidStartDocument(_ parser: XMLParser) { }
+    func parserDidEndDocument(_ parser: XMLParser) { }
+
+    func parser(_ parser: XMLParser, foundNotationDeclarationWithName name: String, publicID: String?, systemID: String?) { }
+
+    func parser(_ parser: XMLParser, foundUnparsedEntityDeclarationWithName name: String, publicID: String?, systemID: String?, notationName: String?) { }
+
+    func parser(_ parser: XMLParser, foundAttributeDeclarationWithName attributeName: String, forElement elementName: String, type: String?, defaultValue: String?) { }
+
+    func parser(_ parser: XMLParser, foundElementDeclarationWithName elementName: String, model: String) { }
+
+    func parser(_ parser: XMLParser, foundInternalEntityDeclarationWithName name: String, value: String?) { }
+
+    func parser(_ parser: XMLParser, foundExternalEntityDeclarationWithName name: String, publicID: String?, systemID: String?) { }
+
+    func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String]) { }
+
+    func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) { }
+
+    func parser(_ parser: XMLParser, didStartMappingPrefix prefix: String, toURI namespaceURI: String) { }
+
+    func parser(_ parser: XMLParser, didEndMappingPrefix prefix: String) { }
+
+    func parser(_ parser: XMLParser, foundCharacters string: String) { }
+
+    func parser(_ parser: XMLParser, foundIgnorableWhitespace whitespaceString: String) { }
+
+    func parser(_ parser: XMLParser, foundProcessingInstructionWithTarget target: String, data: String?) { }
+
+    func parser(_ parser: XMLParser, foundComment comment: String) { }
+
+    func parser(_ parser: XMLParser, foundCDATA CDATABlock: Data) { }
+
+    func parser(_ parser: XMLParser, resolveExternalEntityName name: String, systemID: String?) -> Data? { return nil }
+
+    func parser(_ parser: XMLParser, parseErrorOccurred parseError: NSError) { }
+
+    func parser(_ parser: XMLParser, validationErrorOccurred validationError: NSError) { }
+}
+
 /// The implementation of XMLParserDelegate and where the lazy parsing actually happens.
 class LazyXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
     required init(_ options: SWXMLHashOptions) {
@@ -186,41 +228,6 @@ class LazyXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
         parser.delegate = self
         parser.parse()
     }
-
-#if os(Linux)
-    func parserDidStartDocument(_ parser: XMLParser) { }
-    func parserDidEndDocument(_ parser: XMLParser) { }
-
-    func parser(_ parser: XMLParser, foundNotationDeclarationWithName name: String, publicID: String?, systemID: String?) { }
-
-    func parser(_ parser: XMLParser, foundUnparsedEntityDeclarationWithName name: String, publicID: String?, systemID: String?, notationName: String?) { }
-
-    func parser(_ parser: XMLParser, foundAttributeDeclarationWithName attributeName: String, forElement elementName: String, type: String?, defaultValue: String?) { }
-
-    func parser(_ parser: XMLParser, foundElementDeclarationWithName elementName: String, model: String) { }
-
-    func parser(_ parser: XMLParser, foundInternalEntityDeclarationWithName name: String, value: String?) { }
-
-    func parser(_ parser: XMLParser, foundExternalEntityDeclarationWithName name: String, publicID: String?, systemID: String?) { }
-
-    func parser(_ parser: XMLParser, didStartMappingPrefix prefix: String, toURI namespaceURI: String) { }
-
-    func parser(_ parser: XMLParser, didEndMappingPrefix prefix: String) { }
-
-    func parser(_ parser: XMLParser, foundIgnorableWhitespace whitespaceString: String) { }
-
-    func parser(_ parser: XMLParser, foundProcessingInstructionWithTarget target: String, data: String?) { }
-
-    func parser(_ parser: XMLParser, foundComment comment: String) { }
-
-    func parser(_ parser: XMLParser, foundCDATA CDATABlock: Data) { }
-
-    func parser(_ parser: XMLParser, resolveExternalEntityName name: String, systemID: String?) -> Data? { return nil }
-
-    func parser(_ parser: XMLParser, parseErrorOccurred parseError: NSError) { }
-
-    func parser(_ parser: XMLParser, validationErrorOccurred validationError: NSError) { }
-#endif
 
     func parser(_ parser: XMLParser,
                 didStartElement elementName: String,
