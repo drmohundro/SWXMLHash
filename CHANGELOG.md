@@ -1,3 +1,7 @@
+## v2.4.0 (July 12, 2016)
+
+* Changed from using Quick/Nimble to XCTest (no version bump - only testing changes)
+
 ## v2.4.0 (July 11, 2016)
 
 * Changed visibility of `children` property on `XMLElement` to be `public`
