@@ -47,7 +47,7 @@ Then create a `Podfile` with the following contents:
 source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '8.0'
 
-pod 'SWXMLHash', '~> 2.3.0'
+pod 'SWXMLHash', '~> 2.4.0'
 ```
 
 Finally, run the following command to install it:

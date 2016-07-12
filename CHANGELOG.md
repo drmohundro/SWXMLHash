@@ -1,3 +1,8 @@
+## v2.4.0 (July 11, 2016)
+
+* Changed visibility of `children` property on `XMLElement` to be `public`
+  * See [issue #82](https://github.com/drmohundro/SWXMLHash/issues/82) and [PR #83](https://github.com/drmohundro/SWXMLHash/pull/83).
+
 ## v2.3.2 (June 23, 2016)
 
 * Fixed issue with lazy loading and serialization support
