@@ -91,6 +91,26 @@ class SWXMLHashTests: QuickSpec {
                 expect(xml!["root"]["header"].element?.text).to(equal("header mixed contentmore mixed content"))
             }
 
+            it("should be able to iterate over mixed content") {
+                let mixedContentXml = "<html><body><p>mixed content <i>iteration</i> support</body></html>"
+                let parsed = SWXMLHash.parse(mixedContentXml)
+                let result = parsed["html"]["body"]["p"].element!.children.reduce("") { acc, child in
+                    switch child {
+                    case let elm as XMLElement:
+                        guard let text = elm.text else { return acc }
+                        return acc + text
+                    case let elm as TextElement:
+                        return acc + elm.text
+                    default: 
+                        XCTAssert(false, "Unknown element type")
+                        return acc
+                    }
+                }
+                
+                expect(result).to(equal("mixed content iteration support"))
+                
+            }
+            
             it("should handle interleaving XML elements") {
                 let interleavedXml = "<html><body><p>one</p><div>two</div><p>three</p><div>four</div></body></html>"
                 let parsed = SWXMLHash.parse(interleavedXml)
