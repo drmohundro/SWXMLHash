@@ -27,6 +27,8 @@ The API takes a lot of inspiration from [SwiftyJSON](https://github.com/SwiftyJS
 - iOS 8.0+ / Mac OS X 10.9+ / tvOS 9.0+ / watchOS 2.0+
 - Xcode 7.1+
 
+(note that Xcode 8 beta and Swift 3 support are being tracked in [PR 78](https://github.com/drmohundro/SWXMLHash/pull/78))
+
 ## Installation
 
 SWXMLHash can be installed using [CocoaPods](http://cocoapods.org/), [Carthage](https://github.com/Carthage/Carthage), or manually.
@@ -45,7 +47,7 @@ Then create a `Podfile` with the following contents:
 source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '8.0'
 
-pod 'SWXMLHash', '~> 2.3.0'
+pod 'SWXMLHash', '~> 2.4.0'
 ```
 
 Finally, run the following command to install it:
@@ -103,7 +105,7 @@ The available options at this time are:
 
 ## Examples
 
-All examples below can be found in the included [specs](https://github.com/drmohundro/SWXMLHash/blob/master/Tests/SWXMLHashSpecs.swift).
+All examples below can be found in the included [specs](https://github.com/drmohundro/SWXMLHash/blob/master/Tests/).
 
 ### Initialization
 

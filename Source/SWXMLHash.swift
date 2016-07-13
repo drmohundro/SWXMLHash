@@ -640,7 +640,7 @@ public class XMLElement: XMLContent {
             .reduce("", combine: { $0 + $1!.text })
     }
 
-    var children = [XMLContent]()
+    public var children = [XMLContent]()
     var count: Int = 0
     var index: Int
 
