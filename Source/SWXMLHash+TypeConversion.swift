@@ -248,7 +248,7 @@ public extension XMLIndexer {
 
 private extension XMLElement {
     func nonEmptyTextOrThrow() throws -> String {
-        if let text = self.text where !text.characters.isEmpty {
+        if let text = self.text, !text.characters.isEmpty {
             return text
         } else { throw XMLDeserializationError.NodeHasNoValue }
     }
