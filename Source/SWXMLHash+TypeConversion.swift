@@ -255,7 +255,7 @@ private extension XMLElement {
 }
 
 /// The error that is thrown if there is a problem with deserialization
-public enum XMLDeserializationError: ErrorProtocol, CustomStringConvertible {
+public enum XMLDeserializationError: Error, CustomStringConvertible {
     case ImplementationIsMissing(method: String)
     case NodeIsInvalid(node: XMLIndexer)
     case NodeHasNoValue

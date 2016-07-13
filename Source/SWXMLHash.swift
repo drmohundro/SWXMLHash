@@ -400,7 +400,7 @@ public enum XMLIndexer: Sequence {
     case XMLError(Error)
 
     /// Error type that is thrown when an indexing or parsing operation fails.
-    public enum Error: ErrorProtocol {
+    public enum Error: Swift.Error {
         case Attribute(attr: String)
         case AttributeValue(attr: String, value: String)
         case Key(key: String)
