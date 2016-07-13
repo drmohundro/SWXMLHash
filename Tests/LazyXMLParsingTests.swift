@@ -56,7 +56,7 @@ class LazyXMLParsingTests: XCTestCase {
     }
 
     func testShouldBeAbleToIterateElementGroups() {
-        let result = xml!["root"]["catalog"]["book"].all.map({ $0["genre"].element!.text! }).joinWithSeparator(", ")
+        let result = xml!["root"]["catalog"]["book"].all.map({ $0["genre"].element!.text! }).joined(separator: ", ")
         XCTAssertEqual(result, "Computer, Fantasy, Fantasy")
     }
 
@@ -78,7 +78,7 @@ class LazyXMLParsingTests: XCTestCase {
     }
 
     func testShouldBeAbleToEnumerateChildren() {
-        let result = xml!["root"]["catalog"]["book"][0].children.map({ $0.element!.name }).joinWithSeparator(", ")
+        let result = xml!["root"]["catalog"]["book"][0].children.map({ $0.element!.name }).joined(separator: ", ")
         XCTAssertEqual(result, "author, title, genre, price, publish_date, description")
     }
 
@@ -90,7 +90,7 @@ class LazyXMLParsingTests: XCTestCase {
         let interleavedXml = "<html><body><p>one</p><div>two</div><p>three</p><div>four</div></body></html>"
         let parsed = SWXMLHash.parse(interleavedXml)
 
-        let result = parsed["html"]["body"].children.map({ $0.element!.text! }).joinWithSeparator(", ")
+        let result = parsed["html"]["body"].children.map({ $0.element!.text! }).joined(separator: ", ")
         XCTAssertEqual(result, "one, two, three, four")
     }
 
