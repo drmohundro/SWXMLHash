@@ -219,10 +219,10 @@ class LazyXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
 
         let match = onMatch()
 
-        elementStack.pop()
+        let _ = elementStack.pop()
 
         if match {
-            parentStack.pop()
+            let _ = parentStack.pop()
         }
     }
 
@@ -284,7 +284,7 @@ class XMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
                 namespaceURI: String?,
                 qualifiedName qName: String?) {
 
-        parentStack.pop()
+        let _ = parentStack.pop()
     }
 }
 
