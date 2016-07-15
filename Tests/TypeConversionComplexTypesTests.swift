@@ -113,7 +113,7 @@ struct ComplexItem: XMLIndexerDeserializable {
     let priceOptional: Double?
     let basics: [BasicItem]
 
-    static func deserialize(node: XMLIndexer) throws -> ComplexItem {
+    static func deserialize(_ node: XMLIndexer) throws -> ComplexItem {
         return try ComplexItem(
             name: node["name"].value(),
             priceOptional: node["price"].value(),

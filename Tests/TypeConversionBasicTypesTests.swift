@@ -302,7 +302,7 @@ struct BasicItem: XMLIndexerDeserializable {
     let name: String
     let price: Double
 
-    static func deserialize(node: XMLIndexer) throws -> BasicItem {
+    static func deserialize(_ node: XMLIndexer) throws -> BasicItem {
         return try BasicItem(
             name: node["name"].value(),
             price: node["price"].value()
