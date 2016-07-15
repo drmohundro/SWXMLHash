@@ -132,7 +132,7 @@ class XMLParsingTests: XCTestCase {
             XCTAssertNotNil(err)
         }
         do {
-            try xml!.byKey("root").byKey("what").byKey("header").byKey("foo")
+            let _ = try xml!.byKey("root").byKey("what").byKey("header").byKey("foo")
         } catch let error as XMLIndexer.Error {
             err = error
         } catch { err = nil }
@@ -144,7 +144,7 @@ class XMLParsingTests: XCTestCase {
             XCTAssertNotNil(err)
         }
         do {
-            try xml!.byKey("what").byKey("subelement").byIndex(5).byKey("nomatch")
+            let _ = try xml!.byKey("what").byKey("subelement").byIndex(5).byKey("nomatch")
         } catch let error as XMLIndexer.Error {
             err = error
         } catch { err = nil }

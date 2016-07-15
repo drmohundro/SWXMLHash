@@ -187,7 +187,7 @@ class LazyXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
         parser.parse()
     }
 
-    private func parser(_ parser: XMLParser,
+    func parser(_ parser: Foundation.XMLParser,
                 didStartElement elementName: String,
                 namespaceURI: String?,
                 qualifiedName qName: String?,
@@ -202,7 +202,7 @@ class LazyXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
         parentStack.push(currentNode)
     }
 
-    private func parser(_ parser: XMLParser, foundCharacters string: String) {
+    func parser(_ parser: Foundation.XMLParser, foundCharacters string: String) {
         if !onMatch() {
             return
         }
@@ -212,17 +212,17 @@ class LazyXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
         current.addText(string)
     }
 
-    private func parser(_ parser: XMLParser,
+    func parser(_ parser: Foundation.XMLParser,
                 didEndElement elementName: String,
                 namespaceURI: String?,
                 qualifiedName qName: String?) {
 
         let match = onMatch()
 
-        elementStack.pop()
+        let _ = elementStack.pop()
 
         if match {
-            parentStack.pop()
+            let _ = parentStack.pop()
         }
     }
 
@@ -263,7 +263,7 @@ class XMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
         return XMLIndexer(root)
     }
 
-    private func parser(_ parser: XMLParser,
+    func parser(_ parser: Foundation.XMLParser,
                 didStartElement elementName: String,
                 namespaceURI: String?,
                 qualifiedName qName: String?,
@@ -273,18 +273,18 @@ class XMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
         parentStack.push(currentNode)
     }
 
-    private func parser(_ parser: XMLParser, foundCharacters string: String) {
+    func parser(_ parser: Foundation.XMLParser, foundCharacters string: String) {
         let current = parentStack.top()
 
         current.addText(string)
     }
 
-    private func parser(_ parser: XMLParser,
+    func parser(_ parser: Foundation.XMLParser,
                 didEndElement elementName: String,
                 namespaceURI: String?,
                 qualifiedName qName: String?) {
 
-        parentStack.pop()
+        let _ = parentStack.pop()
     }
 }
 
