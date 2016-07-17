@@ -25,6 +25,7 @@ import SWXMLHash
 import XCTest
 
 // swiftlint:disable line_length
+// swiftlint:disable force_try
 
 class WhiteSpaceParsingTests: XCTestCase {
     var xml: XMLIndexer?

@@ -140,6 +140,9 @@ struct Stack<T> {
     mutating func pop() -> T {
         return items.removeLast()
     }
+    mutating func drop() {
+        let _ = pop()
+    }
     mutating func removeAll() {
         items.removeAll(keepingCapacity: false)
     }
@@ -219,10 +222,10 @@ class LazyXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
 
         let match = onMatch()
 
-        let _ = elementStack.pop()
+        elementStack.drop()
 
         if match {
-            let _ = parentStack.pop()
+            parentStack.drop()
         }
     }
 
@@ -284,7 +287,7 @@ class XMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
                 namespaceURI: String?,
                 qualifiedName qName: String?) {
 
-        let _ = parentStack.pop()
+        parentStack.drop()
     }
 }
 
@@ -619,6 +622,7 @@ public protocol XMLContent: CustomStringConvertible {
 
 /// Models a text element
 public class TextElement: XMLContent {
+    /// The text value
     public let text: String
     init(text: String) {
         self.text = text
@@ -640,6 +644,7 @@ public class XMLElement: XMLContent {
             .reduce("", combine: { $0 + $1!.text })
     }
 
+    /// All child elements (text or XML)
     public var children = [XMLContent]()
     var count: Int = 0
     var index: Int
@@ -676,7 +681,7 @@ public class XMLElement: XMLContent {
 
         for (keyAny, valueAny) in attributes {
             if let key = keyAny as? String,
-                let value = valueAny as? String {
+                value = valueAny as? String {
                 element.attributes[key] = value
             }
         }

@@ -6,12 +6,15 @@
 //
 //
 
+// swiftlint:disable line_length
+
 import Foundation
 
 // MARK: - XMLIndexerDeserializable
 
 /// Provides XMLIndexer deserialization / type transformation support
 public protocol XMLIndexerDeserializable {
+    /// Method for deserializing elements from XMLIndexer
     static func deserialize(_ element: XMLIndexer) throws -> Self
 }
 
@@ -36,6 +39,7 @@ public extension XMLIndexerDeserializable {
 
 /// Provides XMLElement deserialization / type transformation support
 public protocol XMLElementDeserializable {
+    /// Method for deserializing elements from XMLElement
     static func deserialize(_ element: XMLElement) throws -> Self
 }
 
@@ -71,7 +75,7 @@ public extension XMLIndexer {
         case .Element(let element):
             return try T.deserialize(element)
         case .Stream(let opStream):
-            return try! opStream.findElements().value()
+            return try opStream.findElements().value()
         default:
             throw XMLDeserializationError.NodeIsInvalid(node: self)
         }
@@ -88,7 +92,7 @@ public extension XMLIndexer {
         case .Element(let element):
             return try T.deserialize(element)
         case .Stream(let opStream):
-            return try! opStream.findElements().value()
+            return try opStream.findElements().value()
         default:
             return nil
         }
@@ -107,7 +111,7 @@ public extension XMLIndexer {
         case .Element(let element):
             return try [element].map { try T.deserialize($0) }
         case .Stream(let opStream):
-            return try! opStream.findElements().value()
+            return try opStream.findElements().value()
         default:
             return []
         }
@@ -126,7 +130,7 @@ public extension XMLIndexer {
         case .Element(let element):
             return try [element].map { try T.deserialize($0) }
         case .Stream(let opStream):
-            return try! opStream.findElements().value()
+            return try opStream.findElements().value()
         default:
             return nil
         }
@@ -145,7 +149,7 @@ public extension XMLIndexer {
         case .Element(let element):
             return try [element].map { try T.deserialize($0) }
         case .Stream(let opStream):
-            return try! opStream.findElements().value()
+            return try opStream.findElements().value()
         default:
             return []
         }
@@ -165,7 +169,7 @@ public extension XMLIndexer {
         case .Element:
             return try T.deserialize(self)
         case .Stream(let opStream):
-            return try! opStream.findElements().value()
+            return try opStream.findElements().value()
         default:
             throw XMLDeserializationError.NodeIsInvalid(node: self)
         }
@@ -182,7 +186,7 @@ public extension XMLIndexer {
         case .Element:
             return try T.deserialize(self)
         case .Stream(let opStream):
-            return try! opStream.findElements().value()
+            return try opStream.findElements().value()
         default:
             return nil
         }
@@ -201,7 +205,7 @@ public extension XMLIndexer {
         case .Element(let element):
             return try [element].map { try T.deserialize( XMLIndexer($0) ) }
         case .Stream(let opStream):
-            return try! opStream.findElements().value()
+            return try opStream.findElements().value()
         default:
             throw XMLDeserializationError.NodeIsInvalid(node: self)
         }
@@ -220,7 +224,7 @@ public extension XMLIndexer {
         case .Element(let element):
             return try [element].map { try T.deserialize( XMLIndexer($0) ) }
         case .Stream(let opStream):
-            return try! opStream.findElements().value()
+            return try opStream.findElements().value()
         default:
             throw XMLDeserializationError.NodeIsInvalid(node: self)
         }
@@ -239,7 +243,7 @@ public extension XMLIndexer {
         case .Element(let element):
             return try [element].map { try T.deserialize( XMLIndexer($0) ) }
         case .Stream(let opStream):
-            return try! opStream.findElements().value()
+            return try opStream.findElements().value()
         default:
             throw XMLDeserializationError.NodeIsInvalid(node: self)
         }
