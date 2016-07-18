@@ -29,6 +29,12 @@
 
 import Foundation
 
+#if os(Linux)
+internal typealias SwiftError = Swift.Error
+#else
+internal typealias SwiftError = Swift.ErrorProtocol
+#endif
+
 let rootElementName = "SWXMLHash_Root_Element"
 
 /// Parser options
@@ -153,6 +159,8 @@ protocol SimpleXmlParser {
     func parse(data: Data) -> XMLIndexer
 }
 
+#if os(Linux)
+
 extension XMLParserDelegate {
 
     func parserDidStartDocument(_ parser: XMLParser) { }
@@ -194,6 +202,8 @@ extension XMLParserDelegate {
 
     func parser(_ parser: XMLParser, validationErrorOccurred validationError: NSError) { }
 }
+
+#endif
 
 /// The implementation of XMLParserDelegate and where the lazy parsing actually happens.
 class LazyXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
@@ -400,7 +410,7 @@ public enum XMLIndexer: Sequence {
     case XMLError(Error)
 
     /// Error type that is thrown when an indexing or parsing operation fails.
-    public enum Error: Swift.Error {
+    public enum Error: SwiftError {
         case Attribute(attr: String)
         case AttributeValue(attr: String, value: String)
         case Key(key: String)
