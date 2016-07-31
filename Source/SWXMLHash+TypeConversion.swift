@@ -6,6 +6,8 @@
 //
 //
 
+// swiftlint:disable file_length
+
 import Foundation
 
 // MARK: - XMLIndexerDeserializable
@@ -85,7 +87,8 @@ public extension XMLIndexer {
     // MARK: - XMLAttributeDeserializable
 
     /**
-     Attempts to deserialize the value of the specified attribute of the current XMLIndexer element to `T`
+     Attempts to deserialize the value of the specified attribute of the current XMLIndexer
+     element to `T`
 
      - parameter attr: The attribute to deserialize
      - throws: an XMLDeserializationError if there is a problem with deserialization
@@ -103,7 +106,8 @@ public extension XMLIndexer {
     }
 
     /**
-     Attempts to deserialize the value of the specified attribute of the current XMLIndexer element to `T?`
+     Attempts to deserialize the value of the specified attribute of the current XMLIndexer
+     element to `T?`
 
      - parameter attr: The attribute to deserialize
      - returns: The deserialized `T?` value, or nil if the attribute does not exist
@@ -120,7 +124,8 @@ public extension XMLIndexer {
     }
 
     /**
-     Attempts to deserialize the value of the specified attribute of the current XMLIndexer element to `[T]`
+     Attempts to deserialize the value of the specified attribute of the current XMLIndexer
+     element to `[T]`
 
      - parameter attr: The attribute to deserialize
      - throws: an XMLDeserializationError if there is a problem with deserialization
@@ -140,7 +145,8 @@ public extension XMLIndexer {
     }
 
     /**
-     Attempts to deserialize the value of the specified attribute of the current XMLIndexer element to `[T]?`
+     Attempts to deserialize the value of the specified attribute of the current XMLIndexer
+     element to `[T]?`
 
      - parameter attr: The attribute to deserialize
      - throws: an XMLDeserializationError if there is a problem with deserialization
@@ -160,7 +166,8 @@ public extension XMLIndexer {
     }
 
     /**
-     Attempts to deserialize the value of the specified attribute of the current XMLIndexer element to `[T?]`
+     Attempts to deserialize the value of the specified attribute of the current XMLIndexer
+     element to `[T?]`
 
      - parameter attr: The attribute to deserialize
      - throws: an XMLDeserializationError if there is a problem with deserialization
@@ -381,8 +388,7 @@ extension XMLElement {
     public func value<T: XMLAttributeDeserializable>(ofAttribute attr: String) throws -> T {
         if let attr = self.attribute(by: attr) {
             return try T.deserialize(attr)
-        }
-        else {
+        } else {
             throw XMLDeserializationError.AttributeDoesNotExist(element: self, attribute: attr)
         }
     }
@@ -396,8 +402,7 @@ extension XMLElement {
     public func value<T: XMLAttributeDeserializable>(ofAttribute attr: String) -> T? {
         if let attr = self.attribute(by: attr) {
             return try? T.deserialize(attr)
-        }
-        else {
+        } else {
             return nil
         }
     }
@@ -458,8 +463,7 @@ extension String: XMLElementDeserializable, XMLAttributeDeserializable {
     - returns: the deserialized String value
     */
     public static func deserialize(element: XMLElement) throws -> String {
-        guard let text = element.text
-        else {
+        guard let text = element.text else {
             throw XMLDeserializationError.TypeConversionFailed(type: "String", element: element)
         }
         return text
@@ -486,8 +490,9 @@ extension Int: XMLElementDeserializable, XMLAttributeDeserializable {
     - returns: the deserialized Int value
     */
     public static func deserialize(element: XMLElement) throws -> Int {
-        guard let value = Int(try element.nonEmptyTextOrThrow())
-        else { throw XMLDeserializationError.TypeConversionFailed(type: "Int", element: element) }
+        guard let value = Int(try element.nonEmptyTextOrThrow()) else {
+            throw XMLDeserializationError.TypeConversionFailed(type: "Int", element: element)
+        }
         return value
     }
 
@@ -495,12 +500,15 @@ extension Int: XMLElementDeserializable, XMLAttributeDeserializable {
      Attempts to deserialize XML attribute content to an Int
 
      - parameter attribute: The XMLAttribute to be deserialized
-     - throws: an XMLDeserializationError.AttributeDeserializationFailed if the attribute cannot be deserialized
+     - throws: an XMLDeserializationError.AttributeDeserializationFailed if the attribute cannot be
+               deserialized
      - returns: the deserialized Int value
      */
     public static func deserialize(attribute: XMLAttribute) throws -> Int {
-        guard let value = Int(attribute.text)
-        else { throw XMLDeserializationError.AttributeDeserializationFailed(type: "Int", attribute: attribute) }
+        guard let value = Int(attribute.text) else {
+            throw XMLDeserializationError.AttributeDeserializationFailed(
+                type: "Int", attribute: attribute)
+        }
         return value
     }
 }
@@ -515,8 +523,7 @@ extension Double: XMLElementDeserializable, XMLAttributeDeserializable {
     - returns: the deserialized Double value
     */
     public static func deserialize(element: XMLElement) throws -> Double {
-        guard let value = Double(try element.nonEmptyTextOrThrow())
-        else {
+        guard let value = Double(try element.nonEmptyTextOrThrow()) else {
             throw XMLDeserializationError.TypeConversionFailed(type: "Double", element: element)
         }
         return value
@@ -526,12 +533,15 @@ extension Double: XMLElementDeserializable, XMLAttributeDeserializable {
      Attempts to deserialize XML attribute content to a Double
 
      - parameter attribute: The XMLAttribute to be deserialized
-     - throws: an XMLDeserializationError.AttributeDeserializationFailed if the attribute cannot be deserialized
+     - throws: an XMLDeserializationError.AttributeDeserializationFailed if the attribute cannot be
+               deserialized
      - returns: the deserialized Double value
      */
     public static func deserialize(attribute: XMLAttribute) throws -> Double {
-        guard let value = Double(attribute.text)
-        else { throw XMLDeserializationError.AttributeDeserializationFailed(type: "Double", attribute: attribute) }
+        guard let value = Double(attribute.text) else {
+            throw XMLDeserializationError.AttributeDeserializationFailed(
+                type: "Double", attribute: attribute)
+        }
         return value
     }
 }
@@ -546,8 +556,9 @@ extension Float: XMLElementDeserializable, XMLAttributeDeserializable {
     - returns: the deserialized Float value
     */
     public static func deserialize(element: XMLElement) throws -> Float {
-        guard let value = Float(try element.nonEmptyTextOrThrow())
-        else { throw XMLDeserializationError.TypeConversionFailed(type: "Float", element: element) }
+        guard let value = Float(try element.nonEmptyTextOrThrow()) else {
+            throw XMLDeserializationError.TypeConversionFailed(type: "Float", element: element)
+        }
         return value
     }
 
@@ -555,20 +566,24 @@ extension Float: XMLElementDeserializable, XMLAttributeDeserializable {
      Attempts to deserialize XML attribute content to a Float
 
      - parameter attribute: The XMLAttribute to be deserialized
-     - throws: an XMLDeserializationError.AttributeDeserializationFailed if the attribute cannot be deserialized
+     - throws: an XMLDeserializationError.AttributeDeserializationFailed if the attribute cannot be
+               deserialized
      - returns: the deserialized Float value
      */
     public static func deserialize(attribute: XMLAttribute) throws -> Float {
-        guard let value = Float(attribute.text)
-        else { throw XMLDeserializationError.AttributeDeserializationFailed(type: "Float", attribute: attribute) }
+        guard let value = Float(attribute.text) else {
+            throw XMLDeserializationError.AttributeDeserializationFailed(
+                type: "Float", attribute: attribute)
+        }
         return value
     }
 }
 
 extension Bool: XMLElementDeserializable, XMLAttributeDeserializable {
+    // swiftlint:disable line_length
     /**
-     Attempts to deserialize XML element content to a Bool. This uses NSString's 'boolValue' described
-     [here](https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Classes/NSString_Class/#//apple_ref/occ/instp/NSString/boolValue)
+     Attempts to deserialize XML element content to a Bool. This uses NSString's 'boolValue'
+     described [here](https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Classes/NSString_Class/#//apple_ref/occ/instp/NSString/boolValue)
 
      - parameters:
         - element: the XMLElement to be deserialized
@@ -581,15 +596,17 @@ extension Bool: XMLElementDeserializable, XMLAttributeDeserializable {
     }
 
     /**
-     Attempts to deserialize XML attribute content to a Bool. This uses NSString's 'boolValue' described 
-     [here](https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Classes/NSString_Class/#//apple_ref/occ/instp/NSString/boolValue)
+     Attempts to deserialize XML attribute content to a Bool. This uses NSString's 'boolValue'
+     described [here](https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Classes/NSString_Class/#//apple_ref/occ/instp/NSString/boolValue)
 
      - parameter attribute: The XMLAttribute to be deserialized
-     - throws: an XMLDeserializationError.AttributeDeserializationFailed if the attribute cannot be deserialized
+     - throws: an XMLDeserializationError.AttributeDeserializationFailed if the attribute cannot be
+               deserialized
      - returns: the deserialized Bool value
      */
     public static func deserialize(attribute: XMLAttribute) throws -> Bool {
         let value = Bool(NSString(string: attribute.text).boolValue)
         return value
     }
+    // swiftlint:enable line_length
 }
