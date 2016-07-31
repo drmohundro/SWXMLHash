@@ -49,6 +49,7 @@ class LazyXMLParsingTests: XCTestCase {
 
     func testShouldBeAbleToParseAttributes() {
         XCTAssertEqual(xml!["root"]["catalog"]["book"][1].element?.attributes["id"], "bk102")
+        XCTAssertEqual(xml!["root"]["catalog"]["book"][1].element?.attribute(by: "id")?.text, "bk102")
     }
 
     func testShouldBeAbleToLookUpElementsByNameAndAttribute() {
