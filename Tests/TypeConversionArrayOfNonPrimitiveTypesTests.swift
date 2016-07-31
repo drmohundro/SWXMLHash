@@ -44,7 +44,8 @@ class TypeConversionArrayOfNonPrimitiveTypesTests: XCTestCase {
         "      <name>item 3</name>" +
         "      <price>3</price>" +
         "   </basicItem>" +
-        "</arrayOfBadBasicItems>" +
+        "</arrayOfGoodBasicItems>" +
+        "<arrayOfBadBasicItems>" +
         "   <basicItem>" +
         "      <name>item 1</name>" +
         "      <price>1</price>" +
@@ -57,13 +58,29 @@ class TypeConversionArrayOfNonPrimitiveTypesTests: XCTestCase {
         "      <price>3</price>" +
         "   </basicItem>" +
         "</arrayOfBadBasicItems>" +
+        "<arrayOfGoodAttributeItems>" +
+        "   <attributeItem name=\"attr 1\" price=\"1.1\"/>" +
+        "   <attributeItem name=\"attr 2\" price=\"2.2\"/>" +
+        "   <attributeItem name=\"attr 3\" price=\"3.3\"/>" +
+        "</arrayOfGoodAttributeItems>" +
+        "<arrayOfBadAttributeItems>" +
+        "   <attributeItem name=\"attr 1\" price=\"1.1\"/>" +
+        "   <attributeItem price=\"2.2\"/>" + // it's missing the name attribute
+        "   <attributeItem name=\"attr 3\" price=\"3.3\"/>" +
+        "</arrayOfBadAttributeItems>" +
     "</root>"
 
     let correctBasicItems = [
         BasicItem(name: "item 1", price: 1),
         BasicItem(name: "item 2", price: 2),
-        BasicItem(name: "item 3", price: 3),
-        ]
+        BasicItem(name: "item 3", price: 3)
+    ]
+
+    let correctAttributeItems = [
+        AttributeItem(name: "attr 1", price: 1.1),
+        AttributeItem(name: "attr 2", price: 2.2),
+        AttributeItem(name: "attr 3", price: 3.3)
+    ]
 
     override func setUp() {
         parser = SWXMLHash.parse(xmlWithArraysOfTypes)
@@ -104,6 +121,48 @@ class TypeConversionArrayOfNonPrimitiveTypesTests: XCTestCase {
 
     func testShouldThrowWhenConvertingArrayOfBadBasicitemsToArrayOfOptionals() {
         XCTAssertThrowsError(try (parser!["root"]["arrayOfBadBasicItems"]["basicItem"].value() as [BasicItem?])) { error in
+            guard error is XMLDeserializationError else {
+                XCTFail("Wrong type of error")
+                return
+            }
+        }
+    }
+
+    func testShouldConvertArrayOfGoodAttributeItemsToNonOptional() {
+        let value: [AttributeItem] = try! parser!["root"]["arrayOfGoodAttributeItems"]["attributeItem"].value()
+        XCTAssertEqual(value, correctAttributeItems)
+    }
+
+    func testShouldConvertArrayOfGoodAttributeItemsToOptional() {
+        let value: [AttributeItem]? = try! parser!["root"]["arrayOfGoodAttributeItems"]["attributeItem"].value()
+        XCTAssertEqual(value!, correctAttributeItems)
+    }
+
+    func testShouldConvertArrayOfGoodAttributeItemsToArrayOfOptionals() {
+        let value: [AttributeItem?] = try! parser!["root"]["arrayOfGoodAttributeItems"]["attributeItem"].value()
+        XCTAssertEqual(value.flatMap({ $0 }), correctAttributeItems)
+    }
+
+    func testShouldThrowWhenConvertingArrayOfBadAttributeItemsToNonOptional() {
+        XCTAssertThrowsError(try (parser!["root"]["arrayOfBadAttributeItems"]["attributeItem"].value() as [AttributeItem])) { error in
+            guard error is XMLDeserializationError else {
+                XCTFail("Wrong type of error")
+                return
+            }
+        }
+    }
+
+    func testShouldThrowWhenConvertingArrayOfBadAttributeItemsToOptional() {
+        XCTAssertThrowsError(try (parser!["root"]["arrayOfBadAttributeItems"]["attributeItem"].value() as [AttributeItem]?)) { error in
+            guard error is XMLDeserializationError else {
+                XCTFail("Wrong type of error")
+                return
+            }
+        }
+    }
+
+    func testShouldThrowWhenConvertingArrayOfBadAttributeItemsToArrayOfOptionals() {
+        XCTAssertThrowsError(try (parser!["root"]["arrayOfBadAttributeItems"]["attributeItem"].value() as [AttributeItem?])) { error in
             guard error is XMLDeserializationError else {
                 XCTFail("Wrong type of error")
                 return
