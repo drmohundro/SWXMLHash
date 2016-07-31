@@ -638,7 +638,13 @@ public class XMLElement: XMLContent {
 
     /// The attributes of the element
     @available(*, deprecated, message="See `allAttributes` instead, which introduces the XMLAttribute type over a simple String type")
-    public var attributes = [String:String]()
+    public var attributes: [String:String] {
+        var attrMap = [String: String]()
+        for (name, attr) in allAttributes {
+            attrMap[name] = attr.text
+        }
+        return attrMap
+    }
 
     public var allAttributes = [String:XMLAttribute]()
 
@@ -691,9 +697,6 @@ public class XMLElement: XMLContent {
         for (keyAny, valueAny) in attributes {
             if let key = keyAny as? String,
                 value = valueAny as? String {
-                // TODO: remove this... use new one instead
-                element.attributes[key] = value
-
                 element.allAttributes[key] = XMLAttribute(name: key, text: value)
             }
         }
