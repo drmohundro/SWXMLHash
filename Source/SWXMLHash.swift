@@ -344,22 +344,23 @@ public class IndexOps {
     }
 }
 
+/// Error type that is thrown when an indexing or parsing operation fails.
+public enum IndexingError: Error {
+    case Attribute(attr: String)
+    case AttributeValue(attr: String, value: String)
+    case Key(key: String)
+    case Index(idx: Int)
+    case Init(instance: AnyObject)
+    case Error
+}
+
 /// Returned from SWXMLHash, allows easy element lookup into XML data.
 public enum XMLIndexer: Sequence {
     case Element(XMLElement)
     case List([XMLElement])
     case Stream(IndexOps)
-    case XMLError(Error)
+    case XMLError(IndexingError)
 
-    /// Error type that is thrown when an indexing or parsing operation fails.
-    public enum Error: ErrorProtocol {
-        case Attribute(attr: String)
-        case AttributeValue(attr: String, value: String)
-        case Key(key: String)
-        case Index(idx: Int)
-        case Init(instance: AnyObject)
-        case Error
-    }
 
     /// The underlying XMLElement at the currently indexed level of XML.
     public var element: XMLElement? {
@@ -422,17 +423,17 @@ public enum XMLIndexer: Sequence {
             if let elem = list.filter({$0.attributes[attr] == value}).first {
                 return .Element(elem)
             }
-            throw Error.AttributeValue(attr: attr, value: value)
+            throw IndexingError.AttributeValue(attr: attr, value: value)
         case .Element(let elem):
             if let attr = elem.attributes[attr] {
                 if attr == value {
                     return .Element(elem)
                 }
-                throw Error.AttributeValue(attr: attr, value: value)
+                throw IndexingError.AttributeValue(attr: attr, value: value)
             }
             fallthrough
         default:
-            throw Error.Attribute(attr: attr)
+            throw IndexingError.Attribute(attr: attr)
         }
     }
 
@@ -449,7 +450,7 @@ public enum XMLIndexer: Sequence {
         case let value as LazyXMLParser:
             self = .Stream(IndexOps(parser: value))
         default:
-            throw Error.Init(instance: rawObject)
+            throw IndexingError.Init(instance: rawObject)
         }
     }
 
@@ -490,7 +491,7 @@ public enum XMLIndexer: Sequence {
             }
             fallthrough
         default:
-            throw Error.Key(key: key)
+            throw IndexingError.Key(key: key)
         }
     }
 
@@ -503,10 +504,10 @@ public enum XMLIndexer: Sequence {
     public subscript(key: String) -> XMLIndexer {
         do {
            return try self.byKey(key)
-        } catch let error as Error {
+        } catch let error as IndexingError {
             return .XMLError(error)
         } catch {
-            return .XMLError(.Key(key: key))
+            return .XMLError(IndexingError.Key(key: key))
         }
     }
 
@@ -526,14 +527,14 @@ public enum XMLIndexer: Sequence {
             if index <= list.count {
                 return .Element(list[index])
             }
-            return .XMLError(.Index(idx: index))
+            return .XMLError(IndexingError.Index(idx: index))
         case .Element(let elem):
             if index == 0 {
                 return .Element(elem)
             }
             fallthrough
         default:
-            return .XMLError(.Index(idx: index))
+            return .XMLError(IndexingError.Index(idx: index))
         }
     }
 
@@ -546,10 +547,10 @@ public enum XMLIndexer: Sequence {
     public subscript(index: Int) -> XMLIndexer {
         do {
             return try byIndex(index)
-        } catch let error as Error {
+        } catch let error as IndexingError {
             return .XMLError(error)
         } catch {
-            return .XMLError(.Index(idx: index))
+            return .XMLError(IndexingError.Index(idx: index))
         }
     }
 
@@ -566,6 +567,7 @@ public enum XMLIndexer: Sequence {
 }
 
 /// XMLIndexer extensions
+/*
 extension XMLIndexer: Boolean {
     /// True if a valid XMLIndexer, false if an error type
     public var boolValue: Bool {
@@ -577,6 +579,7 @@ extension XMLIndexer: Boolean {
         }
     }
 }
+ */
 
 extension XMLIndexer: CustomStringConvertible {
     /// The XML representation of the XMLIndexer at the current level
@@ -596,7 +599,7 @@ extension XMLIndexer: CustomStringConvertible {
     }
 }
 
-extension XMLIndexer.Error: CustomStringConvertible {
+extension IndexingError: CustomStringConvertible {
     /// The description for the `XMLIndexer.Error`.
     public var description: String {
         switch self {
@@ -641,7 +644,7 @@ public class XMLElement: XMLContent {
         return children
             .map({ $0 as? TextElement })
             .flatMap({ $0 })
-            .reduce("", combine: { $0 + $1!.text })
+            .reduce("", { $0 + $1!.text })
     }
 
     /// All child elements (text or XML)
@@ -681,7 +684,7 @@ public class XMLElement: XMLContent {
 
         for (keyAny, valueAny) in attributes {
             if let key = keyAny as? String,
-                value = valueAny as? String {
+                let value = valueAny as? String {
                 element.attributes[key] = value
             }
         }

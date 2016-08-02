@@ -35,7 +35,7 @@ class WhiteSpaceParsingTests: XCTestCase {
         // Put setup code here. This method is called before the invocation of each test method in the class.
 
         let bundle = Bundle(for: WhiteSpaceParsingTests.self)
-        let path = bundle.pathForResource("test", ofType: "xml")
+        let path = bundle.path(forResource: "test", ofType: "xml")
         let data = try! Data(contentsOf: URL(fileURLWithPath: path!))
         xml = SWXMLHash.parse(data)
     }

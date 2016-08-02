@@ -259,7 +259,7 @@ private extension XMLElement {
 }
 
 /// The error that is thrown if there is a problem with deserialization
-public enum XMLDeserializationError: ErrorProtocol, CustomStringConvertible {
+public enum XMLDeserializationError: Error, CustomStringConvertible {
     case ImplementationIsMissing(method: String)
     case NodeIsInvalid(node: XMLIndexer)
     case NodeHasNoValue
@@ -357,7 +357,7 @@ extension Bool: XMLElementDeserializable {
      [here](https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Classes/NSString_Class/#//apple_ref/occ/instp/NSString/boolValue)
 
      - parameters:
-     - element: the XMLElement to be deserialized
+        - element: the XMLElement to be deserialized
      - throws: an XMLDeserializationError.TypeConversionFailed if the element cannot be deserialized
      - returns: the deserialized Bool value
      */

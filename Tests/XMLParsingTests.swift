@@ -127,31 +127,31 @@ class XMLParsingTests: XCTestCase {
     }
 
     func testShouldProvideAnErrorObjectWhenKeysDontMatch() {
-        var err: XMLIndexer.Error?
+        var err: IndexingError?
         defer {
             XCTAssertNotNil(err)
         }
         do {
             let _ = try xml!.byKey("root").byKey("what").byKey("header").byKey("foo")
-        } catch let error as XMLIndexer.Error {
+        } catch let error as IndexingError {
             err = error
         } catch { err = nil }
     }
 
     func testShouldProvideAnErrorElementWhenIndexersDontMatch() {
-        var err: XMLIndexer.Error?
+        var err: IndexingError?
         defer {
             XCTAssertNotNil(err)
         }
         do {
             let _ = try xml!.byKey("what").byKey("subelement").byIndex(5).byKey("nomatch")
-        } catch let error as XMLIndexer.Error {
+        } catch let error as IndexingError {
             err = error
         } catch { err = nil }
     }
 
     func testShouldStillReturnErrorsWhenAccessingViaSubscripting() {
-        var err: XMLIndexer.Error? = nil
+        var err: IndexingError? = nil
         switch xml!["what"]["subelement"][5]["nomatch"] {
         case .XMLError(let error):
             err = error
