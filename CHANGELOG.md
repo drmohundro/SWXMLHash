@@ -1,3 +1,8 @@
+## v2.5.0 (August 8, 2016)
+
+* Added attribute deserialization support (via `value(ofAttribute:)`).
+  * See corresponding [issue #74](https://github.com/drmohundro/SWXMLHash/issues/74) and [PR #89](https://github.com/drmohundro/SWXMLHash/pull/89)
+
 ## v2.4.0 (July 12, 2016)
 
 * Changed from using Quick/Nimble to XCTest (no version bump - only testing changes)
