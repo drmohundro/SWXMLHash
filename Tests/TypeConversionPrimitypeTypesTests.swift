@@ -39,6 +39,9 @@ class TypeConversionPrimitypeTypesTests: XCTestCase {
         "<arrayOfMixedInts>" +
         "   <int>0</int> <int>boom</int> <int>2</int> <int>3</int>" +
         "</arrayOfMixedInts>" +
+        "<arrayOfAttributeInts>" +
+        "   <int value=\"0\"/> <int value=\"1\"/> <int value=\"2\"/> <int value=\"3\"/>" +
+        "</arrayOfAttributeInts>" +
         "<empty></empty>" +
     "</root>"
 
@@ -113,6 +116,21 @@ class TypeConversionPrimitypeTypesTests: XCTestCase {
                 return
             }
         }
+    }
+
+    func testShouldConvertArrayOfAttributeIntsToNonOptional() {
+        let value: [Int] = try! parser!["root"]["arrayOfAttributeInts"]["int"].value(ofAttribute: "value")
+        XCTAssertEqual(value, [0, 1, 2, 3])
+    }
+
+    func testShouldConvertArrayOfAttributeIntsToOptional() {
+        let value: [Int]? = try! parser!["root"]["arrayOfAttributeInts"]["int"].value(ofAttribute: "value")
+        XCTAssertEqual(value!, [0, 1, 2, 3])
+    }
+
+    func testShouldConvertArrayOfAttributeIntsToArrayOfOptionals() {
+        let value: [Int?] = try! parser!["root"]["arrayOfAttributeInts"]["int"].value(ofAttribute: "value")
+        XCTAssertEqual(value.flatMap({ $0 }), [0, 1, 2, 3])
     }
 
     func testShouldConvertEmptyArrayOfIntsToNonOptional() {
