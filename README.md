@@ -319,7 +319,7 @@ struct Book: XMLIndexerDeserializable {
     let amount: Int?
     let isbn: Int
 
-    static func deserialize(node: XMLIndexer) throws -> Book {
+    static func deserialize(_ node: XMLIndexer) throws -> Book {
         return try Book(
             title: node["title"].value(),
             price: node["price"].value(),
