@@ -41,6 +41,8 @@ class TypeConversionBasicTypesTests: XCTestCase {
         "    <name>the name of basic item</name>" +
         "    <price>99.14</price>" +
         "  </basicItem>" +
+        "  <attr string=\"stringValue\" int=\"200\" double=\"200.15\" float=\"205.42\" bool1=\"0\" bool2=\"true\"/>" +
+        "  <attributeItem name=\"the name of attribute item\" price=\"19.99\"/>" +
     "</root>"
 
     override func setUp() {
@@ -78,6 +80,30 @@ class TypeConversionBasicTypesTests: XCTestCase {
 
     func testShouldConvertMissingToOptional() {
         let value: String? = try! parser!["root"]["missing"].value()
+        XCTAssertNil(value)
+    }
+
+    func testShouldConvertAttributeToNonOptional() {
+        let value: String = try! parser!["root"]["attr"].value(ofAttribute: "string")
+        XCTAssertEqual(value, "stringValue")
+    }
+
+    func testShouldConvertAttributeToOptional() {
+        let value: String? = parser!["root"]["attr"].value(ofAttribute: "string")
+        XCTAssertEqual(value, "stringValue")
+    }
+
+    func testShouldThrowWhenConvertingMissingAttributeToNonOptional() {
+        XCTAssertThrowsError(try (parser!["root"]["attr"].value(ofAttribute: "missing") as String)) { error in
+            guard error is XMLDeserializationError else {
+                XCTFail("Wrong type of error")
+                return
+            }
+        }
+    }
+
+    func testShouldConvertMissingAttributeToOptional() {
+        let value: String? = parser!["root"]["attr"].value(ofAttribute: "missing")
         XCTAssertNil(value)
     }
 
@@ -123,6 +149,16 @@ class TypeConversionBasicTypesTests: XCTestCase {
         XCTAssertNil(value)
     }
 
+    func testIntShouldConvertAttributeToNonOptional() {
+        let value: Int = try! parser!["root"]["attr"].value(ofAttribute: "int")
+        XCTAssertEqual(value, 200)
+    }
+
+    func testIntShouldConvertAttributeToOptional() {
+        let value: Int? = parser!["root"]["attr"].value(ofAttribute: "int")
+        XCTAssertEqual(value, 200)
+    }
+
     func testDoubleShouldConvertValueToNonOptional() {
         let value: Double = try! parser!["root"]["double"].value()
         XCTAssertEqual(value, 100.45)
@@ -165,6 +201,16 @@ class TypeConversionBasicTypesTests: XCTestCase {
         XCTAssertNil(value)
     }
 
+    func testDoubleShouldConvertAttributeToNonOptional() {
+        let value: Double = try! parser!["root"]["attr"].value(ofAttribute: "double")
+        XCTAssertEqual(value, 200.15)
+    }
+
+    func testDoubleShouldConvertAttributeToOptional() {
+        let value: Double? = parser!["root"]["attr"].value(ofAttribute: "double")
+        XCTAssertEqual(value, 200.15)
+    }
+
     func testFloatShouldConvertValueToNonOptional() {
         let value: Float = try! parser!["root"]["float"].value()
         XCTAssertEqual(value, 44.12)
@@ -205,6 +251,16 @@ class TypeConversionBasicTypesTests: XCTestCase {
     func testFloatShouldConvertMissingToOptional() {
         let value: Float? = try! parser!["root"]["missing"].value()
         XCTAssertNil(value)
+    }
+
+    func testFloatShouldConvertAttributeToNonOptional() {
+        let value: Float = try! parser!["root"]["attr"].value(ofAttribute: "float")
+        XCTAssertEqual(value, 205.42)
+    }
+
+    func testFloatShouldConvertAttributeToOptional() {
+        let value: Float? = parser!["root"]["attr"].value(ofAttribute: "float")
+        XCTAssertEqual(value, 205.42)
     }
 
     func testBoolShouldConvertValueToNonOptional() {
@@ -253,6 +309,16 @@ class TypeConversionBasicTypesTests: XCTestCase {
         XCTAssertNil(value)
     }
 
+    func testBoolShouldConvertAttributeToNonOptional() {
+        let value: Bool = try! parser!["root"]["attr"].value(ofAttribute: "bool1")
+        XCTAssertEqual(value, false)
+    }
+
+    func testBoolShouldConvertAttributeToOptional() {
+        let value: Bool? = parser!["root"]["attr"].value(ofAttribute: "bool2")
+        XCTAssertEqual(value, true)
+    }
+
     let correctBasicItem = BasicItem(name: "the name of basic item", price: 99.14)
 
     func testBasicItemShouldConvertBasicitemToNonOptional() {
@@ -296,6 +362,50 @@ class TypeConversionBasicTypesTests: XCTestCase {
         let value: BasicItem? = try! parser!["root"]["missing"].value()
         XCTAssertNil(value)
     }
+
+    let correctAttributeItem = AttributeItem(name: "the name of attribute item", price: 19.99)
+
+    func testAttributeItemShouldConvertAttributeItemToNonOptional() {
+        let value: AttributeItem = try! parser!["root"]["attributeItem"].value()
+        XCTAssertEqual(value, correctAttributeItem)
+    }
+
+    func testAttributeItemShouldThrowWhenConvertingEmptyToNonOptional() {
+        XCTAssertThrowsError(try (parser!["root"]["empty"].value() as AttributeItem)) { error in
+            guard error is XMLDeserializationError else {
+                XCTFail("Wrong type of error")
+                return
+            }
+        }
+    }
+
+    func testAttributeItemShouldThrowWhenConvertingMissingToNonOptional() {
+        XCTAssertThrowsError(try (parser!["root"]["missing"].value() as AttributeItem)) { error in
+            guard error is XMLDeserializationError else {
+                XCTFail("Wrong type of error")
+                return
+            }
+        }
+    }
+
+    func testAttributeItemShouldConvertAttributeItemToOptional() {
+        let value: AttributeItem? = try! parser!["root"]["attributeItem"].value()
+        XCTAssertEqual(value, correctAttributeItem)
+    }
+
+    func testAttributeItemShouldConvertEmptyToOptional() {
+        XCTAssertThrowsError(try (parser!["root"]["empty"].value() as AttributeItem?)) { error in
+            guard error is XMLDeserializationError else {
+                XCTFail("Wrong type of error")
+                return
+            }
+        }
+    }
+
+    func testAttributeItemShouldConvertMissingToOptional() {
+        let value: AttributeItem? = try! parser!["root"]["missing"].value()
+        XCTAssertNil(value)
+    }
 }
 
 struct BasicItem: XMLIndexerDeserializable {
@@ -313,5 +423,23 @@ struct BasicItem: XMLIndexerDeserializable {
 extension BasicItem: Equatable {}
 
 func == (a: BasicItem, b: BasicItem) -> Bool {
+    return a.name == b.name && a.price == b.price
+}
+
+struct AttributeItem: XMLElementDeserializable {
+    let name: String
+    let price: Double
+
+    static func deserialize(_ element: XMLElement) throws -> AttributeItem {
+        return try AttributeItem(
+            name: element.value(ofAttribute: "name"),
+            price: element.value(ofAttribute: "price")
+        )
+    }
+}
+
+extension AttributeItem: Equatable {}
+
+func == (a: AttributeItem, b: AttributeItem) -> Bool {
     return a.name == b.name && a.price == b.price
 }

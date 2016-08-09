@@ -47,6 +47,11 @@ class TypeConversionComplexTypesTests: XCTestCase {
         "          <price>3</price>" +
         "       </basicItem>" +
         "    </basicItems>" +
+        "    <attributeItems>" +
+        "       <attributeItem name=\"attr1\" price=\"1.1\"/>" +
+        "       <attributeItem name=\"attr2\" price=\"2.2\"/>" +
+        "       <attributeItem name=\"attr3\" price=\"3.3\"/>" +
+        "    </attributeItems>" +
         "  </complexItem>" +
         "  <empty></empty>" +
     "</root>"
@@ -58,6 +63,11 @@ class TypeConversionComplexTypesTests: XCTestCase {
             BasicItem(name: "item 1", price: 1),
             BasicItem(name: "item 2", price: 2),
             BasicItem(name: "item 3", price: 3),
+        ],
+        attrs: [
+            AttributeItem(name: "attr1", price: 1.1),
+            AttributeItem(name: "attr2", price: 2.2),
+            AttributeItem(name: "attr3", price: 3.3),
         ]
     )
 
@@ -112,12 +122,14 @@ struct ComplexItem: XMLIndexerDeserializable {
     let name: String
     let priceOptional: Double?
     let basics: [BasicItem]
+    let attrs: [AttributeItem]
 
     static func deserialize(_ node: XMLIndexer) throws -> ComplexItem {
         return try ComplexItem(
             name: node["name"].value(),
             priceOptional: node["price"].value(),
-            basics: node["basicItems"]["basicItem"].value()
+            basics: node["basicItems"]["basicItem"].value(),
+            attrs: node["attributeItems"]["attributeItem"].value()
         )
     }
 }
@@ -125,5 +137,5 @@ struct ComplexItem: XMLIndexerDeserializable {
 extension ComplexItem: Equatable {}
 
 func == (a: ComplexItem, b: ComplexItem) -> Bool {
-    return a.name == b.name && a.priceOptional == b.priceOptional && a.basics == b.basics
+    return a.name == b.name && a.priceOptional == b.priceOptional && a.basics == b.basics && a.attrs == b.attrs
 }

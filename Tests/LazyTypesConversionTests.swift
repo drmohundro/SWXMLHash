@@ -40,6 +40,7 @@ class LazyTypesConversionTests: XCTestCase {
         "    <name>the name of basic item</name>" +
         "    <price>99.14</price>" +
         "  </basicItem>" +
+        "  <attribute int=\"1\"/>" +
     "</root>"
 
     override func setUp() {
@@ -49,5 +50,10 @@ class LazyTypesConversionTests: XCTestCase {
     func testShouldConvertValueToNonOptional() {
         let value: String = try! parser!["root"]["string"].value()
         XCTAssertEqual(value, "the string value")
+    }
+
+    func testShouldConvertAttributeToNonOptional() {
+        let value: Int = try! parser!["root"]["attribute"].value(ofAttribute: "int")
+        XCTAssertEqual(value, 1)
     }
 }
