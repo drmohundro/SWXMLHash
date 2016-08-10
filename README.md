@@ -47,7 +47,7 @@ Then create a `Podfile` with the following contents:
 source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '8.0'
 
-pod 'SWXMLHash', '~> 2.3.0'
+pod 'SWXMLHash', '~> 2.5.0'
 ```
 
 Finally, run the following command to install it:
@@ -68,7 +68,7 @@ $ brew install carthage
 Then add the following line to your `Cartfile`:
 
 ```
-github "drmohundro/SWXMLHash" ~> 2.3
+github "drmohundro/SWXMLHash" ~> 2.5
 ```
 
 ### Manual Installation
@@ -105,7 +105,7 @@ The available options at this time are:
 
 ## Examples
 
-All examples below can be found in the included [specs](https://github.com/drmohundro/SWXMLHash/blob/master/Tests/SWXMLHashSpecs.swift).
+All examples below can be found in the included [specs](https://github.com/drmohundro/SWXMLHash/blob/master/Tests/).
 
 ### Initialization
 
@@ -188,7 +188,7 @@ Given:
 The below will return "123".
 
 ```swift
-xml["root"]["catalog"]["book"][1].element?.attributes["id"]
+xml["root"]["catalog"]["book"][1].element?.attribute(by: "id")?.text
 ```
 
 Alternatively, you can look up an element with specific attributes. The below will return "John".
@@ -290,17 +290,17 @@ Given:
 ```xml
 <root>
   <books>
-    <book>
+    <book isbn="0000000001">
       <title>Book A</title>
       <price>12.5</price>
       <year>2015</year>
     </book>
-    <book>
+    <book isbn="0000000002">
       <title>Book B</title>
       <price>10</price>
       <year>1988</year>
     </book>
-    <book>
+    <book isbn="0000000003">
       <title>Book C</title>
       <price>8.33</price>
       <year>1990</year>
@@ -317,13 +317,15 @@ struct Book: XMLIndexerDeserializable {
     let price: Double
     let year: Int
     let amount: Int?
+    let isbn: Int
 
     static func deserialize(node: XMLIndexer) throws -> Book {
         return try Book(
             title: node["title"].value(),
             price: node["price"].value(),
             year: node["year"].value(),
-            amount: node["amount"].value()
+            amount: node["amount"].value(),
+            isbn: node.value(ofAttribute: "isbn")
         )
     }
 }
@@ -337,9 +339,11 @@ let books: [Book] = try xml["root"]["books"]["book"].value()
 
 <img src="https://raw.githubusercontent.com/ncreated/SWXMLHash/assets/types-conversion%402x.png" width="600" alt="Types Conversion" />
 
-Built-in, leaf-nodes converters support `Int`, `Double`, `Float`, `Bool`, and `String` values (both non- and -optional variants). Custom converters can be added by implementing `XMLElementDeserializable`.
+You can convert any XML to your custom type by implementing `XMLIndexerDeserializable` for any non-leaf node (e.g. `<book>` in the example above).
 
-You can convert any XML to your custom type by implementing `XMLIndexerDeserializable`.
+For leaf nodes (e.g. `<title>` in the example above), built-in converters support `Int`, `Double`, `Float`, `Bool`, and `String` values (both non- and -optional variants). Custom converters can be added by implementing `XMLElementDeserializable`.
+
+For attributes (e.g. `isbn=` in the example above), built-in converters support the same types as above, and additional converters can be added by implementing `XMLAttributeDeserializable`.
 
 Types conversion supports error handling, optionals and arrays. For more examples, look into `SWXMLHashTests.swift` or play with types conversion directly in the Swift playground.
 

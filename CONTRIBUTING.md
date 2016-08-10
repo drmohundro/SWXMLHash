@@ -24,9 +24,7 @@ Both bug reports and feature requests are welcome!
 
 ## Development
 
-SWXMLHash currently uses [Quick](https://github.com/Quick/Quick) and [Nimble](https://github.com/Quick/Nimble) for its tests. To get these dependencies, you'll need to have [Carthage](https://github.com/Carthage/Carthage) installed. Once it is installed, you should be able to just run `carthage update`.
-
-To run the tests, you can either run them from within Xcode or you can run `rake test`.
+SWXMLHash currently uses XCTest for its tests. To run the tests, you can either run them from within Xcode or you can run `rake test`.
 
 The coding style used is dictacted by [SwiftLint](https://github.com/realm/SwiftLint). You can get SwiftLint by running `brew install swiftlint`. To run it, just clone the repository and run `swiftlint`. There is a `.swiftlint.yml` for lint configuration.
 

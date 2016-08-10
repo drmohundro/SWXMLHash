@@ -478,18 +478,15 @@ public enum XMLIndexer: Sequence {
             let match = opStream.findElements()
             return try match.withAttr(attr: attr, value)
         case .List(let list):
-            if let elem = list.filter({$0.attributes[attr] == value}).first {
+            if let elem = list.filter({$0.attribute(by: attr)?.text == value}).first {
                 return .Element(elem)
             }
             throw Error.AttributeValue(attr: attr, value: value)
         case .Element(let elem):
-            if let attr = elem.attributes[attr] {
-                if attr == value {
-                    return .Element(elem)
-                }
-                throw Error.AttributeValue(attr: attr, value: value)
+            if elem.attribute(by: attr)?.text == value {
+                return .Element(elem)
             }
-            fallthrough
+            throw Error.AttributeValue(attr: attr, value: value)
         default:
             throw Error.Attribute(attr: attr)
         }
@@ -625,7 +622,7 @@ public enum XMLIndexer: Sequence {
 }
 
 /// XMLIndexer extensions
-extension XMLIndexer: Boolean {
+extension XMLIndexer {
     /// True if a valid XMLIndexer, false if an error type
     public var boolValue: Bool {
         switch self {
@@ -676,13 +673,22 @@ extension XMLIndexer.Error: CustomStringConvertible {
 }
 
 /// Models content for an XML doc, whether it is text or XML
-public protocol XMLContent: CustomStringConvertible {
-}
+public protocol XMLContent: CustomStringConvertible { }
 
 /// Models a text element
 public class TextElement: XMLContent {
+    /// The underlying text value
     public let text: String
     init(text: String) {
+        self.text = text
+    }
+}
+
+public struct XMLAttribute {
+    public let name: String
+    public let text: String
+    init(name: String, text: String) {
+        self.name = name
         self.text = text
     }
 }
@@ -691,18 +697,32 @@ public class TextElement: XMLContent {
 public class XMLElement: XMLContent {
     /// The name of the element
     public let name: String
+
     /// The attributes of the element
-    public var attributes = [String:String]()
+    @available(*, deprecated, message: "See `allAttributes` instead, which introduces the XMLAttribute type over a simple String type")
+    public var attributes: [String:String] {
+        var attrMap = [String: String]()
+        for (name, attr) in allAttributes {
+            attrMap[name] = attr.text
+        }
+        return attrMap
+    }
+
+    public var allAttributes = [String:XMLAttribute]()
+
+    public func attribute(by name: String) -> XMLAttribute? {
+        return allAttributes[name]
+    }
 
     /// The inner text of the element, if it exists
     public var text: String? {
         return children
             .map({ $0 as? TextElement })
             .flatMap({ $0 })
-            .reduce("", combine: { $0 + $1!.text })
+            .reduce("", { $0 + $1!.text })
     }
 
-    var children = [XMLContent]()
+    public var children = [XMLContent]()
     var count: Int = 0
     var index: Int
 
@@ -739,7 +759,7 @@ public class XMLElement: XMLContent {
         for (keyAny, valueAny) in attributes {
             if let key = keyAny as? String,
                 let value = valueAny as? String {
-                element.attributes[key] = value
+                element.allAttributes[key] = XMLAttribute(name: key, text: value)
             }
         }
 
@@ -760,17 +780,17 @@ extension TextElement: CustomStringConvertible {
     }
 }
 
+extension XMLAttribute: CustomStringConvertible {
+    /// The textual representation of an `XMLAttribute` instance.
+    public var description: String {
+        return "\(name)=\"\(text)\""
+    }
+}
+
 extension XMLElement: CustomStringConvertible {
     /// The tag, attributes and content for a `XMLElement` instance (<elem id="foo">content</elem>)
     public var description: String {
-        var attributesStringList = [String]()
-        if !attributes.isEmpty {
-            for (key, val) in attributes {
-                attributesStringList.append("\(key)=\"\(val)\"")
-            }
-        }
-
-        var attributesString = attributesStringList.joined(separator: " ")
+        var attributesString = allAttributes.map { $0.1.description }.joined(separator: " ")
         if !attributesString.isEmpty {
             attributesString = " " + attributesString
         }

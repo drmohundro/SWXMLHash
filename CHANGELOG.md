@@ -1,3 +1,17 @@
+## v2.5.0 (August 8, 2016)
+
+* Added attribute deserialization support (via `value(ofAttribute:)`).
+  * See corresponding [issue #74](https://github.com/drmohundro/SWXMLHash/issues/74) and [PR #89](https://github.com/drmohundro/SWXMLHash/pull/89)
+
+## v2.4.0 (July 12, 2016)
+
+* Changed from using Quick/Nimble to XCTest (no version bump - only testing changes)
+
+## v2.4.0 (July 11, 2016)
+
+* Changed visibility of `children` property on `XMLElement` to be `public`
+  * See [issue #82](https://github.com/drmohundro/SWXMLHash/issues/82) and [PR #83](https://github.com/drmohundro/SWXMLHash/pull/83).
+
 ## v2.3.2 (June 23, 2016)
 
 * Fixed issue with lazy loading and serialization support
