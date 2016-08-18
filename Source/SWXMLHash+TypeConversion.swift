@@ -322,7 +322,7 @@ public extension XMLIndexer {
     - returns: the deserialized `[T]` value
     - throws: an XMLDeserializationError is there is a problem with deserialization
     */
-    func value<T where T: XMLIndexerDeserializable>() throws -> [T] {
+    func value<T>() throws -> [T] where T: XMLIndexerDeserializable {
         switch self {
         case .List(let elements):
             return try elements.map { try T.deserialize( XMLIndexer($0) ) }
@@ -413,7 +413,7 @@ extension XMLElement {
      - throws: XMLDeserializationError.NodeHasNoValue if the element text is empty
      - returns: The element text
      */
-    private func nonEmptyTextOrThrow() throws -> String {
+    fileprivate func nonEmptyTextOrThrow() throws -> String {
         if let text = self.text, !text.characters.isEmpty {
             return text
         } else { throw XMLDeserializationError.NodeHasNoValue }
@@ -423,7 +423,7 @@ extension XMLElement {
 // MARK: - XMLDeserializationError
 
 /// The error that is thrown if there is a problem with deserialization
-public enum XMLDeserializationError: SwiftError, CustomStringConvertible {
+public enum XMLDeserializationError: Error, CustomStringConvertible {
     case ImplementationIsMissing(method: String)
     case NodeIsInvalid(node: XMLIndexer)
     case NodeHasNoValue

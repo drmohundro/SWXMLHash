@@ -29,12 +29,6 @@
 
 import Foundation
 
-#if os(Linux)
-internal typealias SwiftError = Swift.Error
-#else
-internal typealias SwiftError = Swift.ErrorProtocol
-#endif
-
 let rootElementName = "SWXMLHash_Root_Element"
 
 /// Parser options
@@ -254,7 +248,7 @@ class LazyXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
         let attributeNSDict = NSDictionary(objects: attributeDict.values.map({ $0 as! AnyObject }), forKeys: attributeDict.keys.map({ NSString(string: $0) as NSObject }))
         let currentNode = parentStack.top().addElement(name: elementName, withAttributes: attributeNSDict)
         #else
-        let currentNode = parentStack.top().addElement(name: elementName, withAttributes: attributeDict)
+        let currentNode = parentStack.top().addElement(name: elementName, withAttributes: attributeDict as NSDictionary)
         #endif
         parentStack.push(item: currentNode)
     }
@@ -329,7 +323,7 @@ class SWXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
         let attributeNSDict = NSDictionary(objects: attributeDict.values.map({ $0 as! AnyObject }), forKeys: attributeDict.keys.map({ NSString(string: $0) as NSObject }))
         let currentNode = parentStack.top().addElement(name: elementName, withAttributes: attributeNSDict)
         #else
-        let currentNode = parentStack.top().addElement(name: elementName, withAttributes: attributeDict)
+        let currentNode = parentStack.top().addElement(name: elementName, withAttributes: attributeDict as NSDictionary)
         #endif
         parentStack.push(item: currentNode)
     }
@@ -410,7 +404,7 @@ public enum XMLIndexer: Sequence {
     case XMLError(Error)
 
     /// Error type that is thrown when an indexing or parsing operation fails.
-    public enum Error: SwiftError {
+    public enum Error: Swift.Error {
         case Attribute(attr: String)
         case AttributeValue(attr: String, value: String)
         case Key(key: String)
