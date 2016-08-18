@@ -201,7 +201,7 @@ class LazyXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
         if !onMatch() {
             return
         }
-        let currentNode = parentStack.top().addElement(elementName, withAttributes: attributeDict)
+        let currentNode = parentStack.top().addElement(elementName, withAttributes: attributeDict as NSDictionary)
         parentStack.push(currentNode)
     }
 
@@ -272,7 +272,7 @@ class XMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
                 qualifiedName qName: String?,
                 attributes attributeDict: [String: String]) {
 
-        let currentNode = parentStack.top().addElement(elementName, withAttributes: attributeDict)
+        let currentNode = parentStack.top().addElement(elementName, withAttributes: attributeDict as NSDictionary)
         parentStack.push(currentNode)
     }
 
