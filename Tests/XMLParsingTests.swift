@@ -92,7 +92,7 @@ class XMLParsingTests: XCTestCase {
         let parsed = SWXMLHash.parse(mixedContentXml)
         let result = parsed["html"]["body"]["p"].element!.children.reduce("") { acc, child in
             switch child {
-            case let elm as XMLElement:
+            case let elm as SWXMLHash.XMLElement:
                 guard let text = elm.text else { return acc }
                 return acc + text
             case let elm as TextElement:

@@ -430,7 +430,7 @@ struct AttributeItem: XMLElementDeserializable {
     let name: String
     let price: Double
 
-    static func deserialize(_ element: XMLElement) throws -> AttributeItem {
+    static func deserialize(_ element: SWXMLHash.XMLElement) throws -> AttributeItem {
         return try AttributeItem(
             name: element.value(ofAttribute: "name"),
             price: element.value(ofAttribute: "price")

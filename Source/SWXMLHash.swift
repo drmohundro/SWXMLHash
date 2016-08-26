@@ -757,3 +757,14 @@ extension XMLElement: CustomStringConvertible {
         }
     }
 }
+
+// Workaround for "'XMLElement' is ambiguous for type lookup in this context" error on macOS.
+//
+// On macOS, `XMLElement` is defined in Foundation.
+// So, the code referencing `XMLElement` generates above error.
+// Following code allow to using `SWXMLhash.XMLElement` in client codes.
+extension SWXMLHash {
+    public typealias XMLElement = SWXMLHashXMLElement
+}
+
+public  typealias SWXMLHashXMLElement = XMLElement
