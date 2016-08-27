@@ -213,7 +213,7 @@ Given:
 </root>
 ```
 
-The below will return "Fiction, Non-fiction, Technical" (note the `all` method).
+The `all` method will iterate over all nodes at the indexed level. The code below will return "Fiction, Non-fiction, Technical".
 
 ```swift
 ", ".join(xml["root"]["catalog"]["book"].all.map { elem in
@@ -221,11 +221,19 @@ The below will return "Fiction, Non-fiction, Technical" (note the `all` method).
 })
 ```
 
-Alternatively, you can just iterate over the elements using `for-in` directly against an element.
+You can also iterate over the `all` method:
+
+```swift
+for elem in xml["root"]["catalog"]["book"].all {
+  print(elem["genre"].element!.text!)
+}
+```
+
+Alternatively, XMLIndexer provides `for-in` support directly from the index (no `all` needed in this case).
 
 ```swift
 for elem in xml["root"]["catalog"]["book"] {
-  NSLog(elem["genre"].element!.text!)
+  print(elem["genre"].element!.text!)
 }
 ```
 
@@ -245,12 +253,12 @@ Given:
 </root>
 ```
 
-The below will `NSLog` "root", "catalog", "book", "genre", "title", and "date" (note the `children` method).
+The below will `print` "root", "catalog", "book", "genre", "title", and "date" (note the `children` method).
 
 ```swift
 func enumerate(indexer: XMLIndexer) {
   for child in indexer.children {
-    NSLog(child.element!.name)
+    print(child.element!.name)
     enumerate(child)
   }
 }
