@@ -21,6 +21,7 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
+import Foundation
 import SWXMLHash
 import XCTest
 
@@ -33,9 +34,12 @@ class WhiteSpaceParsingTests: XCTestCase {
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
-
         let bundle = Bundle(for: WhiteSpaceParsingTests.self)
+#if os(Linux)
+        let path = bundle.pathForResource("test", ofType: "xml")
+#else
         let path = bundle.path(forResource: "test", ofType: "xml")
+#endif
         let data = try! Data(contentsOf: URL(fileURLWithPath: path!))
         xml = SWXMLHash.parse(data)
     }
@@ -47,5 +51,14 @@ class WhiteSpaceParsingTests: XCTestCase {
 
     func testShouldBeAbleToCorrectlyParseCDATASectionsWithWhitespace() {
         XCTAssertEqual(xml!["niotemplate"]["other"].element?.text, "\n        \n  this\n  has\n  white\n  space\n        \n    ")
+    }
+}
+
+extension WhiteSpaceParsingTests {
+    static var allTests: [(String, (WhiteSpaceParsingTests) -> () throws -> Void)] {
+        return [
+            ("testShouldBeAbleToPullTextBetweenElementsWithoutWhitespace", testShouldBeAbleToPullTextBetweenElementsWithoutWhitespace),
+            ("testShouldBeAbleToCorrectlyParseCDATASectionsWithWhitespace", testShouldBeAbleToCorrectlyParseCDATASectionsWithWhitespace),
+        ]
     }
 }

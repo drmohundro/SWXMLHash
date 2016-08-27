@@ -57,3 +57,12 @@ class LazyTypesConversionTests: XCTestCase {
         XCTAssertEqual(value, 1)
     }
 }
+
+extension LazyTypesConversionTests {
+    static var allTests: [(String, (LazyTypesConversionTests) -> () throws -> Void)] {
+        return [
+            ("testShouldConvertValueToNonOptional", testShouldConvertValueToNonOptional),
+            ("testShouldConvertAttributeToNonOptional", testShouldConvertAttributeToNonOptional),
+        ]
+    }
+}

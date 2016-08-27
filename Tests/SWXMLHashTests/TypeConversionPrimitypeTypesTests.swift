@@ -148,3 +148,25 @@ class TypeConversionPrimitypeTypesTests: XCTestCase {
         XCTAssertEqual(value.count, 0)
     }
 }
+
+extension TypeConversionPrimitypeTypesTests {
+    static var allTests: [(String, (TypeConversionPrimitypeTypesTests) -> () throws -> Void)] {
+        return [
+            ("testShouldConvertArrayOfGoodIntsToNonOptional", testShouldConvertArrayOfGoodIntsToNonOptional),
+            ("testShouldConvertArrayOfGoodIntsToOptional", testShouldConvertArrayOfGoodIntsToOptional),
+            ("testShouldConvertArrayOfGoodIntsToArrayOfOptionals", testShouldConvertArrayOfGoodIntsToArrayOfOptionals),
+            ("testShouldThrowWhenConvertingArrayOfBadIntsToNonOptional", testShouldThrowWhenConvertingArrayOfBadIntsToNonOptional),
+            ("testShouldThrowWhenConvertingArrayOfBadIntsToOptional", testShouldThrowWhenConvertingArrayOfBadIntsToOptional),
+            ("testShouldThrowWhenConvertingArrayOfBadIntsToArrayOfOptionals", testShouldThrowWhenConvertingArrayOfBadIntsToArrayOfOptionals),
+            ("testShouldThrowWhenConvertingArrayOfMixedIntsToNonOptional", testShouldThrowWhenConvertingArrayOfMixedIntsToNonOptional),
+            ("testShouldThrowWhenConvertingArrayOfMixedIntsToOptional", testShouldThrowWhenConvertingArrayOfMixedIntsToOptional),
+            ("testShouldThrowWhenConvertingArrayOfMixedIntsToArrayOfOptionals", testShouldThrowWhenConvertingArrayOfMixedIntsToArrayOfOptionals),
+            ("testShouldConvertArrayOfAttributeIntsToNonOptional", testShouldConvertArrayOfAttributeIntsToNonOptional),
+            ("testShouldConvertArrayOfAttributeIntsToOptional", testShouldConvertArrayOfAttributeIntsToOptional),
+            ("testShouldConvertArrayOfAttributeIntsToArrayOfOptionals", testShouldConvertArrayOfAttributeIntsToArrayOfOptionals),
+            ("testShouldConvertEmptyArrayOfIntsToNonOptional", testShouldConvertEmptyArrayOfIntsToNonOptional),
+            ("testShouldConvertEmptyArrayOfIntsToOptional", testShouldConvertEmptyArrayOfIntsToOptional),
+            ("testShouldConvertEmptyArrayOfIntsToArrayOfOptionals", testShouldConvertEmptyArrayOfIntsToArrayOfOptionals),
+        ]
+    }
+}

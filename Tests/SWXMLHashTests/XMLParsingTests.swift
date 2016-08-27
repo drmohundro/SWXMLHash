@@ -162,3 +162,27 @@ class XMLParsingTests: XCTestCase {
         XCTAssertNotNil(err)
     }
 }
+
+extension XMLParsingTests {
+    static var allTests: [(String, (XMLParsingTests) -> () throws -> Void)] {
+        return [
+            ("testShouldBeAbleToParseIndividualElements", testShouldBeAbleToParseIndividualElements),
+            ("testShouldBeAbleToParseElementGroups", testShouldBeAbleToParseElementGroups),
+            ("testShouldBeAbleToParseAttributes", testShouldBeAbleToParseAttributes),
+            ("testShouldBeAbleToLookUpElementsByNameAndAttribute", testShouldBeAbleToLookUpElementsByNameAndAttribute),
+            ("testShouldBeAbleToIterateElementGroups", testShouldBeAbleToIterateElementGroups),
+            ("testShouldBeAbleToIterateElementGroupsEvenIfOnlyOneElementIsFound", testShouldBeAbleToIterateElementGroupsEvenIfOnlyOneElementIsFound),
+            ("testShouldBeAbleToIndexElementGroupsEvenIfOnlyOneElementIsFound", testShouldBeAbleToIndexElementGroupsEvenIfOnlyOneElementIsFound),
+            ("testShouldBeAbleToIterateUsingForIn", testShouldBeAbleToIterateUsingForIn),
+            ("testShouldBeAbleToEnumerateChildren", testShouldBeAbleToEnumerateChildren),
+            ("testShouldBeAbleToHandleMixedContent", testShouldBeAbleToHandleMixedContent),
+            ("testShouldBeAbleToIterateOverMixedContent", testShouldBeAbleToIterateOverMixedContent),
+            ("testShouldHandleInterleavingXMLElements", testShouldHandleInterleavingXMLElements),
+            ("testShouldBeAbleToProvideADescriptionForTheDocument", testShouldBeAbleToProvideADescriptionForTheDocument),
+            ("testShouldReturnNilWhenKeysDontMatch", testShouldReturnNilWhenKeysDontMatch),
+            ("testShouldProvideAnErrorObjectWhenKeysDontMatch", testShouldProvideAnErrorObjectWhenKeysDontMatch),
+            ("testShouldProvideAnErrorElementWhenIndexersDontMatch", testShouldProvideAnErrorElementWhenIndexersDontMatch),
+            ("testShouldStillReturnErrorsWhenAccessingViaSubscripting", testShouldStillReturnErrorsWhenAccessingViaSubscripting),
+        ]
+    }
+}

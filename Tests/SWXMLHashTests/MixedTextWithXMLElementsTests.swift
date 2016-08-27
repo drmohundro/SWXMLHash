@@ -38,3 +38,11 @@ class MixedTextWithXMLElementsTests: XCTestCase {
         XCTAssertEqual(xml!["everything"]["news"]["content"].description, "<content>Here is a cool thing <a href=\"google.com\">A</a> and second cool thing <a href=\"fb.com\">B</a></content>")
     }
 }
+
+extension MixedTextWithXMLElementsTests {
+    static var allTests: [(String, (MixedTextWithXMLElementsTests) -> () throws -> Void)] {
+        return [
+            ("testShouldBeAbleToGetAllContentsInsideOfAnElement", testShouldBeAbleToGetAllContentsInsideOfAnElement),
+        ]
+    }
+}
