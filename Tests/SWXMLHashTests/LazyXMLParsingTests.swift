@@ -108,3 +108,23 @@ class LazyXMLParsingTests: XCTestCase {
         XCTAssertNil(xml!["root"]["what"]["header"]["foo"].element?.name)
     }
 }
+
+extension LazyXMLParsingTests {
+    static var allTests: [(String, (LazyXMLParsingTests) -> () throws -> Void)] {
+        return [
+            ("testShouldBeAbleToParseIndividualElements", testShouldBeAbleToParseIndividualElements),
+            ("testShouldBeAbleToParseElementGroups", testShouldBeAbleToParseElementGroups),
+            ("testShouldBeAbleToParseAttributes", testShouldBeAbleToParseAttributes),
+            ("testShouldBeAbleToLookUpElementsByNameAndAttribute", testShouldBeAbleToLookUpElementsByNameAndAttribute),
+            ("testShouldBeAbleToIterateElementGroups", testShouldBeAbleToIterateElementGroups),
+            ("testShouldBeAbleToIterateElementGroupsEvenIfOnlyOneElementIsFound", testShouldBeAbleToIterateElementGroupsEvenIfOnlyOneElementIsFound),
+            ("testShouldBeAbleToIndexElementGroupsEvenIfOnlyOneElementIsFound", testShouldBeAbleToIndexElementGroupsEvenIfOnlyOneElementIsFound),
+            ("testShouldBeAbleToIterateUsingForIn", testShouldBeAbleToIterateUsingForIn),
+            ("testShouldBeAbleToEnumerateChildren", testShouldBeAbleToEnumerateChildren),
+            ("testShouldBeAbleToHandleMixedContent", testShouldBeAbleToHandleMixedContent),
+            ("testShouldHandleInterleavingXMLElements", testShouldHandleInterleavingXMLElements),
+            ("testShouldBeAbleToProvideADescriptionForTheDocument", testShouldBeAbleToProvideADescriptionForTheDocument),
+            ("testShouldReturnNilWhenKeysDontMatch", testShouldReturnNilWhenKeysDontMatch),
+        ]
+    }
+}

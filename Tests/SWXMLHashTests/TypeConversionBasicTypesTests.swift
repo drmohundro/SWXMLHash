@@ -430,7 +430,7 @@ struct AttributeItem: XMLElementDeserializable {
     let name: String
     let price: Double
 
-    static func deserialize(_ element: XMLElement) throws -> AttributeItem {
+    static func deserialize(_ element: SWXMLHash.XMLElement) throws -> AttributeItem {
         return try AttributeItem(
             name: element.value(ofAttribute: "name"),
             price: element.value(ofAttribute: "price")
@@ -442,4 +442,65 @@ extension AttributeItem: Equatable {}
 
 func == (a: AttributeItem, b: AttributeItem) -> Bool {
     return a.name == b.name && a.price == b.price
+}
+
+extension TypeConversionBasicTypesTests {
+    static var allTests: [(String, (TypeConversionBasicTypesTests) -> () throws -> Void)] {
+        return [
+            ("testShouldConvertValueToNonOptional", testShouldConvertValueToNonOptional),
+            ("testShouldConvertEmptyToNonOptional", testShouldConvertEmptyToNonOptional),
+            ("testShouldThrowWhenConvertingMissingToNonOptional", testShouldThrowWhenConvertingMissingToNonOptional),
+            ("testShouldConvertValueToOptional", testShouldConvertValueToOptional),
+            ("testShouldConvertEmptyToOptional", testShouldConvertEmptyToOptional),
+            ("testShouldConvertMissingToOptional", testShouldConvertMissingToOptional),
+            ("testShouldConvertAttributeToNonOptional", testShouldConvertAttributeToNonOptional),
+            ("testShouldConvertAttributeToOptional", testShouldConvertAttributeToOptional),
+            ("testShouldThrowWhenConvertingMissingAttributeToNonOptional", testShouldThrowWhenConvertingMissingAttributeToNonOptional),
+            ("testShouldConvertMissingAttributeToOptional", testShouldConvertMissingAttributeToOptional),
+            ("testIntShouldConvertValueToNonOptional", testIntShouldConvertValueToNonOptional),
+            ("testIntShouldThrowWhenConvertingEmptyToNonOptional", testIntShouldThrowWhenConvertingEmptyToNonOptional),
+            ("testIntShouldThrowWhenConvertingMissingToNonOptional", testIntShouldThrowWhenConvertingMissingToNonOptional),
+            ("testIntShouldConvertValueToOptional", testIntShouldConvertValueToOptional),
+            ("testIntShouldConvertEmptyToOptional", testIntShouldConvertEmptyToOptional),
+            ("testIntShouldConvertMissingToOptional", testIntShouldConvertMissingToOptional),
+            ("testIntShouldConvertAttributeToNonOptional", testIntShouldConvertAttributeToNonOptional),
+            ("testIntShouldConvertAttributeToOptional", testIntShouldConvertAttributeToOptional),
+            ("testDoubleShouldConvertValueToNonOptional", testDoubleShouldConvertValueToNonOptional),
+            ("testDoubleShouldThrowWhenConvertingEmptyToNonOptional", testDoubleShouldThrowWhenConvertingEmptyToNonOptional),
+            ("testDoubleShouldThrowWhenConvertingMissingToNonOptional", testDoubleShouldThrowWhenConvertingMissingToNonOptional),
+            ("testDoubleShouldConvertValueToOptional", testDoubleShouldConvertValueToOptional),
+            ("testDoubleShouldConvertEmptyToOptional", testDoubleShouldConvertEmptyToOptional),
+            ("testDoubleShouldConvertMissingToOptional", testDoubleShouldConvertMissingToOptional),
+            ("testDoubleShouldConvertAttributeToNonOptional", testDoubleShouldConvertAttributeToNonOptional),
+            ("testDoubleShouldConvertAttributeToOptional", testDoubleShouldConvertAttributeToOptional),
+            ("testFloatShouldConvertValueToNonOptional", testFloatShouldConvertValueToNonOptional),
+            ("testFloatShouldThrowWhenConvertingEmptyToNonOptional", testFloatShouldThrowWhenConvertingEmptyToNonOptional),
+            ("testFloatShouldThrowWhenConvertingMissingToNonOptional", testFloatShouldThrowWhenConvertingMissingToNonOptional),
+            ("testFloatShouldConvertValueToOptional", testFloatShouldConvertValueToOptional),
+            ("testFloatShouldConvertEmptyToOptional", testFloatShouldConvertEmptyToOptional),
+            ("testFloatShouldConvertMissingToOptional", testFloatShouldConvertMissingToOptional),
+            ("testFloatShouldConvertAttributeToNonOptional", testFloatShouldConvertAttributeToNonOptional),
+            ("testFloatShouldConvertAttributeToOptional", testFloatShouldConvertAttributeToOptional),
+            ("testBoolShouldConvertValueToNonOptional", testBoolShouldConvertValueToNonOptional),
+            ("testBoolShouldThrowWhenConvertingEmptyToNonOptional", testBoolShouldThrowWhenConvertingEmptyToNonOptional),
+            ("testBoolShouldThrowWhenConvertingMissingToNonOptional", testBoolShouldThrowWhenConvertingMissingToNonOptional),
+            ("testBoolShouldConvertValueToOptional", testBoolShouldConvertValueToOptional),
+            ("testBoolShouldConvertEmptyToOptional", testBoolShouldConvertEmptyToOptional),
+            ("testBoolShouldConvertMissingToOptional", testBoolShouldConvertMissingToOptional),
+            ("testBoolShouldConvertAttributeToNonOptional", testBoolShouldConvertAttributeToNonOptional),
+            ("testBoolShouldConvertAttributeToOptional", testBoolShouldConvertAttributeToOptional),
+            ("testBasicItemShouldConvertBasicitemToNonOptional", testBasicItemShouldConvertBasicitemToNonOptional),
+            ("testBasicItemShouldThrowWhenConvertingEmptyToNonOptional", testBasicItemShouldThrowWhenConvertingEmptyToNonOptional),
+            ("testBasicItemShouldThrowWhenConvertingMissingToNonOptional", testBasicItemShouldThrowWhenConvertingMissingToNonOptional),
+            ("testBasicItemShouldConvertBasicitemToOptional", testBasicItemShouldConvertBasicitemToOptional),
+            ("testBasicItemShouldConvertEmptyToOptional", testBasicItemShouldConvertEmptyToOptional),
+            ("testBasicItemShouldConvertMissingToOptional", testBasicItemShouldConvertMissingToOptional),
+            ("testAttributeItemShouldConvertAttributeItemToNonOptional", testAttributeItemShouldConvertAttributeItemToNonOptional),
+            ("testAttributeItemShouldThrowWhenConvertingEmptyToNonOptional", testAttributeItemShouldThrowWhenConvertingEmptyToNonOptional),
+            ("testAttributeItemShouldThrowWhenConvertingMissingToNonOptional", testAttributeItemShouldThrowWhenConvertingMissingToNonOptional),
+            ("testAttributeItemShouldConvertAttributeItemToOptional", testAttributeItemShouldConvertAttributeItemToOptional),
+            ("testAttributeItemShouldConvertEmptyToOptional", testAttributeItemShouldConvertEmptyToOptional),
+            ("testAttributeItemShouldConvertMissingToOptional", testAttributeItemShouldConvertMissingToOptional),
+        ]
+    }
 }

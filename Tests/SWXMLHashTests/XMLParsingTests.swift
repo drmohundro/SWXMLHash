@@ -92,7 +92,7 @@ class XMLParsingTests: XCTestCase {
         let parsed = SWXMLHash.parse(mixedContentXml)
         let result = parsed["html"]["body"]["p"].element!.children.reduce("") { acc, child in
             switch child {
-            case let elm as XMLElement:
+            case let elm as SWXMLHash.XMLElement:
                 guard let text = elm.text else { return acc }
                 return acc + text
             case let elm as TextElement:
@@ -160,5 +160,29 @@ class XMLParsingTests: XCTestCase {
             err = nil
         }
         XCTAssertNotNil(err)
+    }
+}
+
+extension XMLParsingTests {
+    static var allTests: [(String, (XMLParsingTests) -> () throws -> Void)] {
+        return [
+            ("testShouldBeAbleToParseIndividualElements", testShouldBeAbleToParseIndividualElements),
+            ("testShouldBeAbleToParseElementGroups", testShouldBeAbleToParseElementGroups),
+            ("testShouldBeAbleToParseAttributes", testShouldBeAbleToParseAttributes),
+            ("testShouldBeAbleToLookUpElementsByNameAndAttribute", testShouldBeAbleToLookUpElementsByNameAndAttribute),
+            ("testShouldBeAbleToIterateElementGroups", testShouldBeAbleToIterateElementGroups),
+            ("testShouldBeAbleToIterateElementGroupsEvenIfOnlyOneElementIsFound", testShouldBeAbleToIterateElementGroupsEvenIfOnlyOneElementIsFound),
+            ("testShouldBeAbleToIndexElementGroupsEvenIfOnlyOneElementIsFound", testShouldBeAbleToIndexElementGroupsEvenIfOnlyOneElementIsFound),
+            ("testShouldBeAbleToIterateUsingForIn", testShouldBeAbleToIterateUsingForIn),
+            ("testShouldBeAbleToEnumerateChildren", testShouldBeAbleToEnumerateChildren),
+            ("testShouldBeAbleToHandleMixedContent", testShouldBeAbleToHandleMixedContent),
+            ("testShouldBeAbleToIterateOverMixedContent", testShouldBeAbleToIterateOverMixedContent),
+            ("testShouldHandleInterleavingXMLElements", testShouldHandleInterleavingXMLElements),
+            ("testShouldBeAbleToProvideADescriptionForTheDocument", testShouldBeAbleToProvideADescriptionForTheDocument),
+            ("testShouldReturnNilWhenKeysDontMatch", testShouldReturnNilWhenKeysDontMatch),
+            ("testShouldProvideAnErrorObjectWhenKeysDontMatch", testShouldProvideAnErrorObjectWhenKeysDontMatch),
+            ("testShouldProvideAnErrorElementWhenIndexersDontMatch", testShouldProvideAnErrorElementWhenIndexersDontMatch),
+            ("testShouldStillReturnErrorsWhenAccessingViaSubscripting", testShouldStillReturnErrorsWhenAccessingViaSubscripting),
+        ]
     }
 }

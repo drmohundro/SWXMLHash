@@ -1,5 +1,5 @@
 //
-//  LazyTypesConversionTests.swift
+//  MixedTextWithXMLElementsTests.swift
 //
 //  Copyright (c) 2016 David Mohundro
 //
@@ -24,36 +24,25 @@
 import SWXMLHash
 import XCTest
 
-// swiftlint:disable force_try
+// swiftlint:disable line_length
 
-class LazyTypesConversionTests: XCTestCase {
-    var parser: XMLIndexer?
-    let xmlWithBasicTypes = "<root>" +
-        "  <string>the string value</string>" +
-        "  <int>100</int>" +
-        "  <double>100.45</double>" +
-        "  <float>44.12</float>" +
-        "  <bool1>0</bool1>" +
-        "  <bool2>true</bool2>" +
-        "  <empty></empty>" +
-        "  <basicItem>" +
-        "    <name>the name of basic item</name>" +
-        "    <price>99.14</price>" +
-        "  </basicItem>" +
-        "  <attribute int=\"1\"/>" +
-    "</root>"
+class MixedTextWithXMLElementsTests: XCTestCase {
+    var xml: XMLIndexer?
 
     override func setUp() {
-        parser = SWXMLHash.config { cfg in cfg.shouldProcessLazily = true }.parse(xmlWithBasicTypes)
+        let xmlContent = "<everything><news><content>Here is a cool thing <a href=\"google.com\">A</a> and second cool thing <a href=\"fb.com\">B</a></content></news></everything>"
+        xml = SWXMLHash.parse(xmlContent)
     }
 
-    func testShouldConvertValueToNonOptional() {
-        let value: String = try! parser!["root"]["string"].value()
-        XCTAssertEqual(value, "the string value")
+    func testShouldBeAbleToGetAllContentsInsideOfAnElement() {
+        XCTAssertEqual(xml!["everything"]["news"]["content"].description, "<content>Here is a cool thing <a href=\"google.com\">A</a> and second cool thing <a href=\"fb.com\">B</a></content>")
     }
+}
 
-    func testShouldConvertAttributeToNonOptional() {
-        let value: Int = try! parser!["root"]["attribute"].value(ofAttribute: "int")
-        XCTAssertEqual(value, 1)
+extension MixedTextWithXMLElementsTests {
+    static var allTests: [(String, (MixedTextWithXMLElementsTests) -> () throws -> Void)] {
+        return [
+            ("testShouldBeAbleToGetAllContentsInsideOfAnElement", testShouldBeAbleToGetAllContentsInsideOfAnElement),
+        ]
     }
 }

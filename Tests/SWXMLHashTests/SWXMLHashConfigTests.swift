@@ -46,3 +46,11 @@ class SWXMLHashConfigTests: XCTestCase {
         XCTAssertEqual(parser!["root"]["table"]["tr"]["td"][0].element?.text, "Apples")
     }
 }
+
+extension SWXMLHashConfigTests {
+    static var allTests: [(String, (SWXMLHashConfigTests) -> () throws -> Void)] {
+        return [
+            ("testShouldAllowProcessingNamespacesOrNot", testShouldAllowProcessingNamespacesOrNot),
+        ]
+    }
+}

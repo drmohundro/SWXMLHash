@@ -39,7 +39,7 @@ public class SWXMLHashOptions {
     public var shouldProcessLazily = false
 
     /// determines whether to parse XML namespaces or not (forwards to
-    /// `NSXMLParser.shouldProcessNamespaces`)
+    /// `XMLParser.shouldProcessNamespaces`)
     public var shouldProcessNamespaces = false
 }
 
@@ -74,20 +74,20 @@ public class SWXMLHash {
     - returns: an `XMLIndexer` instance that can be iterated over
     */
     public func parse(_ xml: String) -> XMLIndexer {
-        return parse((xml as NSString).data(using: String.Encoding.utf8.rawValue)!)
+        return parse(xml.data(using: String.Encoding.utf8)!)
     }
 
     /**
     Begins parsing the passed in XML string.
 
     - parameters:
-        - data: an `NSData` instance containing XML
+        - data: a `Data` instance containing XML
         - returns: an `XMLIndexer` instance that can be iterated over
     */
     public func parse(_ data: Data) -> XMLIndexer {
         let parser: SimpleXmlParser = options.shouldProcessLazily
             ? LazyXMLParser(options)
-            : XMLParser(options)
+            : SWXMLParser(options)
         return parser.parse(data)
     }
 
@@ -102,7 +102,7 @@ public class SWXMLHash {
     }
 
     /**
-    Method to parse XML passed in as an NSData instance.
+    Method to parse XML passed in as a Data instance.
 
     - parameter data: The XML to be parsed
     - returns: An XMLIndexer instance that is used to look up elements in the XML
@@ -122,7 +122,7 @@ public class SWXMLHash {
     }
 
     /**
-    Method to lazily parse XML passed in as an NSData instance.
+    Method to lazily parse XML passed in as a Data instance.
 
     - parameter data: The XML to be parsed
     - returns: An XMLIndexer instance that is used to look up elements in the XML
@@ -156,7 +156,53 @@ protocol SimpleXmlParser {
     func parse(_ data: Data) -> XMLIndexer
 }
 
-/// The implementation of NSXMLParserDelegate and where the lazy parsing actually happens.
+#if os(Linux)
+
+extension XMLParserDelegate {
+
+    func parserDidStartDocument(_ parser: Foundation.XMLParser) { }
+    func parserDidEndDocument(_ parser: Foundation.XMLParser) { }
+
+    func parser(_ parser: Foundation.XMLParser, foundNotationDeclarationWithName name: String, publicID: String?, systemID: String?) { }
+
+    func parser(_ parser: Foundation.XMLParser, foundUnparsedEntityDeclarationWithName name: String, publicID: String?, systemID: String?, notationName: String?) { }
+
+    func parser(_ parser: Foundation.XMLParser, foundAttributeDeclarationWithName attributeName: String, forElement elementName: String, type: String?, defaultValue: String?) { }
+
+    func parser(_ parser: Foundation.XMLParser, foundElementDeclarationWithName elementName: String, model: String) { }
+
+    func parser(_ parser: Foundation.XMLParser, foundInternalEntityDeclarationWithName name: String, value: String?) { }
+
+    func parser(_ parser: Foundation.XMLParser, foundExternalEntityDeclarationWithName name: String, publicID: String?, systemID: String?) { }
+
+    func parser(_ parser: Foundation.XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String]) { }
+
+    func parser(_ parser: Foundation.XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) { }
+
+    func parser(_ parser: Foundation.XMLParser, didStartMappingPrefix prefix: String, toURI namespaceURI: String) { }
+
+    func parser(_ parser: Foundation.XMLParser, didEndMappingPrefix prefix: String) { }
+
+    func parser(_ parser: Foundation.XMLParser, foundCharacters string: String) { }
+
+    func parser(_ parser: Foundation.XMLParser, foundIgnorableWhitespace whitespaceString: String) { }
+
+    func parser(_ parser: Foundation.XMLParser, foundProcessingInstructionWithTarget target: String, data: String?) { }
+
+    func parser(_ parser: Foundation.XMLParser, foundComment comment: String) { }
+
+    func parser(_ parser: Foundation.XMLParser, foundCDATA CDATABlock: Data) { }
+
+    func parser(_ parser: Foundation.XMLParser, resolveExternalEntityName name: String, systemID: String?) -> Data? { return nil }
+
+    func parser(_ parser: Foundation.XMLParser, parseErrorOccurred parseError: NSError) { }
+
+    func parser(_ parser: Foundation.XMLParser, validationErrorOccurred validationError: NSError) { }
+}
+
+#endif
+
+/// The implementation of XMLParserDelegate and where the lazy parsing actually happens.
 class LazyXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
     required init(_ options: SWXMLHashOptions) {
         self.options = options
@@ -201,7 +247,12 @@ class LazyXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
         if !onMatch() {
             return
         }
+#if os(Linux)
+        let attributeNSDict = NSDictionary(objects: attributeDict.values.flatMap({ $0 as? AnyObject }), forKeys: attributeDict.keys.map({ NSString(string: $0) as NSObject }))
+        let currentNode = parentStack.top().addElement(elementName, withAttributes: attributeNSDict)
+#else
         let currentNode = parentStack.top().addElement(elementName, withAttributes: attributeDict as NSDictionary)
+#endif
         parentStack.push(currentNode)
     }
 
@@ -240,8 +291,8 @@ class LazyXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
     }
 }
 
-/// The implementation of NSXMLParserDelegate and where the parsing actually happens.
-class XMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
+/// The implementation of XMLParserDelegate and where the parsing actually happens.
+class SWXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
     required init(_ options: SWXMLHashOptions) {
         self.options = options
         super.init()
@@ -271,8 +322,12 @@ class XMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
                 namespaceURI: String?,
                 qualifiedName qName: String?,
                 attributes attributeDict: [String: String]) {
-
+#if os(Linux)
+        let attributeNSDict = NSDictionary(objects: attributeDict.values.flatMap({ $0 as? AnyObject }), forKeys: attributeDict.keys.map({ NSString(string: $0) as NSObject }))
+        let currentNode = parentStack.top().addElement(elementName, withAttributes: attributeNSDict)
+#else
         let currentNode = parentStack.top().addElement(elementName, withAttributes: attributeDict as NSDictionary)
+#endif
         parentStack.push(currentNode)
     }
 
@@ -757,3 +812,14 @@ extension XMLElement: CustomStringConvertible {
         }
     }
 }
+
+// Workaround for "'XMLElement' is ambiguous for type lookup in this context" error on macOS.
+//
+// On macOS, `XMLElement` is defined in Foundation.
+// So, the code referencing `XMLElement` generates above error.
+// Following code allow to using `SWXMLhash.XMLElement` in client codes.
+extension SWXMLHash {
+    public typealias XMLElement = SWXMLHashXMLElement
+}
+
+public  typealias SWXMLHashXMLElement = XMLElement
