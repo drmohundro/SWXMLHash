@@ -87,7 +87,7 @@ public class SWXMLHash {
     public func parse(_ data: Data) -> XMLIndexer {
         let parser: SimpleXmlParser = options.shouldProcessLazily
             ? LazyXMLParser(options)
-            : SWXMLParser(options)
+            : FullXMLParser(options)
         return parser.parse(data)
     }
 
@@ -292,7 +292,7 @@ class LazyXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
 }
 
 /// The implementation of XMLParserDelegate and where the parsing actually happens.
-class SWXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
+class FullXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
     required init(_ options: SWXMLHashOptions) {
         self.options = options
         super.init()
