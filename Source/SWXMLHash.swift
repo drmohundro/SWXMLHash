@@ -248,7 +248,7 @@ class LazyXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
             return
         }
 #if os(Linux)
-        let attributeNSDict = NSDictionary(objects: attributeDict.values.map({ $0 as! AnyObject }), forKeys: attributeDict.keys.map({ NSString(string: $0) as NSObject }))
+        let attributeNSDict = NSDictionary(objects: attributeDict.values.flatMap({ $0 as? AnyObject }), forKeys: attributeDict.keys.map({ NSString(string: $0) as NSObject }))
         let currentNode = parentStack.top().addElement(elementName, withAttributes: attributeNSDict)
 #else
         let currentNode = parentStack.top().addElement(elementName, withAttributes: attributeDict as NSDictionary)
@@ -323,7 +323,7 @@ class SWXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
                 qualifiedName qName: String?,
                 attributes attributeDict: [String: String]) {
 #if os(Linux)
-        let attributeNSDict = NSDictionary(objects: attributeDict.values.map({ $0 as! AnyObject }), forKeys: attributeDict.keys.map({ NSString(string: $0) as NSObject }))
+        let attributeNSDict = NSDictionary(objects: attributeDict.values.flatMap({ $0 as? AnyObject }), forKeys: attributeDict.keys.map({ NSString(string: $0) as NSObject }))
         let currentNode = parentStack.top().addElement(elementName, withAttributes: attributeNSDict)
 #else
         let currentNode = parentStack.top().addElement(elementName, withAttributes: attributeDict as NSDictionary)
