@@ -1,8 +1,32 @@
-language: objective-c
-xcode_workspace: SWXMLHash.xcworkspace
-xcode_scheme: SWXMLHash iOS
-osx_image: xcode8
-
-script:
-  - swiftlint
-  - ./Scripts/build.sh
+matrix:
+  include:
+    - script:
+        - swiftlint
+        - set -o pipefail
+        - xcodebuild $XCODE_ACTION $WORKSPACE -scheme "SWXMLHash OSX" | xcpretty
+        - xcodebuild $XCODE_ACTION $WORKSPACE -scheme "SWXMLHash iOS" -sdk iphonesimulator -destination "OS=10.0,name=iPhone 6S" | xcpretty
+        - xcodebuild $XCODE_ACTION $WORKSPACE -scheme "SWXMLHash tvOS" -sdk appletvsimulator -destination "name=Apple TV 1080p" | xcpretty
+        - xcodebuild build $WORKSPACE -scheme "SWXMLHash watchOS" -sdk watchsimulator | xcpretty
+      env:
+        - JOB=Xcode
+        - WORKSPACE="-workspace SWXMLHash.xcworkspace"
+        - XCODE_ACTION="build-for-testing test-without-building"
+      os: osx
+      osx_image: xcode8
+      language: objective-c
+    - script:
+        - swift build
+        - swift test
+      env: JOB=SPM
+      os: osx
+      osx_image: xcode8
+      language: objective-c
+    - script:
+        - swift build
+        - swift test
+      env: JOB=Linux
+      sudo: required
+      dist: trusty
+      language: generic
+      install:
+        - eval "$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)"
