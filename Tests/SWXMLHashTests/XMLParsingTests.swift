@@ -53,7 +53,12 @@ class XMLParsingTests: XCTestCase {
     }
 
     func testShouldBeAbleToLookUpElementsByNameAndAttribute() {
-        XCTAssertEqual(try! xml!["root"]["catalog"]["book"].withAttr("id", "bk102")["author"].element?.text, "Ralls, Kim")
+        do {
+            XCTAssertEqual(try xml!["root"]["catalog"]["book"].withAttr("id", "bk102")["author"].element?.text, "Ralls, Kim")
+        } catch {
+            XCTFail("\(error)")
+        }
+
     }
 
     func testShouldBeAbleToIterateElementGroups() {

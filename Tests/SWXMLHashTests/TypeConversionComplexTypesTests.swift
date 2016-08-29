@@ -76,8 +76,12 @@ class TypeConversionComplexTypesTests: XCTestCase {
     }
 
     func testShouldConvertComplexitemToNonOptional() {
-        let value: ComplexItem = try! parser!["root"]["complexItem"].value()
-        XCTAssertEqual(value, correctComplexItem)
+        do {
+            let value: ComplexItem = try parser!["root"]["complexItem"].value()
+            XCTAssertEqual(value, correctComplexItem)
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 
     func testShouldThrowWhenConvertingEmptyToNonOptional() {
@@ -99,8 +103,12 @@ class TypeConversionComplexTypesTests: XCTestCase {
     }
 
     func testShouldConvertComplexitemToOptional() {
-        let value: ComplexItem? = try! parser!["root"]["complexItem"].value()
-        XCTAssertEqual(value, correctComplexItem)
+        do {
+            let value: ComplexItem? = try parser!["root"]["complexItem"].value()
+            XCTAssertEqual(value, correctComplexItem)
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 
     func testShouldConvertEmptyToOptional() {
@@ -113,8 +121,12 @@ class TypeConversionComplexTypesTests: XCTestCase {
     }
 
     func testShouldConvertMissingToOptional() {
-        let value: ComplexItem? = try! parser!["root"]["missing"].value()
-        XCTAssertNil(value)
+        do {
+            let value: ComplexItem? = try parser!["root"]["missing"].value()
+            XCTAssertNil(value)
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 }
 
