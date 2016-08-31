@@ -35,13 +35,13 @@ class LazyWhiteSpaceParsingTests: XCTestCase {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
 
-        let bundle = Bundle(for: WhiteSpaceParsingTests.self)
-#if os(Linux)
-        let path = bundle.pathForResource("test", ofType: "xml")
+#if SWIFT_PACKAGE
+        let path = NSString.path(withComponents: NSString(string: #file).pathComponents.dropLast() + ["test.xml"])
 #else
-        let path = bundle.path(forResource: "test", ofType: "xml")
+        let bundle = Bundle(for: WhiteSpaceParsingTests.self)
+        let path = bundle.path(forResource: "test", ofType: "xml")!
 #endif
-        let data = try! Data(contentsOf: URL(fileURLWithPath: path!))
+        let data = try! Data(contentsOf: URL(fileURLWithPath: path))
         xml = SWXMLHash.lazy(data)
     }
 

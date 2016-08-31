@@ -53,7 +53,13 @@ class XMLParsingTests: XCTestCase {
     }
 
     func testShouldBeAbleToLookUpElementsByNameAndAttribute() {
-        XCTAssertEqual(try! xml!["root"]["catalog"]["book"].withAttr("id", "bk102")["author"].element?.text, "Ralls, Kim")
+        do {
+            let value = try xml!["root"]["catalog"]["book"].withAttr("id", "bk102")["author"].element?.text
+            XCTAssertEqual(value, "Ralls, Kim")
+        } catch {
+            XCTFail("\(error)")
+        }
+
     }
 
     func testShouldBeAbleToIterateElementGroups() {
@@ -90,20 +96,24 @@ class XMLParsingTests: XCTestCase {
     func testShouldBeAbleToIterateOverMixedContent() {
         let mixedContentXml = "<html><body><p>mixed content <i>iteration</i> support</body></html>"
         let parsed = SWXMLHash.parse(mixedContentXml)
-        let result = parsed["html"]["body"]["p"].element!.children.reduce("") { acc, child in
-            switch child {
-            case let elm as SWXMLHash.XMLElement:
-                guard let text = elm.text else { return acc }
-                return acc + text
-            case let elm as TextElement:
-                return acc + elm.text
-            default:
-                XCTAssert(false, "Unknown element type")
-                return acc
+        let element = parsed["html"]["body"]["p"].element
+        XCTAssertNotNil(element)
+        if let element = element {
+            let result = element.children.reduce("") { acc, child in
+                switch child {
+                case let elm as SWXMLHash.XMLElement:
+                    guard let text = elm.text else { return acc }
+                    return acc + text
+                case let elm as TextElement:
+                    return acc + elm.text
+                default:
+                    XCTAssert(false, "Unknown element type")
+                    return acc
+                }
             }
-        }
 
-        XCTAssertEqual(result, "mixed content iteration support")
+            XCTAssertEqual(result, "mixed content iteration support")
+        }
     }
 
     func testShouldHandleInterleavingXMLElements() {

@@ -116,6 +116,7 @@
 
 /* Begin PBXFileReference section */
 		54B83CC41C849D9B00D588B5 /* SWXMLHash+TypeConversion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SWXMLHash+TypeConversion.swift"; sourceTree = "<group>"; };
+		6C0CE0F01D7440F8005F1248 /* LinuxShims.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinuxShims.swift; sourceTree = "<group>"; };
 		6C477A9C1D702C0900D76FCA /* LinuxMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LinuxMain.swift; path = Tests/LinuxMain.swift; sourceTree = SOURCE_ROOT; };
 		CD4B5F3919E2C42D005C1F33 /* test.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = test.xml; sourceTree = "<group>"; };
 		CD6083EF196CA106000B4F8D /* SWXMLHash.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SWXMLHash.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -268,6 +269,7 @@
 				CDC6D13E1D32D98400570DE5 /* TypeConversionPrimitypeTypesTests.swift */,
 				CDC6D11E1D32D70800570DE5 /* WhiteSpaceParsingTests.swift */,
 				CDC6D11A1D32D6CE00570DE5 /* XMLParsingTests.swift */,
+				6C0CE0F01D7440F8005F1248 /* LinuxShims.swift */,
 				6C477A9C1D702C0900D76FCA /* LinuxMain.swift */,
 			);
 			name = Tests;

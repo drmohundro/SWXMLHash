@@ -48,13 +48,21 @@ class LazyTypesConversionTests: XCTestCase {
     }
 
     func testShouldConvertValueToNonOptional() {
-        let value: String = try! parser!["root"]["string"].value()
-        XCTAssertEqual(value, "the string value")
+        do {
+            let value: String = try parser!["root"]["string"].value()
+            XCTAssertEqual(value, "the string value")
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 
     func testShouldConvertAttributeToNonOptional() {
-        let value: Int = try! parser!["root"]["attribute"].value(ofAttribute: "int")
-        XCTAssertEqual(value, 1)
+        do {
+            let value: Int = try parser!["root"]["attribute"].value(ofAttribute: "int")
+            XCTAssertEqual(value, 1)
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 }
 
