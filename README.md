@@ -47,7 +47,7 @@ Then create a `Podfile` with the following contents:
 source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '8.0'
 
-pod 'SWXMLHash', '~> 2.4.0'
+pod 'SWXMLHash', '~> 2.5.0'
 ```
 
 Finally, run the following command to install it:
@@ -68,7 +68,7 @@ $ brew install carthage
 Then add the following line to your `Cartfile`:
 
 ```
-github "drmohundro/SWXMLHash" ~> 2.3
+github "drmohundro/SWXMLHash" ~> 2.5
 ```
 
 ### Manual Installation
@@ -213,7 +213,7 @@ Given:
 </root>
 ```
 
-The below will return "Fiction, Non-fiction, Technical" (note the `all` method).
+The `all` method will iterate over all nodes at the indexed level. The code below will return "Fiction, Non-fiction, Technical".
 
 ```swift
 ", ".join(xml["root"]["catalog"]["book"].all.map { elem in
@@ -221,11 +221,19 @@ The below will return "Fiction, Non-fiction, Technical" (note the `all` method).
 })
 ```
 
-Alternatively, you can just iterate over the elements using `for-in` directly against an element.
+You can also iterate over the `all` method:
+
+```swift
+for elem in xml["root"]["catalog"]["book"].all {
+  print(elem["genre"].element!.text!)
+}
+```
+
+Alternatively, XMLIndexer provides `for-in` support directly from the index (no `all` needed in this case).
 
 ```swift
 for elem in xml["root"]["catalog"]["book"] {
-  NSLog(elem["genre"].element!.text!)
+  print(elem["genre"].element!.text!)
 }
 ```
 
@@ -245,12 +253,12 @@ Given:
 </root>
 ```
 
-The below will `NSLog` "root", "catalog", "book", "genre", "title", and "date" (note the `children` method).
+The below will `print` "root", "catalog", "book", "genre", "title", and "date" (note the `children` method).
 
 ```swift
 func enumerate(indexer: XMLIndexer) {
   for child in indexer.children {
-    NSLog(child.element!.name)
+    print(child.element!.name)
     enumerate(child)
   }
 }
@@ -373,6 +381,38 @@ You'll get an error because there isn't any built-in deserializer for `NSDate`. 
 ### I'm getting an `EXC_BAD_ACCESS (SIGSEGV)` when I call `parse()`
 
 Chances are very good that your XML content has what is called a "byte order mark" or BOM. SWXMLHash uses `NSXMLParser` for its parsing logic and there are issues with it and handling BOM characters. See [issue #65](https://github.com/drmohundro/SWXMLHash/issues/65) for more details. Others who have run into this problem have just rstripped the BOM out of their content prior to parsing.
+
+### How do I handle deserialization with a class versus a struct (such as with `NSDate`)?
+
+Using extensions on classes instead of structs can result in some odd catches that might give you a little trouble. For example, see [this question on StackOverflow](http://stackoverflow.com/questions/38174669/how-to-deserialize-nsdate-with-swxmlhash) where someone was trying to write their own `XMLElementDeserializable` for `NSDate` which is a class and not a struct. The `XMLElementDeserializable` protocol expects a method that returns `Self` - this is the part that gets a little odd.
+
+See below for the code snippet to get this to work and note in particular the `private static func value<T>() -> T` line - that is the key.
+
+```swift
+extension NSDate: XMLElementDeserializable {
+  public static func deserialize(element: XMLElement) throws -> Self {
+    guard let dateAsString = element.text else {
+      throw XMLDeserializationError.NodeHasNoValue
+    }
+
+    let dateFormatter = NSDateFormatter()
+    dateFormatter.dateFormat = "EEE, dd MMM yyyy HH:mm:ss zzz"
+    let date = dateFormatter.dateFromString(dateAsString)
+
+    guard let validDate = date else {
+      throw XMLDeserializationError.TypeConversionFailed(type: "Date", element: element)
+    }
+
+    // NOTE THIS
+    return value(validDate)
+  }
+
+  // AND THIS
+  private static func value<T>(date: NSDate) -> T {
+    return date as! T
+  }
+}
+```
 
 ### Have a different question?
 

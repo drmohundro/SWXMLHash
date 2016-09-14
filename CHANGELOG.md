@@ -1,3 +1,8 @@
+## v2.5.1 (August 23, 2016)
+
+* Support Swift 2.3 on Xcode 8
+  * See corresponding [PR #95](https://github.com/drmohundro/SWXMLHash/pull/95)
+
 ## v2.5.0 (August 8, 2016)
 
 * Added attribute deserialization support (via `value(ofAttribute:)`).
