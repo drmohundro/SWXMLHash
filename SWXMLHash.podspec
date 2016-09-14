@@ -15,6 +15,6 @@ Pod::Spec.new do |s|
   s.tvos.deployment_target = '9.0'
 
   s.source = { git: 'https://github.com/drmohundro/SWXMLHash.git',
-               tag: '3.0.0' }
+               tag: s.version }
   s.source_files = 'Source/*.swift'
 end
