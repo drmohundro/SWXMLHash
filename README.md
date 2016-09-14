@@ -25,9 +25,7 @@ The API takes a lot of inspiration from [SwiftyJSON](https://github.com/SwiftyJS
 ## Requirements
 
 - iOS 8.0+ / Mac OS X 10.9+ / tvOS 9.0+ / watchOS 2.0+
-- Xcode 7.1+
-
-(note that Xcode 8 beta and Swift 3 support are being tracked in [PR 78](https://github.com/drmohundro/SWXMLHash/pull/78))
+- Xcode 8.0+
 
 ## Installation
 
@@ -47,7 +45,7 @@ Then create a `Podfile` with the following contents:
 source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '8.0'
 
-pod 'SWXMLHash', '~> 2.5.0'
+pod 'SWXMLHash', '~> 3.0.0'
 ```
 
 Finally, run the following command to install it:
@@ -68,7 +66,7 @@ $ brew install carthage
 Then add the following line to your `Cartfile`:
 
 ```
-github "drmohundro/SWXMLHash" ~> 2.5
+github "drmohundro/SWXMLHash" ~> 3.0
 ```
 
 ### Manual Installation
@@ -273,8 +271,8 @@ Using Swift 2.0's new error handling feature:
 ```swift
 do {
   try xml!.byKey("root").byKey("what").byKey("header").byKey("foo")
-} catch let error as XMLIndexer.Error {
-  // error is an XMLIndexer.Error instance that you can deal with
+} catch let error as IndexerError {
+  // error is an IndexerError instance that you can deal with
 }
 ```
 
@@ -285,7 +283,7 @@ switch xml["root"]["what"]["header"]["foo"] {
 case .Element(let elem):
   // everything is good, code away!
 case .XMLError(let error):
-  // error is an XMLIndexer.Error instance that you can deal with
+  // error is an IndexerError instance that you can deal with
 }
 ```
 
@@ -327,7 +325,7 @@ struct Book: XMLIndexerDeserializable {
     let amount: Int?
     let isbn: Int
 
-    static func deserialize(node: XMLIndexer) throws -> Book {
+    static func deserialize(_ node: XMLIndexer) throws -> Book {
         return try Book(
             title: node["title"].value(),
             price: node["price"].value(),

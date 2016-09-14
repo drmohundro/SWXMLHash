@@ -1,5 +1,5 @@
 //
-//  LazyWhiteSpaceParsingTests.swift
+//  WhiteSpaceParsingTests.swift
 //
 //  Copyright (c) 2016 David Mohundro
 //
@@ -21,22 +21,27 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
+import Foundation
 import SWXMLHash
 import XCTest
 
 // swiftlint:disable line_length
+// swiftlint:disable force_try
 
-class LazyWhiteSpaceParsingTests: XCTestCase {
+class WhiteSpaceParsingTests: XCTestCase {
     var xml: XMLIndexer?
 
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
-
-        let bundle = NSBundle(forClass: WhiteSpaceParsingTests.self)
-        let path = bundle.pathForResource("test", ofType: "xml")
-        let data = NSData(contentsOfFile: path!)
-        xml = SWXMLHash.lazy(data!)
+#if SWIFT_PACKAGE
+        let path = NSString.path(withComponents: NSString(string: #file).pathComponents.dropLast() + ["test.xml"])
+#else
+        let bundle = Bundle(for: WhiteSpaceParsingTests.self)
+        let path = bundle.path(forResource: "test", ofType: "xml")!
+#endif
+        let data = try! Data(contentsOf: URL(fileURLWithPath: path))
+        xml = SWXMLHash.parse(data)
     }
 
     // issue #6
@@ -46,5 +51,14 @@ class LazyWhiteSpaceParsingTests: XCTestCase {
 
     func testShouldBeAbleToCorrectlyParseCDATASectionsWithWhitespace() {
         XCTAssertEqual(xml!["niotemplate"]["other"].element?.text, "\n        \n  this\n  has\n  white\n  space\n        \n    ")
+    }
+}
+
+extension WhiteSpaceParsingTests {
+    static var allTests: [(String, (WhiteSpaceParsingTests) -> () throws -> Void)] {
+        return [
+            ("testShouldBeAbleToPullTextBetweenElementsWithoutWhitespace", testShouldBeAbleToPullTextBetweenElementsWithoutWhitespace),
+            ("testShouldBeAbleToCorrectlyParseCDATASectionsWithWhitespace", testShouldBeAbleToCorrectlyParseCDATASectionsWithWhitespace),
+        ]
     }
 }

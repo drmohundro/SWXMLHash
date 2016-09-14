@@ -50,18 +50,33 @@ class TypeConversionPrimitypeTypesTests: XCTestCase {
     }
 
     func testShouldConvertArrayOfGoodIntsToNonOptional() {
-        let value: [Int] = try! parser!["root"]["arrayOfGoodInts"]["int"].value()
-        XCTAssertEqual(value, [0, 1, 2, 3])
+        do {
+            let value: [Int] = try parser!["root"]["arrayOfGoodInts"]["int"].value()
+            XCTAssertEqual(value, [0, 1, 2, 3])
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 
     func testShouldConvertArrayOfGoodIntsToOptional() {
-        let value: [Int]? = try! parser!["root"]["arrayOfGoodInts"]["int"].value()
-        XCTAssertEqual(value!, [0, 1, 2, 3])
+        do {
+            let value: [Int]? = try parser!["root"]["arrayOfGoodInts"]["int"].value()
+            XCTAssertNotNil(value)
+            if let value = value {
+                XCTAssertEqual(value, [0, 1, 2, 3])
+            }
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 
     func testShouldConvertArrayOfGoodIntsToArrayOfOptionals() {
-        let value: [Int?] = try! parser!["root"]["arrayOfGoodInts"]["int"].value()
-        XCTAssertEqual(value.flatMap({ $0 }), [0, 1, 2, 3])
+        do {
+            let value: [Int?] = try parser!["root"]["arrayOfGoodInts"]["int"].value()
+            XCTAssertEqual(value.flatMap({ $0 }), [0, 1, 2, 3])
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 
     func testShouldThrowWhenConvertingArrayOfBadIntsToNonOptional() {
@@ -119,32 +134,81 @@ class TypeConversionPrimitypeTypesTests: XCTestCase {
     }
 
     func testShouldConvertArrayOfAttributeIntsToNonOptional() {
-        let value: [Int] = try! parser!["root"]["arrayOfAttributeInts"]["int"].value(ofAttribute: "value")
-        XCTAssertEqual(value, [0, 1, 2, 3])
+        do {
+            let value: [Int] = try parser!["root"]["arrayOfAttributeInts"]["int"].value(ofAttribute: "value")
+            XCTAssertEqual(value, [0, 1, 2, 3])
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 
     func testShouldConvertArrayOfAttributeIntsToOptional() {
-        let value: [Int]? = try! parser!["root"]["arrayOfAttributeInts"]["int"].value(ofAttribute: "value")
-        XCTAssertEqual(value!, [0, 1, 2, 3])
+        do {
+            let value: [Int]? = try parser!["root"]["arrayOfAttributeInts"]["int"].value(ofAttribute: "value")
+            XCTAssertNotNil(value)
+            if let value = value {
+                XCTAssertEqual(value, [0, 1, 2, 3])
+            }
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 
     func testShouldConvertArrayOfAttributeIntsToArrayOfOptionals() {
-        let value: [Int?] = try! parser!["root"]["arrayOfAttributeInts"]["int"].value(ofAttribute: "value")
-        XCTAssertEqual(value.flatMap({ $0 }), [0, 1, 2, 3])
+        do {
+            let value: [Int?] = try parser!["root"]["arrayOfAttributeInts"]["int"].value(ofAttribute: "value")
+            XCTAssertEqual(value.flatMap({ $0 }), [0, 1, 2, 3])
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 
     func testShouldConvertEmptyArrayOfIntsToNonOptional() {
-        let value: [Int] = try! parser!["root"]["empty"]["int"].value()
-        XCTAssertEqual(value, [])
+        do {
+            let value: [Int] = try parser!["root"]["empty"]["int"].value()
+            XCTAssertEqual(value, [])
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 
     func testShouldConvertEmptyArrayOfIntsToOptional() {
-        let value: [Int]? = try! parser!["root"]["empty"]["int"].value()
-        XCTAssertNil(value)
+        do {
+            let value: [Int]? = try parser!["root"]["empty"]["int"].value()
+            XCTAssertNil(value)
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 
     func testShouldConvertEmptyArrayOfIntsToArrayOfOptionals() {
-        let value: [Int?] = try! parser!["root"]["empty"]["int"].value()
-        XCTAssertEqual(value.count, 0)
+        do {
+            let value: [Int?] = try parser!["root"]["empty"]["int"].value()
+            XCTAssertEqual(value.count, 0)
+        } catch {
+            XCTFail("\(error)")
+        }
+    }
+}
+
+extension TypeConversionPrimitypeTypesTests {
+    static var allTests: [(String, (TypeConversionPrimitypeTypesTests) -> () throws -> Void)] {
+        return [
+            ("testShouldConvertArrayOfGoodIntsToNonOptional", testShouldConvertArrayOfGoodIntsToNonOptional),
+            ("testShouldConvertArrayOfGoodIntsToOptional", testShouldConvertArrayOfGoodIntsToOptional),
+            ("testShouldConvertArrayOfGoodIntsToArrayOfOptionals", testShouldConvertArrayOfGoodIntsToArrayOfOptionals),
+            ("testShouldThrowWhenConvertingArrayOfBadIntsToNonOptional", testShouldThrowWhenConvertingArrayOfBadIntsToNonOptional),
+            ("testShouldThrowWhenConvertingArrayOfBadIntsToOptional", testShouldThrowWhenConvertingArrayOfBadIntsToOptional),
+            ("testShouldThrowWhenConvertingArrayOfBadIntsToArrayOfOptionals", testShouldThrowWhenConvertingArrayOfBadIntsToArrayOfOptionals),
+            ("testShouldThrowWhenConvertingArrayOfMixedIntsToNonOptional", testShouldThrowWhenConvertingArrayOfMixedIntsToNonOptional),
+            ("testShouldThrowWhenConvertingArrayOfMixedIntsToOptional", testShouldThrowWhenConvertingArrayOfMixedIntsToOptional),
+            ("testShouldThrowWhenConvertingArrayOfMixedIntsToArrayOfOptionals", testShouldThrowWhenConvertingArrayOfMixedIntsToArrayOfOptionals),
+            ("testShouldConvertArrayOfAttributeIntsToNonOptional", testShouldConvertArrayOfAttributeIntsToNonOptional),
+            ("testShouldConvertArrayOfAttributeIntsToOptional", testShouldConvertArrayOfAttributeIntsToOptional),
+            ("testShouldConvertArrayOfAttributeIntsToArrayOfOptionals", testShouldConvertArrayOfAttributeIntsToArrayOfOptionals),
+            ("testShouldConvertEmptyArrayOfIntsToNonOptional", testShouldConvertEmptyArrayOfIntsToNonOptional),
+            ("testShouldConvertEmptyArrayOfIntsToOptional", testShouldConvertEmptyArrayOfIntsToOptional),
+            ("testShouldConvertEmptyArrayOfIntsToArrayOfOptionals", testShouldConvertEmptyArrayOfIntsToArrayOfOptionals),
+        ]
     }
 }

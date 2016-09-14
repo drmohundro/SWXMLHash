@@ -1,7 +1,8 @@
 //
-//  MixedTextWithXMLElementsTests.swift
+//  LinuxShims.swift
+//  SWXMLHash
 //
-//  Copyright (c) 2016 David Mohundro
+//  Created by 野村 憲男 on 8/29/16.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -21,20 +22,14 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-import SWXMLHash
-import XCTest
+import Foundation
 
-// swiftlint:disable line_length
+#if os(Linux)
 
-class MixedTextWithXMLElementsTests: XCTestCase {
-    var xml: XMLIndexer?
-
-    override func setUp() {
-        let xmlContent = "<everything><news><content>Here is a cool thing <a href=\"google.com\">A</a> and second cool thing <a href=\"fb.com\">B</a></content></news></everything>"
-        xml = SWXMLHash.parse(xmlContent)
+    extension NSString {
+        class func path(withComponents components: [String]) -> String {
+            return pathWithComponents(components)
+        }
     }
 
-    func testShouldBeAbleToGetAllContentsInsideOfAnElement() {
-        XCTAssertEqual(xml!["everything"]["news"]["content"].description, "<content>Here is a cool thing <a href=\"google.com\">A</a> and second cool thing <a href=\"fb.com\">B</a></content>")
-    }
-}
+#endif

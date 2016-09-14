@@ -76,8 +76,12 @@ class TypeConversionComplexTypesTests: XCTestCase {
     }
 
     func testShouldConvertComplexitemToNonOptional() {
-        let value: ComplexItem = try! parser!["root"]["complexItem"].value()
-        XCTAssertEqual(value, correctComplexItem)
+        do {
+            let value: ComplexItem = try parser!["root"]["complexItem"].value()
+            XCTAssertEqual(value, correctComplexItem)
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 
     func testShouldThrowWhenConvertingEmptyToNonOptional() {
@@ -99,8 +103,12 @@ class TypeConversionComplexTypesTests: XCTestCase {
     }
 
     func testShouldConvertComplexitemToOptional() {
-        let value: ComplexItem? = try! parser!["root"]["complexItem"].value()
-        XCTAssertEqual(value, correctComplexItem)
+        do {
+            let value: ComplexItem? = try parser!["root"]["complexItem"].value()
+            XCTAssertEqual(value, correctComplexItem)
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 
     func testShouldConvertEmptyToOptional() {
@@ -113,8 +121,12 @@ class TypeConversionComplexTypesTests: XCTestCase {
     }
 
     func testShouldConvertMissingToOptional() {
-        let value: ComplexItem? = try! parser!["root"]["missing"].value()
-        XCTAssertNil(value)
+        do {
+            let value: ComplexItem? = try parser!["root"]["missing"].value()
+            XCTAssertNil(value)
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 }
 
@@ -124,7 +136,7 @@ struct ComplexItem: XMLIndexerDeserializable {
     let basics: [BasicItem]
     let attrs: [AttributeItem]
 
-    static func deserialize(node: XMLIndexer) throws -> ComplexItem {
+    static func deserialize(_ node: XMLIndexer) throws -> ComplexItem {
         return try ComplexItem(
             name: node["name"].value(),
             priceOptional: node["price"].value(),
@@ -138,4 +150,17 @@ extension ComplexItem: Equatable {}
 
 func == (a: ComplexItem, b: ComplexItem) -> Bool {
     return a.name == b.name && a.priceOptional == b.priceOptional && a.basics == b.basics && a.attrs == b.attrs
+}
+
+extension TypeConversionComplexTypesTests {
+    static var allTests: [(String, (TypeConversionComplexTypesTests) -> () throws -> Void)] {
+        return [
+            ("testShouldConvertComplexitemToNonOptional", testShouldConvertComplexitemToNonOptional),
+            ("testShouldThrowWhenConvertingEmptyToNonOptional", testShouldThrowWhenConvertingEmptyToNonOptional),
+            ("testShouldThrowWhenConvertingMissingToNonOptional", testShouldThrowWhenConvertingMissingToNonOptional),
+            ("testShouldConvertComplexitemToOptional", testShouldConvertComplexitemToOptional),
+            ("testShouldConvertEmptyToOptional", testShouldConvertEmptyToOptional),
+            ("testShouldConvertMissingToOptional", testShouldConvertMissingToOptional),
+        ]
+    }
 }

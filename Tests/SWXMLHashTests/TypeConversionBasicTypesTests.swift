@@ -50,13 +50,21 @@ class TypeConversionBasicTypesTests: XCTestCase {
     }
 
     func testShouldConvertValueToNonOptional() {
-        let value: String = try! parser!["root"]["string"].value()
-        XCTAssertEqual(value, "the string value")
+        do {
+            let value: String = try parser!["root"]["string"].value()
+            XCTAssertEqual(value, "the string value")
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 
     func testShouldConvertEmptyToNonOptional() {
-        let value: String = try! parser!["root"]["empty"].value()
-        XCTAssertEqual(value, "")
+        do {
+            let value: String = try parser!["root"]["empty"].value()
+            XCTAssertEqual(value, "")
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 
     func testShouldThrowWhenConvertingMissingToNonOptional() {
@@ -69,23 +77,39 @@ class TypeConversionBasicTypesTests: XCTestCase {
     }
 
     func testShouldConvertValueToOptional() {
-        let value: String? = try! parser!["root"]["string"].value()
-        XCTAssertEqual(value, "the string value")
+        do {
+            let value: String? = try parser!["root"]["string"].value()
+            XCTAssertEqual(value, "the string value")
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 
     func testShouldConvertEmptyToOptional() {
-        let value: String? = try! parser!["root"]["empty"].value()
-        XCTAssertEqual(value, "")
+        do {
+            let value: String? = try parser!["root"]["empty"].value()
+            XCTAssertEqual(value, "")
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 
     func testShouldConvertMissingToOptional() {
-        let value: String? = try! parser!["root"]["missing"].value()
-        XCTAssertNil(value)
+        do {
+            let value: String? = try parser!["root"]["missing"].value()
+            XCTAssertNil(value)
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 
     func testShouldConvertAttributeToNonOptional() {
-        let value: String = try! parser!["root"]["attr"].value(ofAttribute: "string")
-        XCTAssertEqual(value, "stringValue")
+        do {
+            let value: String = try parser!["root"]["attr"].value(ofAttribute: "string")
+            XCTAssertEqual(value, "stringValue")
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 
     func testShouldConvertAttributeToOptional() {
@@ -108,8 +132,12 @@ class TypeConversionBasicTypesTests: XCTestCase {
     }
 
     func testIntShouldConvertValueToNonOptional() {
-        let value: Int = try! parser!["root"]["int"].value()
-        XCTAssertEqual(value, 100)
+        do {
+            let value: Int = try parser!["root"]["int"].value()
+            XCTAssertEqual(value, 100)
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 
     func testIntShouldThrowWhenConvertingEmptyToNonOptional() {
@@ -131,8 +159,12 @@ class TypeConversionBasicTypesTests: XCTestCase {
     }
 
     func testIntShouldConvertValueToOptional() {
-        let value: Int? = try! parser!["root"]["int"].value()
-        XCTAssertEqual(value, 100)
+        do {
+            let value: Int? = try parser!["root"]["int"].value()
+            XCTAssertEqual(value, 100)
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 
     func testIntShouldConvertEmptyToOptional() {
@@ -145,13 +177,21 @@ class TypeConversionBasicTypesTests: XCTestCase {
     }
 
     func testIntShouldConvertMissingToOptional() {
-        let value: Int? = try! parser!["root"]["missing"].value()
-        XCTAssertNil(value)
+        do {
+            let value: Int? = try parser!["root"]["missing"].value()
+            XCTAssertNil(value)
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 
     func testIntShouldConvertAttributeToNonOptional() {
-        let value: Int = try! parser!["root"]["attr"].value(ofAttribute: "int")
-        XCTAssertEqual(value, 200)
+        do {
+            let value: Int = try parser!["root"]["attr"].value(ofAttribute: "int")
+            XCTAssertEqual(value, 200)
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 
     func testIntShouldConvertAttributeToOptional() {
@@ -160,8 +200,12 @@ class TypeConversionBasicTypesTests: XCTestCase {
     }
 
     func testDoubleShouldConvertValueToNonOptional() {
-        let value: Double = try! parser!["root"]["double"].value()
-        XCTAssertEqual(value, 100.45)
+        do {
+            let value: Double = try parser!["root"]["double"].value()
+            XCTAssertEqual(value, 100.45)
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 
     func testDoubleShouldThrowWhenConvertingEmptyToNonOptional() {
@@ -183,8 +227,12 @@ class TypeConversionBasicTypesTests: XCTestCase {
     }
 
     func testDoubleShouldConvertValueToOptional() {
-        let value: Double? = try! parser!["root"]["double"].value()
-        XCTAssertEqual(value, 100.45)
+        do {
+            let value: Double? = try parser!["root"]["double"].value()
+            XCTAssertEqual(value, 100.45)
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 
     func testDoubleShouldConvertEmptyToOptional() {
@@ -197,13 +245,21 @@ class TypeConversionBasicTypesTests: XCTestCase {
     }
 
     func testDoubleShouldConvertMissingToOptional() {
-        let value: Double? = try! parser!["root"]["missing"].value()
-        XCTAssertNil(value)
+        do {
+            let value: Double? = try parser!["root"]["missing"].value()
+            XCTAssertNil(value)
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 
     func testDoubleShouldConvertAttributeToNonOptional() {
-        let value: Double = try! parser!["root"]["attr"].value(ofAttribute: "double")
-        XCTAssertEqual(value, 200.15)
+        do {
+            let value: Double = try parser!["root"]["attr"].value(ofAttribute: "double")
+            XCTAssertEqual(value, 200.15)
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 
     func testDoubleShouldConvertAttributeToOptional() {
@@ -212,8 +268,12 @@ class TypeConversionBasicTypesTests: XCTestCase {
     }
 
     func testFloatShouldConvertValueToNonOptional() {
-        let value: Float = try! parser!["root"]["float"].value()
-        XCTAssertEqual(value, 44.12)
+        do {
+            let value: Float = try parser!["root"]["float"].value()
+            XCTAssertEqual(value, 44.12)
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 
     func testFloatShouldThrowWhenConvertingEmptyToNonOptional() {
@@ -235,8 +295,12 @@ class TypeConversionBasicTypesTests: XCTestCase {
     }
 
     func testFloatShouldConvertValueToOptional() {
-        let value: Float? = try! parser!["root"]["float"].value()
-        XCTAssertEqual(value, 44.12)
+        do {
+            let value: Float? = try parser!["root"]["float"].value()
+            XCTAssertEqual(value, 44.12)
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 
     func testFloatShouldConvertEmptyToOptional() {
@@ -249,13 +313,21 @@ class TypeConversionBasicTypesTests: XCTestCase {
     }
 
     func testFloatShouldConvertMissingToOptional() {
-        let value: Float? = try! parser!["root"]["missing"].value()
-        XCTAssertNil(value)
+        do {
+            let value: Float? = try parser!["root"]["missing"].value()
+            XCTAssertNil(value)
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 
     func testFloatShouldConvertAttributeToNonOptional() {
-        let value: Float = try! parser!["root"]["attr"].value(ofAttribute: "float")
-        XCTAssertEqual(value, 205.42)
+        do {
+            let value: Float = try parser!["root"]["attr"].value(ofAttribute: "float")
+            XCTAssertEqual(value, 205.42)
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 
     func testFloatShouldConvertAttributeToOptional() {
@@ -264,10 +336,14 @@ class TypeConversionBasicTypesTests: XCTestCase {
     }
 
     func testBoolShouldConvertValueToNonOptional() {
-        let value1: Bool = try! parser!["root"]["bool1"].value()
-        let value2: Bool = try! parser!["root"]["bool2"].value()
-        XCTAssertFalse(value1)
-        XCTAssertTrue(value2)
+        do {
+            let value1: Bool = try parser!["root"]["bool1"].value()
+            let value2: Bool = try parser!["root"]["bool2"].value()
+            XCTAssertFalse(value1)
+            XCTAssertTrue(value2)
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 
     func testBoolShouldThrowWhenConvertingEmptyToNonOptional() {
@@ -289,10 +365,14 @@ class TypeConversionBasicTypesTests: XCTestCase {
     }
 
     func testBoolShouldConvertValueToOptional() {
-        let value1: Bool? = try! parser!["root"]["bool1"].value()
-        XCTAssertEqual(value1, false)
-        let value2: Bool? = try! parser!["root"]["bool2"].value()
-        XCTAssertEqual(value2, true)
+        do {
+            let value1: Bool? = try parser!["root"]["bool1"].value()
+            XCTAssertEqual(value1, false)
+            let value2: Bool? = try parser!["root"]["bool2"].value()
+            XCTAssertEqual(value2, true)
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 
     func testBoolShouldConvertEmptyToOptional() {
@@ -305,13 +385,21 @@ class TypeConversionBasicTypesTests: XCTestCase {
     }
 
     func testBoolShouldConvertMissingToOptional() {
-        let value: Bool? = try! parser!["root"]["missing"].value()
-        XCTAssertNil(value)
+        do {
+            let value: Bool? = try parser!["root"]["missing"].value()
+            XCTAssertNil(value)
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 
     func testBoolShouldConvertAttributeToNonOptional() {
-        let value: Bool = try! parser!["root"]["attr"].value(ofAttribute: "bool1")
-        XCTAssertEqual(value, false)
+        do {
+            let value: Bool = try parser!["root"]["attr"].value(ofAttribute: "bool1")
+            XCTAssertEqual(value, false)
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 
     func testBoolShouldConvertAttributeToOptional() {
@@ -322,8 +410,12 @@ class TypeConversionBasicTypesTests: XCTestCase {
     let correctBasicItem = BasicItem(name: "the name of basic item", price: 99.14)
 
     func testBasicItemShouldConvertBasicitemToNonOptional() {
-        let value: BasicItem = try! parser!["root"]["basicItem"].value()
-        XCTAssertEqual(value, correctBasicItem)
+        do {
+            let value: BasicItem = try parser!["root"]["basicItem"].value()
+            XCTAssertEqual(value, correctBasicItem)
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 
     func testBasicItemShouldThrowWhenConvertingEmptyToNonOptional() {
@@ -345,8 +437,12 @@ class TypeConversionBasicTypesTests: XCTestCase {
     }
 
     func testBasicItemShouldConvertBasicitemToOptional() {
-        let value: BasicItem? = try! parser!["root"]["basicItem"].value()
-        XCTAssertEqual(value, correctBasicItem)
+        do {
+            let value: BasicItem? = try parser!["root"]["basicItem"].value()
+            XCTAssertEqual(value, correctBasicItem)
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 
     func testBasicItemShouldConvertEmptyToOptional() {
@@ -359,15 +455,23 @@ class TypeConversionBasicTypesTests: XCTestCase {
     }
 
     func testBasicItemShouldConvertMissingToOptional() {
-        let value: BasicItem? = try! parser!["root"]["missing"].value()
-        XCTAssertNil(value)
+        do {
+            let value: BasicItem? = try parser!["root"]["missing"].value()
+            XCTAssertNil(value)
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 
     let correctAttributeItem = AttributeItem(name: "the name of attribute item", price: 19.99)
 
     func testAttributeItemShouldConvertAttributeItemToNonOptional() {
-        let value: AttributeItem = try! parser!["root"]["attributeItem"].value()
-        XCTAssertEqual(value, correctAttributeItem)
+        do {
+            let value: AttributeItem = try parser!["root"]["attributeItem"].value()
+            XCTAssertEqual(value, correctAttributeItem)
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 
     func testAttributeItemShouldThrowWhenConvertingEmptyToNonOptional() {
@@ -389,8 +493,12 @@ class TypeConversionBasicTypesTests: XCTestCase {
     }
 
     func testAttributeItemShouldConvertAttributeItemToOptional() {
-        let value: AttributeItem? = try! parser!["root"]["attributeItem"].value()
-        XCTAssertEqual(value, correctAttributeItem)
+        do {
+            let value: AttributeItem? = try parser!["root"]["attributeItem"].value()
+            XCTAssertEqual(value, correctAttributeItem)
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 
     func testAttributeItemShouldConvertEmptyToOptional() {
@@ -403,8 +511,12 @@ class TypeConversionBasicTypesTests: XCTestCase {
     }
 
     func testAttributeItemShouldConvertMissingToOptional() {
-        let value: AttributeItem? = try! parser!["root"]["missing"].value()
-        XCTAssertNil(value)
+        do {
+            let value: AttributeItem? = try parser!["root"]["missing"].value()
+            XCTAssertNil(value)
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 }
 
@@ -412,7 +524,7 @@ struct BasicItem: XMLIndexerDeserializable {
     let name: String
     let price: Double
 
-    static func deserialize(node: XMLIndexer) throws -> BasicItem {
+    static func deserialize(_ node: XMLIndexer) throws -> BasicItem {
         return try BasicItem(
             name: node["name"].value(),
             price: node["price"].value()
@@ -430,7 +542,7 @@ struct AttributeItem: XMLElementDeserializable {
     let name: String
     let price: Double
 
-    static func deserialize(element: XMLElement) throws -> AttributeItem {
+    static func deserialize(_ element: SWXMLHash.XMLElement) throws -> AttributeItem {
         return try AttributeItem(
             name: element.value(ofAttribute: "name"),
             price: element.value(ofAttribute: "price")
@@ -442,4 +554,65 @@ extension AttributeItem: Equatable {}
 
 func == (a: AttributeItem, b: AttributeItem) -> Bool {
     return a.name == b.name && a.price == b.price
+}
+
+extension TypeConversionBasicTypesTests {
+    static var allTests: [(String, (TypeConversionBasicTypesTests) -> () throws -> Void)] {
+        return [
+            ("testShouldConvertValueToNonOptional", testShouldConvertValueToNonOptional),
+            ("testShouldConvertEmptyToNonOptional", testShouldConvertEmptyToNonOptional),
+            ("testShouldThrowWhenConvertingMissingToNonOptional", testShouldThrowWhenConvertingMissingToNonOptional),
+            ("testShouldConvertValueToOptional", testShouldConvertValueToOptional),
+            ("testShouldConvertEmptyToOptional", testShouldConvertEmptyToOptional),
+            ("testShouldConvertMissingToOptional", testShouldConvertMissingToOptional),
+            ("testShouldConvertAttributeToNonOptional", testShouldConvertAttributeToNonOptional),
+            ("testShouldConvertAttributeToOptional", testShouldConvertAttributeToOptional),
+            ("testShouldThrowWhenConvertingMissingAttributeToNonOptional", testShouldThrowWhenConvertingMissingAttributeToNonOptional),
+            ("testShouldConvertMissingAttributeToOptional", testShouldConvertMissingAttributeToOptional),
+            ("testIntShouldConvertValueToNonOptional", testIntShouldConvertValueToNonOptional),
+            ("testIntShouldThrowWhenConvertingEmptyToNonOptional", testIntShouldThrowWhenConvertingEmptyToNonOptional),
+            ("testIntShouldThrowWhenConvertingMissingToNonOptional", testIntShouldThrowWhenConvertingMissingToNonOptional),
+            ("testIntShouldConvertValueToOptional", testIntShouldConvertValueToOptional),
+            ("testIntShouldConvertEmptyToOptional", testIntShouldConvertEmptyToOptional),
+            ("testIntShouldConvertMissingToOptional", testIntShouldConvertMissingToOptional),
+            ("testIntShouldConvertAttributeToNonOptional", testIntShouldConvertAttributeToNonOptional),
+            ("testIntShouldConvertAttributeToOptional", testIntShouldConvertAttributeToOptional),
+            ("testDoubleShouldConvertValueToNonOptional", testDoubleShouldConvertValueToNonOptional),
+            ("testDoubleShouldThrowWhenConvertingEmptyToNonOptional", testDoubleShouldThrowWhenConvertingEmptyToNonOptional),
+            ("testDoubleShouldThrowWhenConvertingMissingToNonOptional", testDoubleShouldThrowWhenConvertingMissingToNonOptional),
+            ("testDoubleShouldConvertValueToOptional", testDoubleShouldConvertValueToOptional),
+            ("testDoubleShouldConvertEmptyToOptional", testDoubleShouldConvertEmptyToOptional),
+            ("testDoubleShouldConvertMissingToOptional", testDoubleShouldConvertMissingToOptional),
+            ("testDoubleShouldConvertAttributeToNonOptional", testDoubleShouldConvertAttributeToNonOptional),
+            ("testDoubleShouldConvertAttributeToOptional", testDoubleShouldConvertAttributeToOptional),
+            ("testFloatShouldConvertValueToNonOptional", testFloatShouldConvertValueToNonOptional),
+            ("testFloatShouldThrowWhenConvertingEmptyToNonOptional", testFloatShouldThrowWhenConvertingEmptyToNonOptional),
+            ("testFloatShouldThrowWhenConvertingMissingToNonOptional", testFloatShouldThrowWhenConvertingMissingToNonOptional),
+            ("testFloatShouldConvertValueToOptional", testFloatShouldConvertValueToOptional),
+            ("testFloatShouldConvertEmptyToOptional", testFloatShouldConvertEmptyToOptional),
+            ("testFloatShouldConvertMissingToOptional", testFloatShouldConvertMissingToOptional),
+            ("testFloatShouldConvertAttributeToNonOptional", testFloatShouldConvertAttributeToNonOptional),
+            ("testFloatShouldConvertAttributeToOptional", testFloatShouldConvertAttributeToOptional),
+            ("testBoolShouldConvertValueToNonOptional", testBoolShouldConvertValueToNonOptional),
+            ("testBoolShouldThrowWhenConvertingEmptyToNonOptional", testBoolShouldThrowWhenConvertingEmptyToNonOptional),
+            ("testBoolShouldThrowWhenConvertingMissingToNonOptional", testBoolShouldThrowWhenConvertingMissingToNonOptional),
+            ("testBoolShouldConvertValueToOptional", testBoolShouldConvertValueToOptional),
+            ("testBoolShouldConvertEmptyToOptional", testBoolShouldConvertEmptyToOptional),
+            ("testBoolShouldConvertMissingToOptional", testBoolShouldConvertMissingToOptional),
+            ("testBoolShouldConvertAttributeToNonOptional", testBoolShouldConvertAttributeToNonOptional),
+            ("testBoolShouldConvertAttributeToOptional", testBoolShouldConvertAttributeToOptional),
+            ("testBasicItemShouldConvertBasicitemToNonOptional", testBasicItemShouldConvertBasicitemToNonOptional),
+            ("testBasicItemShouldThrowWhenConvertingEmptyToNonOptional", testBasicItemShouldThrowWhenConvertingEmptyToNonOptional),
+            ("testBasicItemShouldThrowWhenConvertingMissingToNonOptional", testBasicItemShouldThrowWhenConvertingMissingToNonOptional),
+            ("testBasicItemShouldConvertBasicitemToOptional", testBasicItemShouldConvertBasicitemToOptional),
+            ("testBasicItemShouldConvertEmptyToOptional", testBasicItemShouldConvertEmptyToOptional),
+            ("testBasicItemShouldConvertMissingToOptional", testBasicItemShouldConvertMissingToOptional),
+            ("testAttributeItemShouldConvertAttributeItemToNonOptional", testAttributeItemShouldConvertAttributeItemToNonOptional),
+            ("testAttributeItemShouldThrowWhenConvertingEmptyToNonOptional", testAttributeItemShouldThrowWhenConvertingEmptyToNonOptional),
+            ("testAttributeItemShouldThrowWhenConvertingMissingToNonOptional", testAttributeItemShouldThrowWhenConvertingMissingToNonOptional),
+            ("testAttributeItemShouldConvertAttributeItemToOptional", testAttributeItemShouldConvertAttributeItemToOptional),
+            ("testAttributeItemShouldConvertEmptyToOptional", testAttributeItemShouldConvertEmptyToOptional),
+            ("testAttributeItemShouldConvertMissingToOptional", testAttributeItemShouldConvertMissingToOptional),
+        ]
+    }
 }
