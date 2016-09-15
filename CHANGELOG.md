@@ -1,10 +1,15 @@
-## v3.0.0 (September 13, 2016)
+## v3.0.2 (September 13, 2016)
+
+* Correct the CocoaPod support so that it still allows for iOS 8 and OSX 10.9.
+
+## v3.0.0 - 3.0.1 (September 13, 2016)
 
 * Official support for Xcode 8.0 and Swift 3.0
   * See corresponding [PR #78](https://github.com/drmohundro/SWXMLHash/pull/78)
 * `XMLIndexer.Error` was renamed to `IndexingError` because of a naming conflict with the built-in `Error` type.
 * Linux support is partially available and there is a Travis CI build for it as well.
   * Currently failing functionality is because of https://bugs.swift.org/browse/SR-2301.
+* (3.0.1 because I was having trouble publishing the CocoaPod...)
 
 ## v2.5.1 (August 23, 2016)
 
