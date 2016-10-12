@@ -388,7 +388,7 @@ See below for the code snippet to get this to work and note in particular the `p
 
 ```swift
 extension NSDate: XMLElementDeserializable {
-  public static func deserialize(element: XMLElement) throws -> Self {
+  public static func deserialize(_ element: XMLElement) throws -> Self {
     guard let dateAsString = element.text else {
       throw XMLDeserializationError.NodeHasNoValue
     }
