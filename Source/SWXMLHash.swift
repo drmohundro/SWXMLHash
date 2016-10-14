@@ -233,7 +233,7 @@ class LazyXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
         let parser = Foundation.XMLParser(data: data!)
         parser.shouldProcessNamespaces = options.shouldProcessNamespaces
         parser.delegate = self
-        parser.parse()
+        _ = parser.parse()
     }
 
     func parser(_ parser: Foundation.XMLParser,
@@ -312,7 +312,7 @@ class FullXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
         let parser = Foundation.XMLParser(data: data)
         parser.shouldProcessNamespaces = options.shouldProcessNamespaces
         parser.delegate = self
-        parser.parse()
+        _ = parser.parse()
 
         return XMLIndexer(root)
     }
