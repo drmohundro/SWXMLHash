@@ -261,7 +261,7 @@ func enumerate(indexer: XMLIndexer) {
   }
 }
 
-enumerate(xml)
+enumerate(indexer: xml)
 ```
 
 ### Error Handling
