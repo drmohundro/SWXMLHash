@@ -7,7 +7,10 @@ Pod::Spec.new do |s|
   s.authors     = { 'David Mohundro' => 'david@mohundro.com' }
 
   s.requires_arc = true
-  s.pod_target_xcconfig = { 'SWIFT_VERSION' => '3.0' }
+  s.pod_target_xcconfig = {
+    'SWIFT_VERSION' => '3.0',
+    'APPLICATION_EXTENSION_API_ONLY' => 'YES',
+  }
 
   s.osx.deployment_target = '10.9'
   s.ios.deployment_target = '8.0'
