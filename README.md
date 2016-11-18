@@ -378,7 +378,7 @@ You'll get an error because there isn't any built-in deserializer for `NSDate`. 
 
 ### I'm getting an `EXC_BAD_ACCESS (SIGSEGV)` when I call `parse()`
 
-Chances are very good that your XML content has what is called a "byte order mark" or BOM. SWXMLHash uses `NSXMLParser` for its parsing logic and there are issues with it and handling BOM characters. See [issue #65](https://github.com/drmohundro/SWXMLHash/issues/65) for more details. Others who have run into this problem have just rstripped the BOM out of their content prior to parsing.
+Chances are very good that your XML content has what is called a "byte order mark" or BOM. SWXMLHash uses `NSXMLParser` for its parsing logic and there are issues with it and handling BOM characters. See [issue #65](https://github.com/drmohundro/SWXMLHash/issues/65) for more details. Others who have run into this problem have just stripped the BOM out of their content prior to parsing.
 
 ### How do I handle deserialization with a class versus a struct (such as with `NSDate`)?
 
