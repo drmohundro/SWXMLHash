@@ -271,8 +271,8 @@ Using Swift 2.0's new error handling feature:
 ```swift
 do {
   try xml!.byKey("root").byKey("what").byKey("header").byKey("foo")
-} catch let error as IndexerError {
-  // error is an IndexerError instance that you can deal with
+} catch let error as IndexingError {
+  // error is an IndexingError instance that you can deal with
 }
 ```
 
@@ -283,7 +283,7 @@ switch xml["root"]["what"]["header"]["foo"] {
 case .Element(let elem):
   // everything is good, code away!
 case .XMLError(let error):
-  // error is an IndexerError instance that you can deal with
+  // error is an IndexingError instance that you can deal with
 }
 ```
 

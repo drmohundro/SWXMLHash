@@ -524,7 +524,7 @@ public enum XMLIndexer: Sequence {
 
     - parameter key: The element name to index by
     - returns: instance of XMLIndexer to match the element (or elements) found by key
-    - throws: Throws an XMLIndexerError.Key if no element was found
+    - throws: Throws an XMLIndexingError.Key if no element was found
     */
     public func byKey(_ key: String) throws -> XMLIndexer {
         switch self {
