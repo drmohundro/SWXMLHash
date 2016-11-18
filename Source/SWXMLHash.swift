@@ -652,7 +652,7 @@ extension XMLIndexer: CustomStringConvertible {
 }
 
 extension IndexingError: CustomStringConvertible {
-    /// The description for the `XMLIndexer.Error`.
+    /// The description for the `IndexingError`.
     public var description: String {
         switch self {
         case .Attribute(let attr):

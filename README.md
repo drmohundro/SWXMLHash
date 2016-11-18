@@ -276,7 +276,7 @@ do {
 }
 ```
 
-__Or__ using the existing indexing functionality (__NOTE__ that the `.Error` case has been renamed to `.XMLError` so as to not conflict with the `XMLIndexer.Error` error type):
+__Or__ using the existing indexing functionality:
 
 ```swift
 switch xml["root"]["what"]["header"]["foo"] {
