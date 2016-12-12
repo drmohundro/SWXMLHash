@@ -44,10 +44,10 @@ enumerate(indexer: xml, level: 0)
 
 // enumerate all child elements (functionally)
 func reduceName(names: String, elem: XMLIndexer) -> String {
-    return names + elem.element!.name + elem.children.reduce(", ", combine: reduceName)
+    return names + elem.element!.name + elem.children.reduce(", ", reduceName)
 }
 
-xml.children.reduce("elements: ", combine: reduceName)
+xml.children.reduce("elements: ", reduceName)
 
 
 // custom types conversion
