@@ -26,7 +26,7 @@ Both bug reports and feature requests are welcome!
 
 SWXMLHash currently uses XCTest for its tests. To run the tests, you can either run them from within Xcode or you can run `rake test`.
 
-The coding style used is dictacted by [SwiftLint](https://github.com/realm/SwiftLint). You can get SwiftLint by running `brew install swiftlint`. To run it, just clone the repository and run `swiftlint`. There is a `.swiftlint.yml` for lint configuration.
+The coding style used is dictated by [SwiftLint](https://github.com/realm/SwiftLint). You can get SwiftLint by running `brew install swiftlint`. To run it, just clone the repository and run `swiftlint`. There is a `.swiftlint.yml` for lint configuration.
 
 Prior to submitting a pull request, please verify that:
 
