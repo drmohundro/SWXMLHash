@@ -208,7 +208,7 @@ extension TypeConversionPrimitypeTypesTests {
             ("testShouldConvertArrayOfAttributeIntsToArrayOfOptionals", testShouldConvertArrayOfAttributeIntsToArrayOfOptionals),
             ("testShouldConvertEmptyArrayOfIntsToNonOptional", testShouldConvertEmptyArrayOfIntsToNonOptional),
             ("testShouldConvertEmptyArrayOfIntsToOptional", testShouldConvertEmptyArrayOfIntsToOptional),
-            ("testShouldConvertEmptyArrayOfIntsToArrayOfOptionals", testShouldConvertEmptyArrayOfIntsToArrayOfOptionals),
+            ("testShouldConvertEmptyArrayOfIntsToArrayOfOptionals", testShouldConvertEmptyArrayOfIntsToArrayOfOptionals)
         ]
     }
 }

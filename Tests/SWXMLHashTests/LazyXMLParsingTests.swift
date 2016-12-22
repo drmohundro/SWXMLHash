@@ -129,7 +129,7 @@ extension LazyXMLParsingTests {
             ("testShouldBeAbleToHandleMixedContent", testShouldBeAbleToHandleMixedContent),
             ("testShouldHandleInterleavingXMLElements", testShouldHandleInterleavingXMLElements),
             ("testShouldBeAbleToProvideADescriptionForTheDocument", testShouldBeAbleToProvideADescriptionForTheDocument),
-            ("testShouldReturnNilWhenKeysDontMatch", testShouldReturnNilWhenKeysDontMatch),
+            ("testShouldReturnNilWhenKeysDontMatch", testShouldReturnNilWhenKeysDontMatch)
         ]
     }
 }

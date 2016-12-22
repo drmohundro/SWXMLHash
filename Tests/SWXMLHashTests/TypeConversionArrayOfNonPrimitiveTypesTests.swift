@@ -215,7 +215,7 @@ extension TypeConversionArrayOfNonPrimitiveTypesTests {
             ("testShouldConvertArrayOfGoodAttributeItemsToArrayOfOptionals", testShouldConvertArrayOfGoodAttributeItemsToArrayOfOptionals),
             ("testShouldThrowWhenConvertingArrayOfBadAttributeItemsToNonOptional", testShouldThrowWhenConvertingArrayOfBadAttributeItemsToNonOptional),
             ("testShouldThrowWhenConvertingArrayOfBadAttributeItemsToOptional", testShouldThrowWhenConvertingArrayOfBadAttributeItemsToOptional),
-            ("testShouldThrowWhenConvertingArrayOfBadAttributeItemsToArrayOfOptionals", testShouldThrowWhenConvertingArrayOfBadAttributeItemsToArrayOfOptionals),
+            ("testShouldThrowWhenConvertingArrayOfBadAttributeItemsToArrayOfOptionals", testShouldThrowWhenConvertingArrayOfBadAttributeItemsToArrayOfOptionals)
         ]
     }
 }

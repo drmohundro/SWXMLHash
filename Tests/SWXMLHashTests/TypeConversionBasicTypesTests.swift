@@ -26,6 +26,9 @@ import XCTest
 
 // swiftlint:disable force_try
 // swiftlint:disable variable_name
+// swiftlint:disable file_length
+// swiftlint:disable line_length
+// swiftlint:disable type_body_length
 
 class TypeConversionBasicTypesTests: XCTestCase {
     var parser: XMLIndexer?
@@ -612,7 +615,7 @@ extension TypeConversionBasicTypesTests {
             ("testAttributeItemShouldThrowWhenConvertingMissingToNonOptional", testAttributeItemShouldThrowWhenConvertingMissingToNonOptional),
             ("testAttributeItemShouldConvertAttributeItemToOptional", testAttributeItemShouldConvertAttributeItemToOptional),
             ("testAttributeItemShouldConvertEmptyToOptional", testAttributeItemShouldConvertEmptyToOptional),
-            ("testAttributeItemShouldConvertMissingToOptional", testAttributeItemShouldConvertMissingToOptional),
+            ("testAttributeItemShouldConvertMissingToOptional", testAttributeItemShouldConvertMissingToOptional)
         ]
     }
 }

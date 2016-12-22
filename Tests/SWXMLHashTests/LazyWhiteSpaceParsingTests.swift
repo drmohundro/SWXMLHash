@@ -59,7 +59,7 @@ extension LazyWhiteSpaceParsingTests {
     static var allTests: [(String, (LazyWhiteSpaceParsingTests) -> () throws -> Void)] {
         return [
             ("testShouldBeAbleToPullTextBetweenElementsWithoutWhitespace", testShouldBeAbleToPullTextBetweenElementsWithoutWhitespace),
-            ("testShouldBeAbleToCorrectlyParseCDATASectionsWithWhitespace", testShouldBeAbleToCorrectlyParseCDATASectionsWithWhitespace),
+            ("testShouldBeAbleToCorrectlyParseCDATASectionsWithWhitespace", testShouldBeAbleToCorrectlyParseCDATASectionsWithWhitespace)
         ]
     }
 }

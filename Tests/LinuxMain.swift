@@ -13,5 +13,5 @@ XCTMain([
     testCase(TypeConversionComplexTypesTests.allTests),
     testCase(TypeConversionPrimitypeTypesTests.allTests),
     testCase(WhiteSpaceParsingTests.allTests),
-    testCase(XMLParsingTests.allTests),
+    testCase(XMLParsingTests.allTests)
     ])

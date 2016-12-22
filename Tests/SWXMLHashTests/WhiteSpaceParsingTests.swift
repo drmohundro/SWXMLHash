@@ -58,7 +58,7 @@ extension WhiteSpaceParsingTests {
     static var allTests: [(String, (WhiteSpaceParsingTests) -> () throws -> Void)] {
         return [
             ("testShouldBeAbleToPullTextBetweenElementsWithoutWhitespace", testShouldBeAbleToPullTextBetweenElementsWithoutWhitespace),
-            ("testShouldBeAbleToCorrectlyParseCDATASectionsWithWhitespace", testShouldBeAbleToCorrectlyParseCDATASectionsWithWhitespace),
+            ("testShouldBeAbleToCorrectlyParseCDATASectionsWithWhitespace", testShouldBeAbleToCorrectlyParseCDATASectionsWithWhitespace)
         ]
     }
 }
