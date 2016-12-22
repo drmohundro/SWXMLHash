@@ -1,0 +1,6 @@
+coverage_service: cobertura_xml
+xcodeproj: SWXMLHash.xcodeproj
+workspace: SWXMLHash.xcworkspace
+scheme: SWXMLHash iOS
+source_directory: Source
+output_directory: Coverage
