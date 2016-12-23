@@ -26,6 +26,7 @@ import XCTest
 
 // swiftlint:disable force_try
 // swiftlint:disable variable_name
+// swiftlint:disable line_length
 
 class TypeConversionComplexTypesTests: XCTestCase {
     var parser: XMLIndexer?
@@ -62,12 +63,12 @@ class TypeConversionComplexTypesTests: XCTestCase {
         basics: [
             BasicItem(name: "item 1", price: 1),
             BasicItem(name: "item 2", price: 2),
-            BasicItem(name: "item 3", price: 3),
+            BasicItem(name: "item 3", price: 3)
         ],
         attrs: [
             AttributeItem(name: "attr1", price: 1.1),
             AttributeItem(name: "attr2", price: 2.2),
-            AttributeItem(name: "attr3", price: 3.3),
+            AttributeItem(name: "attr3", price: 3.3)
         ]
     )
 
@@ -160,7 +161,7 @@ extension TypeConversionComplexTypesTests {
             ("testShouldThrowWhenConvertingMissingToNonOptional", testShouldThrowWhenConvertingMissingToNonOptional),
             ("testShouldConvertComplexitemToOptional", testShouldConvertComplexitemToOptional),
             ("testShouldConvertEmptyToOptional", testShouldConvertEmptyToOptional),
-            ("testShouldConvertMissingToOptional", testShouldConvertMissingToOptional),
+            ("testShouldConvertMissingToOptional", testShouldConvertMissingToOptional)
         ]
     }
 }

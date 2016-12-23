@@ -59,7 +59,7 @@ public class SWXMLHash {
         options to be set
     - returns: an `SWXMLHash` instance
     */
-    class public func config(_ configAction: (SWXMLHashOptions) -> ()) -> SWXMLHash {
+    class public func config(_ configAction: (SWXMLHashOptions) -> Void) -> SWXMLHash {
         let opts = SWXMLHashOptions()
         configAction(opts)
         return SWXMLHash(opts)
@@ -163,41 +163,74 @@ extension XMLParserDelegate {
     func parserDidStartDocument(_ parser: Foundation.XMLParser) { }
     func parserDidEndDocument(_ parser: Foundation.XMLParser) { }
 
-    func parser(_ parser: Foundation.XMLParser, foundNotationDeclarationWithName name: String, publicID: String?, systemID: String?) { }
+    func parser(_ parser: Foundation.XMLParser,
+                foundNotationDeclarationWithName name: String,
+                publicID: String?,
+                systemID: String?) { }
 
-    func parser(_ parser: Foundation.XMLParser, foundUnparsedEntityDeclarationWithName name: String, publicID: String?, systemID: String?, notationName: String?) { }
+    func parser(_ parser: Foundation.XMLParser,
+                foundUnparsedEntityDeclarationWithName name: String,
+                publicID: String?,
+                systemID: String?,
+                notationName: String?) { }
 
-    func parser(_ parser: Foundation.XMLParser, foundAttributeDeclarationWithName attributeName: String, forElement elementName: String, type: String?, defaultValue: String?) { }
+    func parser(_ parser: Foundation.XMLParser,
+                foundAttributeDeclarationWithName attributeName: String,
+                forElement elementName: String,
+                type: String?,
+                defaultValue: String?) { }
 
-    func parser(_ parser: Foundation.XMLParser, foundElementDeclarationWithName elementName: String, model: String) { }
+    func parser(_ parser: Foundation.XMLParser,
+                foundElementDeclarationWithName elementName: String,
+                model: String) { }
 
-    func parser(_ parser: Foundation.XMLParser, foundInternalEntityDeclarationWithName name: String, value: String?) { }
+    func parser(_ parser: Foundation.XMLParser,
+                foundInternalEntityDeclarationWithName name: String,
+                value: String?) { }
 
-    func parser(_ parser: Foundation.XMLParser, foundExternalEntityDeclarationWithName name: String, publicID: String?, systemID: String?) { }
+    func parser(_ parser: Foundation.XMLParser,
+                foundExternalEntityDeclarationWithName name: String,
+                publicID: String?,
+                systemID: String?) { }
 
-    func parser(_ parser: Foundation.XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String]) { }
+    func parser(_ parser: Foundation.XMLParser,
+                didStartElement elementName: String,
+                namespaceURI: String?,
+                qualifiedName qName: String?,
+                attributes attributeDict: [String : String]) { }
 
-    func parser(_ parser: Foundation.XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) { }
+    func parser(_ parser: Foundation.XMLParser,
+                didEndElement elementName: String,
+                namespaceURI: String?,
+                qualifiedName qName: String?) { }
 
-    func parser(_ parser: Foundation.XMLParser, didStartMappingPrefix prefix: String, toURI namespaceURI: String) { }
+    func parser(_ parser: Foundation.XMLParser,
+                didStartMappingPrefix prefix: String,
+                toURI namespaceURI: String) { }
 
     func parser(_ parser: Foundation.XMLParser, didEndMappingPrefix prefix: String) { }
 
     func parser(_ parser: Foundation.XMLParser, foundCharacters string: String) { }
 
-    func parser(_ parser: Foundation.XMLParser, foundIgnorableWhitespace whitespaceString: String) { }
+    func parser(_ parser: Foundation.XMLParser,
+                foundIgnorableWhitespace whitespaceString: String) { }
 
-    func parser(_ parser: Foundation.XMLParser, foundProcessingInstructionWithTarget target: String, data: String?) { }
+    func parser(_ parser: Foundation.XMLParser,
+                foundProcessingInstructionWithTarget target: String,
+                data: String?) { }
 
     func parser(_ parser: Foundation.XMLParser, foundComment comment: String) { }
 
     func parser(_ parser: Foundation.XMLParser, foundCDATA CDATABlock: Data) { }
 
-    func parser(_ parser: Foundation.XMLParser, resolveExternalEntityName name: String, systemID: String?) -> Data? { return nil }
+    func parser(_ parser: Foundation.XMLParser,
+                resolveExternalEntityName name: String,
+                systemID: String?) -> Data? { return nil }
 
     func parser(_ parser: Foundation.XMLParser, parseErrorOccurred parseError: NSError) { }
 
-    func parser(_ parser: Foundation.XMLParser, validationErrorOccurred validationError: NSError) { }
+    func parser(_ parser: Foundation.XMLParser,
+                validationErrorOccurred validationError: NSError) { }
 }
 
 #endif
@@ -248,10 +281,15 @@ class LazyXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
             return
         }
 #if os(Linux)
-        let attributeNSDict = NSDictionary(objects: attributeDict.values.flatMap({ $0 as? AnyObject }), forKeys: attributeDict.keys.map({ NSString(string: $0) as NSObject }))
+        let attributeNSDict = NSDictionary(
+            objects: attributeDict.values.flatMap({ $0 as? AnyObject }),
+            forKeys: attributeDict.keys.map({ NSString(string: $0) as NSObject })
+        )
         let currentNode = parentStack.top().addElement(elementName, withAttributes: attributeNSDict)
 #else
-        let currentNode = parentStack.top().addElement(elementName, withAttributes: attributeDict as NSDictionary)
+        let currentNode = parentStack
+            .top()
+            .addElement(elementName, withAttributes: attributeDict as NSDictionary)
 #endif
         parentStack.push(currentNode)
     }
@@ -323,10 +361,15 @@ class FullXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
                 qualifiedName qName: String?,
                 attributes attributeDict: [String: String]) {
 #if os(Linux)
-        let attributeNSDict = NSDictionary(objects: attributeDict.values.flatMap({ $0 as? AnyObject }), forKeys: attributeDict.keys.map({ NSString(string: $0) as NSObject }))
+        let attributeNSDict = NSDictionary(
+            objects: attributeDict.values.flatMap({ $0 as? AnyObject }),
+            forKeys: attributeDict.keys.map({ NSString(string: $0) as NSObject })
+        )
         let currentNode = parentStack.top().addElement(elementName, withAttributes: attributeNSDict)
 #else
-        let currentNode = parentStack.top().addElement(elementName, withAttributes: attributeDict as NSDictionary)
+        let currentNode = parentStack
+            .top()
+            .addElement(elementName, withAttributes: attributeDict as NSDictionary)
 #endif
         parentStack.push(currentNode)
     }
@@ -415,7 +458,6 @@ public enum XMLIndexer: Sequence {
     case List([XMLElement])
     case Stream(IndexOps)
     case XMLError(IndexingError)
-
 
     /// The underlying XMLElement at the currently indexed level of XML.
     public var element: XMLElement? {
@@ -697,6 +739,7 @@ public class XMLElement: XMLContent {
     /// The name of the element
     public let name: String
 
+    // swiftlint:disable line_length
     /// The attributes of the element
     @available(*, deprecated, message: "See `allAttributes` instead, which introduces the XMLAttribute type over a simple String type")
     public var attributes: [String:String] {
@@ -706,7 +749,9 @@ public class XMLElement: XMLContent {
         }
         return attrMap
     }
+    // swiftlint:enable line_length
 
+    /// All attributes
     public var allAttributes = [String:XMLAttribute]()
 
     public func attribute(by name: String) -> XMLAttribute? {

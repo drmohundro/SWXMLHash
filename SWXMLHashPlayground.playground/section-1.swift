@@ -28,7 +28,6 @@ let count = xml["root"].all.count
 // "Apples"
 xml["root"]["h:table"]["h:tr"]["h:td"][0].element!.text!
 
-
 // enumerate all child elements (procedurally)
 func enumerate(indexer: XMLIndexer, level: Int) {
     for child in indexer.children {
@@ -41,14 +40,12 @@ func enumerate(indexer: XMLIndexer, level: Int) {
 
 enumerate(indexer: xml, level: 0)
 
-
 // enumerate all child elements (functionally)
 func reduceName(names: String, elem: XMLIndexer) -> String {
     return names + elem.element!.name + elem.children.reduce(", ", reduceName)
 }
 
 xml.children.reduce("elements: ", reduceName)
-
 
 // custom types conversion
 let booksXML = "<root>" +

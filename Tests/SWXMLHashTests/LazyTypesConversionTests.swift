@@ -70,7 +70,7 @@ extension LazyTypesConversionTests {
     static var allTests: [(String, (LazyTypesConversionTests) -> () throws -> Void)] {
         return [
             ("testShouldConvertValueToNonOptional", testShouldConvertValueToNonOptional),
-            ("testShouldConvertAttributeToNonOptional", testShouldConvertAttributeToNonOptional),
+            ("testShouldConvertAttributeToNonOptional", testShouldConvertAttributeToNonOptional)
         ]
     }
 }
