@@ -58,6 +58,7 @@ class TypeConversionArrayOfNonPrimitiveTypesTests: XCTestCase {
         "      <price>3</price>" +
         "   </basicItem>" +
         "</arrayOfBadBasicItems>" +
+        "<arrayOfMissingBasicItems />" +
         "<arrayOfGoodAttributeItems>" +
         "   <attributeItem name=\"attr 1\" price=\"1.1\"/>" +
         "   <attributeItem name=\"attr 2\" price=\"2.2\"/>" +
@@ -143,6 +144,15 @@ class TypeConversionArrayOfNonPrimitiveTypesTests: XCTestCase {
         }
     }
 
+    func testShouldConvertArrayOfEmptyMissingToOptional() {
+        do {
+            let value: [BasicItem]? = try parser!["root"]["arrayOfMissingBasicItems"]["basicItem"].value()
+            XCTAssertNil(value)
+        } catch {
+            XCTFail("\(error)")
+        }
+    }
+    
     func testShouldConvertArrayOfGoodAttributeItemsToNonOptional() {
         do {
             let value: [AttributeItem] = try parser!["root"]["arrayOfGoodAttributeItems"]["attributeItem"].value()
