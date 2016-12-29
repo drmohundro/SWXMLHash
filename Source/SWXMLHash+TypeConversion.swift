@@ -351,7 +351,7 @@ public extension XMLIndexer {
         case .Stream(let opStream):
             return try opStream.findElements().value()
         default:
-            throw XMLDeserializationError.NodeIsInvalid(node: self)
+            return nil
         }
     }
 
