@@ -752,7 +752,7 @@ public class XMLElement: XMLContent {
     // swiftlint:enable line_length
 
     /// All attributes
-    public var allAttributes = [String:XMLAttribute]()
+    public var allAttributes = [String: XMLAttribute]()
 
     public func attribute(by name: String) -> XMLAttribute? {
         return allAttributes[name]

@@ -152,7 +152,7 @@ class TypeConversionArrayOfNonPrimitiveTypesTests: XCTestCase {
             XCTFail("\(error)")
         }
     }
-    
+
     func testShouldConvertArrayOfGoodAttributeItemsToNonOptional() {
         do {
             let value: [AttributeItem] = try parser!["root"]["arrayOfGoodAttributeItems"]["attributeItem"].value()

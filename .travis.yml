@@ -1,7 +1,7 @@
 matrix:
   include:
     - script:
-        - swiftlint
+        - swiftlint lint --strict
         - set -o pipefail
         - xcodebuild $XCODE_ACTION $WORKSPACE -scheme "SWXMLHash OSX" | xcpretty
         - xcodebuild $XCODE_ACTION $WORKSPACE -scheme "SWXMLHash iOS" -sdk iphonesimulator -destination "OS=10.0,name=iPhone 6S" | xcpretty
