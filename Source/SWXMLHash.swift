@@ -597,7 +597,7 @@ public enum XMLIndexer: Sequence {
     */
     public subscript(key: String) -> XMLIndexer {
         do {
-           return try self.byKey(key)
+            return try self.byKey(key)
         } catch let error as IndexingError {
             return .XMLError(error)
         } catch {
