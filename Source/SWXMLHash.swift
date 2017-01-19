@@ -74,7 +74,20 @@ public class SWXMLHash {
     - returns: an `XMLIndexer` instance that can be iterated over
     */
     public func parse(_ xml: String) -> XMLIndexer {
-        return parse(xml.data(using: String.Encoding.utf8)!)
+        return parse(xml, using: String.Encoding.utf8)
+    }
+    
+    /**
+     Begins parsing the passed in XML string.
+     
+     - parameters:
+     - xml: an XML string. __Note__ that this is not a URL but a
+     - encoding: Encoding use to parse xml
+     string containing XML.
+     - returns: an `XMLIndexer` instance that can be iterated over
+     */
+    public func parse(_ xml: String, using encoding: String.Encoding) -> XMLIndexer {
+        return parse(xml.data(using: encoding)!)
     }
 
     /**
@@ -99,6 +112,18 @@ public class SWXMLHash {
     */
     class public func parse(_ xml: String) -> XMLIndexer {
         return SWXMLHash().parse(xml)
+    }
+    
+    /**
+     Method to parse XML passed in as a string.
+     
+     - parameter 
+        - xml: The XML to be parsed
+        - encoding: Encoding use to parse xml
+     - returns: An XMLIndexer instance that is used to look up elements in the XML
+     */
+    class public func parse(_ xml: String, using encoding: String.Encoding) -> XMLIndexer {
+        return SWXMLHash().parse(xml, using: encoding)
     }
 
     /**
