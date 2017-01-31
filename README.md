@@ -300,17 +300,29 @@ Given:
       <title>Book A</title>
       <price>12.5</price>
       <year>2015</year>
+      <category>
+      <item>C1</item>
+      <item>C2</item>
+      </category>
     </book>
     <book isbn="0000000002">
       <title>Book B</title>
       <price>10</price>
       <year>1988</year>
+      <category>
+      <item>C2</item>
+      <item>C3</item>
+      </category>
     </book>
     <book isbn="0000000003">
       <title>Book C</title>
       <price>8.33</price>
       <year>1990</year>
       <amount>10</amount>
+      <category>
+      <item>C1</item>
+      <item>C3</item>
+      </category>
     </book>
   <books>
 </root>
@@ -324,14 +336,16 @@ struct Book: XMLIndexerDeserializable {
     let year: Int
     let amount: Int?
     let isbn: Int
-
+    let category : [String]
+    
     static func deserialize(_ node: XMLIndexer) throws -> Book {
         return try Book(
             title: node["title"].value(),
             price: node["price"].value(),
             year: node["year"].value(),
             amount: node["amount"].value(),
-            isbn: node.value(ofAttribute: "isbn")
+            isbn: node.value(ofAttribute: "isbn"),
+            category : node["category"]["item"].value()
         )
     }
 }
