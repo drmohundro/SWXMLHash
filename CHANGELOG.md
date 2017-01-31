@@ -1,3 +1,11 @@
+## v3.0.4 (January 31, 2017)
+
+* Fixed compilation issue related to upcoming release of Xcode 8.3.
+
+## v3.0.3 (November 18, 2016)
+
+* Added support for app extensions.
+
 ## v3.0.2 (September 13, 2016)
 
 * Correct the CocoaPod support so that it still allows for iOS 8 and OSX 10.9.

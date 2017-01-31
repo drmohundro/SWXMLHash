@@ -63,3 +63,5 @@ fastlane/report.xml
 fastlane/screenshots
 
 Coverage
+
+*.swp
