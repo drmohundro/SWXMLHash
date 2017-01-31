@@ -763,7 +763,7 @@ public class XMLElement: XMLContent {
         return children
             .map({ $0 as? TextElement })
             .flatMap({ $0 })
-            .reduce("", { $0 + $1!.text })
+            .reduce("", { $0 + $1.text })
     }
 
     /// All child elements (text or XML)
