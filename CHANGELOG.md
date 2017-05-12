@@ -1,3 +1,7 @@
+## v3.0.5 (May 12, 2017)
+
+* Fixed issues related to crashes with Swift 3.1 and Linux. (see [PR #130](https://github.com/drmohundro/SWXMLHash/pull/130))
+
 ## v3.0.4 (January 31, 2017)
 
 * Fixed compilation issue related to upcoming release of Xcode 8.3.
