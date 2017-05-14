@@ -415,7 +415,8 @@ extension XMLElement {
      - returns: The element text
      */
     internal func nonEmptyTextOrThrow() throws -> String {
-        if let textVal = text, !textVal.characters.isEmpty {
+        let textVal = text
+        if !textVal.characters.isEmpty {
             return textVal
         }
 
@@ -464,11 +465,8 @@ extension String: XMLElementDeserializable, XMLAttributeDeserializable {
     - throws: an XMLDeserializationError.TypeConversionFailed if the element cannot be deserialized
     - returns: the deserialized String value
     */
-    public static func deserialize(_ element: XMLElement) throws -> String {
-        guard let text = element.text else {
-            throw XMLDeserializationError.TypeConversionFailed(type: "String", element: element)
-        }
-        return text
+    public static func deserialize(_ element: XMLElement) -> String {
+        return element.text
     }
 
     /**

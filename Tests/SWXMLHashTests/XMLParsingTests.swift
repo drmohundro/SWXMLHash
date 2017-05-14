@@ -63,7 +63,7 @@ class XMLParsingTests: XCTestCase {
     }
 
     func testShouldBeAbleToIterateElementGroups() {
-        let result = xml!["root"]["catalog"]["book"].all.map({ $0["genre"].element!.text! }).joined(separator: ", ")
+        let result = xml!["root"]["catalog"]["book"].all.map({ $0["genre"].element!.text }).joined(separator: ", ")
         XCTAssertEqual(result, "Computer, Fantasy, Fantasy")
     }
 
@@ -102,7 +102,7 @@ class XMLParsingTests: XCTestCase {
             let result = element.children.reduce("") { acc, child in
                 switch child {
                 case let elm as SWXMLHash.XMLElement:
-                    guard let text = elm.text else { return acc }
+                    let text = elm.text
                     return acc + text
                 case let elm as TextElement:
                     return acc + elm.text
@@ -120,7 +120,7 @@ class XMLParsingTests: XCTestCase {
         let interleavedXml = "<html><body><p>one</p><div>two</div><p>three</p><div>four</div></body></html>"
         let parsed = SWXMLHash.parse(interleavedXml)
 
-        let result = parsed["html"]["body"].children.map({ $0.element!.text! }).joined(separator: ", ")
+        let result = parsed["html"]["body"].children.map({ $0.element!.text }).joined(separator: ", ")
         XCTAssertEqual(result, "one, two, three, four")
     }
 
