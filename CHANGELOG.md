@@ -1,3 +1,7 @@
+## v3.1.0 (May 15, 2017)
+
+* Added `recursiveText` property which pulls the text property from the currently indexed element and all child elements. (see [PR #131](https://github.com/drmohundro/SWXMLHash/pull/131))
+
 ## v3.0.5 (May 12, 2017)
 
 * Fixed issues related to crashes with Swift 3.1 and Linux. (see [PR #130](https://github.com/drmohundro/SWXMLHash/pull/130))
