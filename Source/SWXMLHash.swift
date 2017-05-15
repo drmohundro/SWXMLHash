@@ -766,6 +766,19 @@ public class XMLElement: XMLContent {
             .reduce("", { $0 + $1.text })
     }
 
+    /// The inner text of the element and its children
+    public var recursiveText: String {
+        return children.reduce("", {
+            if let textElement = $1 as? TextElement {
+                return $0 + textElement.text
+            } else if let xmlElement = $1 as? XMLElement {
+                return $0 + xmlElement.recursiveText
+            } else {
+                return $0
+            }
+        })
+    }
+
     /// All child elements (text or XML)
     public var children = [XMLContent]()
     var count: Int = 0
