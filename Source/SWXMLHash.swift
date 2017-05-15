@@ -766,7 +766,7 @@ public class XMLElement: XMLContent {
             .reduce("", { $0 + $1.text })
     }
 
-    /// The inner text of the element and it's children
+    /// The inner text of the element and its children
     public var recursiveText: String {
         return children.reduce("", {
             if let textElement = $1 as? TextElement {
