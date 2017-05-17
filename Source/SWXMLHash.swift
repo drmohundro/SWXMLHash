@@ -707,19 +707,6 @@ public enum XMLIndexer: Sequence {
 }
 
 /// XMLIndexer extensions
-/*
-extension XMLIndexer: Boolean {
-    /// True if a valid XMLIndexer, false if an error type
-    public var boolValue: Bool {
-        switch self {
-        case .XMLError:
-            return false
-        default:
-            return true
-        }
-    }
-}
- */
 
 extension XMLIndexer: CustomStringConvertible {
     /// The XML representation of the XMLIndexer at the current level
