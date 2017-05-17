@@ -739,18 +739,6 @@ public class XMLElement: XMLContent {
     /// The name of the element
     public let name: String
 
-    // swiftlint:disable line_length
-    /// The attributes of the element
-    @available(*, deprecated, message: "See `allAttributes` instead, which introduces the XMLAttribute type over a simple String type")
-    public var attributes: [String:String] {
-        var attrMap = [String: String]()
-        for (name, attr) in allAttributes {
-            attrMap[name] = attr.text
-        }
-        return attrMap
-    }
-    // swiftlint:enable line_length
-
     /// All attributes
     public var allAttributes = [String: XMLAttribute]()
 
