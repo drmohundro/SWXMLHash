@@ -115,6 +115,31 @@ class XMLParsingTests: XCTestCase {
         }
     }
 
+    func testShouldBeAbleToRecursiveOutputTextContent() {
+        let mixedContentXmlInputs = [
+            // From SourceKit cursor info key.annotated_decl
+            "<Declaration>typealias SomeHandle = <Type usr=\"s:Su\">UInt</Type></Declaration>",
+            "<Declaration>var points: [<Type usr=\"c:objc(cs)Location\">Location</Type>] { get set }</Declaration>",
+            // From SourceKit cursor info key.fully_annotated_decl
+            "<decl.typealias><syntaxtype.keyword>typealias</syntaxtype.keyword> <decl.name>SomeHandle</decl.name> = <ref.struct usr=\"s:Su\">UInt</ref.struct></decl.typealias>",
+            "<decl.var.instance><syntaxtype.keyword>var</syntaxtype.keyword> <decl.name>points</decl.name>: <decl.var.type>[<ref.class usr=\"c:objc(cs)Location\">Location</ref.class>]</decl.var.type> { <syntaxtype.keyword>get</syntaxtype.keyword> <syntaxtype.keyword>set</syntaxtype.keyword> }</decl.var.instance>",
+            "<decl.function.method.instance><syntaxtype.keyword>fileprivate</syntaxtype.keyword> <syntaxtype.keyword>func</syntaxtype.keyword> <decl.name>documentedMemberFunc</decl.name>()</decl.function.method.instance>"
+        ]
+
+        let recursiveTextOutputs = [
+            "typealias SomeHandle = UInt",
+            "var points: [Location] { get set }",
+
+            "typealias SomeHandle = UInt",
+            "var points: [Location] { get set }",
+            "fileprivate func documentedMemberFunc()"
+        ]
+
+        for (index, mixedContentXml) in mixedContentXmlInputs.enumerated() {
+            XCTAssertEqual(SWXMLHash.parse(mixedContentXml).element!.recursiveText, recursiveTextOutputs[index])
+        }
+    }
+
     func testShouldHandleInterleavingXMLElements() {
         let interleavedXml = "<html><body><p>one</p><div>two</div><p>three</p><div>four</div></body></html>"
         let parsed = SWXMLHash.parse(interleavedXml)
@@ -186,6 +211,7 @@ extension XMLParsingTests {
             ("testShouldBeAbleToEnumerateChildren", testShouldBeAbleToEnumerateChildren),
             ("testShouldBeAbleToHandleMixedContent", testShouldBeAbleToHandleMixedContent),
             ("testShouldBeAbleToIterateOverMixedContent", testShouldBeAbleToIterateOverMixedContent),
+            ("testShouldBeAbleToRecursiveOutputTextContent", testShouldBeAbleToRecursiveOutputTextContent),
             ("testShouldHandleInterleavingXMLElements", testShouldHandleInterleavingXMLElements),
             ("testShouldBeAbleToProvideADescriptionForTheDocument", testShouldBeAbleToProvideADescriptionForTheDocument),
             ("testShouldReturnNilWhenKeysDontMatch", testShouldReturnNilWhenKeysDontMatch),
