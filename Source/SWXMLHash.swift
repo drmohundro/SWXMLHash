@@ -444,12 +444,38 @@ public class IndexOps {
 
 /// Error type that is thrown when an indexing or parsing operation fails.
 public enum IndexingError: Error {
-    case Attribute(attr: String)
-    case AttributeValue(attr: String, value: String)
-    case Key(key: String)
-    case Index(idx: Int)
-    case Init(instance: AnyObject)
-    case Error
+    case attribute(attr: String)
+    case attributeValue(attr: String, value: String)
+    case key(key: String)
+    case index(idx: Int)
+    case initialize(instance: AnyObject)
+    case error
+
+    // unavailable
+    @available(*, unavailable, renamed: "attribute(attr:)")
+    public static func Attribute(attr: String) -> IndexingError {
+        fatalError("unavailable")
+    }
+    @available(*, unavailable, renamed: "attributeValue(attr:value:)")
+    public static func AttributeValue(attr: String, value: String) -> IndexingError {
+        fatalError("unavailable")
+    }
+    @available(*, unavailable, renamed: "key(key:)")
+    public static func Key(key: String) -> IndexingError {
+        fatalError("unavailable")
+    }
+    @available(*, unavailable, renamed: "index(idx:)")
+    public static func Index(idx: Int) -> IndexingError {
+        fatalError("unavailable")
+    }
+    @available(*, unavailable, renamed: "initialize(instance:)")
+    public static func Init(instance: AnyObject) -> IndexingError {
+        fatalError("unavailable")
+    }
+    @available(*, unavailable, renamed: "error")
+    public static var Error: IndexingError {
+        fatalError("unavailable")
+    }
 }
 
 /// Returned from SWXMLHash, allows easy element lookup into XML data.
@@ -520,14 +546,14 @@ public enum XMLIndexer: Sequence {
             if let elem = list.filter({$0.attribute(by: attr)?.text == value}).first {
                 return .Element(elem)
             }
-            throw IndexingError.AttributeValue(attr: attr, value: value)
+            throw IndexingError.attributeValue(attr: attr, value: value)
         case .Element(let elem):
             if elem.attribute(by: attr)?.text == value {
                 return .Element(elem)
             }
-            throw IndexingError.AttributeValue(attr: attr, value: value)
+            throw IndexingError.attributeValue(attr: attr, value: value)
         default:
-            throw IndexingError.Attribute(attr: attr)
+            throw IndexingError.attribute(attr: attr)
         }
     }
 
@@ -544,7 +570,7 @@ public enum XMLIndexer: Sequence {
         case let value as LazyXMLParser:
             self = .Stream(IndexOps(parser: value))
         default:
-            throw IndexingError.Init(instance: rawObject)
+            throw IndexingError.initialize(instance: rawObject)
         }
     }
 
@@ -585,7 +611,7 @@ public enum XMLIndexer: Sequence {
             }
             fallthrough
         default:
-            throw IndexingError.Key(key: key)
+            throw IndexingError.key(key: key)
         }
     }
 
@@ -601,7 +627,7 @@ public enum XMLIndexer: Sequence {
         } catch let error as IndexingError {
             return .XMLError(error)
         } catch {
-            return .XMLError(IndexingError.Key(key: key))
+            return .XMLError(IndexingError.key(key: key))
         }
     }
 
@@ -621,14 +647,14 @@ public enum XMLIndexer: Sequence {
             if index <= list.count {
                 return .Element(list[index])
             }
-            return .XMLError(IndexingError.Index(idx: index))
+            return .XMLError(IndexingError.index(idx: index))
         case .Element(let elem):
             if index == 0 {
                 return .Element(elem)
             }
             fallthrough
         default:
-            return .XMLError(IndexingError.Index(idx: index))
+            return .XMLError(IndexingError.index(idx: index))
         }
     }
 
@@ -644,7 +670,7 @@ public enum XMLIndexer: Sequence {
         } catch let error as IndexingError {
             return .XMLError(error)
         } catch {
-            return .XMLError(IndexingError.Index(idx: index))
+            return .XMLError(IndexingError.index(idx: index))
         }
     }
 
@@ -697,17 +723,17 @@ extension IndexingError: CustomStringConvertible {
     /// The description for the `IndexingError`.
     public var description: String {
         switch self {
-        case .Attribute(let attr):
+        case .attribute(let attr):
             return "XML Attribute Error: Missing attribute [\"\(attr)\"]"
-        case .AttributeValue(let attr, let value):
+        case .attributeValue(let attr, let value):
             return "XML Attribute Error: Missing attribute [\"\(attr)\"] with value [\"\(value)\"]"
-        case .Key(let key):
+        case .key(let key):
             return "XML Element Error: Incorrect key [\"\(key)\"]"
-        case .Index(let index):
+        case .index(let index):
             return "XML Element Error: Incorrect index [\"\(index)\"]"
-        case .Init(let instance):
+        case .initialize(let instance):
             return "XML Indexer Error: initialization with Object [\"\(instance)\"]"
-        case .Error:
+        case .error:
             return "Unknown Error"
         }
     }
