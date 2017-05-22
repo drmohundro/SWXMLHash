@@ -188,7 +188,7 @@ class XMLParsingTests: XCTestCase {
     func testShouldStillReturnErrorsWhenAccessingViaSubscripting() {
         var err: IndexingError? = nil
         switch xml!["what"]["subelement"][5]["nomatch"] {
-        case .XMLError(let error):
+        case .xmlError(let error):
             err = error
         default:
             err = nil
