@@ -486,10 +486,12 @@ public enum XMLIndexer: Sequence {
     case xmlError(IndexingError)
 
     // unavailable
+#if !swift(>=3.2) // `Sequence.Element` is added on Swift 4.0 including with `-swift-version 3`
     @available(*, unavailable, renamed: "element(_:)")
     public static func Element(_: XMLElement) -> XMLIndexer {
         fatalError("unavailable")
     }
+#endif
     @available(*, unavailable, renamed: "list(_:)")
     public static func List(_: [XMLElement]) -> XMLIndexer {
         fatalError("unavailable")
