@@ -26,12 +26,12 @@ var xml = SWXMLHash.parse(xmlWithNamespace)
 let count = xml["root"].all.count
 
 // "Apples"
-xml["root"]["h:table"]["h:tr"]["h:td"][0].element!.text!
+xml["root"]["h:table"]["h:tr"]["h:td"][0].xmlElement!.text!
 
 // enumerate all child elements (procedurally)
 func enumerate(indexer: XMLIndexer, level: Int) {
     for child in indexer.children {
-        let name = child.element!.name
+        let name = child.xmlElement!.name
         print("\(level) \(name)")
 
         enumerate(indexer: child, level: level + 1)
@@ -42,7 +42,7 @@ enumerate(indexer: xml, level: 0)
 
 // enumerate all child elements (functionally)
 func reduceName(names: String, elem: XMLIndexer) -> String {
-    return names + elem.element!.name + elem.children.reduce(", ", reduceName)
+    return names + elem.xmlElement!.name + elem.children.reduce(", ", reduceName)
 }
 
 xml.children.reduce("elements: ", reduceName)

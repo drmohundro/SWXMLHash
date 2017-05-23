@@ -142,7 +142,7 @@ Given:
 Will return "Foo".
 
 ```swift
-xml["root"]["header"]["title"].element?.text
+xml["root"]["header"]["title"].xmlElement?.text
 ```
 
 ### Multiple Elements Lookup
@@ -164,7 +164,7 @@ Given:
 The below will return "John".
 
 ```swift
-xml["root"]["catalog"]["book"][1]["author"].element?.text
+xml["root"]["catalog"]["book"][1]["author"].xmlElement?.text
 ```
 
 ### Attributes Usage
@@ -186,13 +186,13 @@ Given:
 The below will return "123".
 
 ```swift
-xml["root"]["catalog"]["book"][1].element?.attribute(by: "id")?.text
+xml["root"]["catalog"]["book"][1].xmlElement?.attribute(by: "id")?.text
 ```
 
 Alternatively, you can look up an element with specific attributes. The below will return "John".
 
 ```swift
-xml["root"]["catalog"]["book"].withAttr("id", "123")["author"].element?.text
+xml["root"]["catalog"]["book"].withAttr("id", "123")["author"].xmlElement?.text
 ```
 
 ### Returning All Elements At Current Level
@@ -215,7 +215,7 @@ The `all` method will iterate over all nodes at the indexed level. The code belo
 
 ```swift
 ", ".join(xml["root"]["catalog"]["book"].all.map { elem in
-  elem["genre"].element!.text!
+  elem["genre"].xmlElement!.text!
 })
 ```
 
@@ -223,7 +223,7 @@ You can also iterate over the `all` method:
 
 ```swift
 for elem in xml["root"]["catalog"]["book"].all {
-  print(elem["genre"].element!.text!)
+  print(elem["genre"].xmlElement!.text!)
 }
 ```
 
@@ -231,7 +231,7 @@ Alternatively, XMLIndexer provides `for-in` support directly from the index (no 
 
 ```swift
 for elem in xml["root"]["catalog"]["book"] {
-  print(elem["genre"].element!.text!)
+  print(elem["genre"].xmlElement!.text!)
 }
 ```
 
@@ -256,7 +256,7 @@ The below will `print` "root", "catalog", "book", "genre", "title", and "date" (
 ```swift
 func enumerate(indexer: XMLIndexer) {
   for child in indexer.children {
-    print(child.element!.name)
+    print(child.xmlElement!.name)
     enumerate(child)
   }
 }
@@ -280,9 +280,9 @@ __Or__ using the existing indexing functionality:
 
 ```swift
 switch xml["root"]["what"]["header"]["foo"] {
-case .Element(let elem):
+case .xmlElement(let elem):
   // everything is good, code away!
-case .XMLError(let error):
+case .xmlError(let error):
   // error is an IndexingError instance that you can deal with
 }
 ```
@@ -404,7 +404,7 @@ See below for the code snippet to get this to work and note in particular the `p
 extension NSDate: XMLElementDeserializable {
   public static func deserialize(_ element: XMLElement) throws -> Self {
     guard let dateAsString = element.text else {
-      throw XMLDeserializationError.NodeHasNoValue
+      throw XMLDeserializationError.nodeHasNoValue
     }
 
     let dateFormatter = NSDateFormatter()
@@ -412,7 +412,7 @@ extension NSDate: XMLElementDeserializable {
     let date = dateFormatter.dateFromString(dateAsString)
 
     guard let validDate = date else {
-      throw XMLDeserializationError.TypeConversionFailed(type: "Date", element: element)
+      throw XMLDeserializationError.typeConversionFailed(type: "Date", element: element)
     }
 
     // NOTE THIS

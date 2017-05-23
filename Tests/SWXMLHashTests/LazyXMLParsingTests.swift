@@ -40,21 +40,21 @@ class LazyXMLParsingTests: XCTestCase {
     }
 
     func testShouldBeAbleToParseIndividualElements() {
-        XCTAssertEqual(xml!["root"]["header"]["title"].element?.text, "Test Title Header")
+        XCTAssertEqual(xml!["root"]["header"]["title"].xmlElement?.text, "Test Title Header")
     }
 
     func testShouldBeAbleToParseElementGroups() {
-        XCTAssertEqual(xml!["root"]["catalog"]["book"][1]["author"].element?.text, "Ralls, Kim")
+        XCTAssertEqual(xml!["root"]["catalog"]["book"][1]["author"].xmlElement?.text, "Ralls, Kim")
     }
 
     func testShouldBeAbleToParseAttributes() {
-        XCTAssertEqual(xml!["root"]["catalog"]["book"][1].element?.attributes["id"], "bk102")
-        XCTAssertEqual(xml!["root"]["catalog"]["book"][1].element?.attribute(by: "id")?.text, "bk102")
+        XCTAssertEqual(xml!["root"]["catalog"]["book"][1].xmlElement?.attributes["id"], "bk102")
+        XCTAssertEqual(xml!["root"]["catalog"]["book"][1].xmlElement?.attribute(by: "id")?.text, "bk102")
     }
 
     func testShouldBeAbleToLookUpElementsByNameAndAttribute() {
         do {
-            let value = try xml!["root"]["catalog"]["book"].withAttr("id", "bk102")["author"].element?.text
+            let value = try xml!["root"]["catalog"]["book"].withAttr("id", "bk102")["author"].xmlElement?.text
             XCTAssertEqual(value, "Ralls, Kim")
         } catch {
             XCTFail("\(error)")
@@ -62,7 +62,7 @@ class LazyXMLParsingTests: XCTestCase {
     }
 
     func testShouldBeAbleToIterateElementGroups() {
-        let result = xml!["root"]["catalog"]["book"].all.map({ $0["genre"].element!.text! }).joined(separator: ", ")
+        let result = xml!["root"]["catalog"]["book"].all.map({ $0["genre"].xmlElement!.text! }).joined(separator: ", ")
         XCTAssertEqual(result, "Computer, Fantasy, Fantasy")
     }
 
@@ -71,7 +71,7 @@ class LazyXMLParsingTests: XCTestCase {
     }
 
     func testShouldBeAbleToIndexElementGroupsEvenIfOnlyOneElementIsFound() {
-        XCTAssertEqual(xml!["root"]["header"]["title"][0].element?.text, "Test Title Header")
+        XCTAssertEqual(xml!["root"]["header"]["title"][0].xmlElement?.text, "Test Title Header")
     }
 
     func testShouldBeAbleToIterateUsingForIn() {
@@ -84,19 +84,19 @@ class LazyXMLParsingTests: XCTestCase {
     }
 
     func testShouldBeAbleToEnumerateChildren() {
-        let result = xml!["root"]["catalog"]["book"][0].children.map({ $0.element!.name }).joined(separator: ", ")
+        let result = xml!["root"]["catalog"]["book"][0].children.map({ $0.xmlElement!.name }).joined(separator: ", ")
         XCTAssertEqual(result, "author, title, genre, price, publish_date, description")
     }
 
     func testShouldBeAbleToHandleMixedContent() {
-        XCTAssertEqual(xml!["root"]["header"].element?.text, "header mixed contentmore mixed content")
+        XCTAssertEqual(xml!["root"]["header"].xmlElement?.text, "header mixed contentmore mixed content")
     }
 
     func testShouldHandleInterleavingXMLElements() {
         let interleavedXml = "<html><body><p>one</p><div>two</div><p>three</p><div>four</div></body></html>"
         let parsed = SWXMLHash.parse(interleavedXml)
 
-        let result = parsed["html"]["body"].children.map({ $0.element!.text! }).joined(separator: ", ")
+        let result = parsed["html"]["body"].children.map({ $0.xmlElement!.text! }).joined(separator: ", ")
         XCTAssertEqual(result, "one, two, three, four")
     }
 
@@ -110,7 +110,7 @@ class LazyXMLParsingTests: XCTestCase {
     // error handling
 
     func testShouldReturnNilWhenKeysDontMatch() {
-        XCTAssertNil(xml!["root"]["what"]["header"]["foo"].element?.name)
+        XCTAssertNil(xml!["root"]["what"]["header"]["foo"].xmlElement?.name)
     }
 }
 
