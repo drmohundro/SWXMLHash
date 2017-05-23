@@ -47,11 +47,11 @@ class LazyWhiteSpaceParsingTests: XCTestCase {
 
     // issue #6
     func testShouldBeAbleToPullTextBetweenElementsWithoutWhitespace() {
-        XCTAssertEqual(xml!["niotemplate"]["section"][0]["constraint"][1].element?.text, "H:|-15-[title]-15-|")
+        XCTAssertEqual(xml!["niotemplate"]["section"][0]["constraint"][1].xmlElement?.text, "H:|-15-[title]-15-|")
     }
 
     func testShouldBeAbleToCorrectlyParseCDATASectionsWithWhitespace() {
-        XCTAssertEqual(xml!["niotemplate"]["other"].element?.text, "\n        \n  this\n  has\n  white\n  space\n        \n    ")
+        XCTAssertEqual(xml!["niotemplate"]["other"].xmlElement?.text, "\n        \n  this\n  has\n  white\n  space\n        \n    ")
     }
 }
 

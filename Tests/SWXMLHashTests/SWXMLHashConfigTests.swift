@@ -43,7 +43,7 @@ class SWXMLHashConfigTests: XCTestCase {
     }
 
     func testShouldAllowProcessingNamespacesOrNot() {
-        XCTAssertEqual(parser!["root"]["table"]["tr"]["td"][0].element?.text, "Apples")
+        XCTAssertEqual(parser!["root"]["table"]["tr"]["td"][0].xmlElement?.text, "Apples")
     }
 }
 

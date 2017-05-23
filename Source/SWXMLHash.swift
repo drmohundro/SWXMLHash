@@ -444,29 +444,29 @@ public class IndexOps {
 
 /// Error type that is thrown when an indexing or parsing operation fails.
 public enum IndexingError: Error {
-    case Attribute(attr: String)
-    case AttributeValue(attr: String, value: String)
-    case Key(key: String)
-    case Index(idx: Int)
-    case Init(instance: AnyObject)
-    case Error
+    case attribute(attr: String)
+    case attributeValue(attr: String, value: String)
+    case key(key: String)
+    case index(idx: Int)
+    case `init`(instance: AnyObject)
+    case error
 }
 
 /// Returned from SWXMLHash, allows easy element lookup into XML data.
 public enum XMLIndexer: Sequence {
-    case Element(XMLElement)
-    case List([XMLElement])
-    case Stream(IndexOps)
-    case XMLError(IndexingError)
+    case xmlElement(XMLElement)
+    case list([XMLElement])
+    case stream(IndexOps)
+    case xmlError(IndexingError)
 
     /// The underlying XMLElement at the currently indexed level of XML.
-    public var element: XMLElement? {
+    public var xmlElement: XMLElement? {
         switch self {
-        case .Element(let elem):
+        case .xmlElement(let elem):
             return elem
-        case .Stream(let ops):
+        case .stream(let ops):
             let list = ops.findElements()
-            return list.element
+            return list.xmlElement
         default:
             return nil
         }
@@ -475,15 +475,15 @@ public enum XMLIndexer: Sequence {
     /// All elements at the currently indexed level
     public var all: [XMLIndexer] {
         switch self {
-        case .List(let list):
+        case .list(let list):
             var xmlList = [XMLIndexer]()
             for elem in list {
                 xmlList.append(XMLIndexer(elem))
             }
             return xmlList
-        case .Element(let elem):
+        case .xmlElement(let elem):
             return [XMLIndexer(elem)]
-        case .Stream(let ops):
+        case .stream(let ops):
             let list = ops.findElements()
             return list.all
         default:
@@ -494,7 +494,7 @@ public enum XMLIndexer: Sequence {
     /// All child elements from the currently indexed level
     public var children: [XMLIndexer] {
         var list = [XMLIndexer]()
-        for elem in all.map({ $0.element! }).flatMap({ $0 }) {
+        for elem in all.map({ $0.xmlElement! }).flatMap({ $0 }) {
             for elem in elem.xmlChildren {
                 list.append(XMLIndexer(elem))
             }
@@ -508,26 +508,26 @@ public enum XMLIndexer: Sequence {
     - parameters:
         - attr: should the name of the attribute to match on
         - value: should be the value of the attribute to match on
-    - throws: an XMLIndexer.XMLError if an element with the specified attribute isn't found
+    - throws: an XMLIndexer.xmlError if an element with the specified attribute isn't found
     - returns: instance of XMLIndexer
     */
     public func withAttr(_ attr: String, _ value: String) throws -> XMLIndexer {
         switch self {
-        case .Stream(let opStream):
+        case .stream(let opStream):
             let match = opStream.findElements()
             return try match.withAttr(attr, value)
-        case .List(let list):
+        case .list(let list):
             if let elem = list.filter({$0.attribute(by: attr)?.text == value}).first {
-                return .Element(elem)
+                return .xmlElement(elem)
             }
-            throw IndexingError.AttributeValue(attr: attr, value: value)
-        case .Element(let elem):
+            throw IndexingError.attributeValue(attr: attr, value: value)
+        case .xmlElement(let elem):
             if elem.attribute(by: attr)?.text == value {
-                return .Element(elem)
+                return .xmlElement(elem)
             }
-            throw IndexingError.AttributeValue(attr: attr, value: value)
+            throw IndexingError.attributeValue(attr: attr, value: value)
         default:
-            throw IndexingError.Attribute(attr: attr)
+            throw IndexingError.attribute(attr: attr)
         }
     }
 
@@ -540,11 +540,11 @@ public enum XMLIndexer: Sequence {
     public init(_ rawObject: AnyObject) throws {
         switch rawObject {
         case let value as XMLElement:
-            self = .Element(value)
+            self = .xmlElement(value)
         case let value as LazyXMLParser:
-            self = .Stream(IndexOps(parser: value))
+            self = .stream(IndexOps(parser: value))
         default:
-            throw IndexingError.Init(instance: rawObject)
+            throw IndexingError.init(instance: rawObject)
         }
     }
 
@@ -554,11 +554,11 @@ public enum XMLIndexer: Sequence {
     - parameter _: an instance of XMLElement
     */
     public init(_ elem: XMLElement) {
-        self = .Element(elem)
+        self = .xmlElement(elem)
     }
 
     init(_ stream: LazyXMLParser) {
-        self = .Stream(IndexOps(parser: stream))
+        self = .stream(IndexOps(parser: stream))
     }
 
     /**
@@ -566,26 +566,26 @@ public enum XMLIndexer: Sequence {
 
     - parameter key: The element name to index by
     - returns: instance of XMLIndexer to match the element (or elements) found by key
-    - throws: Throws an XMLIndexingError.Key if no element was found
+    - throws: Throws an XMLIndexingError.key if no element was found
     */
     public func byKey(_ key: String) throws -> XMLIndexer {
         switch self {
-        case .Stream(let opStream):
+        case .stream(let opStream):
             let op = IndexOp(key)
             opStream.ops.append(op)
-            return .Stream(opStream)
-        case .Element(let elem):
+            return .stream(opStream)
+        case .xmlElement(let elem):
             let match = elem.xmlChildren.filter({ $0.name == key })
             if !match.isEmpty {
                 if match.count == 1 {
-                    return .Element(match[0])
+                    return .xmlElement(match[0])
                 } else {
-                    return .List(match)
+                    return .list(match)
                 }
             }
             fallthrough
         default:
-            throw IndexingError.Key(key: key)
+            throw IndexingError.key(key: key)
         }
     }
 
@@ -599,9 +599,9 @@ public enum XMLIndexer: Sequence {
         do {
             return try self.byKey(key)
         } catch let error as IndexingError {
-            return .XMLError(error)
+            return .xmlError(error)
         } catch {
-            return .XMLError(IndexingError.Key(key: key))
+            return .xmlError(IndexingError.key(key: key))
         }
     }
 
@@ -609,26 +609,26 @@ public enum XMLIndexer: Sequence {
     Find an XML element by index within a list of XML Elements at the current level
 
     - parameter index: The 0-based index to index by
-    - throws: XMLIndexer.XMLError if the index isn't found
+    - throws: XMLIndexer.xmlError if the index isn't found
     - returns: instance of XMLIndexer to match the element (or elements) found by index
     */
     public func byIndex(_ index: Int) throws -> XMLIndexer {
         switch self {
-        case .Stream(let opStream):
+        case .stream(let opStream):
             opStream.ops[opStream.ops.count - 1].index = index
-            return .Stream(opStream)
-        case .List(let list):
+            return .stream(opStream)
+        case .list(let list):
             if index <= list.count {
-                return .Element(list[index])
+                return .xmlElement(list[index])
             }
-            return .XMLError(IndexingError.Index(idx: index))
-        case .Element(let elem):
+            return .xmlError(IndexingError.index(idx: index))
+        case .xmlElement(let elem):
             if index == 0 {
-                return .Element(elem)
+                return .xmlElement(elem)
             }
             fallthrough
         default:
-            return .XMLError(IndexingError.Index(idx: index))
+            return .xmlError(IndexingError.index(idx: index))
         }
     }
 
@@ -642,9 +642,9 @@ public enum XMLIndexer: Sequence {
         do {
             return try byIndex(index)
         } catch let error as IndexingError {
-            return .XMLError(error)
+            return .xmlError(error)
         } catch {
-            return .XMLError(IndexingError.Index(idx: index))
+            return .xmlError(IndexingError.index(idx: index))
         }
     }
 
@@ -666,7 +666,7 @@ extension XMLIndexer: Boolean {
     /// True if a valid XMLIndexer, false if an error type
     public var boolValue: Bool {
         switch self {
-        case .XMLError:
+        case .xmlError:
             return false
         default:
             return true
@@ -679,9 +679,9 @@ extension XMLIndexer: CustomStringConvertible {
     /// The XML representation of the XMLIndexer at the current level
     public var description: String {
         switch self {
-        case .List(let list):
+        case .list(let list):
             return list.map { $0.description }.joined(separator: "")
-        case .Element(let elem):
+        case .xmlElement(let elem):
             if elem.name == rootElementName {
                 return elem.children.map { $0.description }.joined(separator: "")
             }
@@ -697,17 +697,17 @@ extension IndexingError: CustomStringConvertible {
     /// The description for the `IndexingError`.
     public var description: String {
         switch self {
-        case .Attribute(let attr):
+        case .attribute(let attr):
             return "XML Attribute Error: Missing attribute [\"\(attr)\"]"
-        case .AttributeValue(let attr, let value):
+        case .attributeValue(let attr, let value):
             return "XML Attribute Error: Missing attribute [\"\(attr)\"] with value [\"\(value)\"]"
-        case .Key(let key):
+        case .key(let key):
             return "XML Element Error: Incorrect key [\"\(key)\"]"
-        case .Index(let index):
+        case .index(let index):
             return "XML Element Error: Incorrect index [\"\(index)\"]"
-        case .Init(let instance):
+        case .init(let instance):
             return "XML Indexer Error: initialization with Object [\"\(instance)\"]"
-        case .Error:
+        case .error:
             return "Unknown Error"
         }
     }
