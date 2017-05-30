@@ -53,7 +53,7 @@ class XMLParsingTests: XCTestCase {
 
     func testShouldBeAbleToLookUpElementsByNameAndAttribute() {
         do {
-            let value = try xml!["root"]["catalog"]["book"].withAttr("id", "bk102")["author"].element?.text
+            let value = try xml!["root"]["catalog"]["book"].withAttribute("id", "bk102")["author"].element?.text
             XCTAssertEqual(value, "Ralls, Kim")
         } catch {
             XCTFail("\(error)")
@@ -76,7 +76,7 @@ class XMLParsingTests: XCTestCase {
 
     func testShouldBeAbleToIterateUsingForIn() {
         var count = 0
-        for _ in xml!["root"]["catalog"]["book"] {
+        for _ in xml!["root"]["catalog"]["book"].all {
             count += 1
         }
 
@@ -167,7 +167,7 @@ class XMLParsingTests: XCTestCase {
             XCTAssertNotNil(err)
         }
         do {
-            let _ = try xml!.byKey("root").byKey("what").byKey("header").byKey("foo")
+            _ = try xml!.byKey("root").byKey("what").byKey("header").byKey("foo")
         } catch let error as IndexingError {
             err = error
         } catch { err = nil }
@@ -179,7 +179,7 @@ class XMLParsingTests: XCTestCase {
             XCTAssertNotNil(err)
         }
         do {
-            let _ = try xml!.byKey("what").byKey("subelement").byIndex(5).byKey("nomatch")
+            _ = try xml!.byKey("what").byKey("subelement").byIndex(5).byKey("nomatch")
         } catch let error as IndexingError {
             err = error
         } catch { err = nil }

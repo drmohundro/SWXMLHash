@@ -141,7 +141,7 @@ struct Stack<T> {
         return items.removeLast()
     }
     mutating func drop() {
-        let _ = pop()
+        _ = pop()
     }
     mutating func removeAll() {
         items.removeAll(keepingCapacity: false)
@@ -451,6 +451,7 @@ public enum IndexingError: Error {
     case initialize(instance: AnyObject)
     case error
 
+// swiftlint:disable identifier_name
     // unavailable
     @available(*, unavailable, renamed: "attribute(attr:)")
     public static func Attribute(attr: String) -> IndexingError {
@@ -476,15 +477,17 @@ public enum IndexingError: Error {
     public static var Error: IndexingError {
         fatalError("unavailable")
     }
+// swiftlint:enable identifier_name
 }
 
 /// Returned from SWXMLHash, allows easy element lookup into XML data.
-public enum XMLIndexer: Sequence {
+public enum XMLIndexer {
     case element(XMLElement)
     case list([XMLElement])
     case stream(IndexOps)
     case xmlError(IndexingError)
 
+// swiftlint:disable identifier_name
     // unavailable
 #if !swift(>=3.2) // `Sequence.Element` is added on Swift 4.0 including with `-swift-version 3`
     @available(*, unavailable, renamed: "element(_:)")
@@ -504,6 +507,11 @@ public enum XMLIndexer: Sequence {
     public static func XMLError(_: IndexingError) -> XMLIndexer {
         fatalError("unavailable")
     }
+    @available(*, unavailable, renamed: "withAttribute(_:_:)")
+    public static func withAttr(_ attr: String, _ value: String) throws -> XMLIndexer {
+        fatalError("unavailable")
+    }
+// swiftlint:enable identifier_name
 
     /// The underlying XMLElement at the currently indexed level of XML.
     public var element: XMLElement? {
@@ -557,11 +565,11 @@ public enum XMLIndexer: Sequence {
     - throws: an XMLIndexer.XMLError if an element with the specified attribute isn't found
     - returns: instance of XMLIndexer
     */
-    public func withAttr(_ attr: String, _ value: String) throws -> XMLIndexer {
+    public func withAttribute(_ attr: String, _ value: String) throws -> XMLIndexer {
         switch self {
         case .stream(let opStream):
             let match = opStream.findElements()
-            return try match.withAttr(attr, value)
+            return try match.withAttribute(attr, value)
         case .list(let list):
             if let elem = list.filter({$0.attribute(by: attr)?.text == value}).first {
                 return .element(elem)
@@ -692,17 +700,6 @@ public enum XMLIndexer: Sequence {
         } catch {
             return .xmlError(IndexingError.index(idx: index))
         }
-    }
-
-    typealias GeneratorType = XMLIndexer
-
-    /**
-    Method to iterate (for-in) over the `all` collection
-
-    - returns: an array of `XMLIndexer` instances
-    */
-    public func makeIterator() -> IndexingIterator<[XMLIndexer]> {
-        return all.makeIterator()
     }
 }
 
@@ -897,4 +894,4 @@ extension SWXMLHash {
     public typealias XMLElement = SWXMLHashXMLElement
 }
 
-public  typealias SWXMLHashXMLElement = XMLElement
+public typealias SWXMLHashXMLElement = XMLElement

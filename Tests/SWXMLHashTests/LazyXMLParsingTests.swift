@@ -53,7 +53,7 @@ class LazyXMLParsingTests: XCTestCase {
 
     func testShouldBeAbleToLookUpElementsByNameAndAttribute() {
         do {
-            let value = try xml!["root"]["catalog"]["book"].withAttr("id", "bk102")["author"].element?.text
+            let value = try xml!["root"]["catalog"]["book"].withAttribute("id", "bk102")["author"].element?.text
             XCTAssertEqual(value, "Ralls, Kim")
         } catch {
             XCTFail("\(error)")
@@ -75,7 +75,7 @@ class LazyXMLParsingTests: XCTestCase {
 
     func testShouldBeAbleToIterateUsingForIn() {
         var count = 0
-        for _ in xml!["root"]["catalog"]["book"] {
+        for _ in xml!["root"]["catalog"]["book"].all {
             count += 1
         }
 
