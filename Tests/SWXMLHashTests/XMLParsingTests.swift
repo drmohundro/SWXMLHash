@@ -58,8 +58,20 @@ class XMLParsingTests: XCTestCase {
         } catch {
             XCTFail("\(error)")
         }
-
     }
+    
+    func testShouldBeAbleToLookUpElementsByNameAndAttributeCaseInsensitive() {
+        do {
+            let xmlInsensitive = SWXMLHash.config({ (config) in
+                config.caseInsensitive = true
+            }).parse(xmlToParse)
+            let value = try xmlInsensitive["rOOt"]["catalOg"]["bOOk"].withAttribute("iD", "Bk102")["authOr"].element?.text
+            XCTAssertEqual(value, "Ralls, Kim")
+        } catch {
+            XCTFail("\(error)")
+        }
+    }
+
 
     func testShouldBeAbleToIterateElementGroups() {
         let result = xml!["root"]["catalog"]["book"].all.map({ $0["genre"].element!.text }).joined(separator: ", ")
