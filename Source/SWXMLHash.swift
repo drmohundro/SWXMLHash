@@ -280,17 +280,9 @@ class LazyXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
         if !onMatch() {
             return
         }
-#if os(Linux)
-        let attributeNSDict = NSDictionary(
-            objects: attributeDict.values.flatMap({ NSString(string: $0) }),
-            forKeys: attributeDict.keys.map({ NSString(string: $0) as NSObject })
-        )
-        let currentNode = parentStack.top().addElement(elementName, withAttributes: attributeNSDict)
-#else
         let currentNode = parentStack
             .top()
-            .addElement(elementName, withAttributes: attributeDict as NSDictionary)
-#endif
+            .addElement(elementName, withAttributes: attributeDict)
         parentStack.push(currentNode)
     }
 
@@ -360,17 +352,9 @@ class FullXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
                 namespaceURI: String?,
                 qualifiedName qName: String?,
                 attributes attributeDict: [String: String]) {
-#if os(Linux)
-        let attributeNSDict = NSDictionary(
-            objects: attributeDict.values.flatMap({ NSString(string: $0) }),
-            forKeys: attributeDict.keys.map({ NSString(string: $0) as NSObject })
-        )
-        let currentNode = parentStack.top().addElement(elementName, withAttributes: attributeNSDict)
-#else
         let currentNode = parentStack
             .top()
-            .addElement(elementName, withAttributes: attributeDict as NSDictionary)
-#endif
+            .addElement(elementName, withAttributes: attributeDict)
         parentStack.push(currentNode)
     }
 
@@ -489,12 +473,10 @@ public enum XMLIndexer {
 
 // swiftlint:disable identifier_name
     // unavailable
-#if !swift(>=3.2) // `Sequence.Element` is added on Swift 4.0 including with `-swift-version 3`
     @available(*, unavailable, renamed: "element(_:)")
     public static func Element(_: XMLElement) -> XMLIndexer {
         fatalError("unavailable")
     }
-#endif
     @available(*, unavailable, renamed: "list(_:)")
     public static func List(_: [XMLElement]) -> XMLIndexer {
         fatalError("unavailable")
@@ -826,17 +808,14 @@ public class XMLElement: XMLContent {
         - withAttributes: The attributes dictionary for the element being added
     - returns: The XMLElement that has now been added
     */
-    func addElement(_ name: String, withAttributes attributes: NSDictionary) -> XMLElement {
+    func addElement(_ name: String, withAttributes attributes: [String: String]) -> XMLElement {
         let element = XMLElement(name: name, index: count)
         count += 1
 
         children.append(element)
 
-        for (keyAny, valueAny) in attributes {
-            if let key = keyAny as? String,
-                let value = valueAny as? String {
-                element.allAttributes[key] = XMLAttribute(name: key, text: value)
-            }
+        for (key, value) in attributes {
+            element.allAttributes[key] = XMLAttribute(name: key, text: value)
         }
 
         return element
