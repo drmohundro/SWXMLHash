@@ -227,14 +227,6 @@ for elem in xml["root"]["catalog"]["book"].all {
 }
 ```
 
-Alternatively, XMLIndexer provides `for-in` support directly from the index (no `all` needed in this case).
-
-```swift
-for elem in xml["root"]["catalog"]["book"] {
-  print(elem["genre"].element!.text!)
-}
-```
-
 ### Returning All Child Elements At Current Level
 
 Given:
@@ -280,9 +272,9 @@ __Or__ using the existing indexing functionality:
 
 ```swift
 switch xml["root"]["what"]["header"]["foo"] {
-case .Element(let elem):
+case .element(let elem):
   // everything is good, code away!
-case .XMLError(let error):
+case .xmlError(let error):
   // error is an IndexingError instance that you can deal with
 }
 ```
@@ -404,7 +396,7 @@ See below for the code snippet to get this to work and note in particular the `p
 extension NSDate: XMLElementDeserializable {
   public static func deserialize(_ element: XMLElement) throws -> Self {
     guard let dateAsString = element.text else {
-      throw XMLDeserializationError.NodeHasNoValue
+      throw XMLDeserializationError.nodeHasNoValue
     }
 
     let dateFormatter = NSDateFormatter()
@@ -412,7 +404,7 @@ extension NSDate: XMLElementDeserializable {
     let date = dateFormatter.dateFromString(dateAsString)
 
     guard let validDate = date else {
-      throw XMLDeserializationError.TypeConversionFailed(type: "Date", element: element)
+      throw XMLDeserializationError.typeConversionFailed(type: "Date", element: element)
     }
 
     // NOTE THIS

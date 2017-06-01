@@ -5,7 +5,7 @@ end
 desc 'Clean, build and test SWXMLHash'
 task :test do |_t|
   # xctool_build_cmd = './scripts/build.sh'
-  xcode_build_cmd = 'xcodebuild -workspace SWXMLHash.xcworkspace -scheme "SWXMLHash iOS" -destination "OS=10.2,name=iPhone 6S" clean build test -sdk iphonesimulator | xcpretty'
+  xcode_build_cmd = 'xcodebuild -workspace SWXMLHash.xcworkspace -scheme "SWXMLHash iOS" -destination "OS=10.3,name=iPhone 6S" clean build test -sdk iphonesimulator | xcpretty'
 
   #if system('which xctool')
     #run xctool_build_cmd

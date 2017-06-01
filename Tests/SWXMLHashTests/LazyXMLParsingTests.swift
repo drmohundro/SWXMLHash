@@ -48,13 +48,12 @@ class LazyXMLParsingTests: XCTestCase {
     }
 
     func testShouldBeAbleToParseAttributes() {
-        XCTAssertEqual(xml!["root"]["catalog"]["book"][1].element?.attributes["id"], "bk102")
         XCTAssertEqual(xml!["root"]["catalog"]["book"][1].element?.attribute(by: "id")?.text, "bk102")
     }
 
     func testShouldBeAbleToLookUpElementsByNameAndAttribute() {
         do {
-            let value = try xml!["root"]["catalog"]["book"].withAttr("id", "bk102")["author"].element?.text
+            let value = try xml!["root"]["catalog"]["book"].withAttribute("id", "bk102")["author"].element?.text
             XCTAssertEqual(value, "Ralls, Kim")
         } catch {
             XCTFail("\(error)")
@@ -62,7 +61,7 @@ class LazyXMLParsingTests: XCTestCase {
     }
 
     func testShouldBeAbleToIterateElementGroups() {
-        let result = xml!["root"]["catalog"]["book"].all.map({ $0["genre"].element!.text! }).joined(separator: ", ")
+        let result = xml!["root"]["catalog"]["book"].all.map({ $0["genre"].element!.text }).joined(separator: ", ")
         XCTAssertEqual(result, "Computer, Fantasy, Fantasy")
     }
 
@@ -76,7 +75,7 @@ class LazyXMLParsingTests: XCTestCase {
 
     func testShouldBeAbleToIterateUsingForIn() {
         var count = 0
-        for _ in xml!["root"]["catalog"]["book"] {
+        for _ in xml!["root"]["catalog"]["book"].all {
             count += 1
         }
 
@@ -96,7 +95,7 @@ class LazyXMLParsingTests: XCTestCase {
         let interleavedXml = "<html><body><p>one</p><div>two</div><p>three</p><div>four</div></body></html>"
         let parsed = SWXMLHash.parse(interleavedXml)
 
-        let result = parsed["html"]["body"].children.map({ $0.element!.text! }).joined(separator: ", ")
+        let result = parsed["html"]["body"].children.map({ $0.element!.text }).joined(separator: ", ")
         XCTAssertEqual(result, "one, two, three, four")
     }
 
