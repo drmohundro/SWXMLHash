@@ -45,7 +45,7 @@ Then create a `Podfile` with the following contents:
 source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '8.0'
 
-pod 'SWXMLHash', '~> 3.0.0'
+pod 'SWXMLHash', '~> 4.0.0'
 ```
 
 Finally, run the following command to install it:
@@ -66,7 +66,7 @@ $ brew install carthage
 Then add the following line to your `Cartfile`:
 
 ```
-github "drmohundro/SWXMLHash" ~> 3.0
+github "drmohundro/SWXMLHash" ~> 4.0
 ```
 
 ### Manual Installation

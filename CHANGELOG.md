@@ -1,3 +1,10 @@
+## v4.0.0 (May 31, 2017)
+
+* Changed all enums to be camel cased (e.g. thisValue versus ThisValue) to match the Swift naming recommendations
+* Removed `Sequence` from `XMLIndexer` to avoid a conflict with the `element` property coming in Swift 4
+  * As a result, `for-in` no longer works directly against `XMLIndexer`; however, `for-in` works just fine against the `.all` method
+* Changed `.text` to no longer be optional
+
 ## v3.1.0 (May 15, 2017)
 
 * Added `recursiveText` property which pulls the text property from the currently indexed element and all child elements. (see [PR #131](https://github.com/drmohundro/SWXMLHash/pull/131))
