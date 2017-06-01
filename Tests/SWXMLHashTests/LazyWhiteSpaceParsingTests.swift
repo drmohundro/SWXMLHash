@@ -51,7 +51,11 @@ class LazyWhiteSpaceParsingTests: XCTestCase {
     }
 
     func testShouldBeAbleToCorrectlyParseCDATASectionsWithWhitespace() {
+#if os(Linux)
+        print("Skip \(#function) on Linux")
+#else
         XCTAssertEqual(xml!["niotemplate"]["other"].element?.text, "\n        \n  this\n  has\n  white\n  space\n        \n    ")
+#endif
     }
 }
 
