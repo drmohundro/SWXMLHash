@@ -12,14 +12,14 @@ matrix:
         - WORKSPACE="-workspace SWXMLHash.xcworkspace"
         - XCODE_ACTION="build-for-testing test-without-building"
       os: osx
-      osx_image: xcode8
+      osx_image: xcode8.3
       language: objective-c
     - script:
         - swift build
         - swift test
       env: JOB=SPM
       os: osx
-      osx_image: xcode8
+      osx_image: xcode8.3
       language: objective-c
     - script:
         - swift build
