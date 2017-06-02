@@ -1,5 +1,6 @@
 //
 //  SWXMLHash.swift
+//  SWXMLHash
 //
 //  Copyright (c) 2014 David Mohundro
 //
@@ -20,6 +21,7 @@
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
+//
 
 // swiftlint exceptions:
 // - Disabled file_length because there are a number of users that still pull the
@@ -562,9 +564,9 @@ public enum XMLIndexer {
             let match = opStream.findElements()
             return try match.withAttribute(attr, value)
         case .list(let list):
-            if let elem = list.filter({
-                return value.compare($0.attribute(by: attr)?.text, $0.caseInsensitive)
-            }).first {
+            if let elem = list.first(where: {
+                value.compare($0.attribute(by: attr)?.text, $0.caseInsensitive)
+            }) {
                 return .element(elem)
             }
             throw IndexingError.attributeValue(attr: attr, value: value)
@@ -623,7 +625,7 @@ public enum XMLIndexer {
             return .stream(opStream)
         case .element(let elem):
             let match = elem.xmlChildren.filter({
-                return $0.name.compare(key, $0.caseInsensitive)
+                $0.name.compare(key, $0.caseInsensitive)
             })
             if !match.isEmpty {
                 if match.count == 1 {
@@ -771,7 +773,7 @@ public class XMLElement: XMLContent {
 
     public func attribute(by name: String) -> XMLAttribute? {
         if caseInsensitive {
-            return allAttributes.filter({ $0.key.compare(name, true) }).first?.value
+            return allAttributes.first(where: { $0.key.compare(name, true) })?.value
         }
         return allAttributes[name]
     }
@@ -897,7 +899,9 @@ public typealias SWXMLHashXMLElement = XMLElement
 
 fileprivate extension String {
     func compare(_ str2: String?, _ insensitive: Bool) -> Bool {
-        guard let str2 = str2 else { return false }
+        guard let str2 = str2 else {
+            return false
+        }
         let str1 = self
         if insensitive {
             return str1.caseInsensitiveCompare(str2) == .orderedSame

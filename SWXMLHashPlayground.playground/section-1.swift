@@ -2,8 +2,8 @@
 
 // swiftlint:disable force_unwrapping
 
-import SWXMLHash
 import Foundation
+import SWXMLHash
 
 let xmlWithNamespace = "<root xmlns:h=\"http://www.w3.org/TR/html4/\"" +
 "  xmlns:f=\"http://www.w3schools.com/furniture\">" +

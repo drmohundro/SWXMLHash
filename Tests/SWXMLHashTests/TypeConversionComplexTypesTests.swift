@@ -1,7 +1,8 @@
 //
 //  TypeConversionComplexTypesTests.swift
+//  SWXMLHash
 //
-//  Copyright (c) 2016 David Mohundro
+//  Copyright (c) 2016 David Mohundro. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -20,12 +21,13 @@
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
+//
 
 import SWXMLHash
 import XCTest
 
 // swiftlint:disable force_try
-// swiftlint:disable variable_name
+// swiftlint:disable identifier_name
 // swiftlint:disable line_length
 
 class TypeConversionComplexTypesTests: XCTestCase {
@@ -59,7 +61,7 @@ class TypeConversionComplexTypesTests: XCTestCase {
 
     let correctComplexItem = ComplexItem(
         name: "the name of complex item",
-        priceOptional: 1024,
+        priceOptional: 1_024,
         basics: [
             BasicItem(name: "item 1", price: 1),
             BasicItem(name: "item 2", price: 2),
