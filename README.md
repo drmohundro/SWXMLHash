@@ -100,6 +100,9 @@ The available options at this time are:
 * `shouldProcessNamespaces`
     * This setting is forwarded on to the internal `NSXMLParser` instance. It will return any XML elements without their namespace parts (i.e. "\<h:table\>" will be returned as "\<table\>")
     * Defaults to `false`
+* `caseInsensitive`
+    * This setting allows for key lookups to be case insensitive. Typically XML is a case sensitive language, but this option lets you bypass this if necessary.
+    * Defaults to `false`
 
 ## Examples
 

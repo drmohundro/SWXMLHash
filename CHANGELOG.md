@@ -1,3 +1,7 @@
+## v4.1.0 (June 1, 2017)
+
+* Added `caseInsensitive` lookup options (via [#137](https://github.com/drmohundro/SWXMLHash/pull/137))
+
 ## v4.0.0 (May 31, 2017)
 
 * Changed all enums to be camel cased (e.g. thisValue versus ThisValue) to match the Swift naming recommendations
