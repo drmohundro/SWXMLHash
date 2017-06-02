@@ -41,6 +41,10 @@ public class SWXMLHashOptions {
     /// determines whether to parse XML namespaces or not (forwards to
     /// `XMLParser.shouldProcessNamespaces`)
     public var shouldProcessNamespaces = false
+    
+    /// Matching element names, element values, attribute names, attribute values
+    /// will be case insensitive. This will not affect parsing (data does not change)
+    public var caseInsensitive = false
 }
 
 /// Simple XML parser
@@ -239,10 +243,11 @@ extension XMLParserDelegate {
 class LazyXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
     required init(_ options: SWXMLHashOptions) {
         self.options = options
+        self.root.caseInsensitive = options.caseInsensitive
         super.init()
     }
 
-    var root = XMLElement(name: rootElementName)
+    var root = XMLElement(name: rootElementName, caseInsensitive: false)
     var parentStack = Stack<XMLElement>()
     var elementStack = Stack<String>()
 
@@ -259,7 +264,7 @@ class LazyXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
         // clear any prior runs of parse... expected that this won't be necessary,
         // but you never know
         parentStack.removeAll()
-        root = XMLElement(name: rootElementName)
+        root = XMLElement(name: rootElementName, caseInsensitive: options.caseInsensitive)
         parentStack.push(root)
 
         self.ops = ops
@@ -280,9 +285,10 @@ class LazyXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
         if !onMatch() {
             return
         }
+
         let currentNode = parentStack
             .top()
-            .addElement(elementName, withAttributes: attributeDict)
+            .addElement(elementName, withAttributes: attributeDict, caseInsensitive: self.options.caseInsensitive)
         parentStack.push(currentNode)
     }
 
@@ -325,10 +331,11 @@ class LazyXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
 class FullXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
     required init(_ options: SWXMLHashOptions) {
         self.options = options
+        self.root.caseInsensitive = options.caseInsensitive
         super.init()
     }
 
-    var root = XMLElement(name: rootElementName)
+    var root = XMLElement(name: rootElementName, caseInsensitive: false)
     var parentStack = Stack<XMLElement>()
     let options: SWXMLHashOptions
 
@@ -352,9 +359,11 @@ class FullXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
                 namespaceURI: String?,
                 qualifiedName qName: String?,
                 attributes attributeDict: [String: String]) {
+
         let currentNode = parentStack
             .top()
-            .addElement(elementName, withAttributes: attributeDict)
+            .addElement(elementName, withAttributes: attributeDict, caseInsensitive: self.options.caseInsensitive)
+
         parentStack.push(currentNode)
     }
 
@@ -553,12 +562,14 @@ public enum XMLIndexer {
             let match = opStream.findElements()
             return try match.withAttribute(attr, value)
         case .list(let list):
-            if let elem = list.filter({$0.attribute(by: attr)?.text == value}).first {
+            if let elem = list.filter({
+                return value.compare($0.attribute(by: attr)?.text, $0.caseInsensitive)
+            }).first {
                 return .element(elem)
             }
             throw IndexingError.attributeValue(attr: attr, value: value)
         case .element(let elem):
-            if elem.attribute(by: attr)?.text == value {
+            if value.compare(elem.attribute(by: attr)?.text, elem.caseInsensitive) {
                 return .element(elem)
             }
             throw IndexingError.attributeValue(attr: attr, value: value)
@@ -611,7 +622,9 @@ public enum XMLIndexer {
             opStream.ops.append(op)
             return .stream(opStream)
         case .element(let elem):
-            let match = elem.xmlChildren.filter({ $0.name == key })
+            let match = elem.xmlChildren.filter({
+                return $0.name.compare(key, $0.caseInsensitive)
+            })
             if !match.isEmpty {
                 if match.count == 1 {
                     return .element(match[0])
@@ -751,10 +764,15 @@ public class XMLElement: XMLContent {
     /// The name of the element
     public let name: String
 
+    public var caseInsensitive:Bool
+
     /// All attributes
     public var allAttributes = [String: XMLAttribute]()
 
     public func attribute(by name: String) -> XMLAttribute? {
+        if caseInsensitive {
+            return allAttributes.filter({ $0.key.compare(name, true) }).first?.value
+        }
         return allAttributes[name]
     }
 
@@ -795,8 +813,9 @@ public class XMLElement: XMLContent {
         - name: The name of the element to be initialized
         - index: The index of the element to be initialized
     */
-    init(name: String, index: Int = 0) {
+    init(name: String, index: Int = 0, caseInsensitive:Bool) {
         self.name = name
+        self.caseInsensitive = caseInsensitive
         self.index = index
     }
 
@@ -808,8 +827,9 @@ public class XMLElement: XMLContent {
         - withAttributes: The attributes dictionary for the element being added
     - returns: The XMLElement that has now been added
     */
-    func addElement(_ name: String, withAttributes attributes: [String: String]) -> XMLElement {
-        let element = XMLElement(name: name, index: count)
+
+    func addElement(_ name: String, withAttributes attributes: [String: String], caseInsensitive:Bool) -> XMLElement {
+        let element = XMLElement(name: name, index: count, caseInsensitive: caseInsensitive)
         count += 1
 
         children.append(element)
@@ -874,3 +894,14 @@ extension SWXMLHash {
 }
 
 public typealias SWXMLHashXMLElement = XMLElement
+
+fileprivate extension String {
+    func compare(_ s2: String?, _ insensitive: Bool) -> Bool {
+        guard let s2 = s2 else { return false }
+        let s1 = self
+        if (insensitive) {
+            return s1.caseInsensitiveCompare(s2) == .orderedSame
+        }
+        return s1 == s2
+    }
+}
