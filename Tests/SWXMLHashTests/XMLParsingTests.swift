@@ -59,7 +59,7 @@ class XMLParsingTests: XCTestCase {
             XCTFail("\(error)")
         }
     }
-    
+
     func testShouldBeAbleToLookUpElementsByNameAndAttributeCaseInsensitive() {
         do {
             let xmlInsensitive = SWXMLHash.config({ (config) in
@@ -71,7 +71,6 @@ class XMLParsingTests: XCTestCase {
             XCTFail("\(error)")
         }
     }
-
 
     func testShouldBeAbleToIterateElementGroups() {
         let result = xml!["root"]["catalog"]["book"].all.map({ $0["genre"].element!.text }).joined(separator: ", ")

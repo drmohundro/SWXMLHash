@@ -41,7 +41,7 @@ public class SWXMLHashOptions {
     /// determines whether to parse XML namespaces or not (forwards to
     /// `XMLParser.shouldProcessNamespaces`)
     public var shouldProcessNamespaces = false
-    
+
     /// Matching element names, element values, attribute names, attribute values
     /// will be case insensitive. This will not affect parsing (data does not change)
     public var caseInsensitive = false
@@ -764,7 +764,7 @@ public class XMLElement: XMLContent {
     /// The name of the element
     public let name: String
 
-    public var caseInsensitive:Bool
+    public var caseInsensitive: Bool
 
     /// All attributes
     public var allAttributes = [String: XMLAttribute]()
@@ -813,7 +813,7 @@ public class XMLElement: XMLContent {
         - name: The name of the element to be initialized
         - index: The index of the element to be initialized
     */
-    init(name: String, index: Int = 0, caseInsensitive:Bool) {
+    init(name: String, index: Int = 0, caseInsensitive: Bool) {
         self.name = name
         self.caseInsensitive = caseInsensitive
         self.index = index
@@ -828,7 +828,7 @@ public class XMLElement: XMLContent {
     - returns: The XMLElement that has now been added
     */
 
-    func addElement(_ name: String, withAttributes attributes: [String: String], caseInsensitive:Bool) -> XMLElement {
+    func addElement(_ name: String, withAttributes attributes: [String: String], caseInsensitive: Bool) -> XMLElement {
         let element = XMLElement(name: name, index: count, caseInsensitive: caseInsensitive)
         count += 1
 
@@ -896,12 +896,12 @@ extension SWXMLHash {
 public typealias SWXMLHashXMLElement = XMLElement
 
 fileprivate extension String {
-    func compare(_ s2: String?, _ insensitive: Bool) -> Bool {
-        guard let s2 = s2 else { return false }
-        let s1 = self
-        if (insensitive) {
-            return s1.caseInsensitiveCompare(s2) == .orderedSame
+    func compare(_ str2: String?, _ insensitive: Bool) -> Bool {
+        guard let str2 = str2 else { return false }
+        let str1 = self
+        if insensitive {
+            return str1.caseInsensitiveCompare(str2) == .orderedSame
         }
-        return s1 == s2
+        return str1 == str2
     }
 }
