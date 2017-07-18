@@ -1,3 +1,7 @@
+## v4.1.1 (June 1, 2017)
+
+* Added recommended Xcode 9.3 project settings (via [#144](https://github.com/drmohundro/SWXMLHash/pull/144))
+
 ## v4.1.0 (June 1, 2017)
 
 * Added `caseInsensitive` lookup options (via [#137](https://github.com/drmohundro/SWXMLHash/pull/137))
