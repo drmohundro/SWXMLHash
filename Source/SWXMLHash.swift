@@ -541,7 +541,7 @@ public enum XMLIndexer {
     /// All child elements from the currently indexed level
     public var children: [XMLIndexer] {
         var list = [XMLIndexer]()
-        for elem in all.map({ $0.element! }).flatMap({ $0 }) {
+        for elem in all.flatMap({ $0.element }) {
             for elem in elem.xmlChildren {
                 list.append(XMLIndexer(elem))
             }
@@ -707,10 +707,10 @@ extension XMLIndexer: CustomStringConvertible {
     public var description: String {
         switch self {
         case .list(let list):
-            return list.map { $0.description }.joined(separator: "")
+            return list.reduce("", { $0 + $1.description })
         case .element(let elem):
             if elem.name == rootElementName {
-                return elem.children.map { $0.description }.joined(separator: "")
+                return elem.children.reduce("", { $0 + $1.description })
             }
 
             return elem.description
@@ -780,10 +780,13 @@ public class XMLElement: XMLContent {
 
     /// The inner text of the element, if it exists
     public var text: String {
-        return children
-            .map({ $0 as? TextElement })
-            .flatMap({ $0 })
-            .reduce("", { $0 + $1.text })
+        return children.reduce("", {
+            if let element = $1 as? TextElement {
+                return $0 + element.text
+            }
+
+            return $0
+        })
     }
 
     /// The inner text of the element and its children
@@ -805,7 +808,7 @@ public class XMLElement: XMLContent {
     var index: Int
 
     var xmlChildren: [XMLElement] {
-        return children.map { $0 as? XMLElement }.flatMap { $0 }
+        return children.flatMap { $0 as? XMLElement }
     }
 
     /**
@@ -867,10 +870,7 @@ extension XMLAttribute: CustomStringConvertible {
 extension XMLElement: CustomStringConvertible {
     /// The tag, attributes and content for a `XMLElement` instance (<elem id="foo">content</elem>)
     public var description: String {
-        var attributesString = allAttributes.map { $0.1.description }.joined(separator: " ")
-        if !attributesString.isEmpty {
-            attributesString = " " + attributesString
-        }
+        let attributesString = allAttributes.reduce("", { $0 + " " + $1.1.description })
 
         if !children.isEmpty {
             var xmlReturn = [String]()
