@@ -1,5 +1,6 @@
 //
 //  XMLParsingTests.swift
+//  SWXMLHash
 //
 //  Copyright (c) 2016 David Mohundro
 //
@@ -20,6 +21,7 @@
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
+//
 
 import SWXMLHash
 import XCTest
@@ -48,22 +50,32 @@ class XMLParsingTests: XCTestCase {
     }
 
     func testShouldBeAbleToParseAttributes() {
-        XCTAssertEqual(xml!["root"]["catalog"]["book"][1].element?.attributes["id"], "bk102")
         XCTAssertEqual(xml!["root"]["catalog"]["book"][1].element?.attribute(by: "id")?.text, "bk102")
     }
 
     func testShouldBeAbleToLookUpElementsByNameAndAttribute() {
         do {
-            let value = try xml!["root"]["catalog"]["book"].withAttr("id", "bk102")["author"].element?.text
+            let value = try xml!["root"]["catalog"]["book"].withAttribute("id", "bk102")["author"].element?.text
             XCTAssertEqual(value, "Ralls, Kim")
         } catch {
             XCTFail("\(error)")
         }
+    }
 
+    func testShouldBeAbleToLookUpElementsByNameAndAttributeCaseInsensitive() {
+        do {
+            let xmlInsensitive = SWXMLHash.config({ (config) in
+                config.caseInsensitive = true
+            }).parse(xmlToParse)
+            let value = try xmlInsensitive["rOOt"]["catalOg"]["bOOk"].withAttribute("iD", "Bk102")["authOr"].element?.text
+            XCTAssertEqual(value, "Ralls, Kim")
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 
     func testShouldBeAbleToIterateElementGroups() {
-        let result = xml!["root"]["catalog"]["book"].all.map({ $0["genre"].element!.text! }).joined(separator: ", ")
+        let result = xml!["root"]["catalog"]["book"].all.map({ $0["genre"].element!.text }).joined(separator: ", ")
         XCTAssertEqual(result, "Computer, Fantasy, Fantasy")
     }
 
@@ -77,7 +89,7 @@ class XMLParsingTests: XCTestCase {
 
     func testShouldBeAbleToIterateUsingForIn() {
         var count = 0
-        for _ in xml!["root"]["catalog"]["book"] {
+        for _ in xml!["root"]["catalog"]["book"].all {
             count += 1
         }
 
@@ -102,7 +114,7 @@ class XMLParsingTests: XCTestCase {
             let result = element.children.reduce("") { acc, child in
                 switch child {
                 case let elm as SWXMLHash.XMLElement:
-                    guard let text = elm.text else { return acc }
+                    let text = elm.text
                     return acc + text
                 case let elm as TextElement:
                     return acc + elm.text
@@ -116,11 +128,36 @@ class XMLParsingTests: XCTestCase {
         }
     }
 
+    func testShouldBeAbleToRecursiveOutputTextContent() {
+        let mixedContentXmlInputs = [
+            // From SourceKit cursor info key.annotated_decl
+            "<Declaration>typealias SomeHandle = <Type usr=\"s:Su\">UInt</Type></Declaration>",
+            "<Declaration>var points: [<Type usr=\"c:objc(cs)Location\">Location</Type>] { get set }</Declaration>",
+            // From SourceKit cursor info key.fully_annotated_decl
+            "<decl.typealias><syntaxtype.keyword>typealias</syntaxtype.keyword> <decl.name>SomeHandle</decl.name> = <ref.struct usr=\"s:Su\">UInt</ref.struct></decl.typealias>",
+            "<decl.var.instance><syntaxtype.keyword>var</syntaxtype.keyword> <decl.name>points</decl.name>: <decl.var.type>[<ref.class usr=\"c:objc(cs)Location\">Location</ref.class>]</decl.var.type> { <syntaxtype.keyword>get</syntaxtype.keyword> <syntaxtype.keyword>set</syntaxtype.keyword> }</decl.var.instance>",
+            "<decl.function.method.instance><syntaxtype.keyword>fileprivate</syntaxtype.keyword> <syntaxtype.keyword>func</syntaxtype.keyword> <decl.name>documentedMemberFunc</decl.name>()</decl.function.method.instance>"
+        ]
+
+        let recursiveTextOutputs = [
+            "typealias SomeHandle = UInt",
+            "var points: [Location] { get set }",
+
+            "typealias SomeHandle = UInt",
+            "var points: [Location] { get set }",
+            "fileprivate func documentedMemberFunc()"
+        ]
+
+        for (index, mixedContentXml) in mixedContentXmlInputs.enumerated() {
+            XCTAssertEqual(SWXMLHash.parse(mixedContentXml).element!.recursiveText, recursiveTextOutputs[index])
+        }
+    }
+
     func testShouldHandleInterleavingXMLElements() {
         let interleavedXml = "<html><body><p>one</p><div>two</div><p>three</p><div>four</div></body></html>"
         let parsed = SWXMLHash.parse(interleavedXml)
 
-        let result = parsed["html"]["body"].children.map({ $0.element!.text! }).joined(separator: ", ")
+        let result = parsed["html"]["body"].children.map({ $0.element!.text }).joined(separator: ", ")
         XCTAssertEqual(result, "one, two, three, four")
     }
 
@@ -143,7 +180,7 @@ class XMLParsingTests: XCTestCase {
             XCTAssertNotNil(err)
         }
         do {
-            let _ = try xml!.byKey("root").byKey("what").byKey("header").byKey("foo")
+            _ = try xml!.byKey("root").byKey("what").byKey("header").byKey("foo")
         } catch let error as IndexingError {
             err = error
         } catch { err = nil }
@@ -155,7 +192,7 @@ class XMLParsingTests: XCTestCase {
             XCTAssertNotNil(err)
         }
         do {
-            let _ = try xml!.byKey("what").byKey("subelement").byIndex(5).byKey("nomatch")
+            _ = try xml!.byKey("what").byKey("subelement").byIndex(5).byKey("nomatch")
         } catch let error as IndexingError {
             err = error
         } catch { err = nil }
@@ -164,7 +201,7 @@ class XMLParsingTests: XCTestCase {
     func testShouldStillReturnErrorsWhenAccessingViaSubscripting() {
         var err: IndexingError? = nil
         switch xml!["what"]["subelement"][5]["nomatch"] {
-        case .XMLError(let error):
+        case .xmlError(let error):
             err = error
         default:
             err = nil
@@ -187,6 +224,7 @@ extension XMLParsingTests {
             ("testShouldBeAbleToEnumerateChildren", testShouldBeAbleToEnumerateChildren),
             ("testShouldBeAbleToHandleMixedContent", testShouldBeAbleToHandleMixedContent),
             ("testShouldBeAbleToIterateOverMixedContent", testShouldBeAbleToIterateOverMixedContent),
+            ("testShouldBeAbleToRecursiveOutputTextContent", testShouldBeAbleToRecursiveOutputTextContent),
             ("testShouldHandleInterleavingXMLElements", testShouldHandleInterleavingXMLElements),
             ("testShouldBeAbleToProvideADescriptionForTheDocument", testShouldBeAbleToProvideADescriptionForTheDocument),
             ("testShouldReturnNilWhenKeysDontMatch", testShouldReturnNilWhenKeysDontMatch),

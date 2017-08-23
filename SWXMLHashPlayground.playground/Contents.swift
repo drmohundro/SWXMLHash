@@ -2,8 +2,8 @@
 
 // swiftlint:disable force_unwrapping
 
-import SWXMLHash
 import Foundation
+import SWXMLHash
 
 let xmlWithNamespace = "<root xmlns:h=\"http://www.w3.org/TR/html4/\"" +
 "  xmlns:f=\"http://www.w3schools.com/furniture\">" +
@@ -26,7 +26,7 @@ var xml = SWXMLHash.parse(xmlWithNamespace)
 let count = xml["root"].all.count
 
 // "Apples"
-xml["root"]["h:table"]["h:tr"]["h:td"][0].element!.text!
+xml["root"]["h:table"]["h:tr"]["h:td"][0].element!.text
 
 // enumerate all child elements (procedurally)
 func enumerate(indexer: XMLIndexer, level: Int) {
