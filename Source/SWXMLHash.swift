@@ -47,6 +47,9 @@ public class SWXMLHashOptions {
     /// Matching element names, element values, attribute names, attribute values
     /// will be case insensitive. This will not affect parsing (data does not change)
     public var caseInsensitive = false
+    
+    /// Encoding used for XML parsing. Default is set to UTF8
+    public var encoding = String.Encoding.utf8
 }
 
 /// Simple XML parser
@@ -80,22 +83,12 @@ public class SWXMLHash {
     - returns: an `XMLIndexer` instance that can be iterated over
     */
     public func parse(_ xml: String) -> XMLIndexer {
-        return parse(xml, using: String.Encoding.utf8)
+        guard let data = xml.data(using: options.encoding) else {
+            return .xmlError(.encoding)
+        }
+        return parse(data)
     }
     
-    /**
-     Begins parsing the passed in XML string.
-     
-     - parameters:
-     - xml: an XML string. __Note__ that this is not a URL but a
-     - encoding: Encoding use to parse xml
-     string containing XML.
-     - returns: an `XMLIndexer` instance that can be iterated over
-     */
-    public func parse(_ xml: String, using encoding: String.Encoding) -> XMLIndexer {
-        return parse(xml.data(using: encoding)!)
-    }
-
     /**
     Begins parsing the passed in XML string.
 
@@ -118,18 +111,6 @@ public class SWXMLHash {
     */
     class public func parse(_ xml: String) -> XMLIndexer {
         return SWXMLHash().parse(xml)
-    }
-    
-    /**
-     Method to parse XML passed in as a string.
-     
-     - parameter 
-        - xml: The XML to be parsed
-        - encoding: Encoding use to parse xml
-     - returns: An XMLIndexer instance that is used to look up elements in the XML
-     */
-    class public func parse(_ xml: String, using encoding: String.Encoding) -> XMLIndexer {
-        return SWXMLHash().parse(xml, using: encoding)
     }
 
     /**
@@ -469,6 +450,7 @@ public enum IndexingError: Error {
     case key(key: String)
     case index(idx: Int)
     case initialize(instance: AnyObject)
+    case encoding
     case error
 
 // swiftlint:disable identifier_name
@@ -759,6 +741,8 @@ extension IndexingError: CustomStringConvertible {
             return "XML Element Error: Incorrect index [\"\(index)\"]"
         case .initialize(let instance):
             return "XML Indexer Error: initialization with Object [\"\(instance)\"]"
+        case .encoding:
+            return "String Encoding Error"
         case .error:
             return "Unknown Error"
         }
