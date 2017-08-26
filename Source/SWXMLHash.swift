@@ -47,7 +47,7 @@ public class SWXMLHashOptions {
     /// Matching element names, element values, attribute names, attribute values
     /// will be case insensitive. This will not affect parsing (data does not change)
     public var caseInsensitive = false
-    
+
     /// Encoding used for XML parsing. Default is set to UTF8
     public var encoding = String.Encoding.utf8
 }
@@ -88,7 +88,7 @@ public class SWXMLHash {
         }
         return parse(data)
     }
-    
+
     /**
     Begins parsing the passed in XML string.
 
