@@ -47,6 +47,9 @@ public class SWXMLHashOptions {
     /// Matching element names, element values, attribute names, attribute values
     /// will be case insensitive. This will not affect parsing (data does not change)
     public var caseInsensitive = false
+
+    /// Encoding used for XML parsing. Default is set to UTF8
+    public var encoding = String.Encoding.utf8
 }
 
 /// Simple XML parser
@@ -80,7 +83,10 @@ public class SWXMLHash {
     - returns: an `XMLIndexer` instance that can be iterated over
     */
     public func parse(_ xml: String) -> XMLIndexer {
-        return parse(xml.data(using: String.Encoding.utf8)!)
+        guard let data = xml.data(using: options.encoding) else {
+            return .xmlError(.encoding)
+        }
+        return parse(data)
     }
 
     /**
@@ -444,6 +450,7 @@ public enum IndexingError: Error {
     case key(key: String)
     case index(idx: Int)
     case initialize(instance: AnyObject)
+    case encoding
     case error
 
 // swiftlint:disable identifier_name
@@ -734,6 +741,8 @@ extension IndexingError: CustomStringConvertible {
             return "XML Element Error: Incorrect index [\"\(index)\"]"
         case .initialize(let instance):
             return "XML Indexer Error: initialization with Object [\"\(instance)\"]"
+        case .encoding:
+            return "String Encoding Error"
         case .error:
             return "Unknown Error"
         }
