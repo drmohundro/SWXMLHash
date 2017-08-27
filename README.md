@@ -103,6 +103,9 @@ The available options at this time are:
 * `caseInsensitive`
     * This setting allows for key lookups to be case insensitive. Typically XML is a case sensitive language, but this option lets you bypass this if necessary.
     * Defaults to `false`
+* `encoding`
+    * This setting allows for explicitly specifying the character encoding when an XML string is passed to `parse`.
+    * Defaults to `String.encoding.utf8`
 
 ## Examples
 

@@ -1,3 +1,7 @@
+## v4.2.0 (August 27, 2017)
+
+* Added new config option to allow for overriding the string encoding (via [#119](https://github.com/drmohundro/SWXMLHash/pull/119))
+
 ## v4.1.1 (June 1, 2017)
 
 * Added recommended Xcode 9.3 project settings (via [#144](https://github.com/drmohundro/SWXMLHash/pull/144))
