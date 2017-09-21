@@ -4,7 +4,7 @@ matrix:
         - swiftlint lint --strict
         - set -o pipefail
         - xcodebuild $XCODE_ACTION $WORKSPACE -scheme "SWXMLHash OSX" | xcpretty
-        - xcodebuild $XCODE_ACTION $WORKSPACE -scheme "SWXMLHash iOS" -sdk iphonesimulator -destination "OS=10.0,name=iPhone 6S" | xcpretty
+        - xcodebuild $XCODE_ACTION $WORKSPACE -scheme "SWXMLHash iOS" -sdk iphonesimulator -destination "OS=11.0,name=iPhone 7" | xcpretty
         - xcodebuild $XCODE_ACTION $WORKSPACE -scheme "SWXMLHash tvOS" -sdk appletvsimulator -destination "name=Apple TV 1080p" | xcpretty
         - xcodebuild build $WORKSPACE -scheme "SWXMLHash watchOS" -sdk watchsimulator | xcpretty
       env:
@@ -12,14 +12,14 @@ matrix:
         - WORKSPACE="-workspace SWXMLHash.xcworkspace"
         - XCODE_ACTION="build-for-testing test-without-building"
       os: osx
-      osx_image: xcode8.3
+      osx_image: xcode9
       language: objective-c
     - script:
         - swift build
         - swift test
       env: JOB=SPM
       os: osx
-      osx_image: xcode8.3
+      osx_image: xcode9
       language: objective-c
     - script:
         - swift build
@@ -35,7 +35,7 @@ matrix:
         - swift test
       env:
         - JOB=Linux
-        - SWIFT_VERSION=3.1
+        - SWIFT_VERSION=4.0
       sudo: required
       dist: trusty
       language: generic
@@ -46,7 +46,7 @@ matrix:
         - swift test
       env:
         - JOB=Linux
-        - SWIFT_VERSION=4.0-DEVELOPMENT-SNAPSHOT-2017-05-29-a
+        - SWIFT_VERSION=4.0
       sudo: required
       dist: trusty
       language: generic
