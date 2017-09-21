@@ -26,8 +26,6 @@
 import SWXMLHash
 import XCTest
 
-// swiftlint:disable force_try
-
 class LazyTypesConversionTests: XCTestCase {
     var parser: XMLIndexer?
     let xmlWithBasicTypes = "<root>" +

@@ -26,9 +26,7 @@
 import SWXMLHash
 import XCTest
 
-// swiftlint:disable force_try
 // swiftlint:disable identifier_name
-// swiftlint:disable line_length
 
 class TypeConversionComplexTypesTests: XCTestCase {
     var parser: XMLIndexer?
