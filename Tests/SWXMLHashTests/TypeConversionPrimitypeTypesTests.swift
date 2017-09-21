@@ -26,7 +26,6 @@
 import SWXMLHash
 import XCTest
 
-// swiftlint:disable force_try
 // swiftlint:disable line_length
 
 class TypeConversionPrimitypeTypesTests: XCTestCase {

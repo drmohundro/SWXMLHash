@@ -22,7 +22,6 @@ opt_in_rules:
   - redundant_nil_coalescing
   - sorted_imports
   - switch_case_on_newline
-  - valid_docs
 
 excluded:
   - Carthage

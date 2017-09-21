@@ -26,7 +26,6 @@
 import SWXMLHash
 import XCTest
 
-// swiftlint:disable force_try
 // swiftlint:disable identifier_name
 // swiftlint:disable file_length
 // swiftlint:disable line_length
