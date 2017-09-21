@@ -1,3 +1,11 @@
+## v4.2.2 (September 21, 2017)
+
+* Xcode 9 related compatibility fixes (via [#152](https://github.com/drmohundro/SWXMLHash/pull/152))
+
+## v4.2.1 (September 12, 2017)
+
+* Disable code coverage related to Carthage.
+
 ## v4.2.0 (August 27, 2017)
 
 * Added new config option to allow for overriding the string encoding (via [#119](https://github.com/drmohundro/SWXMLHash/pull/119))
