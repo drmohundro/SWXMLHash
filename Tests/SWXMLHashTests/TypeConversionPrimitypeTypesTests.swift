@@ -30,21 +30,23 @@ import XCTest
 
 class TypeConversionPrimitypeTypesTests: XCTestCase {
     var parser: XMLIndexer?
-    let xmlWithArraysOfTypes = "<root>" +
-        "<arrayOfGoodInts>" +
-        "   <int>0</int> <int>1</int> <int>2</int> <int>3</int>" +
-        "</arrayOfGoodInts>" +
-        "<arrayOfBadInts>" +
-        "   <int></int> <int>boom</int>" +
-        "</arrayOfBadInts>" +
-        "<arrayOfMixedInts>" +
-        "   <int>0</int> <int>boom</int> <int>2</int> <int>3</int>" +
-        "</arrayOfMixedInts>" +
-        "<arrayOfAttributeInts>" +
-        "   <int value=\"0\"/> <int value=\"1\"/> <int value=\"2\"/> <int value=\"3\"/>" +
-        "</arrayOfAttributeInts>" +
-        "<empty></empty>" +
-    "</root>"
+    let xmlWithArraysOfTypes = """
+        <root>
+          <arrayOfGoodInts>
+            <int>0</int> <int>1</int> <int>2</int> <int>3</int>
+          </arrayOfGoodInts>
+          <arrayOfBadInts>
+            <int></int> <int>boom</int>
+          </arrayOfBadInts>
+          <arrayOfMixedInts>
+            <int>0</int> <int>boom</int> <int>2</int> <int>3</int>
+          </arrayOfMixedInts>
+          <arrayOfAttributeInts>
+            <int value=\"0\"/> <int value=\"1\"/> <int value=\"2\"/> <int value=\"3\"/>
+          </arrayOfAttributeInts>
+          <empty></empty>
+        </root>
+    """
 
     override func setUp() {
         parser = SWXMLHash.parse(xmlWithArraysOfTypes)

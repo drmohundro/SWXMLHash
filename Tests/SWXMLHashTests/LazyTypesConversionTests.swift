@@ -28,20 +28,22 @@ import XCTest
 
 class LazyTypesConversionTests: XCTestCase {
     var parser: XMLIndexer?
-    let xmlWithBasicTypes = "<root>" +
-        "  <string>the string value</string>" +
-        "  <int>100</int>" +
-        "  <double>100.45</double>" +
-        "  <float>44.12</float>" +
-        "  <bool1>0</bool1>" +
-        "  <bool2>true</bool2>" +
-        "  <empty></empty>" +
-        "  <basicItem>" +
-        "    <name>the name of basic item</name>" +
-        "    <price>99.14</price>" +
-        "  </basicItem>" +
-        "  <attribute int=\"1\"/>" +
-    "</root>"
+    let xmlWithBasicTypes = """
+        <root>
+          <string>the string value</string>
+          <int>100</int>
+          <double>100.45</double>
+          <float>44.12</float>
+          <bool1>0</bool1>
+          <bool2>true</bool2>
+          <empty></empty>
+          <basicItem>
+            <name>the name of basic item</name>
+            <price>99.14</price>
+          </basicItem>
+          <attribute int=\"1\"/>
+        </root>
+    """
 
     override func setUp() {
         parser = SWXMLHash.config { cfg in cfg.shouldProcessLazily = true }.parse(xmlWithBasicTypes)

@@ -30,32 +30,34 @@ import XCTest
 
 class TypeConversionComplexTypesTests: XCTestCase {
     var parser: XMLIndexer?
-    let xmlWithComplexType = "<root>" +
-        "  <complexItem>" +
-        "    <name>the name of complex item</name>" +
-        "    <price>1024</price>" +
-        "    <basicItems>" +
-        "       <basicItem>" +
-        "          <name>item 1</name>" +
-        "          <price>1</price>" +
-        "       </basicItem>" +
-        "       <basicItem>" +
-        "          <name>item 2</name>" +
-        "          <price>2</price>" +
-        "       </basicItem>" +
-        "       <basicItem>" +
-        "          <name>item 3</name>" +
-        "          <price>3</price>" +
-        "       </basicItem>" +
-        "    </basicItems>" +
-        "    <attributeItems>" +
-        "       <attributeItem name=\"attr1\" price=\"1.1\"/>" +
-        "       <attributeItem name=\"attr2\" price=\"2.2\"/>" +
-        "       <attributeItem name=\"attr3\" price=\"3.3\"/>" +
-        "    </attributeItems>" +
-        "  </complexItem>" +
-        "  <empty></empty>" +
-    "</root>"
+    let xmlWithComplexType = """
+        <root>
+          <complexItem>
+            <name>the name of complex item</name>
+            <price>1024</price>
+            <basicItems>
+              <basicItem>
+                <name>item 1</name>
+                <price>1</price>
+              </basicItem>
+              <basicItem>
+                <name>item 2</name>
+                <price>2</price>
+              </basicItem>
+              <basicItem>
+                <name>item 3</name>
+                <price>3</price>
+              </basicItem>
+            </basicItems>
+            <attributeItems>
+              <attributeItem name=\"attr1\" price=\"1.1\"/>
+              <attributeItem name=\"attr2\" price=\"2.2\"/>
+              <attributeItem name=\"attr3\" price=\"3.3\"/>
+            </attributeItems>
+          </complexItem>
+          <empty></empty>
+        </root>
+    """
 
     let correctComplexItem = ComplexItem(
         name: "the name of complex item",
