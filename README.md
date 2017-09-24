@@ -43,9 +43,12 @@ Then create a `Podfile` with the following contents:
 
 ```ruby
 source 'https://github.com/CocoaPods/Specs.git'
-platform :ios, '8.0'
+platform :ios, '10.0'
+use_frameworks!
 
-pod 'SWXMLHash', '~> 4.0.0'
+target 'YOUR_TARGET_NAME' do
+  pod 'SWXMLHash', '~> 4.0.0'
+end
 ```
 
 Finally, run the following command to install it:
