@@ -33,21 +33,23 @@ import XCTest
 
 class TypeConversionBasicTypesTests: XCTestCase {
     var parser: XMLIndexer?
-    let xmlWithBasicTypes = "<root>" +
-        "  <string>the string value</string>" +
-        "  <int>100</int>" +
-        "  <double>100.45</double>" +
-        "  <float>44.12</float>" +
-        "  <bool1>0</bool1>" +
-        "  <bool2>true</bool2>" +
-        "  <empty></empty>" +
-        "  <basicItem>" +
-        "    <name>the name of basic item</name>" +
-        "    <price>99.14</price>" +
-        "  </basicItem>" +
-        "  <attr string=\"stringValue\" int=\"200\" double=\"200.15\" float=\"205.42\" bool1=\"0\" bool2=\"true\"/>" +
-        "  <attributeItem name=\"the name of attribute item\" price=\"19.99\"/>" +
-    "</root>"
+    let xmlWithBasicTypes = """
+        <root>
+          <string>the string value</string>
+          <int>100</int>
+          <double>100.45</double>
+          <float>44.12</float>
+          <bool1>0</bool1>
+          <bool2>true</bool2>
+          <empty></empty>
+          <basicItem>
+            <name>the name of basic item</name>
+            <price>99.14</price>
+          </basicItem>
+          <attr string=\"stringValue\" int=\"200\" double=\"200.15\" float=\"205.42\" bool1=\"0\" bool2=\"true\"/>
+          <attributeItem name=\"the name of attribute item\" price=\"19.99\"/>
+        </root>
+    """
 
     override func setUp() {
         parser = SWXMLHash.parse(xmlWithBasicTypes)

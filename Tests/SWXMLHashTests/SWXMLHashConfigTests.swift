@@ -28,15 +28,17 @@ import XCTest
 
 class SWXMLHashConfigTests: XCTestCase {
     var parser: XMLIndexer?
-    let xmlWithNamespace = "<root xmlns:h=\"http://www.w3.org/TR/html4/\"" +
-        "  xmlns:f=\"http://www.w3schools.com/furniture\">" +
-        "  <h:table>" +
-        "    <h:tr>" +
-        "      <h:td>Apples</h:td>" +
-        "      <h:td>Bananas</h:td>" +
-        "    </h:tr>" +
-        "  </h:table>" +
-    "</root>"
+    let xmlWithNamespace = """
+        <root xmlns:h=\"http://www.w3.org/TR/html4/\"
+          xmlns:f=\"http://www.w3schools.com/furniture\">
+          <h:table>
+            <h:tr>
+              <h:td>Apples</h:td>
+              <h:td>Bananas</h:td>
+            </h:tr>
+          </h:table>
+        </root>
+    """
 
     override func setUp() {
         parser = SWXMLHash.config { conf in

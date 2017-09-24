@@ -31,46 +31,48 @@ import XCTest
 
 class TypeConversionArrayOfNonPrimitiveTypesTests: XCTestCase {
     var parser: XMLIndexer?
-    let xmlWithArraysOfTypes = "<root>" +
-        "<arrayOfGoodBasicItems>" +
-        "   <basicItem>" +
-        "      <name>item 1</name>" +
-        "      <price>1</price>" +
-        "   </basicItem>" +
-        "   <basicItem>" +
-        "      <name>item 2</name>" +
-        "      <price>2</price>" +
-        "   </basicItem>" +
-        "   <basicItem>" +
-        "      <name>item 3</name>" +
-        "      <price>3</price>" +
-        "   </basicItem>" +
-        "</arrayOfGoodBasicItems>" +
-        "<arrayOfBadBasicItems>" +
-        "   <basicItem>" +
-        "      <name>item 1</name>" +
-        "      <price>1</price>" +
-        "   </basicItem>" +
-        "   <basicItem>" +  // it's missing the name node
-        "      <price>2</price>" +
-        "   </basicItem>" +
-        "   <basicItem>" +
-        "      <name>item 3</name>" +
-        "      <price>3</price>" +
-        "   </basicItem>" +
-        "</arrayOfBadBasicItems>" +
-        "<arrayOfMissingBasicItems />" +
-        "<arrayOfGoodAttributeItems>" +
-        "   <attributeItem name=\"attr 1\" price=\"1.1\"/>" +
-        "   <attributeItem name=\"attr 2\" price=\"2.2\"/>" +
-        "   <attributeItem name=\"attr 3\" price=\"3.3\"/>" +
-        "</arrayOfGoodAttributeItems>" +
-        "<arrayOfBadAttributeItems>" +
-        "   <attributeItem name=\"attr 1\" price=\"1.1\"/>" +
-        "   <attributeItem price=\"2.2\"/>" + // it's missing the name attribute
-        "   <attributeItem name=\"attr 3\" price=\"3.3\"/>" +
-        "</arrayOfBadAttributeItems>" +
-    "</root>"
+    let xmlWithArraysOfTypes = """
+        <root>
+          <arrayOfGoodBasicItems>
+            <basicItem>
+              <name>item 1</name>
+              <price>1</price>
+            </basicItem>
+            <basicItem>
+              <name>item 2</name>
+              <price>2</price>
+            </basicItem>
+            <basicItem>
+              <name>item 3</name>
+              <price>3</price>
+            </basicItem>
+          </arrayOfGoodBasicItems>
+          <arrayOfBadBasicItems>
+            <basicItem>
+              <name>item 1</name>
+              <price>1</price>
+            </basicItem>
+            <basicItem>  // it's missing the name node
+              <price>2</price>
+            </basicItem>
+            <basicItem>
+              <name>item 3</name>
+              <price>3</price>
+            </basicItem>
+          </arrayOfBadBasicItems>
+          <arrayOfMissingBasicItems />
+          <arrayOfGoodAttributeItems>
+            <attributeItem name=\"attr 1\" price=\"1.1\"/>
+            <attributeItem name=\"attr 2\" price=\"2.2\"/>
+            <attributeItem name=\"attr 3\" price=\"3.3\"/>
+          </arrayOfGoodAttributeItems>
+          <arrayOfBadAttributeItems>
+            <attributeItem name=\"attr 1\" price=\"1.1\"/>
+            <attributeItem price=\"2.2\"/> // it's missing the name attribute
+            <attributeItem name=\"attr 3\" price=\"3.3\"/>
+          </arrayOfBadAttributeItems>
+        </root>
+    """
 
     let correctBasicItems = [
         BasicItem(name: "item 1", price: 1),
