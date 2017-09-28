@@ -676,7 +676,7 @@ public enum XMLIndexer {
             opStream.ops[opStream.ops.count - 1].index = index
             return .stream(opStream)
         case .list(let list):
-            if index <= list.count {
+            if index < list.count {
                 return .element(list[index])
             }
             return .xmlError(IndexingError.index(idx: index))
