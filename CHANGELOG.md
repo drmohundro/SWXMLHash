@@ -1,3 +1,7 @@
+## v4.2.3 (September 21, 2017)
+
+* Fix off by one `byIndex` error (issue [#155](https://github.com/drmohundro/SWXMLHash/issues/155) fixed in [#156](https://github.com/drmohundro/SWXMLHash/pull/156))
+
 ## v4.2.2 (September 21, 2017)
 
 * Xcode 9 related compatibility fixes (via [#152](https://github.com/drmohundro/SWXMLHash/pull/152))
