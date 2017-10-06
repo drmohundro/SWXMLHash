@@ -29,7 +29,7 @@ The API takes a lot of inspiration from [SwiftyJSON](https://github.com/SwiftyJS
 
 ## Installation
 
-SWXMLHash can be installed using [CocoaPods](http://cocoapods.org/), [Carthage](https://github.com/Carthage/Carthage), or manually.
+SWXMLHash can be installed using [CocoaPods](http://cocoapods.org/), [Carthage](https://github.com/Carthage/Carthage), [Swift Package Manager](https://swift.org/package-manager/), or manually.
 
 ### CocoaPods
 
@@ -70,6 +70,18 @@ Then add the following line to your `Cartfile`:
 ```
 github "drmohundro/SWXMLHash" ~> 4.0
 ```
+
+### Swift Package Manager
+
+Swift Package Manager requires Swift version 3.0 or higher. First, create a `Package.swift` file. It should look like:
+
+```swift
+dependencies: [
+    .Package(url: "https://github.com/drmohundro/SWXMLHash.git", majorVersion: 4)
+]
+```
+
+`swift build` should then pull in and compile SWXMLHash for you to begin using.
 
 ### Manual Installation
 
