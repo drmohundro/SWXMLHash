@@ -73,11 +73,11 @@ github "drmohundro/SWXMLHash" ~> 4.0
 
 ### Swift Package Manager
 
-Swift Package Manager requires Swift version 3.0 or higher. First, create a `Package.swift` file. It should look like:
+Swift Package Manager requires Swift version 4.0 or higher. First, create a `Package.swift` file. It should look like:
 
 ```swift
 dependencies: [
-    .Package(url: "https://github.com/drmohundro/SWXMLHash.git", majorVersion: 4)
+    .Package(url: "https://github.com/drmohundro/SWXMLHash.git", from: "4.0.0")
 ]
 ```
 
