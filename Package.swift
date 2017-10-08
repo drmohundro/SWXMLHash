@@ -13,6 +13,11 @@ let package = Package(
     .target(
   	  name: "SWXMLHash",
   	  path: "Source"
-  	)
+  	),
+    .testTarget(
+      name: "SWXMLHash Tests",
+      dependencies: ["SWXMLHash"],
+      path: "Tests"
+    )
   ]
 )
