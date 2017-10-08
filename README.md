@@ -235,7 +235,7 @@ The `all` method will iterate over all nodes at the indexed level. The code belo
 
 ```swift
 ", ".join(xml["root"]["catalog"]["book"].all.map { elem in
-  elem["genre"].element!.text!
+    elem["genre"].element!.text!
 })
 ```
 
@@ -243,7 +243,7 @@ You can also iterate over the `all` method:
 
 ```swift
 for elem in xml["root"]["catalog"]["book"].all {
-  print(elem["genre"].element!.text!)
+    print(elem["genre"].element!.text!)
 }
 ```
 
@@ -267,10 +267,10 @@ The below will `print` "root", "catalog", "book", "genre", "title", and "date" (
 
 ```swift
 func enumerate(indexer: XMLIndexer) {
-  for child in indexer.children {
-    print(child.element!.name)
-    enumerate(child)
-  }
+    for child in indexer.children {
+        print(child.element!.name)
+        enumerate(child)
+    }
 }
 
 enumerate(indexer: xml)
@@ -282,9 +282,9 @@ Using Swift 2.0's new error handling feature:
 
 ```swift
 do {
-  try xml!.byKey("root").byKey("what").byKey("header").byKey("foo")
+    try xml!.byKey("root").byKey("what").byKey("header").byKey("foo")
 } catch let error as IndexingError {
-  // error is an IndexingError instance that you can deal with
+    // error is an IndexingError instance that you can deal with
 }
 ```
 
@@ -293,15 +293,63 @@ __Or__ using the existing indexing functionality:
 ```swift
 switch xml["root"]["what"]["header"]["foo"] {
 case .element(let elem):
-  // everything is good, code away!
+    // everything is good, code away!
 case .xmlError(let error):
-  // error is an IndexingError instance that you can deal with
+    // error is an IndexingError instance that you can deal with
 }
 ```
 
 Note that error handling as shown above will not work with lazy loaded XML. The lazy parsing doesn't actually occur until the `element` or `all` method are called - as a result, there isn't any way to know prior to asking for an element if it exists or not.
 
-### Types conversion
+### Simple Type Conversion
+
+Given:
+
+```xml
+<root>
+  <elem>Monday, 23 January 2016 12:01:12 111</elem>
+</root>
+```
+
+With the following implementation for `Date` element and attribute deserialization:
+
+```swift
+extension Date: XMLElementDeserializable, XMLAttributeDeserializable {
+    public static func deserialize(_ element: XMLElement) throws -> Date {
+        let date = stringToDate(element.text)
+
+        guard let validDate = date else {
+            throw XMLDeserializationError.typeConversionFailed(type: "Date", element: element)
+        }
+
+        return validDate
+    }
+
+    public static func deserialize(_ attribute: XMLAttribute) throws -> Date {
+        let date = stringToDate(attribute.text)
+
+        guard let validDate = date else {
+            throw XMLDeserializationError.attributeDeserializationFailed(type: "Date", attribute: attribute)
+        }
+
+        return validDate
+    }
+
+    private static func stringToDate(_ dateAsString: String) -> Date? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "EEE, dd MMM yyyy HH:mm:ss zzz"
+        return dateFormatter.date(from: dateAsString)
+    }
+}
+```
+
+The below will return a date value:
+
+```swift
+let dt: Date = try xml["root"]["elem"].value()
+```
+
+### Complex Types Conversion
 
 Given:
 
@@ -363,7 +411,7 @@ struct Book: XMLIndexerDeserializable {
 }
 ```
 
-The below will return array of `Book` structs:
+The below will return an array of `Book` structs:
 
 ```swift
 let books: [Book] = try xml["root"]["books"]["book"].value()
@@ -392,15 +440,15 @@ No, not at the moment - SWXMLHash only supports parsing XML (via indexing, deser
 
 ### I'm getting an "Ambiguous reference to member 'subscript'" when I call `.value()`.
 
-`.value()` is used for deserialization - you have to have something that implements `XMLIndexerDeserializable` and that can handle deserialization to the left-hand side of expression.
+`.value()` is used for deserialization - you have to have something that implements `XMLIndexerDeserializable` (or `XMLElementDeserializable` if it is a single element versus a group of elements) and that can handle deserialization to the left-hand side of expression.
 
 For example, given the following:
 
 ```swift
-let dateValue: NSDate = try! xml["root"]["date"].value()
+let dateValue: Date = try! xml["root"]["date"].value()
 ```
 
-You'll get an error because there isn't any built-in deserializer for `NSDate`. See the above documentation on adding your own deserialization support.
+You'll get an error because there isn't any built-in deserializer for `Date`. See the above documentation on adding your own deserialization support. In this case, you would create your own `XMLElementDeserializable` implementation for `Date`. See above for an example of how to add your own `Date` deserialization support.
 
 ### I'm getting an `EXC_BAD_ACCESS (SIGSEGV)` when I call `parse()`
 
@@ -414,27 +462,27 @@ See below for the code snippet to get this to work and note in particular the `p
 
 ```swift
 extension NSDate: XMLElementDeserializable {
-  public static func deserialize(_ element: XMLElement) throws -> Self {
-    guard let dateAsString = element.text else {
-      throw XMLDeserializationError.nodeHasNoValue
+    public static func deserialize(_ element: XMLElement) throws -> Self {
+        guard let dateAsString = element.text else {
+            throw XMLDeserializationError.nodeHasNoValue
+        }
+
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "EEE, dd MMM yyyy HH:mm:ss zzz"
+        let date = dateFormatter.dateFromString(dateAsString)
+
+        guard let validDate = date else {
+            throw XMLDeserializationError.typeConversionFailed(type: "Date", element: element)
+        }
+
+        // NOTE THIS
+        return value(validDate)
     }
 
-    let dateFormatter = NSDateFormatter()
-    dateFormatter.dateFormat = "EEE, dd MMM yyyy HH:mm:ss zzz"
-    let date = dateFormatter.dateFromString(dateAsString)
-
-    guard let validDate = date else {
-      throw XMLDeserializationError.typeConversionFailed(type: "Date", element: element)
+    // AND THIS
+    private static func value<T>(date: NSDate) -> T {
+        return date as! T
     }
-
-    // NOTE THIS
-    return value(validDate)
-  }
-
-  // AND THIS
-  private static func value<T>(date: NSDate) -> T {
-    return date as! T
-  }
 }
 ```
 
