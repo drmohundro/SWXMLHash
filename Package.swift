@@ -15,7 +15,7 @@ let package = Package(
   	  path: "Source"
   	),
     .testTarget(
-      name: "SWXMLHash Tests",
+      name: "SWXMLHashTests",
       dependencies: ["SWXMLHash"],
       path: "Tests"
     )
