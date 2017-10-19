@@ -1,6 +1,7 @@
 included:
   - Source
   - Tests
+  - ./Package.swift
 opt_in_rules:
   - attributes
   - closure_end_indentation

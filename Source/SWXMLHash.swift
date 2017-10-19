@@ -209,7 +209,7 @@ extension XMLParserDelegate {
                 didStartElement elementName: String,
                 namespaceURI: String?,
                 qualifiedName qName: String?,
-                attributes attributeDict: [String : String]) { }
+                attributes attributeDict: [String: String]) { }
 
     func parser(_ parser: Foundation.XMLParser,
                 didEndElement elementName: String,
@@ -641,7 +641,7 @@ public enum XMLIndexer {
                     return .list(match)
                 }
             }
-            fallthrough
+            return .xmlError(IndexingError.key(key: key))
         default:
             throw IndexingError.key(key: key)
         }
@@ -684,7 +684,7 @@ public enum XMLIndexer {
             if index == 0 {
                 return .element(elem)
             }
-            fallthrough
+            return .xmlError(IndexingError.index(idx: index))
         default:
             return .xmlError(IndexingError.index(idx: index))
         }
