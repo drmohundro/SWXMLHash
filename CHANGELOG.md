@@ -1,3 +1,7 @@
+## v4.2.4 (November 9, 2017)
+
+* Fix `characters` deprecation (issue [#163](https://github.com/drmohundro/SWXMLHash/issues/163) fixed in [#164](https://github.com/drmohundro/SWXMLHash/pull/164))
+
 ## v4.2.3 (September 21, 2017)
 
 * Fix off by one `byIndex` error (issue [#155](https://github.com/drmohundro/SWXMLHash/issues/155) fixed in [#156](https://github.com/drmohundro/SWXMLHash/pull/156))
