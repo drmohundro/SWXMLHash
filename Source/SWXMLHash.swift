@@ -641,7 +641,7 @@ public enum XMLIndexer {
                     return .list(match)
                 }
             }
-            return .xmlError(IndexingError.key(key: key))
+            throw IndexingError.key(key: key)
         default:
             throw IndexingError.key(key: key)
         }
