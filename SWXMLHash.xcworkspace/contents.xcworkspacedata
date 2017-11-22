@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:SWXMLHashPlayground.playground">
+   </FileRef>
+   <FileRef
       location = "container:SWXMLHash.xcodeproj">
    </FileRef>
 </Workspace>
