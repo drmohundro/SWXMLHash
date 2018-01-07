@@ -250,10 +250,10 @@ extension XMLParserDelegate {
                 systemID: String?) -> Data? { return nil }
 
     func parser(_ parser: Foundation.XMLParser,
-                parseErrorOccurred parseError: NSError) { }
+                parseErrorOccurred parseError: Error) { }
 
     func parser(_ parser: Foundation.XMLParser,
-                validationErrorOccurred validationError: NSError) { }
+                validationErrorOccurred validationError: Error) { }
 }
 
 #endif
@@ -425,9 +425,10 @@ class FullXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
     }
 
     func parser(_ parser: XMLParser, parseErrorOccurred parseError: Error) {
-        let err = parseError as NSError
-        parsingError = ParsingError(line: err.userInfo["NSXMLParserErrorLineNumber"] as? Int ?? 0,
-                                    column: err.userInfo["NSXMLParserErrorColumn"] as? Int ?? 0)
+        if let err = parseError as? NSError {
+            parsingError = ParsingError(line: err.userInfo["NSXMLParserErrorLineNumber"] as? Int ?? 0,
+                                        column: err.userInfo["NSXMLParserErrorColumn"] as? Int ?? 0)
+        }
     }
 }
 
