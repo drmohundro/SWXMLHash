@@ -50,6 +50,9 @@ public class SWXMLHashOptions {
 
     /// Encoding used for XML parsing. Default is set to UTF8
     public var encoding = String.Encoding.utf8
+
+    /// Any contextual information set by the user for encoding
+    public var userInfo = [CodingUserInfoKey: Any]()
 }
 
 /// Simple XML parser
@@ -252,6 +255,7 @@ class LazyXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
     required init(_ options: SWXMLHashOptions) {
         self.options = options
         self.root.caseInsensitive = options.caseInsensitive
+        self.root.userInfo = options.userInfo
         super.init()
     }
 
@@ -340,6 +344,7 @@ class FullXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
     required init(_ options: SWXMLHashOptions) {
         self.options = options
         self.root.caseInsensitive = options.caseInsensitive
+        self.root.userInfo = options.userInfo
         super.init()
     }
 
@@ -554,6 +559,15 @@ public enum XMLIndexer {
             }
         }
         return list
+    }
+
+    public var userInfo: [CodingUserInfoKey: Any] {
+        switch self {
+        case .element(let elem):
+            return elem.userInfo
+        default:
+            return [:]
+        }
     }
 
     /**
@@ -775,11 +789,15 @@ public class XMLElement: XMLContent {
     /// The name of the element
     public let name: String
 
+    /// Whether the element is case insensitive or not
     public var caseInsensitive: Bool
+
+    var userInfo = [CodingUserInfoKey: Any]()
 
     /// All attributes
     public var allAttributes = [String: XMLAttribute]()
 
+    /// Find an attribute by name
     public func attribute(by name: String) -> XMLAttribute? {
         if caseInsensitive {
             return allAttributes.first(where: { $0.key.compare(name, true) })?.value
@@ -813,6 +831,7 @@ public class XMLElement: XMLContent {
 
     /// All child elements (text or XML)
     public var children = [XMLContent]()
+
     var count: Int = 0
     var index: Int
 
@@ -827,10 +846,11 @@ public class XMLElement: XMLContent {
         - name: The name of the element to be initialized
         - index: The index of the element to be initialized
     */
-    init(name: String, index: Int = 0, caseInsensitive: Bool) {
+    init(name: String, index: Int = 0, caseInsensitive: Bool, userInfo: [CodingUserInfoKey: Any] = [:]) {
         self.name = name
         self.caseInsensitive = caseInsensitive
         self.index = index
+        self.userInfo = userInfo
     }
 
     /**
@@ -843,7 +863,7 @@ public class XMLElement: XMLContent {
     */
 
     func addElement(_ name: String, withAttributes attributes: [String: String], caseInsensitive: Bool) -> XMLElement {
-        let element = XMLElement(name: name, index: count, caseInsensitive: caseInsensitive)
+        let element = XMLElement(name: name, index: count, caseInsensitive: caseInsensitive, userInfo: userInfo)
         count += 1
 
         children.append(element)
