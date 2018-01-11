@@ -253,13 +253,12 @@ extension XMLParserDelegate {
 /// The implementation of XMLParserDelegate and where the lazy parsing actually happens.
 class LazyXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
     required init(_ options: SWXMLHashOptions) {
+        root = XMLElement(name: rootElementName, options: options)
         self.options = options
-        self.root.caseInsensitive = options.caseInsensitive
-        self.root.userInfo = options.userInfo
         super.init()
     }
 
-    var root = XMLElement(name: rootElementName, caseInsensitive: false)
+    let root: XMLElement
     var parentStack = Stack<XMLElement>()
     var elementStack = Stack<String>()
 
@@ -276,7 +275,6 @@ class LazyXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
         // clear any prior runs of parse... expected that this won't be necessary,
         // but you never know
         parentStack.removeAll()
-        root = XMLElement(name: rootElementName, caseInsensitive: options.caseInsensitive)
         parentStack.push(root)
 
         self.ops = ops
@@ -342,13 +340,12 @@ class LazyXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
 /// The implementation of XMLParserDelegate and where the parsing actually happens.
 class FullXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
     required init(_ options: SWXMLHashOptions) {
+        root = XMLElement(name: rootElementName, options: options)
         self.options = options
-        self.root.caseInsensitive = options.caseInsensitive
-        self.root.userInfo = options.userInfo
         super.init()
     }
 
-    var root = XMLElement(name: rootElementName, caseInsensitive: false)
+    let root: XMLElement
     var parentStack = Stack<XMLElement>()
     let options: SWXMLHashOptions
 
@@ -790,9 +787,13 @@ public class XMLElement: XMLContent {
     public let name: String
 
     /// Whether the element is case insensitive or not
-    public var caseInsensitive: Bool
+    public var caseInsensitive: Bool {
+        return options.caseInsensitive
+    }
 
-    var userInfo = [CodingUserInfoKey: Any]()
+    var userInfo: [CodingUserInfoKey: Any] {
+        return options.userInfo
+    }
 
     /// All attributes
     public var allAttributes = [String: XMLAttribute]()
@@ -834,6 +835,7 @@ public class XMLElement: XMLContent {
 
     var count: Int = 0
     var index: Int
+    let options: SWXMLHashOptions
 
     var xmlChildren: [XMLElement] {
         return children.flatMap { $0 as? XMLElement }
@@ -846,11 +848,10 @@ public class XMLElement: XMLContent {
         - name: The name of the element to be initialized
         - index: The index of the element to be initialized
     */
-    init(name: String, index: Int = 0, caseInsensitive: Bool, userInfo: [CodingUserInfoKey: Any] = [:]) {
+    init(name: String, index: Int = 0, options: SWXMLHashOptions) {
         self.name = name
-        self.caseInsensitive = caseInsensitive
         self.index = index
-        self.userInfo = userInfo
+        self.options = options
     }
 
     /**
@@ -863,7 +864,7 @@ public class XMLElement: XMLContent {
     */
 
     func addElement(_ name: String, withAttributes attributes: [String: String], caseInsensitive: Bool) -> XMLElement {
-        let element = XMLElement(name: name, index: count, caseInsensitive: caseInsensitive, userInfo: userInfo)
+        let element = XMLElement(name: name, index: count, options: options)
         count += 1
 
         children.append(element)
