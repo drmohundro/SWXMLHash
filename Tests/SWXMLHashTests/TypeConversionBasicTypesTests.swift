@@ -31,6 +31,29 @@ import XCTest
 // swiftlint:disable line_length
 // swiftlint:disable type_body_length
 
+struct SampleUserInfo {
+    enum ApiVersion {
+        case v1
+        case v2
+    }
+
+    var apiVersion = ApiVersion.v2
+
+    func suffix() -> String {
+        if apiVersion == ApiVersion.v1 {
+            return " (v1)"
+        } else {
+            return ""
+        }
+    }
+
+    static let key = CodingUserInfoKey(rawValue: "test")!
+
+    init(apiVersion: ApiVersion) {
+        self.apiVersion = apiVersion
+    }
+}
+
 class TypeConversionBasicTypesTests: XCTestCase {
     var parser: XMLIndexer?
     let xmlWithBasicTypes = """
@@ -524,6 +547,20 @@ class TypeConversionBasicTypesTests: XCTestCase {
             XCTFail("\(error)")
         }
     }
+
+    func testShouldBeAbleToGetUserInfoDuringDeserialization() {
+        parser = SWXMLHash.config { config in
+            let options = SampleUserInfo(apiVersion: .v1)
+            config.userInfo = [ SampleUserInfo.key: options ]
+        }.parse(xmlWithBasicTypes)
+
+        do {
+            let value: BasicItem = try parser!["root"]["basicItem"].value()
+            XCTAssertEqual(value.name, "the name of basic item (v1)")
+        } catch {
+            XCTFail("\(error)")
+        }
+    }
 }
 
 struct BasicItem: XMLIndexerDeserializable {
@@ -531,8 +568,14 @@ struct BasicItem: XMLIndexerDeserializable {
     let price: Double
 
     static func deserialize(_ node: XMLIndexer) throws -> BasicItem {
+        var name: String = try node["name"].value()
+
+        if let opts = node.userInfo[SampleUserInfo.key] as? SampleUserInfo {
+            name += opts.suffix()
+        }
+
         return try BasicItem(
-            name: node["name"].value(),
+            name: name,
             price: node["price"].value()
         )
     }
@@ -618,7 +661,8 @@ extension TypeConversionBasicTypesTests {
             ("testAttributeItemShouldThrowWhenConvertingMissingToNonOptional", testAttributeItemShouldThrowWhenConvertingMissingToNonOptional),
             ("testAttributeItemShouldConvertAttributeItemToOptional", testAttributeItemShouldConvertAttributeItemToOptional),
             ("testAttributeItemShouldConvertEmptyToOptional", testAttributeItemShouldConvertEmptyToOptional),
-            ("testAttributeItemShouldConvertMissingToOptional", testAttributeItemShouldConvertMissingToOptional)
+            ("testAttributeItemShouldConvertMissingToOptional", testAttributeItemShouldConvertMissingToOptional),
+            ("testShouldBeAbleToGetUserInfoDuringDeserialization", testShouldBeAbleToGetUserInfoDuringDeserialization)
         ]
     }
 }
