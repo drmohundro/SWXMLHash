@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name        = 'SWXMLHash'
-  s.version     = '4.2.5'
+  s.version     = '4.3.5'
   s.summary     = 'Simple XML parsing in Swift'
   s.homepage    = 'https://github.com/drmohundro/SWXMLHash'
   s.license     = { type: 'MIT' }
