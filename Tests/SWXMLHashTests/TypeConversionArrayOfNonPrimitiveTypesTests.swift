@@ -223,6 +223,7 @@ extension TypeConversionArrayOfNonPrimitiveTypesTests {
             ("testShouldThrowWhenConvertingArrayOfBadBasicitemsToNonOptional", testShouldThrowWhenConvertingArrayOfBadBasicitemsToNonOptional),
             ("testShouldThrowWhenConvertingArrayOfBadBasicitemsToOptional", testShouldThrowWhenConvertingArrayOfBadBasicitemsToOptional),
             ("testShouldThrowWhenConvertingArrayOfBadBasicitemsToArrayOfOptionals", testShouldThrowWhenConvertingArrayOfBadBasicitemsToArrayOfOptionals),
+            ("testShouldConvertArrayOfEmptyMissingToOptional", testShouldConvertArrayOfEmptyMissingToOptional),
             ("testShouldConvertArrayOfGoodAttributeItemsToNonOptional", testShouldConvertArrayOfGoodAttributeItemsToNonOptional),
             ("testShouldConvertArrayOfGoodAttributeItemsToOptional", testShouldConvertArrayOfGoodAttributeItemsToOptional),
             ("testShouldConvertArrayOfGoodAttributeItemsToArrayOfOptionals", testShouldConvertArrayOfGoodAttributeItemsToArrayOfOptionals),
