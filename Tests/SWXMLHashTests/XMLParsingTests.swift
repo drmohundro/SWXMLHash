@@ -251,8 +251,11 @@ extension XMLParsingTests {
         return [
             ("testShouldBeAbleToParseIndividualElements", testShouldBeAbleToParseIndividualElements),
             ("testShouldBeAbleToParseElementGroups", testShouldBeAbleToParseElementGroups),
+            ("testShouldBeAbleToParseElementGroupsByIndex", testShouldBeAbleToParseElementGroupsByIndex),
+            ("testShouldBeAbleToByIndexWithoutGoingOutOfBounds", testShouldBeAbleToByIndexWithoutGoingOutOfBounds),
             ("testShouldBeAbleToParseAttributes", testShouldBeAbleToParseAttributes),
             ("testShouldBeAbleToLookUpElementsByNameAndAttribute", testShouldBeAbleToLookUpElementsByNameAndAttribute),
+            ("testShouldBeAbleToLookUpElementsByNameAndAttributeCaseInsensitive", testShouldBeAbleToLookUpElementsByNameAndAttributeCaseInsensitive),
             ("testShouldBeAbleToIterateElementGroups", testShouldBeAbleToIterateElementGroups),
             ("testShouldBeAbleToIterateElementGroupsEvenIfOnlyOneElementIsFound", testShouldBeAbleToIterateElementGroupsEvenIfOnlyOneElementIsFound),
             ("testShouldBeAbleToIndexElementGroupsEvenIfOnlyOneElementIsFound", testShouldBeAbleToIndexElementGroupsEvenIfOnlyOneElementIsFound),
