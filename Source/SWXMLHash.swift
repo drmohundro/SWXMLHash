@@ -390,6 +390,14 @@ class FullXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
 
         parentStack.drop()
     }
+    
+    func parser(_ parser: XMLParser, foundCDATA CDATABlock: Data) {
+        if let cdataText = String(data: CDATABlock, encoding: String.Encoding.utf8) {
+            let current = parentStack.top()
+            
+            current.addText(cdataText)
+        }
+    }
 }
 
 /// Represents an indexed operation against a lazily parsed `XMLIndexer`
