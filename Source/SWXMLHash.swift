@@ -312,6 +312,18 @@ class LazyXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
         current.addText(string)
     }
 
+    func parser(_ parser: XMLParser, foundCDATA CDATABlock: Data) {
+        if !onMatch() {
+            return
+        }
+
+        if let cdataText = String(data: CDATABlock, encoding: String.Encoding.utf8) {
+            let current = parentStack.top()
+
+            current.addText(cdataText)
+        }
+    }
+
     func parser(_ parser: Foundation.XMLParser,
                 didEndElement elementName: String,
                 namespaceURI: String?,
@@ -389,6 +401,14 @@ class FullXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
                 qualifiedName qName: String?) {
 
         parentStack.drop()
+    }
+
+    func parser(_ parser: XMLParser, foundCDATA CDATABlock: Data) {
+        if let cdataText = String(data: CDATABlock, encoding: String.Encoding.utf8) {
+            let current = parentStack.top()
+
+            current.addText(cdataText)
+        }
     }
 }
 
