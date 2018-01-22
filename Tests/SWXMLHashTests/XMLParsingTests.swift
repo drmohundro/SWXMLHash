@@ -244,6 +244,21 @@ class XMLParsingTests: XCTestCase {
         }
         XCTAssertNotNil(err)
     }
+    
+    func testShouldBeAbleToCreateASubIndexer() {
+        
+        let element: XMLElement = xml!["root"]["catalog"]["book"][1].element!
+        let subIndexer: XMLIndexer = try! element.indexer(from: 1, to: 3, filterByXmlChildren: true)
+
+        XCTAssertEqual(subIndexer.children[0].element?.name, "title")
+        XCTAssertEqual(subIndexer.children[1].element?.name, "genre")
+        XCTAssertEqual(subIndexer.children[2].element?.name, "price")
+        
+        XCTAssertEqual(subIndexer.children[0].element?.text, "Midnight Rain")
+        XCTAssertEqual(subIndexer.children[1].element?.text, "Fantasy")
+        XCTAssertEqual(subIndexer.children[2].element?.text, "5.95")
+
+    }
 }
 
 extension XMLParsingTests {
@@ -269,7 +284,8 @@ extension XMLParsingTests {
             ("testShouldReturnNilWhenKeysDontMatch", testShouldReturnNilWhenKeysDontMatch),
             ("testShouldProvideAnErrorObjectWhenKeysDontMatch", testShouldProvideAnErrorObjectWhenKeysDontMatch),
             ("testShouldProvideAnErrorElementWhenIndexersDontMatch", testShouldProvideAnErrorElementWhenIndexersDontMatch),
-            ("testShouldStillReturnErrorsWhenAccessingViaSubscripting", testShouldStillReturnErrorsWhenAccessingViaSubscripting)
+            ("testShouldStillReturnErrorsWhenAccessingViaSubscripting", testShouldStillReturnErrorsWhenAccessingViaSubscripting),
+            ("testShouldBeAbleToCreateASubIndexer", testShouldBeAbleToCreateASubIndexer)
         ]
     }
 }
