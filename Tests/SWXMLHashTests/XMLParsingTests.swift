@@ -259,6 +259,48 @@ class XMLParsingTests: XCTestCase {
         XCTAssertEqual(subIndexer.children[2].element?.text, "5.95")
 
     }
+
+    func testShouldBeAbleToCreateASubIndexerFromFilter() {
+        
+        let element: XMLElement = xml!["root"]["catalog"]["book"][1].element!
+        let filterByNames: [String] = ["title", "genre", "price"]
+
+        let subIndexer: XMLIndexer = element.filter({
+            element in
+            
+            guard let xmlElement = element as? XMLElement else {
+                return false
+            }
+            
+            return filterByNames.contains(xmlElement.name)
+            
+        })
+        
+        XCTAssertEqual(subIndexer.children[0].element?.name, "title")
+        XCTAssertEqual(subIndexer.children[1].element?.name, "genre")
+        XCTAssertEqual(subIndexer.children[2].element?.name, "price")
+        
+        XCTAssertEqual(subIndexer.children[0].element?.text, "Midnight Rain")
+        XCTAssertEqual(subIndexer.children[1].element?.text, "Fantasy")
+        XCTAssertEqual(subIndexer.children[2].element?.text, "5.95")
+        
+    }
+    
+    func testShouldBeAbleToCreateASubIndexerFromFilterAndIndexes() {
+        
+        let element: XMLElement = xml!["root"]["catalog"]["book"][1].element!
+        let subIndexer: XMLIndexer = element.filter({$0 is XMLElement}).element!.filter(from: 1, to: 3)
+
+        XCTAssertEqual(subIndexer.children[0].element?.name, "title")
+        XCTAssertEqual(subIndexer.children[1].element?.name, "genre")
+        XCTAssertEqual(subIndexer.children[2].element?.name, "price")
+        
+        XCTAssertEqual(subIndexer.children[0].element?.text, "Midnight Rain")
+        XCTAssertEqual(subIndexer.children[1].element?.text, "Fantasy")
+        XCTAssertEqual(subIndexer.children[2].element?.text, "5.95")
+        
+    }
+    
 }
 
 extension XMLParsingTests {
@@ -285,7 +327,9 @@ extension XMLParsingTests {
             ("testShouldProvideAnErrorObjectWhenKeysDontMatch", testShouldProvideAnErrorObjectWhenKeysDontMatch),
             ("testShouldProvideAnErrorElementWhenIndexersDontMatch", testShouldProvideAnErrorElementWhenIndexersDontMatch),
             ("testShouldStillReturnErrorsWhenAccessingViaSubscripting", testShouldStillReturnErrorsWhenAccessingViaSubscripting),
-            ("testShouldBeAbleToCreateASubIndexer", testShouldBeAbleToCreateASubIndexer)
+            ("testShouldBeAbleToCreateASubIndexer", testShouldBeAbleToCreateASubIndexer),
+            ("testShouldBeAbleToCreateASubIndexerFromFilter", testShouldBeAbleToCreateASubIndexerFromFilter),
+            ("testShouldBeAbleToCreateASubIndexerFromFilterAndIndexes", testShouldBeAbleToCreateASubIndexerFromFilterAndIndexes)
         ]
     }
 }

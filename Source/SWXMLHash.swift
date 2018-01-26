@@ -859,6 +859,30 @@ public class XMLElement: XMLContent {
         self.allAttributes = allAttributes
     }
     
+    public func filter(from start: Int, to end: Int) -> XMLIndexer {
+        
+        let subrangeChildren: [XMLContent] = children.enumerated().filter({
+            offset, element in
+            
+            return start <= offset && offset <= end
+            
+        }).map({$0.element})
+        
+        let elem = XMLElement(name: name, index: index, options: options, children: subrangeChildren, allAttributes: allAttributes)
+        
+        return XMLIndexer.element(elem)
+        
+    }
+    
+    public func filter(_ isIncluded: (XMLContent) -> Bool) -> XMLIndexer {
+
+        let subrangeChildren: [XMLContent] = children.filter(isIncluded)
+        let elem = XMLElement(name: name, index: index, options: options, children: subrangeChildren, allAttributes: allAttributes)
+        
+        return XMLIndexer.element(elem)
+        
+    }
+    
     /**
     Initialize a XMLIndexer based on this XMLElement instance and
     a subrange of it's (xml)children
@@ -867,6 +891,7 @@ public class XMLElement: XMLContent {
         - to: End index for a subrange of this XMLElement's instance children
         - filterByXmlChildren: Use only children of type XMLElement for the new indexer
     */
+    @available(*, deprecated)
     public func indexer(from start: Int, to end: Int, filterByXmlChildren: Bool) throws -> XMLIndexer {
         
         let sourceChildren: [XMLContent] = filterByXmlChildren ? xmlChildren : children
@@ -889,7 +914,7 @@ public class XMLElement: XMLContent {
         return XMLIndexer.element(elem)
         
     }
-
+    
     /**
     Adds a new XMLElement underneath this instance of XMLElement
 
