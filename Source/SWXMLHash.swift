@@ -567,6 +567,43 @@ public enum XMLIndexer {
         }
     }
 
+    public func filter(_ included: (_ elem: XMLElement, _ index: Int) -> Bool) -> XMLIndexer {
+        switch self {
+        case .list(let list):
+            let results = filterWithIndex(seq: list, included: included)
+            if results.count == 1 {
+                return XMLIndexer.element(results.first!)
+            }
+            return XMLIndexer.list(results)
+
+        case .element(let elem):
+            return XMLIndexer.list(filterWithIndex(seq: elem.xmlChildren, included: included))
+
+        case .stream(let ops):
+            let found = ops.findElements()
+
+            let list: [XMLElement]
+            if found.all.count == 1 {
+                list = found.children.map { $0.element! }
+            } else {
+                list = found.all.map { $0.element! }
+            }
+            let results = filterWithIndex(seq: list, included: included)
+            if results.count == 1 {
+                return XMLIndexer.element(results.first!)
+            }
+            return XMLIndexer.list(results)
+
+        default:
+            return XMLIndexer.list([])
+        }
+    }
+
+    private func filterWithIndex(seq: [XMLElement],
+                                 included: (_ elem: XMLElement, _ index: Int) -> Bool) -> [XMLElement] {
+        return zip(seq.indices, seq).filter { included($1, $0) }.map { $1 }
+    }
+
     /// All child elements from the currently indexed level
     public var children: [XMLIndexer] {
         var list = [XMLIndexer]()
@@ -867,6 +904,7 @@ public class XMLElement: XMLContent {
     - parameters:
         - name: The name of the element to be initialized
         - index: The index of the element to be initialized
+        - options: The SWXMLHash options
     */
     init(name: String, index: Int = 0, options: SWXMLHashOptions) {
         self.name = name

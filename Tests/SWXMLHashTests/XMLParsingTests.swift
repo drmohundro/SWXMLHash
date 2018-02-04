@@ -244,6 +244,47 @@ class XMLParsingTests: XCTestCase {
         }
         XCTAssertNotNil(err)
     }
+
+    func testShouldBeAbleToCreateASubIndexer() {
+        let subIndexer = xml!["root"]["catalog"]["book"][1].filter { _, index in index >= 1 && index <= 3 }
+
+        XCTAssertEqual(subIndexer[0].element?.name, "title")
+        XCTAssertEqual(subIndexer[1].element?.name, "genre")
+        XCTAssertEqual(subIndexer[2].element?.name, "price")
+
+        XCTAssertEqual(subIndexer[0].element?.text, "Midnight Rain")
+        XCTAssertEqual(subIndexer[1].element?.text, "Fantasy")
+        XCTAssertEqual(subIndexer[2].element?.text, "5.95")
+    }
+
+    func testShouldBeAbleToCreateASubIndexerFromFilter() {
+        let subIndexer = xml!["root"]["catalog"]["book"][1].filter { elem, _ in
+            let filterByNames = ["title", "genre", "price"]
+            return filterByNames.contains(elem.name)
+        }
+
+        XCTAssertEqual(subIndexer[0].element?.name, "title")
+        XCTAssertEqual(subIndexer[1].element?.name, "genre")
+        XCTAssertEqual(subIndexer[2].element?.name, "price")
+
+        XCTAssertEqual(subIndexer[0].element?.text, "Midnight Rain")
+        XCTAssertEqual(subIndexer[1].element?.text, "Fantasy")
+        XCTAssertEqual(subIndexer[2].element?.text, "5.95")
+    }
+
+    func testShouldBeAbleToFilterOnIndexer() {
+        let subIndexer = xml!["root"]["catalog"]["book"]
+            .filter { elem, _ in elem.attribute(by: "id")!.text == "bk102" }
+            .filter { _, index in index >= 1 && index <= 3 }
+
+        XCTAssertEqual(subIndexer[0].element?.name, "title")
+        XCTAssertEqual(subIndexer[1].element?.name, "genre")
+        XCTAssertEqual(subIndexer[2].element?.name, "price")
+
+        XCTAssertEqual(subIndexer[0].element?.text, "Midnight Rain")
+        XCTAssertEqual(subIndexer[1].element?.text, "Fantasy")
+        XCTAssertEqual(subIndexer[2].element?.text, "5.95")
+    }
 }
 
 extension XMLParsingTests {
@@ -269,7 +310,9 @@ extension XMLParsingTests {
             ("testShouldReturnNilWhenKeysDontMatch", testShouldReturnNilWhenKeysDontMatch),
             ("testShouldProvideAnErrorObjectWhenKeysDontMatch", testShouldProvideAnErrorObjectWhenKeysDontMatch),
             ("testShouldProvideAnErrorElementWhenIndexersDontMatch", testShouldProvideAnErrorElementWhenIndexersDontMatch),
-            ("testShouldStillReturnErrorsWhenAccessingViaSubscripting", testShouldStillReturnErrorsWhenAccessingViaSubscripting)
+            ("testShouldStillReturnErrorsWhenAccessingViaSubscripting", testShouldStillReturnErrorsWhenAccessingViaSubscripting),
+            ("testShouldBeAbleToCreateASubIndexerFromFilter", testShouldBeAbleToCreateASubIndexerFromFilter),
+            ("testShouldBeAbleToFilterOnIndexer", testShouldBeAbleToFilterOnIndexer)
         ]
     }
 }
