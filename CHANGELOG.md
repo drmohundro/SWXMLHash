@@ -1,3 +1,9 @@
+## v4.3.6 (January 21, 2018)
+
+* Fixed CDATA parsing in Linux (via
+  [#171](https://github.com/drmohundro/SWXMLHash/pull/175) and
+  [#167](https://github.com/drmohundro/SWXMLHash/issues/172))
+
 ## v4.3.5 (January 15, 2018)
 
 * Added `userInfo` support (via
