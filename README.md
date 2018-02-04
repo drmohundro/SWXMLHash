@@ -313,6 +313,48 @@ func enumerate(indexer: XMLIndexer) {
 enumerate(indexer: xml)
 ```
 
+### Filtering elements
+
+Given:
+
+```xml
+<root>
+  <catalog>
+    <book id=\"bk101\">
+      <author>Gambardella, Matthew</author>
+      <title>XML Developer's Guide</title>
+      <genre>Computer</genre><price>44.95</price>
+      <publish_date>2000-10-01</publish_date>
+    </book>
+    <book id=\"bk102\">
+      <author>Ralls, Kim</author>
+      <title>Midnight Rain</title>
+      <genre>Fantasy</genre>
+      <price>5.95</price>
+      <publish_date>2000-12-16</publish_date>
+    </book>
+    <book id=\"bk103\">
+      <author>Corets, Eva</author>
+      <title>Maeve Ascendant</title>
+      <genre>Fantasy</genre>
+      <price>5.95</price>
+      <publish_date>2000-11-17</publish_date>
+    </book>
+  </catalog>
+</root>
+```
+
+The following will return return "Midnight Rain". Filtering can be by any part
+of the `XMLElement` class or by index as well.
+
+```swift
+let subIndexer = xml!["root"]["catalog"]["book"]
+    .filter { elem, _ in elem.attribute(by: "id")!.text == "bk102" }
+    .filter { _, index in index >= 1 && index <= 3 }
+
+print(subIndexer[0].element?.text)
+```
+
 ### Error Handling
 
 Using Swift 2.0's new error handling feature:

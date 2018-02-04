@@ -1,3 +1,9 @@
+## v4.4.0 (February 4, 2018)
+
+* Added `filter` support (via
+  [#171](https://github.com/drmohundro/SWXMLHash/pull/174) and
+  [#167](https://github.com/drmohundro/SWXMLHash/issues/170))
+
 ## v4.3.6 (January 21, 2018)
 
 * Fixed CDATA parsing in Linux (via
