@@ -567,6 +567,43 @@ public enum XMLIndexer {
         }
     }
 
+    public func filter(_ included: (_ elem: XMLElement, _ index: Int) -> Bool) -> XMLIndexer {
+        switch self {
+        case .list(let list):
+            let results = filterWithIndex(seq: list, included: included)
+            if results.count == 1 {
+                return XMLIndexer.element(results.first!)
+            }
+            return XMLIndexer.list(results)
+
+        case .element(let elem):
+            return XMLIndexer.list(filterWithIndex(seq: elem.xmlChildren, included: included))
+
+        case .stream(let ops):
+            let found = ops.findElements()
+
+            let list: [XMLElement]
+            if found.all.count == 1 {
+                list = found.children.map { $0.element! }
+            } else {
+                list = found.all.map { $0.element! }
+            }
+            let results = filterWithIndex(seq: list, included: included)
+            if results.count == 1 {
+                return XMLIndexer.element(results.first!)
+            }
+            return XMLIndexer.list(results)
+
+        default:
+            return XMLIndexer.list([])
+        }
+    }
+
+    private func filterWithIndex(seq: [XMLElement],
+                                 included: (_ elem: XMLElement, _ index: Int) -> Bool) -> [XMLElement] {
+        return zip(seq.indices, seq).filter { included($1, $0) }.map { $1 }
+    }
+
     /// All child elements from the currently indexed level
     public var children: [XMLIndexer] {
         var list = [XMLIndexer]()
@@ -857,7 +894,7 @@ public class XMLElement: XMLContent {
     var index: Int
     let options: SWXMLHashOptions
 
-    public var xmlChildren: [XMLElement] {
+    var xmlChildren: [XMLElement] {
         return children.flatMap { $0 as? XMLElement }
     }
 
@@ -868,73 +905,13 @@ public class XMLElement: XMLContent {
         - name: The name of the element to be initialized
         - index: The index of the element to be initialized
         - options: The SWXMLHash options
-        - children: (Optional) children
-        - allAttributes: (Optional) attributes
     */
-    init(name: String, index: Int = 0, options: SWXMLHashOptions, children: [XMLContent] = [], allAttributes: [String: XMLAttribute] = [:]) {
+    init(name: String, index: Int = 0, options: SWXMLHashOptions) {
         self.name = name
         self.index = index
         self.options = options
-        self.children = children
-        self.allAttributes = allAttributes
     }
-    
-    public func filter(from start: Int, to end: Int) -> XMLIndexer {
-        
-        let subrangeChildren: [XMLContent] = children.enumerated().filter({
-            offset, element in
-            
-            return start <= offset && offset <= end
-            
-        }).map({$0.element})
-        
-        let elem = XMLElement(name: name, index: index, options: options, children: subrangeChildren, allAttributes: allAttributes)
-        
-        return XMLIndexer.element(elem)
-        
-    }
-    
-    public func filter(_ isIncluded: (XMLContent) -> Bool) -> XMLIndexer {
 
-        let subrangeChildren: [XMLContent] = children.filter(isIncluded)
-        let elem = XMLElement(name: name, index: index, options: options, children: subrangeChildren, allAttributes: allAttributes)
-        
-        return XMLIndexer.element(elem)
-        
-    }
-    
-    /**
-    Initialize a XMLIndexer based on this XMLElement instance and
-    a subrange of it's (xml)children
-     - parameters:
-        - from: Start index for a subrange of this XMLElement's instance children
-        - to: End index for a subrange of this XMLElement's instance children
-        - filterByXmlChildren: Use only children of type XMLElement for the new indexer
-    */
-    @available(*, deprecated)
-    public func indexer(from start: Int, to end: Int, filterByXmlChildren: Bool) throws -> XMLIndexer {
-        
-        let sourceChildren: [XMLContent] = filterByXmlChildren ? xmlChildren : children
-        
-        guard 0 <= start && start < sourceChildren.count else {
-            return XMLIndexer.xmlError(IndexingError.index(idx: start))
-        }
-        
-        guard 0 <= end && end < sourceChildren.count else {
-            return XMLIndexer.xmlError(IndexingError.index(idx: end))
-        }
-        
-        guard start <= end else {
-            return XMLIndexer.xmlError(IndexingError.index(idx: start))
-        }
-        
-        let subrangeChildren: [XMLContent] = Array(sourceChildren[start ... end])
-        let elem = XMLElement(name: name, index: index, options: options, children: subrangeChildren, allAttributes: allAttributes)
-        
-        return XMLIndexer.element(elem)
-        
-    }
-    
     /**
     Adds a new XMLElement underneath this instance of XMLElement
 

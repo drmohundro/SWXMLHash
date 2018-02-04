@@ -141,6 +141,20 @@ class LazyXMLParsingTests: XCTestCase {
     func testShouldReturnNilWhenKeysDontMatch() {
         XCTAssertNil(xml!["root"]["what"]["header"]["foo"].element?.name)
     }
+
+    func testShouldBeAbleToFilterOnIndexer() {
+        let subIndexer = xml!["root"]["catalog"]["book"]
+            .filter { elem, _ in elem.attribute(by: "id")!.text == "bk102" }
+            .filter { _, index in index >= 1 && index <= 3 }
+
+        XCTAssertEqual(subIndexer[0].element?.name, "title")
+        XCTAssertEqual(subIndexer[1].element?.name, "genre")
+        XCTAssertEqual(subIndexer[2].element?.name, "price")
+
+        XCTAssertEqual(subIndexer[0].element?.text, "Midnight Rain")
+        XCTAssertEqual(subIndexer[1].element?.text, "Fantasy")
+        XCTAssertEqual(subIndexer[2].element?.text, "5.95")
+    }
 }
 
 extension LazyXMLParsingTests {
@@ -158,7 +172,8 @@ extension LazyXMLParsingTests {
             ("testShouldBeAbleToHandleMixedContent", testShouldBeAbleToHandleMixedContent),
             ("testShouldHandleInterleavingXMLElements", testShouldHandleInterleavingXMLElements),
             ("testShouldBeAbleToProvideADescriptionForTheDocument", testShouldBeAbleToProvideADescriptionForTheDocument),
-            ("testShouldReturnNilWhenKeysDontMatch", testShouldReturnNilWhenKeysDontMatch)
+            ("testShouldReturnNilWhenKeysDontMatch", testShouldReturnNilWhenKeysDontMatch),
+            ("testShouldBeAbleToFilterOnIndexer", testShouldBeAbleToFilterOnIndexer)
         ]
     }
 }
