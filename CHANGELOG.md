@@ -1,3 +1,8 @@
+## v4.4.1 (February 5, 2018)
+
+* Fix issue with `filter` and deserialization (via
+  [#171](https://github.com/drmohundro/SWXMLHash/pull/177))
+
 ## v4.4.0 (February 4, 2018)
 
 * Added `filter` support (via
