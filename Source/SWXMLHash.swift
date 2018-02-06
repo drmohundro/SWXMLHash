@@ -570,14 +570,10 @@ public enum XMLIndexer {
     public func filter(_ included: (_ elem: XMLElement, _ index: Int) -> Bool) -> XMLIndexer {
         switch self {
         case .list(let list):
-            let results = filterWithIndex(seq: list, included: included)
-            if results.count == 1 {
-                return XMLIndexer.element(results.first!)
-            }
-            return XMLIndexer.list(results)
+            return handleFilteredResults(list: list, included: included)
 
         case .element(let elem):
-            return XMLIndexer.list(filterWithIndex(seq: elem.xmlChildren, included: included))
+            return handleFilteredResults(list: elem.xmlChildren, included: included)
 
         case .stream(let ops):
             let found = ops.findElements()
@@ -588,20 +584,21 @@ public enum XMLIndexer {
             } else {
                 list = found.all.map { $0.element! }
             }
-            let results = filterWithIndex(seq: list, included: included)
-            if results.count == 1 {
-                return XMLIndexer.element(results.first!)
-            }
-            return XMLIndexer.list(results)
+
+            return handleFilteredResults(list: list, included: included)
 
         default:
-            return XMLIndexer.list([])
+            return .list([])
         }
     }
 
-    private func filterWithIndex(seq: [XMLElement],
-                                 included: (_ elem: XMLElement, _ index: Int) -> Bool) -> [XMLElement] {
-        return zip(seq.indices, seq).filter { included($1, $0) }.map { $1 }
+    private func handleFilteredResults(list: [XMLElement],
+                                       included: (_ elem: XMLElement, _ index: Int) -> Bool) -> XMLIndexer {
+        let results = zip(list.indices, list).filter { included($1, $0) }.map { $1 }
+        if results.count == 1 {
+            return .element(results.first!)
+        }
+        return .list(results)
     }
 
     /// All child elements from the currently indexed level

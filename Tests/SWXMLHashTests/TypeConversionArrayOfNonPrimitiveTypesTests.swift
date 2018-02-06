@@ -212,6 +212,18 @@ class TypeConversionArrayOfNonPrimitiveTypesTests: XCTestCase {
             }
         }
     }
+
+    func testFilterAndSerializationShouldWork() {
+        do {
+            let subParser = parser!["root"]["arrayOfGoodBasicItems"].filter({ _, idx in idx == 0 })
+
+            let value: BasicItem = try subParser.value()
+
+            XCTAssertNotNil(value)
+        } catch {
+            XCTFail("\(error)")
+        }
+    }
 }
 
 extension TypeConversionArrayOfNonPrimitiveTypesTests {
@@ -229,7 +241,8 @@ extension TypeConversionArrayOfNonPrimitiveTypesTests {
             ("testShouldConvertArrayOfGoodAttributeItemsToArrayOfOptionals", testShouldConvertArrayOfGoodAttributeItemsToArrayOfOptionals),
             ("testShouldThrowWhenConvertingArrayOfBadAttributeItemsToNonOptional", testShouldThrowWhenConvertingArrayOfBadAttributeItemsToNonOptional),
             ("testShouldThrowWhenConvertingArrayOfBadAttributeItemsToOptional", testShouldThrowWhenConvertingArrayOfBadAttributeItemsToOptional),
-            ("testShouldThrowWhenConvertingArrayOfBadAttributeItemsToArrayOfOptionals", testShouldThrowWhenConvertingArrayOfBadAttributeItemsToArrayOfOptionals)
+            ("testShouldThrowWhenConvertingArrayOfBadAttributeItemsToArrayOfOptionals", testShouldThrowWhenConvertingArrayOfBadAttributeItemsToArrayOfOptionals),
+            ("testFilterAndSerializationShouldWork", testFilterAndSerializationShouldWork)
         ]
     }
 }
