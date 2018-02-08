@@ -596,8 +596,10 @@ public enum XMLIndexer {
                                        included: (_ elem: XMLElement, _ index: Int) -> Bool) -> XMLIndexer {
         let results = zip(list.indices, list).filter { included($1, $0) }.map { $1 }
         if results.count == 1 {
+            print("returning element")
             return .element(results.first!)
         }
+        print("returning list")
         return .list(results)
     }
 

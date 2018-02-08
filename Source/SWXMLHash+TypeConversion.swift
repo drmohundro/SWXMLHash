@@ -114,6 +114,7 @@ public extension XMLIndexer {
      - returns: The deserialized `T` value
      */
     func value<T: XMLAttributeDeserializable>(ofAttribute attr: String) throws -> T {
+        print("in attribute deserializable (throws)")
         switch self {
         case .element(let element):
             return try element.value(ofAttribute: attr)

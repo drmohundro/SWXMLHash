@@ -65,7 +65,7 @@ class TypeConversionBasicTypesTests: XCTestCase {
           <bool1>0</bool1>
           <bool2>true</bool2>
           <empty></empty>
-          <basicItem>
+          <basicItem id="1234">
             <name>the name of basic item</name>
             <price>99.14</price>
           </basicItem>
@@ -436,7 +436,7 @@ class TypeConversionBasicTypesTests: XCTestCase {
         XCTAssertEqual(value, true)
     }
 
-    let correctBasicItem = BasicItem(name: "the name of basic item", price: 99.14)
+    let correctBasicItem = BasicItem(name: "the name of basic item", price: 99.14, id: "1234")
 
     func testBasicItemShouldConvertBasicitemToNonOptional() {
         do {
@@ -566,6 +566,7 @@ class TypeConversionBasicTypesTests: XCTestCase {
 struct BasicItem: XMLIndexerDeserializable {
     let name: String
     let price: Double
+    let id: String
 
     static func deserialize(_ node: XMLIndexer) throws -> BasicItem {
         var name: String = try node["name"].value()
@@ -576,7 +577,8 @@ struct BasicItem: XMLIndexerDeserializable {
 
         return try BasicItem(
             name: name,
-            price: node["price"].value()
+            price: node["price"].value(),
+            id: node.value(ofAttribute: "id")
         )
     }
 }
@@ -592,6 +594,7 @@ struct AttributeItem: XMLElementDeserializable {
     let price: Double
 
     static func deserialize(_ element: SWXMLHash.XMLElement) throws -> AttributeItem {
+        print("my deserialize")
         return try AttributeItem(
             name: element.value(ofAttribute: "name"),
             price: element.value(ofAttribute: "price")
