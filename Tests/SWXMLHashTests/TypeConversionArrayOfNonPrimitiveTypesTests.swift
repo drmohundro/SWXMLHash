@@ -229,6 +229,20 @@ class TypeConversionArrayOfNonPrimitiveTypesTests: XCTestCase {
         }
     }
 
+    func testFilterAndSerializationSingleShouldWork() {
+        do {
+            let subParser = parser!["root"]["arrayOfGoodBasicItems"].filter { _, idx in idx == 0 }
+
+            let value: BasicItem = try subParser.value()
+
+            XCTAssertNotNil(value)
+            XCTAssertEqual(value.id, "1234a")
+            XCTAssertEqual(value.id, "1234a")
+        } catch {
+            XCTFail("\(error)")
+        }
+    }
+
     func testFilterAndSerializationShouldWork() {
         do {
             let subParser = parser!["root"]["arrayOfGoodBasicItems"].filter { _, idx in idx > 0 }

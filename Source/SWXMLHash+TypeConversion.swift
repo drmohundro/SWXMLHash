@@ -308,6 +308,7 @@ public extension XMLIndexer {
     - throws: an XMLDeserializationError is there is a problem with deserialization
     */
     func value<T: XMLIndexerDeserializable>() throws -> T {
+        print("in XMLIndexerDeserializable returns T")
         switch self {
         case .element:
             return try T.deserialize(self)
