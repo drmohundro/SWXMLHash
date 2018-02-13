@@ -144,8 +144,8 @@ class LazyXMLParsingTests: XCTestCase {
 
     func testShouldBeAbleToFilterOnIndexer() {
         let subIndexer = xml!["root"]["catalog"]["book"]
-            .filter { elem, _ in elem.attribute(by: "id")!.text == "bk102" }
-            .filter { _, index in index >= 1 && index <= 3 }
+            .filterAll { elem, _ in elem.attribute(by: "id")!.text == "bk102" }
+            .filterChildren { _, index in index >= 1 && index <= 3 }
 
         XCTAssertEqual(subIndexer[0].element?.name, "title")
         XCTAssertEqual(subIndexer[1].element?.name, "genre")

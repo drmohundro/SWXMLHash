@@ -550,68 +550,58 @@ public enum XMLIndexer {
 
     /// All elements at the currently indexed level
     public var all: [XMLIndexer] {
+        return allElements.map { XMLIndexer($0) }
+    }
+
+    private var allElements: [XMLElement] {
         switch self {
         case .list(let list):
-            var xmlList = [XMLIndexer]()
-            for elem in list {
-                xmlList.append(XMLIndexer(elem))
-            }
-            return xmlList
+            return list
         case .element(let elem):
-            return [XMLIndexer(elem)]
+            return [elem]
         case .stream(let ops):
             let list = ops.findElements()
-            return list.all
+            return list.allElements
         default:
             return []
         }
     }
 
-    public func filter(_ included: (_ elem: XMLElement, _ index: Int) -> Bool) -> XMLIndexer {
-        switch self {
-        case .list(let list):
-            return handleFilteredResults(list: list, included: included)
+    /// All child elements from the currently indexed level
+    public var children: [XMLIndexer] {
+        return childElements.map { XMLIndexer($0) }
+    }
 
-        case .element(let elem):
-            return handleFilteredResults(list: elem.xmlChildren, included: included)
-
-        case .stream(let ops):
-            let found = ops.findElements()
-
-            let list: [XMLElement]
-            if found.all.count == 1 {
-                list = found.children.map { $0.element! }
-            } else {
-                list = found.all.map { $0.element! }
+    private var childElements: [XMLElement] {
+        var list = [XMLElement]()
+        for elem in all.flatMap({ $0.element }) {
+            for elem in elem.xmlChildren {
+                list.append(elem)
             }
-
-            return handleFilteredResults(list: list, included: included)
-
-        default:
-            return .list([])
         }
+        return list
+    }
+
+    @available(*, unavailable, renamed: "filterChildren(_:)")
+    public func filter(_ included: (_ elem: XMLElement, _ index: Int) -> Bool) -> XMLIndexer {
+        return filterChildren(included)
+    }
+
+    public func filterChildren(_ included: (_ elem: XMLElement, _ index: Int) -> Bool) -> XMLIndexer {
+        return handleFilteredResults(list: childElements, included: included)
+    }
+
+    public func filterAll(_ included: (_ elem: XMLElement, _ index: Int) -> Bool) -> XMLIndexer {
+        return handleFilteredResults(list: allElements, included: included)
     }
 
     private func handleFilteredResults(list: [XMLElement],
                                        included: (_ elem: XMLElement, _ index: Int) -> Bool) -> XMLIndexer {
         let results = zip(list.indices, list).filter { included($1, $0) }.map { $1 }
         if results.count == 1 {
-            print("returning element")
             return .element(results.first!)
         }
-        print("returning list")
         return .list(results)
-    }
-
-    /// All child elements from the currently indexed level
-    public var children: [XMLIndexer] {
-        var list = [XMLIndexer]()
-        for elem in all.flatMap({ $0.element }) {
-            for elem in elem.xmlChildren {
-                list.append(XMLIndexer(elem))
-            }
-        }
-        return list
     }
 
     public var userInfo: [CodingUserInfoKey: Any] {
