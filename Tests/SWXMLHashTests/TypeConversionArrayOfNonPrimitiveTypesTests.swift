@@ -215,7 +215,7 @@ class TypeConversionArrayOfNonPrimitiveTypesTests: XCTestCase {
 
     func testFilterWithAttributesShouldWork() {
         do {
-            let subParser = parser!["root"]["arrayOfGoodAttributeItems"].filterChildren { _, idx in idx > 0 }
+            let subParser = parser!["root"]["arrayOfGoodAttributeItems"]["attributeItem"].filterAll { _, idx in idx > 0 }
 
             let values: [AttributeItem] = try subParser.value()
 
@@ -231,7 +231,7 @@ class TypeConversionArrayOfNonPrimitiveTypesTests: XCTestCase {
 
     func testFilterAndSerializationSingleShouldWork() {
         do {
-            let subParser = parser!["root"]["arrayOfGoodBasicItems"].filterChildren { _, idx in idx == 0 }
+            let subParser = parser!["root"]["arrayOfGoodBasicItems"]["basicItem"].filterAll { _, idx in idx == 0 }
 
             let value: BasicItem = try subParser.value()
 
@@ -245,7 +245,7 @@ class TypeConversionArrayOfNonPrimitiveTypesTests: XCTestCase {
 
     func testFilterAndSerializationShouldWork() {
         do {
-            let subParser = parser!["root"]["arrayOfGoodBasicItems"].filterChildren { _, idx in idx > 0 }
+            let subParser = parser!["root"]["arrayOfGoodBasicItems"]["basicItem"].filterAll { _, idx in idx > 0 }
 
             let values: [BasicItem] = try subParser.value()
 

@@ -588,7 +588,13 @@ public enum XMLIndexer {
     }
 
     public func filterChildren(_ included: (_ elem: XMLElement, _ index: Int) -> Bool) -> XMLIndexer {
-        return handleFilteredResults(list: childElements, included: included)
+        let children = handleFilteredResults(list: childElements, included: included)
+        if let current = self.element {
+            let filteredElem = XMLElement(name: current.name, index: current.index, options: current.options)
+            filteredElem.children = children.allElements
+            return .element(filteredElem)
+        }
+        return .xmlError(IndexingError.error)
     }
 
     public func filterAll(_ included: (_ elem: XMLElement, _ index: Int) -> Bool) -> XMLIndexer {
