@@ -37,7 +37,7 @@ class LazyTypesConversionTests: XCTestCase {
           <bool1>0</bool1>
           <bool2>true</bool2>
           <empty></empty>
-          <basicItem>
+          <basicItem id="1234">
             <name>the name of basic item</name>
             <price>99.14</price>
           </basicItem>

@@ -36,15 +36,15 @@ class TypeConversionComplexTypesTests: XCTestCase {
             <name>the name of complex item</name>
             <price>1024</price>
             <basicItems>
-              <basicItem>
+              <basicItem id="1234a">
                 <name>item 1</name>
                 <price>1</price>
               </basicItem>
-              <basicItem>
+              <basicItem id="1234a">
                 <name>item 2</name>
                 <price>2</price>
               </basicItem>
-              <basicItem>
+              <basicItem id="1234a">
                 <name>item 3</name>
                 <price>3</price>
               </basicItem>
@@ -63,9 +63,9 @@ class TypeConversionComplexTypesTests: XCTestCase {
         name: "the name of complex item",
         priceOptional: 1_024,
         basics: [
-            BasicItem(name: "item 1", price: 1),
-            BasicItem(name: "item 2", price: 2),
-            BasicItem(name: "item 3", price: 3)
+            BasicItem(name: "item 1", price: 1, id: "1234a"),
+            BasicItem(name: "item 2", price: 2, id: "1234b"),
+            BasicItem(name: "item 3", price: 3, id: "1234c")
         ],
         attrs: [
             AttributeItem(name: "attr1", price: 1.1),

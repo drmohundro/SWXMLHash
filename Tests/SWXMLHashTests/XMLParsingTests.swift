@@ -246,44 +246,61 @@ class XMLParsingTests: XCTestCase {
     }
 
     func testShouldBeAbleToCreateASubIndexer() {
-        let subIndexer = xml!["root"]["catalog"]["book"][1].filter { _, index in index >= 1 && index <= 3 }
+        let xmlToParse = """
+            <root>
+                <some-weird-element />
+                <another-weird-element />
+                <prop1 name="prop1" />
+                <prop2 name="prop2" />
+                <basicItem id="1234a">
+                    <name>item 1</name>
+                    <price>1</price>
+                </basicItem>
+                <prop3 name="prop3" />
+                <last-weird-element />
+            </root>
+        """
 
-        XCTAssertEqual(subIndexer[0].element?.name, "title")
-        XCTAssertEqual(subIndexer[1].element?.name, "genre")
-        XCTAssertEqual(subIndexer[2].element?.name, "price")
+        let parser = SWXMLHash.parse(xmlToParse)
 
-        XCTAssertEqual(subIndexer[0].element?.text, "Midnight Rain")
-        XCTAssertEqual(subIndexer[1].element?.text, "Fantasy")
-        XCTAssertEqual(subIndexer[2].element?.text, "5.95")
+        let subIndexer = parser["root"].filterChildren { _, index in index >= 2 && index <= 5 }
+
+        XCTAssertNil(subIndexer["some-weird-element"].element)
+        XCTAssertNil(subIndexer["another-weird-element"].element)
+        XCTAssertNotNil(subIndexer["prop1"].element)
+        XCTAssertNotNil(subIndexer["prop2"].element)
+        XCTAssertNotNil(subIndexer["basicItem"].element)
+        XCTAssertNotNil(subIndexer["prop3"].element)
+        XCTAssertNil(subIndexer["last-weird-element"].element)
     }
 
     func testShouldBeAbleToCreateASubIndexerFromFilter() {
-        let subIndexer = xml!["root"]["catalog"]["book"][1].filter { elem, _ in
+        let subIndexer = xml!["root"]["catalog"]["book"][1].filterChildren { elem, _ in
             let filterByNames = ["title", "genre", "price"]
             return filterByNames.contains(elem.name)
         }
 
-        XCTAssertEqual(subIndexer[0].element?.name, "title")
-        XCTAssertEqual(subIndexer[1].element?.name, "genre")
-        XCTAssertEqual(subIndexer[2].element?.name, "price")
+        XCTAssertEqual(subIndexer.children[0].element?.name, "title")
+        XCTAssertEqual(subIndexer.children[1].element?.name, "genre")
+        XCTAssertEqual(subIndexer.children[2].element?.name, "price")
 
-        XCTAssertEqual(subIndexer[0].element?.text, "Midnight Rain")
-        XCTAssertEqual(subIndexer[1].element?.text, "Fantasy")
-        XCTAssertEqual(subIndexer[2].element?.text, "5.95")
+        XCTAssertEqual(subIndexer.children[0].element?.text, "Midnight Rain")
+        XCTAssertEqual(subIndexer.children[1].element?.text, "Fantasy")
+        XCTAssertEqual(subIndexer.children[2].element?.text, "5.95")
     }
 
     func testShouldBeAbleToFilterOnIndexer() {
         let subIndexer = xml!["root"]["catalog"]["book"]
-            .filter { elem, _ in elem.attribute(by: "id")!.text == "bk102" }
-            .filter { _, index in index >= 1 && index <= 3 }
+            .filterAll { elem, _ in elem.attribute(by: "id")!.text == "bk102" }
+            .filterChildren { _, index in index >= 1 && index <= 3 }
 
-        XCTAssertEqual(subIndexer[0].element?.name, "title")
-        XCTAssertEqual(subIndexer[1].element?.name, "genre")
-        XCTAssertEqual(subIndexer[2].element?.name, "price")
+        XCTAssertEqual(subIndexer.children[0].element?.name, "title")
+        XCTAssertEqual(subIndexer.children[1].element?.name, "genre")
+        XCTAssertEqual(subIndexer.children[2].element?.name, "price")
 
-        XCTAssertEqual(subIndexer[0].element?.text, "Midnight Rain")
-        XCTAssertEqual(subIndexer[1].element?.text, "Fantasy")
-        XCTAssertEqual(subIndexer[2].element?.text, "5.95")
+        XCTAssertEqual(subIndexer.children[0].element?.text, "Midnight Rain")
+        XCTAssertEqual(subIndexer.children[1].element?.text, "Fantasy")
+        XCTAssertEqual(subIndexer.children[2].element?.text, "5.95")
     }
 }
 

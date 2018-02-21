@@ -136,24 +136,22 @@ class LazyXMLParsingTests: XCTestCase {
         XCTAssertEqual(parsed.description, "<root><foo><what id=\"myId\">puppies</what></foo></root>")
     }
 
-    // error handling
-
     func testShouldReturnNilWhenKeysDontMatch() {
         XCTAssertNil(xml!["root"]["what"]["header"]["foo"].element?.name)
     }
 
     func testShouldBeAbleToFilterOnIndexer() {
         let subIndexer = xml!["root"]["catalog"]["book"]
-            .filter { elem, _ in elem.attribute(by: "id")!.text == "bk102" }
-            .filter { _, index in index >= 1 && index <= 3 }
+            .filterAll { elem, _ in elem.attribute(by: "id")!.text == "bk102" }
+            .filterChildren { _, index in index >= 1 && index <= 3 }
 
-        XCTAssertEqual(subIndexer[0].element?.name, "title")
-        XCTAssertEqual(subIndexer[1].element?.name, "genre")
-        XCTAssertEqual(subIndexer[2].element?.name, "price")
+        XCTAssertEqual(subIndexer.children[0].element?.name, "title")
+        XCTAssertEqual(subIndexer.children[1].element?.name, "genre")
+        XCTAssertEqual(subIndexer.children[2].element?.name, "price")
 
-        XCTAssertEqual(subIndexer[0].element?.text, "Midnight Rain")
-        XCTAssertEqual(subIndexer[1].element?.text, "Fantasy")
-        XCTAssertEqual(subIndexer[2].element?.text, "5.95")
+        XCTAssertEqual(subIndexer.children[0].element?.text, "Midnight Rain")
+        XCTAssertEqual(subIndexer.children[1].element?.text, "Fantasy")
+        XCTAssertEqual(subIndexer.children[2].element?.text, "5.95")
     }
 }
 

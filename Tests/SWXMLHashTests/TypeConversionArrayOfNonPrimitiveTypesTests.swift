@@ -34,15 +34,15 @@ class TypeConversionArrayOfNonPrimitiveTypesTests: XCTestCase {
     let xmlWithArraysOfTypes = """
         <root>
           <arrayOfGoodBasicItems>
-            <basicItem>
+            <basicItem id="1234a">
               <name>item 1</name>
               <price>1</price>
             </basicItem>
-            <basicItem>
+            <basicItem id="1234b">
               <name>item 2</name>
               <price>2</price>
             </basicItem>
-            <basicItem>
+            <basicItem id="1234c">
               <name>item 3</name>
               <price>3</price>
             </basicItem>
@@ -75,9 +75,9 @@ class TypeConversionArrayOfNonPrimitiveTypesTests: XCTestCase {
     """
 
     let correctBasicItems = [
-        BasicItem(name: "item 1", price: 1),
-        BasicItem(name: "item 2", price: 2),
-        BasicItem(name: "item 3", price: 3)
+        BasicItem(name: "item 1", price: 1, id: "1234a"),
+        BasicItem(name: "item 2", price: 2, id: "1234b"),
+        BasicItem(name: "item 3", price: 3, id: "1234c")
     ]
 
     let correctAttributeItems = [
@@ -213,13 +213,45 @@ class TypeConversionArrayOfNonPrimitiveTypesTests: XCTestCase {
         }
     }
 
-    func testFilterAndSerializationShouldWork() {
+    func testFilterWithAttributesShouldWork() {
         do {
-            let subParser = parser!["root"]["arrayOfGoodBasicItems"].filter({ _, idx in idx == 0 })
+            let subParser = parser!["root"]["arrayOfGoodAttributeItems"]["attributeItem"].filterAll { _, idx in idx > 0 }
+
+            let values: [AttributeItem] = try subParser.value()
+
+            XCTAssertNotNil(values)
+            XCTAssertEqual(values[0].name, "attr 2")
+            XCTAssertEqual(values[0].price, 2.2)
+            XCTAssertEqual(values[1].name, "attr 3")
+            XCTAssertEqual(values[1].price, 3.3)
+        } catch {
+            XCTFail("\(error)")
+        }
+    }
+
+    func testFilterAndSerializationSingleShouldWork() {
+        do {
+            let subParser = parser!["root"]["arrayOfGoodBasicItems"]["basicItem"].filterAll { _, idx in idx == 0 }
 
             let value: BasicItem = try subParser.value()
 
             XCTAssertNotNil(value)
+            XCTAssertEqual(value.id, "1234a")
+            XCTAssertEqual(value.id, "1234a")
+        } catch {
+            XCTFail("\(error)")
+        }
+    }
+
+    func testFilterAndSerializationShouldWork() {
+        do {
+            let subParser = parser!["root"]["arrayOfGoodBasicItems"]["basicItem"].filterAll { _, idx in idx > 0 }
+
+            let values: [BasicItem] = try subParser.value()
+
+            XCTAssertNotNil(values)
+            XCTAssertEqual(values[0].id, "1234b")
+            XCTAssertEqual(values[1].id, "1234c")
         } catch {
             XCTFail("\(error)")
         }
