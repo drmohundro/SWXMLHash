@@ -1,13 +1,19 @@
+## v4.5.0 (February 21, 2018)
+
+* Changed `filter` support to `filterAll` and `filterChildren` (via
+  [#178](https://github.com/drmohundro/SWXMLHash/pull/178) and
+  [#170](https://github.com/drmohundro/SWXMLHash/issues/170))
+
 ## v4.4.1 (February 5, 2018)
 
 * Fix issue with `filter` and deserialization (via
-  [#171](https://github.com/drmohundro/SWXMLHash/pull/177))
+  [#177](https://github.com/drmohundro/SWXMLHash/pull/177))
 
 ## v4.4.0 (February 4, 2018)
 
 * Added `filter` support (via
-  [#171](https://github.com/drmohundro/SWXMLHash/pull/174) and
-  [#167](https://github.com/drmohundro/SWXMLHash/issues/170))
+  [#174](https://github.com/drmohundro/SWXMLHash/pull/174) and
+  [#170](https://github.com/drmohundro/SWXMLHash/issues/170))
 
 ## v4.3.6 (January 21, 2018)
 

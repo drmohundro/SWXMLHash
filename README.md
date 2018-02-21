@@ -349,10 +349,10 @@ of the `XMLElement` class or by index as well.
 
 ```swift
 let subIndexer = xml!["root"]["catalog"]["book"]
-    .filter { elem, _ in elem.attribute(by: "id")!.text == "bk102" }
-    .filter { _, index in index >= 1 && index <= 3 }
+    .filterAll { elem, _ in elem.attribute(by: "id")!.text == "bk102" }
+    .filterChildren { _, index in index >= 1 && index <= 3 }
 
-print(subIndexer[0].element?.text)
+print(subIndexer.children[0].element?.text)
 ```
 
 ### Error Handling
