@@ -425,9 +425,16 @@ class FullXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
     }
 
     func parser(_ parser: XMLParser, parseErrorOccurred parseError: Error) {
+#if os(Linux)
+        if let err = parseError as? NSError {
+            parsingError = ParsingError(line: err.userInfo["NSXMLParserErrorLineNumber"] as? Int ?? 0,
+                                        column: err.userInfo["NSXMLParserErrorColumn"] as? Int ?? 0)
+        }
+#else
         let err = parseError as NSError
         parsingError = ParsingError(line: err.userInfo["NSXMLParserErrorLineNumber"] as? Int ?? 0,
                                     column: err.userInfo["NSXMLParserErrorColumn"] as? Int ?? 0)
+#endif
     }
 }
 

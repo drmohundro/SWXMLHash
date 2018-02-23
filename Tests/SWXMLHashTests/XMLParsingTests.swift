@@ -320,9 +320,11 @@ class XMLParsingTests: XCTestCase {
 
         XCTAssertNotNil(err)
 
+#if !os(Linux)
         if err != nil {
             XCTAssert(err!.line == 1)
         }
+#endif
     }
 }
 
