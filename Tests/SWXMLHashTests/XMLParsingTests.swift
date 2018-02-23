@@ -27,6 +27,7 @@ import SWXMLHash
 import XCTest
 
 // swiftlint:disable line_length
+// swiftlint:disable type_body_length
 
 class XMLParsingTests: XCTestCase {
     let xmlToParse = """
