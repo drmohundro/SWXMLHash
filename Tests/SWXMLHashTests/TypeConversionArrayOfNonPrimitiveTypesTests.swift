@@ -114,7 +114,7 @@ class TypeConversionArrayOfNonPrimitiveTypesTests: XCTestCase {
     func testShouldConvertArrayOfGoodBasicitemsItemsToArrayOfOptionals() {
         do {
             let value: [BasicItem?] = try parser!["root"]["arrayOfGoodBasicItems"]["basicItem"].value()
-            XCTAssertEqual(value.flatMap({ $0 }), correctBasicItems)
+            XCTAssertEqual(value.compactMap({ $0 }), correctBasicItems)
         } catch {
             XCTFail("\(error)")
         }
@@ -180,7 +180,7 @@ class TypeConversionArrayOfNonPrimitiveTypesTests: XCTestCase {
     func testShouldConvertArrayOfGoodAttributeItemsToArrayOfOptionals() {
         do {
             let value: [AttributeItem?] = try parser!["root"]["arrayOfGoodAttributeItems"]["attributeItem"].value()
-            XCTAssertEqual(value.flatMap({ $0 }), correctAttributeItems)
+            XCTAssertEqual(value.compactMap({ $0 }), correctAttributeItems)
         } catch {
             XCTFail("\(error)")
         }

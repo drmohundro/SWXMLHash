@@ -76,7 +76,7 @@ class TypeConversionPrimitypeTypesTests: XCTestCase {
     func testShouldConvertArrayOfGoodIntsToArrayOfOptionals() {
         do {
             let value: [Int?] = try parser!["root"]["arrayOfGoodInts"]["int"].value()
-            XCTAssertEqual(value.flatMap({ $0 }), [0, 1, 2, 3])
+            XCTAssertEqual(value.compactMap({ $0 }), [0, 1, 2, 3])
         } catch {
             XCTFail("\(error)")
         }
@@ -160,7 +160,7 @@ class TypeConversionPrimitypeTypesTests: XCTestCase {
     func testShouldConvertArrayOfAttributeIntsToArrayOfOptionals() {
         do {
             let value: [Int?] = try parser!["root"]["arrayOfAttributeInts"]["int"].value(ofAttribute: "value")
-            XCTAssertEqual(value.flatMap({ $0 }), [0, 1, 2, 3])
+            XCTAssertEqual(value.compactMap({ $0 }), [0, 1, 2, 3])
         } catch {
             XCTFail("\(error)")
         }
