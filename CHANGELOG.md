@@ -1,3 +1,8 @@
+## v4.5.1 (March 8, 2018)
+
+* Swift 4.1 deprecation warnings silenced (via
+  [#181](https://github.com/drmohundro/SWXMLHash/pull/181))
+
 ## v4.5.0 (February 21, 2018)
 
 * Changed `filter` support to `filterAll` and `filterChildren` (via
