@@ -27,6 +27,7 @@ import SWXMLHash
 import XCTest
 
 // swiftlint:disable line_length
+// swiftlint:disable type_body_length
 
 class XMLParsingTests: XCTestCase {
     let xmlToParse = """
@@ -302,6 +303,29 @@ class XMLParsingTests: XCTestCase {
         XCTAssertEqual(subIndexer.children[1].element?.text, "Fantasy")
         XCTAssertEqual(subIndexer.children[2].element?.text, "5.95")
     }
+
+    func testShouldThrowErrorForInvalidXML() {
+        let invalidXML = "<uh oh>what is this"
+        var err: ParsingError? = nil
+        let parser = SWXMLHash.config { config in
+            config.detectParsingErrors = true
+        }.parse(invalidXML)
+
+        switch parser {
+        case .parsingError(let error):
+            err = error
+        default:
+            err = nil
+        }
+
+        XCTAssertNotNil(err)
+
+#if !os(Linux)
+        if err != nil {
+            XCTAssert(err!.line == 1)
+        }
+#endif
+    }
 }
 
 extension XMLParsingTests {
@@ -329,7 +353,8 @@ extension XMLParsingTests {
             ("testShouldProvideAnErrorElementWhenIndexersDontMatch", testShouldProvideAnErrorElementWhenIndexersDontMatch),
             ("testShouldStillReturnErrorsWhenAccessingViaSubscripting", testShouldStillReturnErrorsWhenAccessingViaSubscripting),
             ("testShouldBeAbleToCreateASubIndexerFromFilter", testShouldBeAbleToCreateASubIndexerFromFilter),
-            ("testShouldBeAbleToFilterOnIndexer", testShouldBeAbleToFilterOnIndexer)
+            ("testShouldBeAbleToFilterOnIndexer", testShouldBeAbleToFilterOnIndexer),
+            ("testShouldThrowErrorForInvalidXML", testShouldThrowErrorForInvalidXML)
         ]
     }
 }

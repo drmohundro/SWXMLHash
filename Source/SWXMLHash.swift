@@ -53,6 +53,10 @@ public class SWXMLHashOptions {
 
     /// Any contextual information set by the user for encoding
     public var userInfo = [CodingUserInfoKey: Any]()
+
+    /// Detect XML parsing errors... defaults to false as this library will
+    /// attempt to handle HTML which isn't always XML-compatible
+    public var detectParsingErrors = false
 }
 
 /// Simple XML parser
@@ -223,9 +227,11 @@ extension XMLParserDelegate {
                 didStartMappingPrefix prefix: String,
                 toURI namespaceURI: String) { }
 
-    func parser(_ parser: Foundation.XMLParser, didEndMappingPrefix prefix: String) { }
+    func parser(_ parser: Foundation.XMLParser,
+                didEndMappingPrefix prefix: String) { }
 
-    func parser(_ parser: Foundation.XMLParser, foundCharacters string: String) { }
+    func parser(_ parser: Foundation.XMLParser,
+                foundCharacters string: String) { }
 
     func parser(_ parser: Foundation.XMLParser,
                 foundIgnorableWhitespace whitespaceString: String) { }
@@ -234,18 +240,21 @@ extension XMLParserDelegate {
                 foundProcessingInstructionWithTarget target: String,
                 data: String?) { }
 
-    func parser(_ parser: Foundation.XMLParser, foundComment comment: String) { }
+    func parser(_ parser: Foundation.XMLParser,
+                foundComment comment: String) { }
 
-    func parser(_ parser: Foundation.XMLParser, foundCDATA CDATABlock: Data) { }
+    func parser(_ parser: Foundation.XMLParser,
+                foundCDATA CDATABlock: Data) { }
 
     func parser(_ parser: Foundation.XMLParser,
                 resolveExternalEntityName name: String,
                 systemID: String?) -> Data? { return nil }
 
-    func parser(_ parser: Foundation.XMLParser, parseErrorOccurred parseError: NSError) { }
+    func parser(_ parser: Foundation.XMLParser,
+                parseErrorOccurred parseError: Error) { }
 
     func parser(_ parser: Foundation.XMLParser,
-                validationErrorOccurred validationError: NSError) { }
+                validationErrorOccurred validationError: Error) { }
 }
 
 #endif
@@ -360,6 +369,7 @@ class FullXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
     let root: XMLElement
     var parentStack = Stack<XMLElement>()
     let options: SWXMLHashOptions
+    var parsingError: ParsingError?
 
     func parse(_ data: Data) -> XMLIndexer {
         // clear any prior runs of parse... expected that this won't be necessary,
@@ -373,7 +383,11 @@ class FullXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
         parser.delegate = self
         _ = parser.parse()
 
-        return XMLIndexer(root)
+        if options.detectParsingErrors, let err = parsingError {
+            return XMLIndexer.parsingError(err)
+        } else {
+            return XMLIndexer(root)
+        }
     }
 
     func parser(_ parser: Foundation.XMLParser,
@@ -409,6 +423,19 @@ class FullXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
 
             current.addText(cdataText)
         }
+    }
+
+    func parser(_ parser: XMLParser, parseErrorOccurred parseError: Error) {
+#if os(Linux)
+        if let err = parseError as? NSError {
+            parsingError = ParsingError(line: err.userInfo["NSXMLParserErrorLineNumber"] as? Int ?? 0,
+                                        column: err.userInfo["NSXMLParserErrorColumn"] as? Int ?? 0)
+        }
+#else
+        let err = parseError as NSError
+        parsingError = ParsingError(line: err.userInfo["NSXMLParserErrorLineNumber"] as? Int ?? 0,
+                                    column: err.userInfo["NSXMLParserErrorColumn"] as? Int ?? 0)
+#endif
     }
 }
 
@@ -465,6 +492,11 @@ public class IndexOps {
     }
 }
 
+public struct ParsingError: Error {
+    public let line: Int
+    public let column: Int
+}
+
 /// Error type that is thrown when an indexing or parsing operation fails.
 public enum IndexingError: Error {
     case attribute(attr: String)
@@ -510,6 +542,7 @@ public enum XMLIndexer {
     case list([XMLElement])
     case stream(IndexOps)
     case xmlError(IndexingError)
+    case parsingError(ParsingError)
 
 // swiftlint:disable identifier_name
     // unavailable
