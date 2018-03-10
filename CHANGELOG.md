@@ -1,3 +1,9 @@
+## v4.6.0 (March 10, 2018)
+
+* Added XML validation config option (via
+  [#169](https://github.com/drmohundro/SWXMLHash/pull/169) and
+  [#141](https://github.com/drmohundro/SWXMLHash/issues/141))
+
 ## v4.5.1 (March 8, 2018)
 
 * Swift 4.1 deprecation warnings silenced (via
