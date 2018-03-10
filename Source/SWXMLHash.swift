@@ -56,7 +56,8 @@ public class SWXMLHashOptions {
 
     /// Detect XML parsing errors... defaults to false as this library will
     /// attempt to handle HTML which isn't always XML-compatible
-    public var detectParsingErrors = false }
+    public var detectParsingErrors = false
+}
 
 /// Simple XML parser
 public class SWXMLHash {
