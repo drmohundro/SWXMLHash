@@ -205,6 +205,13 @@ class XMLParsingTests: XCTestCase {
         XCTAssertEqual(parsed.description, "<root><foo><what id=\"myId\">puppies</what></foo></root>")
     }
 
+    func testShouldBeAbleToGetInnerXML() {
+        let testXML = "<root><foo><what id=\"myId\">puppies</what><elems><elem>1</elem><elem>2</elem></elems></foo></root>"
+        let parsed = SWXMLHash.parse(testXML)
+
+        XCTAssertEqual(parsed["root"]["foo"].element!.innerXML, "<what id=\"myId\">puppies</what><elems><elem>1</elem><elem>2</elem></elems>")
+    }
+
     // error handling
 
     func testShouldReturnNilWhenKeysDontMatch() {
