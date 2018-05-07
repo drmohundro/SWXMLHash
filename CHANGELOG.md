@@ -1,3 +1,9 @@
+## v4.7.0 (May 7, 2018)
+
+* Added `innerXML` to elements (via
+  [#188](https://github.com/drmohundro/SWXMLHash/pull/188) and
+  [#168](https://github.com/drmohundro/SWXMLHash/issues/168))
+
 ## v4.6.0 (March 10, 2018)
 
 * Added XML validation config option (via
