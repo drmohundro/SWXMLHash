@@ -1,3 +1,7 @@
+## v4.7.1 (August 4, 2018)
+
+* Bump `SWIFT_VERSION` to `4.0` (via [#191](https://github.com/drmohundro/SWXMLHash/pull/191))
+
 ## v4.7.0 (May 7, 2018)
 
 * Added `innerXML` to elements (via
