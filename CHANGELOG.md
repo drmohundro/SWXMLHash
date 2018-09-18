@@ -1,3 +1,7 @@
+## v4.7.2 (September 18, 2018)
+
+* Bump `WATCHOS_DEPLOYMENT_TARGET` to `3.0` (via [#193](https://github.com/drmohundro/SWXMLHash/pull/193))
+
 ## v4.7.1 (August 4, 2018)
 
 * Bump `SWIFT_VERSION` to `4.0` (via [#191](https://github.com/drmohundro/SWXMLHash/pull/191))
