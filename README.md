@@ -83,7 +83,7 @@ Swift Package Manager requires Swift version 4.0 or higher. First, create a
 
 ```swift
 dependencies: [
-    .Package(url: "https://github.com/drmohundro/SWXMLHash.git", from: "4.0.0")
+    .package(url: "https://github.com/drmohundro/SWXMLHash.git", from: "4.0.0")
 ]
 ```
 
