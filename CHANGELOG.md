@@ -1,4 +1,4 @@
-## v4.7.3 (October 15, 2018)
+## v4.7.4 (October 15, 2018)
 
 - Add `swift_version` to `SWXMLHash.podspec` (via [#198](https://github.com/drmohundro/SWXMLHash/pull/198))
 
