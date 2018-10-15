@@ -12,6 +12,7 @@ Pod::Spec.new do |s|
     'APPLICATION_EXTENSION_API_ONLY' => 'YES'
   }
 
+  s.swift_version = '4.2'
   s.osx.deployment_target = '10.9'
   s.ios.deployment_target = '8.0'
   s.watchos.deployment_target = '2.0'
