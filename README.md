@@ -51,7 +51,7 @@ platform :ios, '10.0'
 use_frameworks!
 
 target 'YOUR_TARGET_NAME' do
-  pod 'SWXMLHash', '~> 4.7.4'
+  pod 'SWXMLHash', '~> 4.7.0'
 end
 ```
 
@@ -83,7 +83,7 @@ Swift Package Manager requires Swift version 4.0 or higher. First, create a
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/drmohundro/SWXMLHash.git", from: "4.7.4")
+    .package(url: "https://github.com/drmohundro/SWXMLHash.git", from: "4.7.0")
 ]
 ```
 
