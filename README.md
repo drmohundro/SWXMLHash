@@ -252,7 +252,7 @@ Alternatively, you can look up an element with specific attributes. The below
 will return "John".
 
 ```swift
-xml["root"]["catalog"]["book"].withAttr("id", "123")["author"].element?.text
+xml["root"]["catalog"]["book"].withAttribute("id", "123")["author"].element?.text
 ```
 
 ### Returning All Elements At Current Level
