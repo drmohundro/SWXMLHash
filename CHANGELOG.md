@@ -1,3 +1,7 @@
+## v4.7.5 (November 26, 2018)
+
+- Fix cast warning with Swift 4.2 on Linux (via [#201](https://github.com/drmohundro/SWXMLHash/pull/201))
+
 ## v4.7.4 (October 15, 2018)
 
 - Add `swift_version` to `SWXMLHash.podspec` (via [#198](https://github.com/drmohundro/SWXMLHash/pull/198))
