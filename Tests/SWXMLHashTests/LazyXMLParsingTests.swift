@@ -73,6 +73,11 @@ class LazyXMLParsingTests: XCTestCase {
         XCTAssertEqual(xml!["root"]["header"]["title"].element?.text, "Test Title Header")
     }
 
+    func testShouldBeAbleToHandleSubsequentParseCalls() {
+        XCTAssertEqual(xml!["root"]["header"]["title"].element?.text, "Test Title Header")
+        XCTAssertEqual(xml!["root"]["catalog"]["book"][1]["author"].element?.text, "Ralls, Kim")
+    }
+
     func testShouldBeAbleToParseElementGroups() {
         XCTAssertEqual(xml!["root"]["catalog"]["book"][1]["author"].element?.text, "Ralls, Kim")
     }

@@ -267,7 +267,7 @@ class LazyXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
         super.init()
     }
 
-    let root: XMLElement
+    var root: XMLElement
     var parentStack = Stack<XMLElement>()
     var elementStack = Stack<String>()
 
@@ -281,8 +281,8 @@ class LazyXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
     }
 
     func startParsing(_ ops: [IndexOp]) {
-        // clear any prior runs of parse... expected that this won't be necessary,
-        // but you never know
+        // reset state for a new lazy parsing run
+        root = XMLElement(name: rootElementName, options: root.options)
         parentStack.removeAll()
         parentStack.push(root)
 
