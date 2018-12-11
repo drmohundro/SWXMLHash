@@ -1,3 +1,9 @@
+## v4.7.6 (December 11, 2018)
+
+- Fix issue with lazy parsing and multiple calls (via
+  [#204](https://github.com/drmohundro/SWXMLHash/pull/204) and
+  [#203](https://github.com/drmohundro/SWXMLHash/issues/203))
+
 ## v4.7.5 (November 26, 2018)
 
 - Fix cast warning with Swift 4.2 on Linux (via [#201](https://github.com/drmohundro/SWXMLHash/pull/201))
