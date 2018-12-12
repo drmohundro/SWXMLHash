@@ -484,11 +484,11 @@ public enum XMLDeserializationError: Error, CustomStringConvertible {
             return "This node is invalid: \(node)"
         case .nodeHasNoValue:
             return "This node is empty"
-        case .typeConversionFailed(let type, let node):
+        case let .typeConversionFailed(type, node):
             return "Can't convert node \(node) to value of type \(type)"
-        case .attributeDoesNotExist(let element, let attribute):
+        case let .attributeDoesNotExist(element, attribute):
             return "Element \(element) does not contain attribute: \(attribute)"
-        case .attributeDeserializationFailed(let type, let attribute):
+        case let .attributeDeserializationFailed(type, attribute):
             return "Can't convert attribute \(attribute) to value of type \(type)"
         }
     }

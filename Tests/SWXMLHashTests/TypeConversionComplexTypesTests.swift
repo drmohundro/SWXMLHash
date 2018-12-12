@@ -75,6 +75,7 @@ class TypeConversionComplexTypesTests: XCTestCase {
     )
 
     override func setUp() {
+        super.setUp()
         parser = SWXMLHash.parse(xmlWithComplexType)
     }
 
@@ -149,10 +150,10 @@ struct ComplexItem: XMLIndexerDeserializable {
     }
 }
 
-extension ComplexItem: Equatable {}
-
-func == (a: ComplexItem, b: ComplexItem) -> Bool {
-    return a.name == b.name && a.priceOptional == b.priceOptional && a.basics == b.basics && a.attrs == b.attrs
+extension ComplexItem: Equatable {
+    static func == (a: ComplexItem, b: ComplexItem) -> Bool {
+        return a.name == b.name && a.priceOptional == b.priceOptional && a.basics == b.basics && a.attrs == b.attrs
+    }
 }
 
 extension TypeConversionComplexTypesTests {

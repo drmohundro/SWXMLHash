@@ -101,7 +101,7 @@ class XMLParsingTests: XCTestCase {
 
     func testShouldBeAbleToLookUpElementsByNameAndAttributeCaseInsensitive() {
         do {
-            let xmlInsensitive = SWXMLHash.config({ (config) in
+            let xmlInsensitive = SWXMLHash.config({ config in
                 config.caseInsensitive = true
             }).parse(xmlToParse)
             let value = try xmlInsensitive["rOOt"]["catalOg"]["bOOk"].withAttribute("iD", "Bk102")["authOr"].element?.text
@@ -243,7 +243,7 @@ class XMLParsingTests: XCTestCase {
     }
 
     func testShouldStillReturnErrorsWhenAccessingViaSubscripting() {
-        var err: IndexingError? = nil
+        var err: IndexingError?
         switch xml!["what"]["subelement"][5]["nomatch"] {
         case .xmlError(let error):
             err = error
@@ -313,7 +313,7 @@ class XMLParsingTests: XCTestCase {
 
     func testShouldThrowErrorForInvalidXML() {
         let invalidXML = "<uh oh>what is this"
-        var err: ParsingError? = nil
+        var err: ParsingError?
         let parser = SWXMLHash.config { config in
             config.detectParsingErrors = true
         }.parse(invalidXML)
