@@ -7,10 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		54B83CC51C849D9B00D588B5 /* SWXMLHash+TypeConversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B83CC41C849D9B00D588B5 /* SWXMLHash+TypeConversion.swift */; };
-		54B83CC61C849D9B00D588B5 /* SWXMLHash+TypeConversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B83CC41C849D9B00D588B5 /* SWXMLHash+TypeConversion.swift */; };
-		54B83CC71C849D9B00D588B5 /* SWXMLHash+TypeConversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B83CC41C849D9B00D588B5 /* SWXMLHash+TypeConversion.swift */; };
-		54B83CC81C849D9B00D588B5 /* SWXMLHash+TypeConversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B83CC41C849D9B00D588B5 /* SWXMLHash+TypeConversion.swift */; };
 		6C42BED1205183A100137D31 /* shim.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C42BECC2051834B00137D31 /* shim.swift */; };
 		6C42BED2205183A100137D31 /* shim.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C42BECC2051834B00137D31 /* shim.swift */; };
 		6C42BED3205183A100137D31 /* shim.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C42BECC2051834B00137D31 /* shim.swift */; };
@@ -27,6 +23,7 @@
 		CD7934C51A7581F200867857 /* SWXMLHash.h in Headers */ = {isa = PBXBuildFile; fileRef = CD6083F4196CA106000B4F8D /* SWXMLHash.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CD7934C61A7581F500867857 /* SWXMLHash.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD60840B196CA11D000B4F8D /* SWXMLHash.swift */; };
 		CD9D05371A757D8B003CCB21 /* SWXMLHash.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD9D052C1A757D8B003CCB21 /* SWXMLHash.framework */; };
+		CDC15E6E21C0B266006CBEA8 /* XMLIndexer+XMLIndexerDeserializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC15E6D21C0B266006CBEA8 /* XMLIndexer+XMLIndexerDeserializable.swift */; };
 		CDC6D11B1D32D6CE00570DE5 /* XMLParsingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC6D11A1D32D6CE00570DE5 /* XMLParsingTests.swift */; };
 		CDC6D11C1D32D6CE00570DE5 /* XMLParsingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC6D11A1D32D6CE00570DE5 /* XMLParsingTests.swift */; };
 		CDC6D11D1D32D6CE00570DE5 /* XMLParsingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC6D11A1D32D6CE00570DE5 /* XMLParsingTests.swift */; };
@@ -122,7 +119,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		54B83CC41C849D9B00D588B5 /* SWXMLHash+TypeConversion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SWXMLHash+TypeConversion.swift"; sourceTree = "<group>"; };
 		6C0CE0F01D7440F8005F1248 /* LinuxShims.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinuxShims.swift; sourceTree = "<group>"; };
 		6C42BECC2051834B00137D31 /* shim.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = shim.swift; sourceTree = "<group>"; };
 		6C42BED4205183AF00137D31 /* shim.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = shim.swift; sourceTree = "<group>"; };
@@ -136,6 +132,7 @@
 		CD60840B196CA11D000B4F8D /* SWXMLHash.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SWXMLHash.swift; sourceTree = "<group>"; };
 		CD9D052C1A757D8B003CCB21 /* SWXMLHash.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SWXMLHash.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD9D05361A757D8B003CCB21 /* SWXMLHash OSX Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SWXMLHash OSX Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CDC15E6D21C0B266006CBEA8 /* XMLIndexer+XMLIndexerDeserializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XMLIndexer+XMLIndexerDeserializable.swift"; sourceTree = "<group>"; };
 		CDC6D11A1D32D6CE00570DE5 /* XMLParsingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XMLParsingTests.swift; sourceTree = "<group>"; };
 		CDC6D11E1D32D70800570DE5 /* WhiteSpaceParsingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WhiteSpaceParsingTests.swift; sourceTree = "<group>"; };
 		CDC6D1221D32D73900570DE5 /* MixedTextWithXMLElementsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MixedTextWithXMLElementsTests.swift; sourceTree = "<group>"; };
@@ -241,11 +238,11 @@
 		CD6083F1196CA106000B4F8D /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				6C42BED4205183AF00137D31 /* shim.swift */,
 				CD6083F2196CA106000B4F8D /* Supporting Files */,
 				CD6083F4196CA106000B4F8D /* SWXMLHash.h */,
 				CD60840B196CA11D000B4F8D /* SWXMLHash.swift */,
-				54B83CC41C849D9B00D588B5 /* SWXMLHash+TypeConversion.swift */,
-				6C42BED4205183AF00137D31 /* shim.swift */,
+				CDC15E6D21C0B266006CBEA8 /* XMLIndexer+XMLIndexerDeserializable.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -265,11 +262,13 @@
 				CDC6D1321D32D7C300570DE5 /* LazyTypesConversionTests.swift */,
 				CDC6D12A1D32D77F00570DE5 /* LazyWhiteSpaceParsingTests.swift */,
 				CDC6D1261D32D76400570DE5 /* LazyXMLParsingTests.swift */,
+				6C477A9C1D702C0900D76FCA /* LinuxMain.swift */,
+				6C0CE0F01D7440F8005F1248 /* LinuxShims.swift */,
 				CDC6D1221D32D73900570DE5 /* MixedTextWithXMLElementsTests.swift */,
 				CDC7F33C1B0ACC98006BF6E7 /* OSX */,
+				6C42BECC2051834B00137D31 /* shim.swift */,
 				CD6083FF196CA106000B4F8D /* Supporting Files */,
 				CDC6D12E1D32D79F00570DE5 /* SWXMLHashConfigTests.swift */,
-				6C42BECC2051834B00137D31 /* shim.swift */,
 				CD4B5F3919E2C42D005C1F33 /* test.xml */,
 				CD291F1E1BF635BE009A1FA6 /* tvOS */,
 				CDC6D1421D32D9D200570DE5 /* TypeConversionArrayOfNonPrimitiveTypesTests.swift */,
@@ -278,8 +277,6 @@
 				CDC6D13E1D32D98400570DE5 /* TypeConversionPrimitypeTypesTests.swift */,
 				CDC6D11E1D32D70800570DE5 /* WhiteSpaceParsingTests.swift */,
 				CDC6D11A1D32D6CE00570DE5 /* XMLParsingTests.swift */,
-				6C0CE0F01D7440F8005F1248 /* LinuxShims.swift */,
-				6C477A9C1D702C0900D76FCA /* LinuxMain.swift */,
 			);
 			name = Tests;
 			path = Tests/SWXMLHashTests;
@@ -598,8 +595,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				6C42BED8205183B000137D31 /* shim.swift in Sources */,
+				CDC15E6E21C0B266006CBEA8 /* XMLIndexer+XMLIndexerDeserializable.swift in Sources */,
 				CD60840C196CA11D000B4F8D /* SWXMLHash.swift in Sources */,
-				54B83CC51C849D9B00D588B5 /* SWXMLHash+TypeConversion.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -628,7 +625,6 @@
 			files = (
 				6C42BED5205183B000137D31 /* shim.swift in Sources */,
 				CD7934C61A7581F500867857 /* SWXMLHash.swift in Sources */,
-				54B83CC61C849D9B00D588B5 /* SWXMLHash+TypeConversion.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -657,7 +653,6 @@
 			files = (
 				6C42BED6205183B000137D31 /* shim.swift in Sources */,
 				CDEA72731C00B0D900C10B28 /* SWXMLHash.swift in Sources */,
-				54B83CC71C849D9B00D588B5 /* SWXMLHash+TypeConversion.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -686,7 +681,6 @@
 			files = (
 				6C42BED7205183B000137D31 /* shim.swift in Sources */,
 				CDEA72741C00B0E300C10B28 /* SWXMLHash.swift in Sources */,
-				54B83CC81C849D9B00D588B5 /* SWXMLHash+TypeConversion.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
