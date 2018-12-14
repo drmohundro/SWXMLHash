@@ -75,6 +75,7 @@ class TypeConversionBasicTypesTests: XCTestCase {
     """
 
     override func setUp() {
+        super.setUp()
         parser = SWXMLHash.parse(xmlWithBasicTypes)
     }
 
@@ -583,10 +584,10 @@ struct BasicItem: XMLIndexerDeserializable {
     }
 }
 
-extension BasicItem: Equatable {}
-
-func == (a: BasicItem, b: BasicItem) -> Bool {
-    return a.name == b.name && a.price == b.price
+extension BasicItem: Equatable {
+    static func == (a: BasicItem, b: BasicItem) -> Bool {
+        return a.name == b.name && a.price == b.price
+    }
 }
 
 struct AttributeItem: XMLElementDeserializable {
@@ -602,10 +603,10 @@ struct AttributeItem: XMLElementDeserializable {
     }
 }
 
-extension AttributeItem: Equatable {}
-
-func == (a: AttributeItem, b: AttributeItem) -> Bool {
-    return a.name == b.name && a.price == b.price
+extension AttributeItem: Equatable {
+    static func == (a: AttributeItem, b: AttributeItem) -> Bool {
+        return a.name == b.name && a.price == b.price
+    }
 }
 
 extension TypeConversionBasicTypesTests {

@@ -46,6 +46,7 @@ class LazyTypesConversionTests: XCTestCase {
     """
 
     override func setUp() {
+        super.setUp()
         parser = SWXMLHash.config { cfg in cfg.shouldProcessLazily = true }.parse(xmlWithBasicTypes)
     }
 

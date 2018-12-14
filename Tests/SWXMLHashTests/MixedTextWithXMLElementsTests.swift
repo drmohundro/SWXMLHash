@@ -32,6 +32,7 @@ class MixedTextWithXMLElementsTests: XCTestCase {
     var xml: XMLIndexer?
 
     override func setUp() {
+        super.setUp()
         let xmlContent = "<everything><news><content>Here is a cool thing <a href=\"google.com\">A</a> and second cool thing <a href=\"fb.com\">B</a></content></news></everything>"
         xml = SWXMLHash.parse(xmlContent)
     }

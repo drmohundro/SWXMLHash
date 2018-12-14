@@ -41,6 +41,7 @@ class SWXMLHashConfigTests: XCTestCase {
     """
 
     override func setUp() {
+        super.setUp()
         parser = SWXMLHash.config { conf in
             conf.shouldProcessNamespaces = true
         }.parse(xmlWithNamespace)
