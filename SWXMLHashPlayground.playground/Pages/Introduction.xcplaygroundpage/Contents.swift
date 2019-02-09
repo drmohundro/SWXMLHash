@@ -1,25 +1,33 @@
-// Playground - noun: a place where people can play
-
 // swiftlint:disable force_unwrapping
+/*:
 
+## SWXMLHash Playground
+
+SWXMLHash is a relatively simple way to parse XML in Swift.
+
+Feel free to play around here with the samples and try the library out.
+
+### Simple example
+
+*/
 import Foundation
 import SWXMLHash
 
 let xmlWithNamespace = """
-  <root xmlns:h=\"http://www.w3.org/TR/html4/\"
-    xmlns:f=\"http://www.w3schools.com/furniture\">
-    <h:table>
-      <h:tr>
-        <h:td>Apples</h:td>
-        <h:td>Bananas</h:td>
-      </h:tr>
-    </h:table>
-    <f:table>
-      <f:name>African Coffee Table</f:name>
-      <f:width>80</f:width>
-      <f:length>120</f:length>
-    </f:table>
-  </root>
+<root xmlns:h=\"http://www.w3.org/TR/html4/\"
+xmlns:f=\"http://www.w3schools.com/furniture\">
+  <h:table>
+    <h:tr>
+      <h:td>Apples</h:td>
+      <h:td>Bananas</h:td>
+    </h:tr>
+  </h:table>
+  <f:table>
+    <f:name>African Coffee Table</f:name>
+    <f:width>80</f:width>
+    <f:length>120</f:length>
+  </f:table>
+</root>
 """
 
 var xml = SWXMLHash.parse(xmlWithNamespace)
@@ -49,28 +57,30 @@ func reduceName(names: String, elem: XMLIndexer) -> String {
 
 xml.children.reduce("elements: ", reduceName)
 
+//: ### Custom Conversion/Deserialization
+
 // custom types conversion
 let booksXML = """
-  <root>
-    <books>
-      <book>
-        <title>Book A</title>
-        <price>12.5</price>
-        <year>2015</year>
-      </book>
-      <book>
-        <title>Book B</title>
-        <price>10</price>
-        <year>1988</year>
-      </book>
-      <book>
-        <title>Book C</title>
-        <price>8.33</price>
-        <year>1990</year>
-        <amount>10</amount>
-      </book>
-    <books>
-  </root>
+<root>
+  <books>
+    <book>
+      <title>Book A</title>
+      <price>12.5</price>
+      <year>2015</year>
+    </book>
+    <book>
+      <title>Book B</title>
+      <price>10</price>
+      <year>1988</year>
+    </book>
+    <book>
+      <title>Book C</title>
+      <price>8.33</price>
+      <year>1990</year>
+      <amount>10</amount>
+    </book>
+  <books>
+</root>
 """
 
 struct Book: XMLIndexerDeserializable {
