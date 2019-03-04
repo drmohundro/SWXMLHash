@@ -102,7 +102,6 @@ public extension XMLAttributeDeserializable {
 // MARK: - XMLIndexer Extensions
 
 public extension XMLIndexer {
-
     // MARK: - XMLAttributeDeserializable
 
     /**
@@ -391,12 +390,12 @@ public extension XMLIndexer {
         }
     }
 }
+
 // MARK: - XMLAttributeDeserializable String RawRepresentable
 
 /*: Provides XMLIndexer XMLAttributeDeserializable deserialization from String backed RawRepresentables 
     Added by [PeeJWeeJ](https://github.com/PeeJWeeJ) */
 public extension XMLIndexer {
-    
     /**
      Attempts to deserialize the value of the specified attribute of the current XMLIndexer
      element to `T` using a String backed RawRepresentable (E.g. `String` backed `enum` cases)
@@ -411,7 +410,7 @@ public extension XMLIndexer {
     func value<T: XMLAttributeDeserializable, A: RawRepresentable>(ofAttribute attr: A) throws -> T where A.RawValue == String {
         return try value(ofAttribute: attr.rawValue)
     }
-    
+
     /**
      Attempts to deserialize the value of the specified attribute of the current XMLIndexer
      element to `T?` using a String backed RawRepresentable (E.g. `String` backed `enum` cases)
@@ -425,7 +424,7 @@ public extension XMLIndexer {
     func value<T: XMLAttributeDeserializable, A: RawRepresentable>(ofAttribute attr: A) -> T? where A.RawValue == String {
         return value(ofAttribute: attr.rawValue)
     }
-    
+
     /**
      Attempts to deserialize the value of the specified attribute of the current XMLIndexer
      element to `[T]` using a String backed RawRepresentable (E.g. `String` backed `enum` cases)
@@ -440,7 +439,7 @@ public extension XMLIndexer {
     func value<T: XMLAttributeDeserializable, A: RawRepresentable>(ofAttribute attr: A) throws -> [T] where A.RawValue == String {
         return try value(ofAttribute: attr.rawValue)
     }
-    
+
     /**
      Attempts to deserialize the value of the specified attribute of the current XMLIndexer
      element to `[T]?` using a String backed RawRepresentable (E.g. `String` backed `enum` cases)
@@ -455,7 +454,7 @@ public extension XMLIndexer {
     func value<T: XMLAttributeDeserializable, A: RawRepresentable>(ofAttribute attr: A) throws -> [T]? where A.RawValue == String {
         return try value(ofAttribute: attr.rawValue)
     }
-    
+
     /**
      Attempts to deserialize the value of the specified attribute of the current XMLIndexer
      element to `[T?]` using a String backed RawRepresentable (E.g. `String` backed `enum` cases)
@@ -475,7 +474,6 @@ public extension XMLIndexer {
 // MARK: - XMLElement Extensions
 
 extension XMLElement {
-
     /**
      Attempts to deserialize the specified attribute of the current XMLElement to `T`
 
@@ -526,8 +524,6 @@ extension XMLElement {
 /*: Provides XMLElement XMLAttributeDeserializable deserialization from String backed RawRepresentables
     Added by [PeeJWeeJ](https://github.com/PeeJWeeJ) */
 public extension XMLElement {
-    
-    
     /**
      Attempts to deserialize the specified attribute of the current XMLElement to `T`
      using a String backed RawRepresentable (E.g. `String` backed `enum` cases)
@@ -542,7 +538,7 @@ public extension XMLElement {
     public func value<T: XMLAttributeDeserializable, A: RawRepresentable>(ofAttribute attr: A)  throws -> T where A.RawValue == String {
         return try value(ofAttribute: attr.rawValue)
     }
-    
+
     /**
      Attempts to deserialize the specified attribute of the current XMLElement to `T?`
      using a String backed RawRepresentable (E.g. `String` backed `enum` cases)
@@ -553,7 +549,7 @@ public extension XMLElement {
      - parameter attr: The attribute to deserialize
      - returns: The deserialized `T?` value, or nil if the attribute does not exist.
      */
-    public func value<T: XMLAttributeDeserializable, A: RawRepresentable>(ofAttribute attr: A) -> T? where A.RawValue == String{
+    public func value<T: XMLAttributeDeserializable, A: RawRepresentable>(ofAttribute attr: A) -> T? where A.RawValue == String {
         return value(ofAttribute: attr.rawValue)
     }
 }

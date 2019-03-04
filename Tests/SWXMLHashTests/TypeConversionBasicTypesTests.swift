@@ -160,7 +160,8 @@ class TypeConversionBasicTypesTests: XCTestCase {
         let value: String? = parser!["root"]["attr"].value(ofAttribute: "missing")
         XCTAssertNil(value)
     }
-    
+
+    // swiftlint:disable nesting
     func testShouldConvertAttributeToNonOptionalWithStringRawRepresentable() {
         enum Keys: String {
             case string
@@ -172,7 +173,7 @@ class TypeConversionBasicTypesTests: XCTestCase {
             XCTFail("\(error)")
         }
     }
-    
+
     func testShouldConvertAttributeToOptionalWithStringRawRepresentable() {
         enum Keys: String {
             case string
@@ -180,7 +181,7 @@ class TypeConversionBasicTypesTests: XCTestCase {
         let value: String? = parser!["root"]["attr"].value(ofAttribute: Keys.string)
         XCTAssertEqual(value, "stringValue")
     }
-    
+
     func testShouldThrowWhenConvertingMissingAttributeToNonOptionalWithStringRawRepresentable() {
         enum Keys: String {
             case missing
@@ -192,7 +193,7 @@ class TypeConversionBasicTypesTests: XCTestCase {
             }
         }
     }
-    
+
     func testShouldConvertMissingAttributeToOptionalWithStringRawRepresentable() {
         enum Keys: String {
             case missing
@@ -544,7 +545,7 @@ class TypeConversionBasicTypesTests: XCTestCase {
             XCTFail("\(error)")
         }
     }
-    
+
     func testAttributeItemStringRawRepresentableShouldConvertAttributeItemToNonOptional() {
         do {
             let value: AttributeItemStringRawRepresentable = try parser!["root"]["attributeItem"].value()
@@ -553,7 +554,6 @@ class TypeConversionBasicTypesTests: XCTestCase {
             XCTFail("\(error)")
         }
     }
-    
 
     func testAttributeItemShouldThrowWhenConvertingEmptyToNonOptional() {
         XCTAssertThrowsError(try (parser!["root"]["empty"].value() as AttributeItem)) { error in
@@ -659,9 +659,10 @@ struct AttributeItemStringRawRepresentable: XMLElementDeserializable, Equatable 
         case name
         case price
     }
+
     let name: String
     let price: Double
-    
+
     static func deserialize(_ element: SWXMLHash.XMLElement) throws -> AttributeItemStringRawRepresentable {
         print("my deserialize")
         return try AttributeItemStringRawRepresentable(

@@ -183,7 +183,6 @@ protocol SimpleXmlParser {
 #if os(Linux)
 
 extension XMLParserDelegate {
-
     func parserDidStartDocument(_ parser: Foundation.XMLParser) { }
     func parserDidEndDocument(_ parser: Foundation.XMLParser) { }
 
@@ -303,7 +302,6 @@ class LazyXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
                 namespaceURI: String?,
                 qualifiedName qName: String?,
                 attributes attributeDict: [String: String]) {
-
         elementStack.push(elementName)
 
         if !onMatch() {
@@ -342,7 +340,6 @@ class LazyXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
                 didEndElement elementName: String,
                 namespaceURI: String?,
                 qualifiedName qName: String?) {
-
         let match = onMatch()
 
         elementStack.drop()
@@ -400,7 +397,6 @@ class FullXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
                 namespaceURI: String?,
                 qualifiedName qName: String?,
                 attributes attributeDict: [String: String]) {
-
         let currentNode = parentStack
             .top()
             .addElement(elementName, withAttributes: attributeDict, caseInsensitive: self.options.caseInsensitive)
@@ -418,7 +414,6 @@ class FullXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
                 didEndElement elementName: String,
                 namespaceURI: String?,
                 qualifiedName qName: String?) {
-
         parentStack.drop()
     }
 
@@ -1044,12 +1039,11 @@ fileprivate extension String {
     }
 }
 
-//MARK: - XMLIndexer String RawRepresentables
+// MARK: - XMLIndexer String RawRepresentables
 
 /*: Provides XMLIndexer Serialization/Deserialization using String backed RawRepresentables
     Added by [PeeJWeeJ](https://github.com/PeeJWeeJ) */
 extension XMLIndexer {
-    
     /**
      Allows for element lookup by matching attribute values
      using a String backed RawRepresentables (E.g. `String` backed `enum` cases)
@@ -1063,10 +1057,11 @@ extension XMLIndexer {
      - throws: an XMLIndexer.XMLError if an element with the specified attribute isn't found
      - returns: instance of XMLIndexer
      */
-    public func withAttribute<A: RawRepresentable, V: RawRepresentable>(_ attr: A, _ value: V) throws -> XMLIndexer where A.RawValue == String, V.RawValue == String {
+    public func withAttribute<A: RawRepresentable, V: RawRepresentable>(_ attr: A, _ value: V) throws -> XMLIndexer
+        where A.RawValue == String, V.RawValue == String {
         return try withAttribute(attr.rawValue, value.rawValue)
     }
-    
+
     /**
      Find an XML element at the current level by element name
      using a String backed RawRepresentable (E.g. `String` backed `enum` cases)
@@ -1081,7 +1076,7 @@ extension XMLIndexer {
     public func byKey<K: RawRepresentable>(_ key: K) throws -> XMLIndexer where K.RawValue == String {
         return try byKey(key.rawValue)
     }
-    
+
     /**
      Find an XML element at the current level by element name
      using a String backed RawRepresentable (E.g. `String` backed `enum` cases)
@@ -1092,17 +1087,16 @@ extension XMLIndexer {
      - parameter key: The element name to index by
      - returns: instance of XMLIndexer to match the element (or elements) found by
      */
-    public subscript<K: RawRepresentable>(key: K) -> XMLIndexer where K.RawValue == String{
+    public subscript<K: RawRepresentable>(key: K) -> XMLIndexer where K.RawValue == String {
         return self[key.rawValue]
     }
 }
 
-//MARK: - XMLElement String RawRepresentables
+// MARK: - XMLElement String RawRepresentables
 
 /*: Provides XMLIndexer Serialization/Deserialization using String backed RawRepresentables
  Added by [PeeJWeeJ](https://github.com/PeeJWeeJ) */
 extension XMLElement {
-    
     /** 
      Find an attribute by name using a String backed RawRepresentable (E.g. `String` backed `enum` cases)
      

@@ -73,7 +73,7 @@ class XMLParsingTests: XCTestCase {
     func testShouldBeAbleToParseIndividualElements() {
         XCTAssertEqual(xml!["root"]["header"]["title"].element?.text, "Test Title Header")
     }
-    
+
     func testShouldBeAbleToParseIndividualElementsWithStringRawRepresentable() {
         enum Keys: String {
             case root; case header; case title
@@ -96,7 +96,9 @@ class XMLParsingTests: XCTestCase {
     func testShouldBeAbleToParseAttributes() {
         XCTAssertEqual(xml!["root"]["catalog"]["book"][1].element?.attribute(by: "id")?.text, "bk102")
     }
-    
+
+    // swiftlint:disable identifier_name
+    // swiftlint:disable nesting
     func testShouldBeAbleToParseAttributesWithStringRawRepresentable() {
         enum Keys: String {
             case root; case catalog; case book; case id
@@ -112,7 +114,7 @@ class XMLParsingTests: XCTestCase {
             XCTFail("\(error)")
         }
     }
-    
+
     func testShouldBeAbleToLookUpElementsByNameAndAttributeWithStringRawRepresentable() {
         enum Keys: String {
             case root; case catalog; case book; case id; case bk102; case author
@@ -255,7 +257,7 @@ class XMLParsingTests: XCTestCase {
             err = error
         } catch { err = nil }
     }
-    
+
     /**
      Added Only test coverage for:
     `byKey<K: RawRepresentable>(_ key: K) throws -> XMLIndexer where K.RawValue == String`
