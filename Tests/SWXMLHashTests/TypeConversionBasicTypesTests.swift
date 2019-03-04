@@ -642,7 +642,7 @@ extension BasicItem: Equatable {
     }
 }
 
-struct AttributeItem: XMLElementDeserializable, Equatable {
+struct AttributeItem: XMLElementDeserializable {
     let name: String
     let price: Double
 
@@ -655,7 +655,13 @@ struct AttributeItem: XMLElementDeserializable, Equatable {
     }
 }
 
-struct AttributeItemStringRawRepresentable: XMLElementDeserializable, Equatable {
+extension AttributeItem: Equatable {
+    static func == (a: AttributeItem, b: AttributeItem) -> Bool {
+        return a.name == b.name && a.price == b.price
+    }
+}
+
+struct AttributeItemStringRawRepresentable: XMLElementDeserializable {
     private enum Keys: String {
         case name
         case price
@@ -670,6 +676,12 @@ struct AttributeItemStringRawRepresentable: XMLElementDeserializable, Equatable 
             name: element.value(ofAttribute: Keys.name),
             price: element.value(ofAttribute: Keys.price)
         )
+    }
+}
+
+extension AttributeItemStringRawRepresentable: Equatable {
+    static func == (a: AttributeItemStringRawRepresentable, b: AttributeItemStringRawRepresentable) -> Bool {
+        return a.name == b.name && a.price == b.price
     }
 }
 
