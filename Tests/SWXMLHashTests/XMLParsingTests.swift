@@ -73,6 +73,13 @@ class XMLParsingTests: XCTestCase {
     func testShouldBeAbleToParseIndividualElements() {
         XCTAssertEqual(xml!["root"]["header"]["title"].element?.text, "Test Title Header")
     }
+    
+    func testShouldBeAbleToParseIndividualElementsWithStringRawRepresentable() {
+        enum Keys: String {
+            case root; case header; case title
+        }
+        XCTAssertEqual(xml![Keys.root][Keys.header][Keys.title].element?.text, "Test Title Header")
+    }
 
     func testShouldBeAbleToParseElementGroups() {
         XCTAssertEqual(xml!["root"]["catalog"]["book"][1]["author"].element?.text, "Ralls, Kim")
@@ -89,10 +96,29 @@ class XMLParsingTests: XCTestCase {
     func testShouldBeAbleToParseAttributes() {
         XCTAssertEqual(xml!["root"]["catalog"]["book"][1].element?.attribute(by: "id")?.text, "bk102")
     }
+    
+    func testShouldBeAbleToParseAttributesWithStringRawRepresentable() {
+        enum Keys: String {
+            case root; case catalog; case book; case id
+        }
+        XCTAssertEqual(xml![Keys.root][Keys.catalog][Keys.book][1].element?.attribute(by: Keys.id)?.text, "bk102")
+    }
 
     func testShouldBeAbleToLookUpElementsByNameAndAttribute() {
         do {
             let value = try xml!["root"]["catalog"]["book"].withAttribute("id", "bk102")["author"].element?.text
+            XCTAssertEqual(value, "Ralls, Kim")
+        } catch {
+            XCTFail("\(error)")
+        }
+    }
+    
+    func testShouldBeAbleToLookUpElementsByNameAndAttributeWithStringRawRepresentable() {
+        enum Keys: String {
+            case root; case catalog; case book; case id; case bk102; case author
+        }
+        do {
+            let value = try xml![Keys.root][Keys.catalog][Keys.book].withAttribute(Keys.id, Keys.bk102)[Keys.author].element?.text
             XCTAssertEqual(value, "Ralls, Kim")
         } catch {
             XCTFail("\(error)")
@@ -229,6 +255,25 @@ class XMLParsingTests: XCTestCase {
             err = error
         } catch { err = nil }
     }
+    
+    /**
+     Added Only test coverage for:
+    `byKey<K: RawRepresentable>(_ key: K) throws -> XMLIndexer where K.RawValue == String`
+     */
+    func testShouldProvideAnErrorObjectWhenKeysDontMatchWithStringRawRepresentable() {
+        enum Keys: String {
+            case root; case what; case header; case foo
+        }
+        var err: IndexingError?
+        defer {
+            XCTAssertNotNil(err)
+        }
+        do {
+            _ = try xml!.byKey(Keys.root).byKey(Keys.what).byKey(Keys.header).byKey(Keys.foo)
+        } catch let error as IndexingError {
+            err = error
+        } catch { err = nil }
+    }
 
     func testShouldProvideAnErrorElementWhenIndexersDontMatch() {
         var err: IndexingError?
@@ -339,11 +384,14 @@ extension XMLParsingTests {
     static var allTests: [(String, (XMLParsingTests) -> () throws -> Void)] {
         return [
             ("testShouldBeAbleToParseIndividualElements", testShouldBeAbleToParseIndividualElements),
+            ("testShouldBeAbleToParseIndividualElementsWithStringRawRepresentable", testShouldBeAbleToParseIndividualElementsWithStringRawRepresentable),
             ("testShouldBeAbleToParseElementGroups", testShouldBeAbleToParseElementGroups),
             ("testShouldBeAbleToParseElementGroupsByIndex", testShouldBeAbleToParseElementGroupsByIndex),
             ("testShouldBeAbleToByIndexWithoutGoingOutOfBounds", testShouldBeAbleToByIndexWithoutGoingOutOfBounds),
             ("testShouldBeAbleToParseAttributes", testShouldBeAbleToParseAttributes),
+            ("testShouldBeAbleToParseAttributesWithStringRawRepresentable", testShouldBeAbleToParseAttributesWithStringRawRepresentable),
             ("testShouldBeAbleToLookUpElementsByNameAndAttribute", testShouldBeAbleToLookUpElementsByNameAndAttribute),
+            ("testShouldBeAbleToLookUpElementsByNameAndAttributeWithStringRawRepresentable", testShouldBeAbleToLookUpElementsByNameAndAttributeWithStringRawRepresentable),
             ("testShouldBeAbleToLookUpElementsByNameAndAttributeCaseInsensitive", testShouldBeAbleToLookUpElementsByNameAndAttributeCaseInsensitive),
             ("testShouldBeAbleToIterateElementGroups", testShouldBeAbleToIterateElementGroups),
             ("testShouldBeAbleToIterateElementGroupsEvenIfOnlyOneElementIsFound", testShouldBeAbleToIterateElementGroupsEvenIfOnlyOneElementIsFound),
@@ -357,6 +405,7 @@ extension XMLParsingTests {
             ("testShouldBeAbleToProvideADescriptionForTheDocument", testShouldBeAbleToProvideADescriptionForTheDocument),
             ("testShouldReturnNilWhenKeysDontMatch", testShouldReturnNilWhenKeysDontMatch),
             ("testShouldProvideAnErrorObjectWhenKeysDontMatch", testShouldProvideAnErrorObjectWhenKeysDontMatch),
+            ("testShouldProvideAnErrorObjectWhenKeysDontMatchWithStringRawRepresentable", testShouldProvideAnErrorObjectWhenKeysDontMatchWithStringRawRepresentable),
             ("testShouldProvideAnErrorElementWhenIndexersDontMatch", testShouldProvideAnErrorElementWhenIndexersDontMatch),
             ("testShouldStillReturnErrorsWhenAccessingViaSubscripting", testShouldStillReturnErrorsWhenAccessingViaSubscripting),
             ("testShouldBeAbleToCreateASubIndexerFromFilter", testShouldBeAbleToCreateASubIndexerFromFilter),

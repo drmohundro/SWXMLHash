@@ -1043,3 +1043,73 @@ fileprivate extension String {
         return str1 == str2
     }
 }
+
+//MARK: - XMLIndexer String RawRepresentables
+
+/*: Provides XMLIndexer Serialization/Deserialization using String backed RawRepresentables
+    Added by [PeeJWeeJ](https://github.com/PeeJWeeJ) */
+extension XMLIndexer {
+    
+    /**
+     Allows for element lookup by matching attribute values
+     using a String backed RawRepresentables (E.g. `String` backed `enum` cases)
+     
+     - Note:
+     Convenience for withAttribute(String, String)
+     
+     - parameters:
+     - attr: should the name of the attribute to match on
+     - value: should be the value of the attribute to match on
+     - throws: an XMLIndexer.XMLError if an element with the specified attribute isn't found
+     - returns: instance of XMLIndexer
+     */
+    public func withAttribute<A: RawRepresentable, V: RawRepresentable>(_ attr: A, _ value: V) throws -> XMLIndexer where A.RawValue == String, V.RawValue == String {
+        return try withAttribute(attr.rawValue, value.rawValue)
+    }
+    
+    /**
+     Find an XML element at the current level by element name
+     using a String backed RawRepresentable (E.g. `String` backed `enum` cases)
+     
+     - Note:
+     Convenience for byKey(String)
+     
+     - parameter key: The element name to index by
+     - returns: instance of XMLIndexer to match the element (or elements) found by key
+     - throws: Throws an XMLIndexingError.Key if no element was found
+     */
+    public func byKey<K: RawRepresentable>(_ key: K) throws -> XMLIndexer where K.RawValue == String {
+        return try byKey(key.rawValue)
+    }
+    
+    /**
+     Find an XML element at the current level by element name
+     using a String backed RawRepresentable (E.g. `String` backed `enum` cases)
+     
+     - Note:
+     Convenience for self[String]
+     
+     - parameter key: The element name to index by
+     - returns: instance of XMLIndexer to match the element (or elements) found by
+     */
+    public subscript<K: RawRepresentable>(key: K) -> XMLIndexer where K.RawValue == String{
+        return self[key.rawValue]
+    }
+}
+
+//MARK: - XMLElement String RawRepresentables
+
+/*: Provides XMLIndexer Serialization/Deserialization using String backed RawRepresentables
+ Added by [PeeJWeeJ](https://github.com/PeeJWeeJ) */
+extension XMLElement {
+    
+    /** 
+     Find an attribute by name using a String backed RawRepresentable (E.g. `String` backed `enum` cases)
+     
+     - Note:
+     Convenience for self[String]
+     */
+    public func attribute<N: RawRepresentable>(by name: N) -> XMLAttribute? where N.RawValue == String {
+        return attribute(by: name.rawValue)
+    }
+}

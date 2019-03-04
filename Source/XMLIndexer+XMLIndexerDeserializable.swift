@@ -391,6 +391,86 @@ public extension XMLIndexer {
         }
     }
 }
+// MARK: - XMLAttributeDeserializable String RawRepresentable
+
+/*: Provides XMLIndexer XMLAttributeDeserializable deserialization from String backed RawRepresentables 
+    Added by [PeeJWeeJ](https://github.com/PeeJWeeJ) */
+public extension XMLIndexer {
+    
+    /**
+     Attempts to deserialize the value of the specified attribute of the current XMLIndexer
+     element to `T` using a String backed RawRepresentable (E.g. `String` backed `enum` cases)
+     
+     - Note:
+     Convenience for value(ofAttribute: String)
+     
+     - parameter attr: The attribute to deserialize
+     - throws: an XMLDeserializationError if there is a problem with deserialization
+     - returns: The deserialized `T` value
+     */
+    func value<T: XMLAttributeDeserializable, A: RawRepresentable>(ofAttribute attr: A) throws -> T where A.RawValue == String {
+        return try value(ofAttribute: attr.rawValue)
+    }
+    
+    /**
+     Attempts to deserialize the value of the specified attribute of the current XMLIndexer
+     element to `T?` using a String backed RawRepresentable (E.g. `String` backed `enum` cases)
+     
+     - Note:
+     Convenience for value(ofAttribute: String)
+     
+     - parameter attr: The attribute to deserialize
+     - returns: The deserialized `T?` value, or nil if the attribute does not exist
+     */
+    func value<T: XMLAttributeDeserializable, A: RawRepresentable>(ofAttribute attr: A) -> T? where A.RawValue == String {
+        return value(ofAttribute: attr.rawValue)
+    }
+    
+    /**
+     Attempts to deserialize the value of the specified attribute of the current XMLIndexer
+     element to `[T]` using a String backed RawRepresentable (E.g. `String` backed `enum` cases)
+     
+     - Note:
+     Convenience for value(ofAttribute: String)
+     
+     - parameter attr: The attribute to deserialize
+     - throws: an XMLDeserializationError if there is a problem with deserialization
+     - returns: The deserialized `[T]` value
+     */
+    func value<T: XMLAttributeDeserializable, A: RawRepresentable>(ofAttribute attr: A) throws -> [T] where A.RawValue == String {
+        return try value(ofAttribute: attr.rawValue)
+    }
+    
+    /**
+     Attempts to deserialize the value of the specified attribute of the current XMLIndexer
+     element to `[T]?` using a String backed RawRepresentable (E.g. `String` backed `enum` cases)
+     
+     - Note:
+     Convenience for value(ofAttribute: String)
+     
+     - parameter attr: The attribute to deserialize
+     - throws: an XMLDeserializationError if there is a problem with deserialization
+     - returns: The deserialized `[T]?` value
+     */
+    func value<T: XMLAttributeDeserializable, A: RawRepresentable>(ofAttribute attr: A) throws -> [T]? where A.RawValue == String {
+        return try value(ofAttribute: attr.rawValue)
+    }
+    
+    /**
+     Attempts to deserialize the value of the specified attribute of the current XMLIndexer
+     element to `[T?]` using a String backed RawRepresentable (E.g. `String` backed `enum` cases)
+     
+     - Note:
+     Convenience for value(ofAttribute: String)
+     
+     - parameter attr: The attribute to deserialize
+     - throws: an XMLDeserializationError if there is a problem with deserialization
+     - returns: The deserialized `[T?]` value
+     */
+    func value<T: XMLAttributeDeserializable, A: RawRepresentable>(ofAttribute attr: A) throws -> [T?] where A.RawValue == String {
+        return try value(ofAttribute: attr.rawValue)
+    }
+}
 
 // MARK: - XMLElement Extensions
 
@@ -438,6 +518,43 @@ extension XMLElement {
         }
 
         throw XMLDeserializationError.nodeHasNoValue
+    }
+}
+
+// MARK: String RawRepresentable
+
+/*: Provides XMLElement XMLAttributeDeserializable deserialization from String backed RawRepresentables
+    Added by [PeeJWeeJ](https://github.com/PeeJWeeJ) */
+public extension XMLElement {
+    
+    
+    /**
+     Attempts to deserialize the specified attribute of the current XMLElement to `T`
+     using a String backed RawRepresentable (E.g. `String` backed `enum` cases)
+     
+     - Note:
+     Convenience for value(ofAttribute: String)
+     
+     - parameter attr: The attribute to deserialize
+     - throws: an XMLDeserializationError if there is a problem with deserialization
+     - returns: The deserialized `T` value
+     */
+    public func value<T: XMLAttributeDeserializable, A: RawRepresentable>(ofAttribute attr: A)  throws -> T where A.RawValue == String {
+        return try value(ofAttribute: attr.rawValue)
+    }
+    
+    /**
+     Attempts to deserialize the specified attribute of the current XMLElement to `T?`
+     using a String backed RawRepresentable (E.g. `String` backed `enum` cases)
+     
+     - Note:
+     Convenience for value(ofAttribute: String)
+     
+     - parameter attr: The attribute to deserialize
+     - returns: The deserialized `T?` value, or nil if the attribute does not exist.
+     */
+    public func value<T: XMLAttributeDeserializable, A: RawRepresentable>(ofAttribute attr: A) -> T? where A.RawValue == String{
+        return value(ofAttribute: attr.rawValue)
     }
 }
 

@@ -166,6 +166,45 @@ class TypeConversionPrimitypeTypesTests: XCTestCase {
             XCTFail("\(error)")
         }
     }
+    
+    func testShouldConvertArrayOfAttributeIntsToNonOptionalWithStringRawRepresentable() {
+        enum Keys: String {
+            case value
+        }
+        do {
+            let value: [Int] = try parser!["root"]["arrayOfAttributeInts"]["int"].value(ofAttribute: Keys.value)
+            XCTAssertEqual(value, [0, 1, 2, 3])
+        } catch {
+            XCTFail("\(error)")
+        }
+    }
+    
+    func testShouldConvertArrayOfAttributeIntsToOptionalWithStringRawRepresentable() {
+        enum Keys: String {
+            case value
+        }
+        do {
+            let value: [Int]? = try parser!["root"]["arrayOfAttributeInts"]["int"].value(ofAttribute: Keys.value)
+            XCTAssertNotNil(value)
+            if let value = value {
+                XCTAssertEqual(value, [0, 1, 2, 3])
+            }
+        } catch {
+            XCTFail("\(error)")
+        }
+    }
+    
+    func testShouldConvertArrayOfAttributeIntsToArrayOfOptionalsWithStringRawRepresentable() {
+        enum Keys: String {
+            case value
+        }
+        do {
+            let value: [Int?] = try parser!["root"]["arrayOfAttributeInts"]["int"].value(ofAttribute: Keys.value)
+            XCTAssertEqual(value.compactMap({ $0 }), [0, 1, 2, 3])
+        } catch {
+            XCTFail("\(error)")
+        }
+    }
 
     func testShouldConvertEmptyArrayOfIntsToNonOptional() {
         do {
@@ -210,6 +249,9 @@ extension TypeConversionPrimitypeTypesTests {
             ("testShouldConvertArrayOfAttributeIntsToNonOptional", testShouldConvertArrayOfAttributeIntsToNonOptional),
             ("testShouldConvertArrayOfAttributeIntsToOptional", testShouldConvertArrayOfAttributeIntsToOptional),
             ("testShouldConvertArrayOfAttributeIntsToArrayOfOptionals", testShouldConvertArrayOfAttributeIntsToArrayOfOptionals),
+            ("testShouldConvertArrayOfAttributeIntsToNonOptionalWithStringRawRepresentable", testShouldConvertArrayOfAttributeIntsToNonOptionalWithStringRawRepresentable),
+            ("testShouldConvertArrayOfAttributeIntsToOptionalWithStringRawRepresentable", testShouldConvertArrayOfAttributeIntsToOptionalWithStringRawRepresentable),
+            ("testShouldConvertArrayOfAttributeIntsToArrayOfOptionalsWithStringRawRepresentable", testShouldConvertArrayOfAttributeIntsToArrayOfOptionalsWithStringRawRepresentable),
             ("testShouldConvertEmptyArrayOfIntsToNonOptional", testShouldConvertEmptyArrayOfIntsToNonOptional),
             ("testShouldConvertEmptyArrayOfIntsToOptional", testShouldConvertEmptyArrayOfIntsToOptional),
             ("testShouldConvertEmptyArrayOfIntsToArrayOfOptionals", testShouldConvertEmptyArrayOfIntsToArrayOfOptionals)
