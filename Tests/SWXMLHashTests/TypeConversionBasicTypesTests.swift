@@ -161,6 +161,48 @@ class TypeConversionBasicTypesTests: XCTestCase {
         XCTAssertNil(value)
     }
 
+    // swiftlint:disable nesting
+    func testShouldConvertAttributeToNonOptionalWithStringRawRepresentable() {
+        enum Keys: String {
+            case string
+        }
+        do {
+            let value: String = try parser!["root"]["attr"].value(ofAttribute: Keys.string)
+            XCTAssertEqual(value, "stringValue")
+        } catch {
+            XCTFail("\(error)")
+        }
+    }
+
+    func testShouldConvertAttributeToOptionalWithStringRawRepresentable() {
+        enum Keys: String {
+            case string
+        }
+        let value: String? = parser!["root"]["attr"].value(ofAttribute: Keys.string)
+        XCTAssertEqual(value, "stringValue")
+    }
+
+    func testShouldThrowWhenConvertingMissingAttributeToNonOptionalWithStringRawRepresentable() {
+        enum Keys: String {
+            case missing
+        }
+        XCTAssertThrowsError(try (parser!["root"]["attr"].value(ofAttribute: Keys.missing) as String)) { error in
+            guard error is XMLDeserializationError else {
+                XCTFail("Wrong type of error")
+                return
+            }
+        }
+    }
+
+    func testShouldConvertMissingAttributeToOptionalWithStringRawRepresentable() {
+        enum Keys: String {
+            case missing
+        }
+        let value: String? = parser!["root"]["attr"].value(ofAttribute: Keys.missing)
+        XCTAssertNil(value)
+    }
+    // swiftlint:enable nesting
+
     func testIntShouldConvertValueToNonOptional() {
         do {
             let value: Int = try parser!["root"]["int"].value()
@@ -494,11 +536,21 @@ class TypeConversionBasicTypesTests: XCTestCase {
     }
 
     let correctAttributeItem = AttributeItem(name: "the name of attribute item", price: 19.99)
+    let correctAttributeItemStringRawRepresentable = AttributeItemStringRawRepresentable(name: "the name of attribute item", price: 19.99)
 
     func testAttributeItemShouldConvertAttributeItemToNonOptional() {
         do {
             let value: AttributeItem = try parser!["root"]["attributeItem"].value()
             XCTAssertEqual(value, correctAttributeItem)
+        } catch {
+            XCTFail("\(error)")
+        }
+    }
+
+    func testAttributeItemStringRawRepresentableShouldConvertAttributeItemToNonOptional() {
+        do {
+            let value: AttributeItemStringRawRepresentable = try parser!["root"]["attributeItem"].value()
+            XCTAssertEqual(value, correctAttributeItemStringRawRepresentable)
         } catch {
             XCTFail("\(error)")
         }
@@ -609,6 +661,30 @@ extension AttributeItem: Equatable {
     }
 }
 
+struct AttributeItemStringRawRepresentable: XMLElementDeserializable {
+    private enum Keys: String {
+        case name
+        case price
+    }
+
+    let name: String
+    let price: Double
+
+    static func deserialize(_ element: SWXMLHash.XMLElement) throws -> AttributeItemStringRawRepresentable {
+        print("my deserialize")
+        return try AttributeItemStringRawRepresentable(
+            name: element.value(ofAttribute: Keys.name),
+            price: element.value(ofAttribute: Keys.price)
+        )
+    }
+}
+
+extension AttributeItemStringRawRepresentable: Equatable {
+    static func == (a: AttributeItemStringRawRepresentable, b: AttributeItemStringRawRepresentable) -> Bool {
+        return a.name == b.name && a.price == b.price
+    }
+}
+
 extension TypeConversionBasicTypesTests {
     static var allTests: [(String, (TypeConversionBasicTypesTests) -> () throws -> Void)] {
         return [
@@ -622,6 +698,10 @@ extension TypeConversionBasicTypesTests {
             ("testShouldConvertAttributeToOptional", testShouldConvertAttributeToOptional),
             ("testShouldThrowWhenConvertingMissingAttributeToNonOptional", testShouldThrowWhenConvertingMissingAttributeToNonOptional),
             ("testShouldConvertMissingAttributeToOptional", testShouldConvertMissingAttributeToOptional),
+            ("testShouldConvertAttributeToNonOptionalWithStringRawRepresentable", testShouldConvertAttributeToNonOptionalWithStringRawRepresentable),
+            ("testShouldConvertAttributeToOptionalWithStringRawRepresentable", testShouldConvertAttributeToOptionalWithStringRawRepresentable),
+            ("testShouldThrowWhenConvertingMissingAttributeToNonOptionalWithStringRawRepresentable", testShouldThrowWhenConvertingMissingAttributeToNonOptionalWithStringRawRepresentable),
+            ("testShouldConvertMissingAttributeToOptionalWithStringRawRepresentable", testShouldConvertMissingAttributeToOptionalWithStringRawRepresentable),
             ("testIntShouldConvertValueToNonOptional", testIntShouldConvertValueToNonOptional),
             ("testIntShouldThrowWhenConvertingEmptyToNonOptional", testIntShouldThrowWhenConvertingEmptyToNonOptional),
             ("testIntShouldThrowWhenConvertingMissingToNonOptional", testIntShouldThrowWhenConvertingMissingToNonOptional),
@@ -661,6 +741,7 @@ extension TypeConversionBasicTypesTests {
             ("testBasicItemShouldConvertEmptyToOptional", testBasicItemShouldConvertEmptyToOptional),
             ("testBasicItemShouldConvertMissingToOptional", testBasicItemShouldConvertMissingToOptional),
             ("testAttributeItemShouldConvertAttributeItemToNonOptional", testAttributeItemShouldConvertAttributeItemToNonOptional),
+            ("testAttributeItemStringRawRepresentableShouldConvertAttributeItemToNonOptional", testAttributeItemStringRawRepresentableShouldConvertAttributeItemToNonOptional),
             ("testAttributeItemShouldThrowWhenConvertingEmptyToNonOptional", testAttributeItemShouldThrowWhenConvertingEmptyToNonOptional),
             ("testAttributeItemShouldThrowWhenConvertingMissingToNonOptional", testAttributeItemShouldThrowWhenConvertingMissingToNonOptional),
             ("testAttributeItemShouldConvertAttributeItemToOptional", testAttributeItemShouldConvertAttributeItemToOptional),
