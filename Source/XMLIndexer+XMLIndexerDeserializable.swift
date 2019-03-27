@@ -535,7 +535,7 @@ public extension XMLElement {
      - throws: an XMLDeserializationError if there is a problem with deserialization
      - returns: The deserialized `T` value
      */
-    public func value<T: XMLAttributeDeserializable, A: RawRepresentable>(ofAttribute attr: A)  throws -> T where A.RawValue == String {
+	func value<T: XMLAttributeDeserializable, A: RawRepresentable>(ofAttribute attr: A)  throws -> T where A.RawValue == String {
         return try value(ofAttribute: attr.rawValue)
     }
 
@@ -549,7 +549,7 @@ public extension XMLElement {
      - parameter attr: The attribute to deserialize
      - returns: The deserialized `T?` value, or nil if the attribute does not exist.
      */
-    public func value<T: XMLAttributeDeserializable, A: RawRepresentable>(ofAttribute attr: A) -> T? where A.RawValue == String {
+	func value<T: XMLAttributeDeserializable, A: RawRepresentable>(ofAttribute attr: A) -> T? where A.RawValue == String {
         return value(ofAttribute: attr.rawValue)
     }
 }
