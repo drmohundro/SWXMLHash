@@ -1,3 +1,7 @@
+## v4.9.0 (March 29, 2019)
+
+- Added Xcode 10.2, Swift 5.0 support (via [#210](https://github.com/drmohundro/SWXMLHash/pull/210))
+
 ## v4.8.0 (March 6, 2019)
 
 - Added support for using String backed RawRepresentables in place of Strings for revelant APIs (via
