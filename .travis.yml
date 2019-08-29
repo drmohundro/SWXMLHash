@@ -33,7 +33,7 @@ matrix:
         - swift test
       env:
         - JOB=Linux
-        - SWIFT_VERSION=4.0
+        - SWIFT_VERSION=5.0
       sudo: required
       dist: trusty
       language: generic
@@ -44,7 +44,7 @@ matrix:
         - swift test
       env:
         - JOB=Linux
-        - SWIFT_VERSION=4.0
+        - SWIFT_VERSION=5.0
       sudo: required
       dist: trusty
       language: generic
