@@ -1,3 +1,8 @@
+## v5.0.0 (August 28, 2019)
+
+- Added official/full Swift 5.1 compatibility (via [#216](https://github.com/drmohundro/SWXMLHash/pull/216))
+  - Note that API compatibility hasn't changed... it is a major version upgrade to support new language features.
+
 ## v4.9.0 (March 29, 2019)
 
 - Added Xcode 10.2, Swift 5.0 support (via [#210](https://github.com/drmohundro/SWXMLHash/pull/210))
