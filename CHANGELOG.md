@@ -1,3 +1,7 @@
+## v5.0.1 (September 2, 2019)
+
+- Fixed issue [#218](https://github.com/drmohundro/SWXMLHash/issues/218) with unique bundle identifier (via [#219](https://github.com/drmohundro/SWXMLHash/pull/219))
+
 ## v5.0.0 (August 28, 2019)
 
 - Added official/full Swift 5.1 compatibility (via [#216](https://github.com/drmohundro/SWXMLHash/pull/216))
