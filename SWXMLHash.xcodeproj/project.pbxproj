@@ -847,7 +847,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "drmohundro.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = "drmohundro.$(PRODUCT_NAME:rfc1034identifier).${PLATFORM_NAME}";
 				PRODUCT_NAME = SWXMLHash;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -871,7 +871,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "drmohundro.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = "drmohundro.$(PRODUCT_NAME:rfc1034identifier).${PLATFORM_NAME}";
 				PRODUCT_NAME = SWXMLHash;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -936,7 +936,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				PRODUCT_BUNDLE_IDENTIFIER = "drmohundro.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = "drmohundro.$(PRODUCT_NAME:rfc1034identifier).${PLATFORM_NAME}";
 				PRODUCT_MODULE_NAME = SWXMLHash;
 				PRODUCT_NAME = SWXMLHash;
 				SDKROOT = macosx;
@@ -962,7 +962,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				PRODUCT_BUNDLE_IDENTIFIER = "drmohundro.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = "drmohundro.$(PRODUCT_NAME:rfc1034identifier).${PLATFORM_NAME}";
 				PRODUCT_MODULE_NAME = SWXMLHash;
 				PRODUCT_NAME = SWXMLHash;
 				SDKROOT = macosx;
@@ -1030,7 +1030,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Source/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = drmohundro.SWXMLHash;
+				PRODUCT_BUNDLE_IDENTIFIER = "drmohundro.SWXMLHash.${PLATFORM_NAME}";
 				PRODUCT_NAME = SWXMLHash;
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
@@ -1055,7 +1055,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Source/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = drmohundro.SWXMLHash;
+				PRODUCT_BUNDLE_IDENTIFIER = "drmohundro.SWXMLHash.${PLATFORM_NAME}";
 				PRODUCT_NAME = SWXMLHash;
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
@@ -1118,7 +1118,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Source/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = drmohundro.SWXMLHash;
+				PRODUCT_BUNDLE_IDENTIFIER = "drmohundro.SWXMLHash.${PLATFORM_NAME}";
 				PRODUCT_NAME = SWXMLHash;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -1143,7 +1143,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Source/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = drmohundro.SWXMLHash;
+				PRODUCT_BUNDLE_IDENTIFIER = "drmohundro.SWXMLHash.${PLATFORM_NAME}";
 				PRODUCT_NAME = SWXMLHash;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
