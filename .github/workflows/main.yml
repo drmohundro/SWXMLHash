@@ -13,10 +13,11 @@ jobs:
          WORKSPACE: "-workspace SWXMLHash.xcworkspace"
          ACTION: "build-for-testing test-without-building"
         run: |
-          xcodebuild $ACTION $WORKSPACE -scheme "SWXMLHash OSX"
-          xcodebuild $ACTION $WORKSPACE -scheme "SWXMLHash iOS" -sdk iphonesimulator -destination "OS=12.2,name=iPhone XS"
-          xcodebuild $ACTION $WORKSPACE -scheme "SWXMLHash tvOS" -sdk appletvsimulator -destination "name=Apple TV"
-          xcodebuild $ACTION $WORKSPACE -scheme "SWXMLHash watchOS" -sdk watchsimulator
+          set -o pipefail
+          xcodebuild $ACTION $WORKSPACE -scheme "SWXMLHash OSX" | xcpretty
+          xcodebuild $ACTION $WORKSPACE -scheme "SWXMLHash iOS" -sdk iphonesimulator -destination "OS=12.2,name=iPhone XS" | xcpretty
+          xcodebuild $ACTION $WORKSPACE -scheme "SWXMLHash tvOS" -sdk appletvsimulator -destination "name=Apple TV" | xcpretty
+          xcodebuild build $WORKSPACE -scheme "SWXMLHash watchOS" -sdk watchsimulator | xcpretty
 
   linux-test:
     name: Linux Test
