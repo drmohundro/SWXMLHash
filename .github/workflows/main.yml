@@ -10,13 +10,13 @@ jobs:
         uses: actions/checkout@master
       - name: Build and test
         env:
-         WORKSPACE: "SWXMLHash.xcworkspace"
+         WORKSPACE: "-workspace SWXMLHash.xcworkspace"
          ACTION: "build-for-testing test-without-building"
         run: |
-          xcodebuild $ACTION -destination $WORKSPACE -scheme "SWXMLHash OSX"
-          xcodebuild $ACTION -destination $WORKSPACE -scheme "SWXMLHash iOS"
-          xcodebuild $ACTION -destination $WORKSPACE -scheme "SWXMLHash tvOS"
-          xcodebuild $ACTION -destination $WORKSPACE -scheme "SWXMLHash watchOS"
+          xcodebuild $ACTION $WORKSPACE -scheme "SWXMLHash OSX"
+          xcodebuild $ACTION $WORKSPACE -scheme "SWXMLHash iOS" -sdk iphonesimulator -destination "OS=12.2,name=iPhone XS"
+          xcodebuild $ACTION $WORKSPACE -scheme "SWXMLHash tvOS" -sdk appletvsimulator -destination "name=Apple TV"
+          xcodebuild $ACTION $WORKSPACE -scheme "SWXMLHash watchOS" -sdk watchsimulator
 
   linux-test:
     name: Linux Test
