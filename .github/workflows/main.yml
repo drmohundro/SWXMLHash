@@ -18,6 +18,7 @@ jobs:
           xcodebuild $ACTION $WORKSPACE -scheme "SWXMLHash iOS" -sdk iphonesimulator -destination "OS=12.2,name=iPhone XS" | xcpretty
           xcodebuild $ACTION $WORKSPACE -scheme "SWXMLHash tvOS" -sdk appletvsimulator -destination "name=Apple TV" | xcpretty
           xcodebuild build $WORKSPACE -scheme "SWXMLHash watchOS" -sdk watchsimulator | xcpretty
+          bash <(curl -s https://codecov.io/bash)
 
   linux-test:
     name: Linux Test
