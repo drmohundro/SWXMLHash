@@ -11,5 +11,8 @@ insert_final_newline = true
 [*.{js,md,sh,yml}]
 indent_size = 2
 
+[Rakefile]
+indent_size = 2
+
 [*.swift]
 indent_size = 4
