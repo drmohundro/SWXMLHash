@@ -8,7 +8,8 @@ Pod::Spec.new do |s|
 
   s.requires_arc = true
   s.pod_target_xcconfig = {
-    'APPLICATION_EXTENSION_API_ONLY' => 'YES'
+    'APPLICATION_EXTENSION_API_ONLY' => 'YES',
+    'BUILD_LIBRARY_FOR_DISTRIBUTION' => 'YES'
   }
 
   s.swift_version = '5.0'
