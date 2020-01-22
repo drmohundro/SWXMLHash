@@ -638,7 +638,7 @@ struct BasicItem: XMLIndexerDeserializable {
 
 extension BasicItem: Equatable {
     static func == (a: BasicItem, b: BasicItem) -> Bool {
-        return a.name == b.name && a.price == b.price
+        a.name == b.name && a.price == b.price
     }
 }
 
@@ -657,7 +657,7 @@ struct AttributeItem: XMLElementDeserializable {
 
 extension AttributeItem: Equatable {
     static func == (a: AttributeItem, b: AttributeItem) -> Bool {
-        return a.name == b.name && a.price == b.price
+        a.name == b.name && a.price == b.price
     }
 }
 
@@ -681,13 +681,13 @@ struct AttributeItemStringRawRepresentable: XMLElementDeserializable {
 
 extension AttributeItemStringRawRepresentable: Equatable {
     static func == (a: AttributeItemStringRawRepresentable, b: AttributeItemStringRawRepresentable) -> Bool {
-        return a.name == b.name && a.price == b.price
+        a.name == b.name && a.price == b.price
     }
 }
 
 extension TypeConversionBasicTypesTests {
     static var allTests: [(String, (TypeConversionBasicTypesTests) -> () throws -> Void)] {
-        return [
+        [
             ("testShouldConvertValueToNonOptional", testShouldConvertValueToNonOptional),
             ("testShouldConvertEmptyToNonOptional", testShouldConvertEmptyToNonOptional),
             ("testShouldThrowWhenConvertingMissingToNonOptional", testShouldThrowWhenConvertingMissingToNonOptional),

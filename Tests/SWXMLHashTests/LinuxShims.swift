@@ -29,7 +29,7 @@ import Foundation
 
     extension NSString {
         class func path(withComponents components: [String]) -> String {
-            return pathWithComponents(components)
+            pathWithComponents(components)
         }
     }
 
