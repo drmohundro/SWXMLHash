@@ -1,4 +1,4 @@
-FROM ibmcom/swift-ubuntu:latest
+FROM swift:5.1
 
 ENV APP_HOME ./app
 RUN mkdir $APP_HOME

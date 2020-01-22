@@ -120,7 +120,7 @@ public class SWXMLHash {
     - returns: An XMLIndexer instance that is used to look up elements in the XML
     */
     class public func parse(_ xml: String) -> XMLIndexer {
-        return SWXMLHash().parse(xml)
+        SWXMLHash().parse(xml)
     }
 
     /**
@@ -130,7 +130,7 @@ public class SWXMLHash {
     - returns: An XMLIndexer instance that is used to look up elements in the XML
     */
     class public func parse(_ data: Data) -> XMLIndexer {
-        return SWXMLHash().parse(data)
+        SWXMLHash().parse(data)
     }
 
     /**
@@ -140,7 +140,7 @@ public class SWXMLHash {
     - returns: An XMLIndexer instance that is used to look up elements in the XML
     */
     class public func lazy(_ xml: String) -> XMLIndexer {
-        return config { conf in conf.shouldProcessLazily = true }.parse(xml)
+        config { conf in conf.shouldProcessLazily = true }.parse(xml)
     }
 
     /**
@@ -150,7 +150,7 @@ public class SWXMLHash {
     - returns: An XMLIndexer instance that is used to look up elements in the XML
     */
     class public func lazy(_ data: Data) -> XMLIndexer {
-        return config { conf in conf.shouldProcessLazily = true }.parse(data)
+        config { conf in conf.shouldProcessLazily = true }.parse(data)
     }
 }
 
@@ -162,7 +162,7 @@ struct Stack<T> {
     }
 
     mutating func pop() -> T {
-        return items.removeLast()
+        items.removeLast()
     }
 
     mutating func drop() {
@@ -174,7 +174,7 @@ struct Stack<T> {
     }
 
     func top() -> T {
-        return items[items.count - 1]
+        items[items.count - 1]
     }
 }
 
@@ -255,7 +255,7 @@ extension XMLParserDelegate {
 
     func parser(_ parser: XMLParser,
                 resolveExternalEntityName name: String,
-                systemID: String?) -> Data? { return nil }
+                systemID: String?) -> Data? { nil }
 
     func parser(_ parser: XMLParser,
                 parseErrorOccurred parseError: Error) { }
@@ -591,7 +591,7 @@ public enum XMLIndexer {
 
     /// All elements at the currently indexed level
     public var all: [XMLIndexer] {
-        return allElements.map { XMLIndexer($0) }
+        allElements.map { XMLIndexer($0) }
     }
 
     private var allElements: [XMLElement] {
@@ -610,7 +610,7 @@ public enum XMLIndexer {
 
     /// All child elements from the currently indexed level
     public var children: [XMLIndexer] {
-        return childElements.map { XMLIndexer($0) }
+        childElements.map { XMLIndexer($0) }
     }
 
     private var childElements: [XMLElement] {
@@ -625,7 +625,7 @@ public enum XMLIndexer {
 
     @available(*, unavailable, renamed: "filterChildren(_:)")
     public func filter(_ included: (_ elem: XMLElement, _ index: Int) -> Bool) -> XMLIndexer {
-        return filterChildren(included)
+        filterChildren(included)
     }
 
     public func filterChildren(_ included: (_ elem: XMLElement, _ index: Int) -> Bool) -> XMLIndexer {
@@ -639,7 +639,7 @@ public enum XMLIndexer {
     }
 
     public func filterAll(_ included: (_ elem: XMLElement, _ index: Int) -> Bool) -> XMLIndexer {
-        return handleFilteredResults(list: allElements, included: included)
+        handleFilteredResults(list: allElements, included: included)
     }
 
     private func handleFilteredResults(list: [XMLElement],
@@ -883,11 +883,11 @@ public class XMLElement: XMLContent {
 
     /// Whether the element is case insensitive or not
     public var caseInsensitive: Bool {
-        return options.caseInsensitive
+        options.caseInsensitive
     }
 
     var userInfo: [CodingUserInfoKey: Any] {
-        return options.userInfo
+        options.userInfo
     }
 
     /// All attributes
@@ -903,7 +903,7 @@ public class XMLElement: XMLContent {
 
     /// The inner text of the element, if it exists
     public var text: String {
-        return children.reduce("", {
+        children.reduce("", {
             if let element = $1 as? TextElement {
                 return $0 + element.text
             }
@@ -914,7 +914,7 @@ public class XMLElement: XMLContent {
 
     /// The inner text of the element and its children
     public var recursiveText: String {
-        return children.reduce("", {
+        children.reduce("", {
             if let textElement = $1 as? TextElement {
                 return $0 + textElement.text
             } else if let xmlElement = $1 as? XMLElement {
@@ -926,7 +926,7 @@ public class XMLElement: XMLContent {
     }
 
     public var innerXML: String {
-        return children.reduce("", {
+        children.reduce("", {
             $0.description + $1.description
         })
     }
@@ -939,7 +939,7 @@ public class XMLElement: XMLContent {
     let options: SWXMLHashOptions
 
     var xmlChildren: [XMLElement] {
-        return children.compactMap { $0 as? XMLElement }
+        children.compactMap { $0 as? XMLElement }
     }
 
     /**
@@ -988,14 +988,14 @@ public class XMLElement: XMLContent {
 extension TextElement: CustomStringConvertible {
     /// The text value for a `TextElement` instance.
     public var description: String {
-        return text
+        text
     }
 }
 
 extension XMLAttribute: CustomStringConvertible {
     /// The textual representation of an `XMLAttribute` instance.
     public var description: String {
-        return "\(name)=\"\(text)\""
+        "\(name)=\"\(text)\""
     }
 }
 
@@ -1062,7 +1062,7 @@ extension XMLIndexer {
      */
     public func withAttribute<A: RawRepresentable, V: RawRepresentable>(_ attr: A, _ value: V) throws -> XMLIndexer
         where A.RawValue == String, V.RawValue == String {
-        return try withAttribute(attr.rawValue, value.rawValue)
+        try withAttribute(attr.rawValue, value.rawValue)
     }
 
     /**
@@ -1077,7 +1077,7 @@ extension XMLIndexer {
      - throws: Throws an XMLIndexingError.Key if no element was found
      */
     public func byKey<K: RawRepresentable>(_ key: K) throws -> XMLIndexer where K.RawValue == String {
-        return try byKey(key.rawValue)
+        try byKey(key.rawValue)
     }
 
     /**
@@ -1091,7 +1091,7 @@ extension XMLIndexer {
      - returns: instance of XMLIndexer to match the element (or elements) found by
      */
     public subscript<K: RawRepresentable>(key: K) -> XMLIndexer where K.RawValue == String {
-        return self[key.rawValue]
+        self[key.rawValue]
     }
 }
 
@@ -1107,6 +1107,6 @@ extension XMLElement {
      Convenience for self[String]
      */
     public func attribute<N: RawRepresentable>(by name: N) -> XMLAttribute? where N.RawValue == String {
-        return attribute(by: name.rawValue)
+        attribute(by: name.rawValue)
     }
 }

@@ -238,7 +238,7 @@ class TypeConversionPrimitypeTypesTests: XCTestCase {
 
 extension TypeConversionPrimitypeTypesTests {
     static var allTests: [(String, (TypeConversionPrimitypeTypesTests) -> () throws -> Void)] {
-        return [
+        [
             ("testShouldConvertArrayOfGoodIntsToNonOptional", testShouldConvertArrayOfGoodIntsToNonOptional),
             ("testShouldConvertArrayOfGoodIntsToOptional", testShouldConvertArrayOfGoodIntsToOptional),
             ("testShouldConvertArrayOfGoodIntsToArrayOfOptionals", testShouldConvertArrayOfGoodIntsToArrayOfOptionals),

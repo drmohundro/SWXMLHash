@@ -44,7 +44,7 @@ class MixedTextWithXMLElementsTests: XCTestCase {
 
 extension MixedTextWithXMLElementsTests {
     static var allTests: [(String, (MixedTextWithXMLElementsTests) -> () throws -> Void)] {
-        return [
+        [
             ("testShouldBeAbleToGetAllContentsInsideOfAnElement", testShouldBeAbleToGetAllContentsInsideOfAnElement)
         ]
     }

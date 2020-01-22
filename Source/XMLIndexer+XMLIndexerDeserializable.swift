@@ -408,7 +408,7 @@ public extension XMLIndexer {
      - returns: The deserialized `T` value
      */
     func value<T: XMLAttributeDeserializable, A: RawRepresentable>(ofAttribute attr: A) throws -> T where A.RawValue == String {
-        return try value(ofAttribute: attr.rawValue)
+        try value(ofAttribute: attr.rawValue)
     }
 
     /**
@@ -422,7 +422,7 @@ public extension XMLIndexer {
      - returns: The deserialized `T?` value, or nil if the attribute does not exist
      */
     func value<T: XMLAttributeDeserializable, A: RawRepresentable>(ofAttribute attr: A) -> T? where A.RawValue == String {
-        return value(ofAttribute: attr.rawValue)
+        value(ofAttribute: attr.rawValue)
     }
 
     /**
@@ -437,7 +437,7 @@ public extension XMLIndexer {
      - returns: The deserialized `[T]` value
      */
     func value<T: XMLAttributeDeserializable, A: RawRepresentable>(ofAttribute attr: A) throws -> [T] where A.RawValue == String {
-        return try value(ofAttribute: attr.rawValue)
+        try value(ofAttribute: attr.rawValue)
     }
 
     /**
@@ -452,7 +452,7 @@ public extension XMLIndexer {
      - returns: The deserialized `[T]?` value
      */
     func value<T: XMLAttributeDeserializable, A: RawRepresentable>(ofAttribute attr: A) throws -> [T]? where A.RawValue == String {
-        return try value(ofAttribute: attr.rawValue)
+        try value(ofAttribute: attr.rawValue)
     }
 
     /**
@@ -467,7 +467,7 @@ public extension XMLIndexer {
      - returns: The deserialized `[T?]` value
      */
     func value<T: XMLAttributeDeserializable, A: RawRepresentable>(ofAttribute attr: A) throws -> [T?] where A.RawValue == String {
-        return try value(ofAttribute: attr.rawValue)
+        try value(ofAttribute: attr.rawValue)
     }
 }
 
@@ -536,7 +536,7 @@ public extension XMLElement {
      - returns: The deserialized `T` value
      */
     func value<T: XMLAttributeDeserializable, A: RawRepresentable>(ofAttribute attr: A)  throws -> T where A.RawValue == String {
-        return try value(ofAttribute: attr.rawValue)
+        try value(ofAttribute: attr.rawValue)
     }
 
     /**
@@ -550,7 +550,7 @@ public extension XMLElement {
      - returns: The deserialized `T?` value, or nil if the attribute does not exist.
      */
     func value<T: XMLAttributeDeserializable, A: RawRepresentable>(ofAttribute attr: A) -> T? where A.RawValue == String {
-        return value(ofAttribute: attr.rawValue)
+        value(ofAttribute: attr.rawValue)
     }
 }
 
@@ -619,7 +619,7 @@ extension String: XMLElementDeserializable, XMLAttributeDeserializable {
     - returns: the deserialized String value
     */
     public static func deserialize(_ element: XMLElement) -> String {
-        return element.text
+        element.text
     }
 
     /**
@@ -629,7 +629,7 @@ extension String: XMLElementDeserializable, XMLAttributeDeserializable {
      - returns: the deserialized String value
      */
     public static func deserialize(_ attribute: XMLAttribute) -> String {
-        return attribute.text
+        attribute.text
     }
 }
 
