@@ -141,7 +141,7 @@ struct ComplexItem: XMLIndexerDeserializable {
     let attrs: [AttributeItem]
 
     static func deserialize(_ node: XMLIndexer) throws -> ComplexItem {
-        return try ComplexItem(
+        try ComplexItem(
             name: node["name"].value(),
             priceOptional: node["price"].value(),
             basics: node["basicItems"]["basicItem"].value(),
@@ -152,13 +152,13 @@ struct ComplexItem: XMLIndexerDeserializable {
 
 extension ComplexItem: Equatable {
     static func == (a: ComplexItem, b: ComplexItem) -> Bool {
-        return a.name == b.name && a.priceOptional == b.priceOptional && a.basics == b.basics && a.attrs == b.attrs
+        a.name == b.name && a.priceOptional == b.priceOptional && a.basics == b.basics && a.attrs == b.attrs
     }
 }
 
 extension TypeConversionComplexTypesTests {
     static var allTests: [(String, (TypeConversionComplexTypesTests) -> () throws -> Void)] {
-        return [
+        [
             ("testShouldConvertComplexitemToNonOptional", testShouldConvertComplexitemToNonOptional),
             ("testShouldThrowWhenConvertingEmptyToNonOptional", testShouldThrowWhenConvertingEmptyToNonOptional),
             ("testShouldThrowWhenConvertingMissingToNonOptional", testShouldThrowWhenConvertingMissingToNonOptional),

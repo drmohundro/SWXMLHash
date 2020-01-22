@@ -1,13 +1,18 @@
 name: SwiftLint
-on: [push]
+
+on:
+  [push, pull_request]
+
 jobs:
   docker-lint:
     name: Docker Lint
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v1
-    - name: GitHub Action for SwiftLint
-      uses: norio-nomura/action-swiftlint@2.0.0
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/checkout@v1
+      - name: GitHub Action for SwiftLint
+        uses: norio-nomura/action-swiftlint@3.0.1
+      - name: GitHub Action for SwiftLint with --strict
+        uses: norio-nomura/action-swiftlint@3.0.1
+        with:
+          args: --strict

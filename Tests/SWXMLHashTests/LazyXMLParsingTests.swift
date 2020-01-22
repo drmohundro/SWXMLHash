@@ -160,7 +160,7 @@ class LazyXMLParsingTests: XCTestCase {
 
 extension LazyXMLParsingTests {
     static var allTests: [(String, (LazyXMLParsingTests) -> () throws -> Void)] {
-        return [
+        [
             ("testShouldBeAbleToParseIndividualElements", testShouldBeAbleToParseIndividualElements),
             ("testShouldBeAbleToParseElementGroups", testShouldBeAbleToParseElementGroups),
             ("testShouldBeAbleToParseAttributes", testShouldBeAbleToParseAttributes),

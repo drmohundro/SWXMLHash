@@ -54,7 +54,7 @@ class SWXMLHashConfigTests: XCTestCase {
 
 extension SWXMLHashConfigTests {
     static var allTests: [(String, (SWXMLHashConfigTests) -> () throws -> Void)] {
-        return [
+        [
             ("testShouldAllowProcessingNamespacesOrNot", testShouldAllowProcessingNamespacesOrNot)
         ]
     }

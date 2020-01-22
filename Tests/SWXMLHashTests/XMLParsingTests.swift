@@ -392,7 +392,7 @@ class XMLParsingTests: XCTestCase {
 
 extension XMLParsingTests {
     static var allTests: [(String, (XMLParsingTests) -> () throws -> Void)] {
-        return [
+        [
             ("testShouldBeAbleToParseIndividualElements", testShouldBeAbleToParseIndividualElements),
             ("testShouldBeAbleToParseIndividualElementsWithStringRawRepresentable", testShouldBeAbleToParseIndividualElementsWithStringRawRepresentable),
             ("testShouldBeAbleToParseElementGroups", testShouldBeAbleToParseElementGroups),

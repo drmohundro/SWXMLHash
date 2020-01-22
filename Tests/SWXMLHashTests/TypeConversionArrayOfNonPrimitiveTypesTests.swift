@@ -261,7 +261,7 @@ class TypeConversionArrayOfNonPrimitiveTypesTests: XCTestCase {
 
 extension TypeConversionArrayOfNonPrimitiveTypesTests {
     static var allTests: [(String, (TypeConversionArrayOfNonPrimitiveTypesTests) -> () throws -> Void)] {
-        return [
+        [
             ("testShouldConvertArrayOfGoodBasicitemsItemsToNonOptional", testShouldConvertArrayOfGoodBasicitemsItemsToNonOptional),
             ("testShouldConvertArrayOfGoodBasicitemsItemsToOptional", testShouldConvertArrayOfGoodBasicitemsItemsToOptional),
             ("testShouldConvertArrayOfGoodBasicitemsItemsToArrayOfOptionals", testShouldConvertArrayOfGoodBasicitemsItemsToArrayOfOptionals),
