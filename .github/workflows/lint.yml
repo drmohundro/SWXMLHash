@@ -1,5 +1,8 @@
 name: SwiftLint
-on: [push]
+
+on:
+  [push, pull_request]
+
 jobs:
   SwiftLint:
     runs-on: ubuntu-latest

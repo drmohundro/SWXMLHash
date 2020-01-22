@@ -1,5 +1,8 @@
 name: Main
-on: [push]
+
+on:
+  [push, pull_request]
+
 jobs:
   mac-test:
     name: Mac Test
