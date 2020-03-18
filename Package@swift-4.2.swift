@@ -1,4 +1,4 @@
-// swift-tools-version:5.1
+// swift-tools-version:4.2
 
 //
 //  SWXMLHash.swift
@@ -45,7 +45,5 @@ let package = Package(
             dependencies: ["SWXMLHash"]
         )
     ],
-    swiftLanguageVersions: [
-        .v5
-    ]
+    swiftLanguageVersions: [.v3, .v4, .v4_2]
 )
