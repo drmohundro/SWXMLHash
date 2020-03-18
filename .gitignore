@@ -65,3 +65,4 @@ fastlane/screenshots
 Coverage
 
 *.swp
+.DS_Store
