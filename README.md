@@ -157,7 +157,7 @@ The available options at this time are:
 ## Examples
 
 All examples below can be found in the included
-[specs](https://github.com/drmohundro/SWXMLHash/blob/master/Tests/).
+[specs](https://github.com/drmohundro/SWXMLHash/blob/main/Tests/).
 
 ### Initialization
 
