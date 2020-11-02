@@ -38,11 +38,13 @@ let package = Package(
     targets: [
         .target(
             name: "SWXMLHash",
-            path: "Source"
+            path: "Source",
+            exclude: ["Info.plist"]
         ),
         .testTarget(
             name: "SWXMLHashTests",
-            dependencies: ["SWXMLHash"]
+            dependencies: ["SWXMLHash"],
+            exclude: ["Info.plist", "test.xml"]
         )
     ],
     swiftLanguageVersions: [
