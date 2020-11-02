@@ -1,5 +1,4 @@
-// swift-tools-version:5.3
-
+// swift-tools-version:5.1
 //
 //  SWXMLHash.swift
 //  SWXMLHash
@@ -24,7 +23,6 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 //
-
 import PackageDescription
 
 let package = Package(
