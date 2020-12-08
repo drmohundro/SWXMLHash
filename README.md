@@ -612,6 +612,8 @@ Feel free to shoot me an email, post a
 [question on StackOverflow](http://stackoverflow.com/questions/tagged/swxmlhash),
 or open an issue if you think you've found a bug. I'm happy to try to help!
 
+Another alternative is to post a question in the [Discussions](https://github.com/drmohundro/SWXMLHash/discussions).
+
 ## Changelog
 
 See [CHANGELOG](CHANGELOG.md) for a list of all changes and their corresponding
