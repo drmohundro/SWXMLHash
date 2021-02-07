@@ -1,3 +1,7 @@
+## v5.0.2 (February 6, 2021)
+
+- Bring in Swift Package Manager fixes [#232](https://github.com/drmohundro/SWXMLHash/pull/232), [#237](https://github.com/drmohundro/SWXMLHash/pull/237), and [#238](https://github.com/drmohundro/SWXMLHash/pull/238).
+
 ## v5.0.1 (September 2, 2019)
 
 - Fixed issue [#218](https://github.com/drmohundro/SWXMLHash/issues/218) with unique bundle identifier (via [#219](https://github.com/drmohundro/SWXMLHash/pull/219))
