@@ -472,7 +472,7 @@ Given:
         <category>C3</category>
       </categories>
     </book>
-  <books>
+  </books>
 </root>
 ```
 
