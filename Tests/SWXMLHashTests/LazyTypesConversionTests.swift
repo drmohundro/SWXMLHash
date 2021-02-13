@@ -47,7 +47,7 @@ class LazyTypesConversionTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        parser = SWXMLHash.config { cfg in cfg.shouldProcessLazily = true }.parse(xmlWithBasicTypes)
+        parser = XMLHash.config { cfg in cfg.shouldProcessLazily = true }.parse(xmlWithBasicTypes)
     }
 
     func testShouldConvertValueToNonOptional() {
@@ -69,7 +69,7 @@ class LazyTypesConversionTests: XCTestCase {
     }
 
     func testShouldBeAbleToGetUserInfoDuringDeserialization() {
-        parser = SWXMLHash.config { config in
+        parser = XMLHash.config { config in
             let options = SampleUserInfo(apiVersion: .v1)
             config.userInfo = [ SampleUserInfo.key: options ]
         }.parse(xmlWithBasicTypes)

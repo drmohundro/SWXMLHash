@@ -68,21 +68,19 @@ class XMLParsingTests: XCTestCase {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
 
-        xml = SWXMLHash.parse(xmlToParse)
+        xml = XMLHash.parse(xmlToParse)
     }
 
     func testShouldBeAbleToParseIndividualElements() {
         XCTAssertEqual(xml!["root"]["header"]["title"].element?.text, "Test Title Header")
     }
 
-    // swiftlint:disable nesting
     func testShouldBeAbleToParseIndividualElementsWithStringRawRepresentable() {
         enum Keys: String {
             case root; case header; case title
         }
         XCTAssertEqual(xml![Keys.root][Keys.header][Keys.title].element?.text, "Test Title Header")
     }
-    // swiftlint:enable nesting
 
     func testShouldBeAbleToParseElementGroups() {
         XCTAssertEqual(xml!["root"]["catalog"]["book"][1]["author"].element?.text, "Ralls, Kim")
@@ -100,7 +98,6 @@ class XMLParsingTests: XCTestCase {
         XCTAssertEqual(xml!["root"]["catalog"]["book"][1].element?.attribute(by: "id")?.text, "bk102")
     }
 
-    // swiftlint:disable nesting
     // swiftlint:disable identifier_name
     func testShouldBeAbleToParseAttributesWithStringRawRepresentable() {
         enum Keys: String {
@@ -130,12 +127,11 @@ class XMLParsingTests: XCTestCase {
         }
     }
 
-    // swiftlint:enable nesting
     // swiftlint:enable identifier_name
 
     func testShouldBeAbleToLookUpElementsByNameAndAttributeCaseInsensitive() {
         do {
-            let xmlInsensitive = SWXMLHash.config({ config in
+            let xmlInsensitive = XMLHash.config({ config in
                 config.caseInsensitive = true
             }).parse(xmlToParse)
             let value = try xmlInsensitive["rOOt"]["catalOg"]["bOOk"].withAttribute("iD", "Bk102")["authOr"].element?.text
@@ -178,7 +174,7 @@ class XMLParsingTests: XCTestCase {
 
     func testShouldBeAbleToIterateOverMixedContent() {
         let mixedContentXml = "<html><body><p>mixed content <i>iteration</i> support</body></html>"
-        let parsed = SWXMLHash.parse(mixedContentXml)
+        let parsed = XMLHash.parse(mixedContentXml)
         let element = parsed["html"]["body"]["p"].element
         XCTAssertNotNil(element)
         if let element = element {
@@ -220,13 +216,13 @@ class XMLParsingTests: XCTestCase {
         ]
 
         for (index, mixedContentXml) in mixedContentXmlInputs.enumerated() {
-            XCTAssertEqual(SWXMLHash.parse(mixedContentXml).element!.recursiveText, recursiveTextOutputs[index])
+            XCTAssertEqual(XMLHash.parse(mixedContentXml).element!.recursiveText, recursiveTextOutputs[index])
         }
     }
 
     func testShouldHandleInterleavingXMLElements() {
         let interleavedXml = "<html><body><p>one</p><div>two</div><p>three</p><div>four</div></body></html>"
-        let parsed = SWXMLHash.parse(interleavedXml)
+        let parsed = XMLHash.parse(interleavedXml)
 
         let result = parsed["html"]["body"].children.map({ $0.element!.text }).joined(separator: ", ")
         XCTAssertEqual(result, "one, two, three, four")
@@ -234,14 +230,14 @@ class XMLParsingTests: XCTestCase {
 
     func testShouldBeAbleToProvideADescriptionForTheDocument() {
         let descriptionXml = "<root><foo><what id=\"myId\">puppies</what></foo></root>"
-        let parsed = SWXMLHash.parse(descriptionXml)
+        let parsed = XMLHash.parse(descriptionXml)
 
         XCTAssertEqual(parsed.description, "<root><foo><what id=\"myId\">puppies</what></foo></root>")
     }
 
     func testShouldBeAbleToGetInnerXML() {
         let testXML = "<root><foo><what id=\"myId\">puppies</what><elems><elem>1</elem><elem>2</elem></elems></foo></root>"
-        let parsed = SWXMLHash.parse(testXML)
+        let parsed = XMLHash.parse(testXML)
 
         XCTAssertEqual(parsed["root"]["foo"].element!.innerXML, "<what id=\"myId\">puppies</what><elems><elem>1</elem><elem>2</elem></elems>")
     }
@@ -264,7 +260,6 @@ class XMLParsingTests: XCTestCase {
         } catch { err = nil }
     }
 
-    // swiftlint:disable nesting
     /**
      Added Only test coverage for:
     `byKey<K: RawRepresentable>(_ key: K) throws -> XMLIndexer where K.RawValue == String`
@@ -283,7 +278,6 @@ class XMLParsingTests: XCTestCase {
             err = error
         } catch { err = nil }
     }
-    // swiftlint:enable nesting
 
     func testShouldProvideAnErrorElementWhenIndexersDontMatch() {
         var err: IndexingError?
@@ -324,7 +318,7 @@ class XMLParsingTests: XCTestCase {
             </root>
         """
 
-        let parser = SWXMLHash.parse(xmlToParse)
+        let parser = XMLHash.parse(xmlToParse)
 
         let subIndexer = parser["root"].filterChildren { _, index in index >= 2 && index <= 5 }
 
@@ -369,7 +363,7 @@ class XMLParsingTests: XCTestCase {
     func testShouldThrowErrorForInvalidXML() {
         let invalidXML = "<uh oh>what is this"
         var err: ParsingError?
-        let parser = SWXMLHash.config { config in
+        let parser = XMLHash.config { config in
             config.detectParsingErrors = true
         }.parse(invalidXML)
 

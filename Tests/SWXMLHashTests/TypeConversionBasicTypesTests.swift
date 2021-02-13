@@ -76,7 +76,7 @@ class TypeConversionBasicTypesTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        parser = SWXMLHash.parse(xmlWithBasicTypes)
+        parser = XMLHash.parse(xmlWithBasicTypes)
     }
 
     func testShouldConvertValueToNonOptional() {
@@ -161,7 +161,6 @@ class TypeConversionBasicTypesTests: XCTestCase {
         XCTAssertNil(value)
     }
 
-    // swiftlint:disable nesting
     func testShouldConvertAttributeToNonOptionalWithStringRawRepresentable() {
         enum Keys: String {
             case string
@@ -201,7 +200,6 @@ class TypeConversionBasicTypesTests: XCTestCase {
         let value: String? = parser!["root"]["attr"].value(ofAttribute: Keys.missing)
         XCTAssertNil(value)
     }
-    // swiftlint:enable nesting
 
     func testIntShouldConvertValueToNonOptional() {
         do {
@@ -602,7 +600,7 @@ class TypeConversionBasicTypesTests: XCTestCase {
     }
 
     func testShouldBeAbleToGetUserInfoDuringDeserialization() {
-        parser = SWXMLHash.config { config in
+        parser = XMLHash.config { config in
             let options = SampleUserInfo(apiVersion: .v1)
             config.userInfo = [ SampleUserInfo.key: options ]
         }.parse(xmlWithBasicTypes)

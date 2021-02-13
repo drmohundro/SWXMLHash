@@ -76,7 +76,7 @@ class TypeConversionComplexTypesTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        parser = SWXMLHash.parse(xmlWithComplexType)
+        parser = XMLHash.parse(xmlWithComplexType)
     }
 
     func testShouldConvertComplexitemToNonOptional() {
