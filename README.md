@@ -606,6 +606,10 @@ extension NSDate: XMLElementDeserializable {
 }
 ```
 
+### How do I handle deserialization with an enum?
+
+Check out this great suggestion/example from @woolie up at https://github.com/drmohundro/SWXMLHash/discussions/245.
+
 ### Have a different question?
 
 Feel free to shoot me an email, post a
