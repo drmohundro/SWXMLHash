@@ -22,10 +22,10 @@
 		CD4B5F3A19E2C42D005C1F33 /* test.xml in Resources */ = {isa = PBXBuildFile; fileRef = CD4B5F3919E2C42D005C1F33 /* test.xml */; };
 		CD6083F5196CA106000B4F8D /* SWXMLHash.h in Headers */ = {isa = PBXBuildFile; fileRef = CD6083F4196CA106000B4F8D /* SWXMLHash.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CD6083FB196CA106000B4F8D /* SWXMLHash.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD6083EF196CA106000B4F8D /* SWXMLHash.framework */; };
-		CD60840C196CA11D000B4F8D /* SWXMLHash.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD60840B196CA11D000B4F8D /* SWXMLHash.swift */; };
+		CD60840C196CA11D000B4F8D /* XMLHash.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD60840B196CA11D000B4F8D /* XMLHash.swift */; };
 		CD7934C41A7581E600867857 /* test.xml in Resources */ = {isa = PBXBuildFile; fileRef = CD4B5F3919E2C42D005C1F33 /* test.xml */; };
 		CD7934C51A7581F200867857 /* SWXMLHash.h in Headers */ = {isa = PBXBuildFile; fileRef = CD6083F4196CA106000B4F8D /* SWXMLHash.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CD7934C61A7581F500867857 /* SWXMLHash.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD60840B196CA11D000B4F8D /* SWXMLHash.swift */; };
+		CD7934C61A7581F500867857 /* XMLHash.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD60840B196CA11D000B4F8D /* XMLHash.swift */; };
 		CD9D05371A757D8B003CCB21 /* SWXMLHash.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD9D052C1A757D8B003CCB21 /* SWXMLHash.framework */; };
 		CDC6D11B1D32D6CE00570DE5 /* XMLParsingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC6D11A1D32D6CE00570DE5 /* XMLParsingTests.swift */; };
 		CDC6D11C1D32D6CE00570DE5 /* XMLParsingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC6D11A1D32D6CE00570DE5 /* XMLParsingTests.swift */; };
@@ -63,8 +63,8 @@
 		CDDEC7561BF6311B00AB138B /* SWXMLHash.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDDEC74C1BF6311A00AB138B /* SWXMLHash.framework */; };
 		CDDEC7701BF632D200AB138B /* SWXMLHash.h in Headers */ = {isa = PBXBuildFile; fileRef = CD6083F4196CA106000B4F8D /* SWXMLHash.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CDDEC7711BF632DD00AB138B /* SWXMLHash.h in Headers */ = {isa = PBXBuildFile; fileRef = CD6083F4196CA106000B4F8D /* SWXMLHash.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CDEA72731C00B0D900C10B28 /* SWXMLHash.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD60840B196CA11D000B4F8D /* SWXMLHash.swift */; };
-		CDEA72741C00B0E300C10B28 /* SWXMLHash.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD60840B196CA11D000B4F8D /* SWXMLHash.swift */; };
+		CDEA72731C00B0D900C10B28 /* XMLHash.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD60840B196CA11D000B4F8D /* XMLHash.swift */; };
+		CDEA72741C00B0E300C10B28 /* XMLHash.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD60840B196CA11D000B4F8D /* XMLHash.swift */; };
 		E25A0776261CF79300C68B90 /* XMLParsingValidationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25A0775261CF79300C68B90 /* XMLParsingValidationTests.swift */; };
 		E25A0777261CF79300C68B90 /* XMLParsingValidationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25A0775261CF79300C68B90 /* XMLParsingValidationTests.swift */; };
 		E25A0778261CF79300C68B90 /* XMLParsingValidationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25A0775261CF79300C68B90 /* XMLParsingValidationTests.swift */; };
@@ -136,7 +136,7 @@
 		CD6083F4196CA106000B4F8D /* SWXMLHash.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SWXMLHash.h; sourceTree = "<group>"; };
 		CD6083FA196CA106000B4F8D /* SWXMLHash iOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SWXMLHash iOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD608400196CA106000B4F8D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CD60840B196CA11D000B4F8D /* SWXMLHash.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SWXMLHash.swift; sourceTree = "<group>"; };
+		CD60840B196CA11D000B4F8D /* XMLHash.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XMLHash.swift; sourceTree = "<group>"; };
 		CD9D052C1A757D8B003CCB21 /* SWXMLHash.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SWXMLHash.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD9D05361A757D8B003CCB21 /* SWXMLHash OSX Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SWXMLHash OSX Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDC6D11A1D32D6CE00570DE5 /* XMLParsingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XMLParsingTests.swift; sourceTree = "<group>"; };
@@ -248,7 +248,7 @@
 				6C42BED4205183AF00137D31 /* shim.swift */,
 				CD6083F2196CA106000B4F8D /* Supporting Files */,
 				CD6083F4196CA106000B4F8D /* SWXMLHash.h */,
-				CD60840B196CA11D000B4F8D /* SWXMLHash.swift */,
+				CD60840B196CA11D000B4F8D /* XMLHash.swift */,
 				54B83CC41C849D9B00D588B5 /* XMLIndexer+XMLIndexerDeserializable.swift */,
 			);
 			path = Source;
@@ -604,7 +604,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6C42BED8205183B000137D31 /* shim.swift in Sources */,
-				CD60840C196CA11D000B4F8D /* SWXMLHash.swift in Sources */,
+				CD60840C196CA11D000B4F8D /* XMLHash.swift in Sources */,
 				54B83CC51C849D9B00D588B5 /* XMLIndexer+XMLIndexerDeserializable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -634,7 +634,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6C42BED5205183B000137D31 /* shim.swift in Sources */,
-				CD7934C61A7581F500867857 /* SWXMLHash.swift in Sources */,
+				CD7934C61A7581F500867857 /* XMLHash.swift in Sources */,
 				54B83CC61C849D9B00D588B5 /* XMLIndexer+XMLIndexerDeserializable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -664,7 +664,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6C42BED6205183B000137D31 /* shim.swift in Sources */,
-				CDEA72731C00B0D900C10B28 /* SWXMLHash.swift in Sources */,
+				CDEA72731C00B0D900C10B28 /* XMLHash.swift in Sources */,
 				54B83CC71C849D9B00D588B5 /* XMLIndexer+XMLIndexerDeserializable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -694,7 +694,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6C42BED7205183B000137D31 /* shim.swift in Sources */,
-				CDEA72741C00B0E300C10B28 /* SWXMLHash.swift in Sources */,
+				CDEA72741C00B0E300C10B28 /* XMLHash.swift in Sources */,
 				54B83CC81C849D9B00D588B5 /* XMLIndexer+XMLIndexerDeserializable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
