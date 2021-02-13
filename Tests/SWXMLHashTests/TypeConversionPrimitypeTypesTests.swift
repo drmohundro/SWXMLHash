@@ -50,7 +50,7 @@ class TypeConversionPrimitypeTypesTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        parser = SWXMLHash.parse(xmlWithArraysOfTypes)
+        parser = XMLHash.parse(xmlWithArraysOfTypes)
     }
 
     func testShouldConvertArrayOfGoodIntsToNonOptional() {

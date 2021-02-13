@@ -44,7 +44,7 @@ class LazyWhiteSpaceParsingTests: XCTestCase {
         let path = bundle.path(forResource: "test", ofType: "xml")!
 #endif
         let data = try! Data(contentsOf: URL(fileURLWithPath: path))
-        xml = SWXMLHash.lazy(data)
+        xml = XMLHash.lazy(data)
     }
 
     // issue #6

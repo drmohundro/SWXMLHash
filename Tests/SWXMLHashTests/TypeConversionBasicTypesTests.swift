@@ -76,7 +76,7 @@ class TypeConversionBasicTypesTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        parser = SWXMLHash.parse(xmlWithBasicTypes)
+        parser = XMLHash.parse(xmlWithBasicTypes)
     }
 
     func testShouldConvertValueToNonOptional() {
@@ -600,7 +600,7 @@ class TypeConversionBasicTypesTests: XCTestCase {
     }
 
     func testShouldBeAbleToGetUserInfoDuringDeserialization() {
-        parser = SWXMLHash.config { config in
+        parser = XMLHash.config { config in
             let options = SampleUserInfo(apiVersion: .v1)
             config.userInfo = [ SampleUserInfo.key: options ]
         }.parse(xmlWithBasicTypes)

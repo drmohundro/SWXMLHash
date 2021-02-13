@@ -1,7 +1,7 @@
 // swift-tools-version:5.3
 
 //
-//  SWXMLHash.swift
+//  Package.swift
 //  SWXMLHash
 //
 //  Copyright (c) 2014 David Mohundro

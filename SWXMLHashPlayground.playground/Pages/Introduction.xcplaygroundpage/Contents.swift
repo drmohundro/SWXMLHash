@@ -30,7 +30,7 @@ xmlns:f=\"http://www.w3schools.com/furniture\">
 </root>
 """
 
-var xml = SWXMLHash.parse(xmlWithNamespace)
+var xml = XMLHash.parse(xmlWithNamespace)
 
 // one root element
 let count = xml["root"].all.count
@@ -99,6 +99,6 @@ struct Book: XMLIndexerDeserializable {
     }
 }
 
-xml = SWXMLHash.parse(booksXML)
+xml = XMLHash.parse(booksXML)
 
 let books: [Book] = try xml["root"]["books"]["book"].value()
