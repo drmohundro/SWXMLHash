@@ -161,7 +161,6 @@ class TypeConversionBasicTypesTests: XCTestCase {
         XCTAssertNil(value)
     }
 
-    // swiftlint:disable nesting
     func testShouldConvertAttributeToNonOptionalWithStringRawRepresentable() {
         enum Keys: String {
             case string
@@ -201,7 +200,6 @@ class TypeConversionBasicTypesTests: XCTestCase {
         let value: String? = parser!["root"]["attr"].value(ofAttribute: Keys.missing)
         XCTAssertNil(value)
     }
-    // swiftlint:enable nesting
 
     func testIntShouldConvertValueToNonOptional() {
         do {

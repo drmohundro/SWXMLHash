@@ -26,10 +26,6 @@
 import SWXMLHash
 import XCTest
 
-// swiftlint:disable line_length
-// swiftlint:disable file_length
-// swiftlint:disable type_body_length
-
 extension BasicItem {
     func validate() throws {
        if price < 0 { throw BasicItemValidation.priceOutOfBounds(price) }
