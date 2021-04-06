@@ -398,9 +398,17 @@ public extension XMLIndexer {
     func value<T>() throws -> [T] where T: XMLIndexerDeserializable {
         switch self {
         case .list(let elements):
-            return try elements.map { try T.deserialize( XMLIndexer($0) ) }
+            return try elements.map {
+				let deserialized = try T.deserialize( XMLIndexer($0) )
+				try deserialized.validate()
+				return deserialized
+			}
         case .element(let element):
-            return try [element].map { try T.deserialize( XMLIndexer($0) ) }
+            return try [element].map {
+				let deserialized = try T.deserialize( XMLIndexer($0) )
+				try deserialized.validate()
+				return deserialized
+			}
         case .stream(let opStream):
             return try opStream.findElements().value()
         default:
