@@ -34,8 +34,8 @@ import Foundation
 public protocol XMLIndexerDeserializable {
     /// Method for deserializing elements from XMLIndexer
     static func deserialize(_ element: XMLIndexer) throws -> Self
-	/// Method for validating elements post deserialization
-	func validate() throws
+    /// Method for validating elements post deserialization
+    func validate() throws
 }
 
 /// Provides XMLIndexer deserialization / type transformation support
@@ -53,11 +53,11 @@ public extension XMLIndexerDeserializable {
             method: "XMLIndexerDeserializable.deserialize(element: XMLIndexer)")
     }
 
-	/**
-	A default do nothing implementation of validation.
-	- throws: nothing
-	*/
-	func validate() throws {}
+    /**
+    A default do nothing implementation of validation.
+    - throws: nothing
+    */
+    func validate() throws {}
 }
 
 // MARK: - XMLElementDeserializable
@@ -66,8 +66,8 @@ public extension XMLIndexerDeserializable {
 public protocol XMLElementDeserializable {
     /// Method for deserializing elements from XMLElement
     static func deserialize(_ element: XMLElement) throws -> Self
-	/// Method for validating elements from XMLElement post deserialization
-	func validate() throws
+    /// Method for validating elements from XMLElement post deserialization
+    func validate() throws
 }
 
 /// Provides XMLElement deserialization / type transformation support
@@ -85,21 +85,21 @@ public extension XMLElementDeserializable {
             method: "XMLElementDeserializable.deserialize(element: XMLElement)")
     }
 
-	/**
-	A default do nothing implementation of validation.
-	- throws: nothing
-	*/
-	func validate() throws {}
+    /**
+    A default do nothing implementation of validation.
+    - throws: nothing
+    */
+    func validate() throws {}
 }
 
 // MARK: - XMLAttributeDeserializable
 
 /// Provides XMLAttribute deserialization / type transformation support
 public protocol XMLAttributeDeserializable {
-	/// Method for deserializing elements from XMLAttribute
+    /// Method for deserializing elements from XMLAttribute
     static func deserialize(_ attribute: XMLAttribute) throws -> Self
-	/// Method for validating elements from XMLAttribute post deserialization
-	func validate() throws
+    /// Method for validating elements from XMLAttribute post deserialization
+    func validate() throws
 }
 
 /// Provides XMLAttribute deserialization / type transformation support
@@ -116,11 +116,11 @@ public extension XMLAttributeDeserializable {
         throw XMLDeserializationError.implementationIsMissing(
             method: "XMLAttributeDeserializable(element: XMLAttribute)")
     }
-	/**
-	A default do nothing implementation of validation.
-	- throws: nothing
-	*/
-	func validate() throws {}
+    /**
+    A default do nothing implementation of validation.
+    - throws: nothing
+    */
+    func validate() throws {}
 }
 
 // MARK: - XMLIndexer Extensions
@@ -240,8 +240,8 @@ public extension XMLIndexer {
         switch self {
         case .element(let element):
             let deserialized = try T.deserialize(element)
-			try deserialized.validate()
-			return deserialized
+            try deserialized.validate()
+            return deserialized
         case .stream(let opStream):
             return try opStream.findElements().value()
         default:
@@ -258,9 +258,9 @@ public extension XMLIndexer {
     func value<T: XMLElementDeserializable>() throws -> T? {
         switch self {
         case .element(let element):
-			let deserialized = try T.deserialize(element)
-			try deserialized.validate()
-			return deserialized
+            let deserialized = try T.deserialize(element)
+            try deserialized.validate()
+            return deserialized
         case .stream(let opStream):
             return try opStream.findElements().value()
         default:
@@ -278,16 +278,16 @@ public extension XMLIndexer {
         switch self {
         case .list(let elements):
             return try elements.map {
-				let deserialized = try T.deserialize($0)
-				try deserialized.validate()
-				return deserialized
-			}
+                let deserialized = try T.deserialize($0)
+                try deserialized.validate()
+                return deserialized
+            }
         case .element(let element):
             return try [element].map {
-				let deserialized = try T.deserialize($0)
-				try deserialized.validate()
-				return deserialized
-			}
+                let deserialized = try T.deserialize($0)
+                try deserialized.validate()
+                return deserialized
+            }
         case .stream(let opStream):
             return try opStream.findElements().value()
         default:
@@ -305,16 +305,16 @@ public extension XMLIndexer {
         switch self {
         case .list(let elements):
             return try elements.map {
-				let deserialized = try T.deserialize($0)
-				try deserialized.validate()
-				return deserialized
-			}
+                let deserialized = try T.deserialize($0)
+                try deserialized.validate()
+                return deserialized
+            }
         case .element(let element):
             return try [element].map {
-				let deserialized = try T.deserialize($0)
-				try deserialized.validate()
-				return deserialized
-			}
+                let deserialized = try T.deserialize($0)
+                try deserialized.validate()
+                return deserialized
+            }
         case .stream(let opStream):
             return try opStream.findElements().value()
         default:
@@ -332,16 +332,16 @@ public extension XMLIndexer {
         switch self {
         case .list(let elements):
             return try elements.map {
-				let deserialized = try T.deserialize($0)
-				try deserialized.validate()
-				return deserialized
-			}
+                let deserialized = try T.deserialize($0)
+                try deserialized.validate()
+                return deserialized
+            }
         case .element(let element):
             return try [element].map {
-				let deserialized = try T.deserialize($0)
-				try deserialized.validate()
-				return deserialized
-			}
+                let deserialized = try T.deserialize($0)
+                try deserialized.validate()
+                return deserialized
+            }
         case .stream(let opStream):
             return try opStream.findElements().value()
         default:
@@ -360,9 +360,9 @@ public extension XMLIndexer {
     func value<T: XMLIndexerDeserializable>() throws -> T {
         switch self {
         case .element:
-			let deserialized = try T.deserialize(self)
-			try deserialized.validate()
-			return deserialized
+            let deserialized = try T.deserialize(self)
+            try deserialized.validate()
+            return deserialized
         case .stream(let opStream):
             return try opStream.findElements().value()
         default:
@@ -379,9 +379,9 @@ public extension XMLIndexer {
     func value<T: XMLIndexerDeserializable>() throws -> T? {
         switch self {
         case .element:
-			let deserialized = try T.deserialize(self)
-			try deserialized.validate()
-			return deserialized
+            let deserialized = try T.deserialize(self)
+            try deserialized.validate()
+            return deserialized
         case .stream(let opStream):
             return try opStream.findElements().value()
         default:
@@ -399,16 +399,16 @@ public extension XMLIndexer {
         switch self {
         case .list(let elements):
             return try elements.map {
-				let deserialized = try T.deserialize( XMLIndexer($0) )
-				try deserialized.validate()
-				return deserialized
-			}
+                let deserialized = try T.deserialize( XMLIndexer($0) )
+                try deserialized.validate()
+                return deserialized
+            }
         case .element(let element):
             return try [element].map {
-				let deserialized = try T.deserialize( XMLIndexer($0) )
-				try deserialized.validate()
-				return deserialized
-			}
+                let deserialized = try T.deserialize( XMLIndexer($0) )
+                try deserialized.validate()
+                return deserialized
+            }
         case .stream(let opStream):
             return try opStream.findElements().value()
         default:
@@ -426,16 +426,16 @@ public extension XMLIndexer {
         switch self {
         case .list(let elements):
             return try elements.map {
-				let deserialized = try T.deserialize(XMLIndexer($0))
-				try deserialized.validate()
-				return deserialized
-			}
+                let deserialized = try T.deserialize(XMLIndexer($0))
+                try deserialized.validate()
+                return deserialized
+            }
         case .element(let element):
             return try [element].map {
-				let deserialized = try T.deserialize(XMLIndexer($0))
-				try deserialized.validate()
-				return deserialized
-			}
+                let deserialized = try T.deserialize(XMLIndexer($0))
+                try deserialized.validate()
+                return deserialized
+            }
         case .stream(let opStream):
             return try opStream.findElements().value()
         default:
@@ -453,16 +453,16 @@ public extension XMLIndexer {
         switch self {
         case .list(let elements):
             return try elements.map {
-				let deserialized = try T.deserialize(XMLIndexer($0))
-				try deserialized.validate()
-				return deserialized
-			}
+                let deserialized = try T.deserialize(XMLIndexer($0))
+                try deserialized.validate()
+                return deserialized
+            }
         case .element(let element):
             return try [element].map {
-				let deserialized = try T.deserialize(XMLIndexer($0))
-				try deserialized.validate()
-				return deserialized
-			}
+                let deserialized = try T.deserialize(XMLIndexer($0))
+                try deserialized.validate()
+                return deserialized
+            }
         case .stream(let opStream):
             return try opStream.findElements().value()
         default:
@@ -563,10 +563,10 @@ extension XMLElement {
      */
     public func value<T: XMLAttributeDeserializable>(ofAttribute attr: String) throws -> T {
         if let attr = self.attribute(by: attr) {
-			let deserialized = try T.deserialize(attr)
-			try deserialized.validate()
-			return deserialized
-		} else {
+            let deserialized = try T.deserialize(attr)
+            try deserialized.validate()
+            return deserialized
+        } else {
             throw XMLDeserializationError.attributeDoesNotExist(element: self, attribute: attr)
         }
     }
@@ -579,10 +579,10 @@ extension XMLElement {
      */
     public func value<T: XMLAttributeDeserializable>(ofAttribute attr: String) -> T? {
         if let attr = self.attribute(by: attr) {
-			let deserialized = try? T.deserialize(attr)
-			if deserialized != nil { try? deserialized?.validate() }
-			return deserialized
-		} else {
+            let deserialized = try? T.deserialize(attr)
+            if deserialized != nil { try? deserialized?.validate() }
+            return deserialized
+        } else {
             return nil
         }
     }
@@ -716,7 +716,7 @@ extension String: XMLElementDeserializable, XMLAttributeDeserializable {
         attribute.text
     }
 
-	public func validate() {}
+    public func validate() {}
 }
 
 extension Int: XMLElementDeserializable, XMLAttributeDeserializable {
@@ -751,7 +751,7 @@ extension Int: XMLElementDeserializable, XMLAttributeDeserializable {
         return value
     }
 
-	public func validate() {}
+    public func validate() {}
 }
 
 extension Double: XMLElementDeserializable, XMLAttributeDeserializable {
@@ -786,7 +786,7 @@ extension Double: XMLElementDeserializable, XMLAttributeDeserializable {
         return value
     }
 
-	public func validate() {}
+    public func validate() {}
 }
 
 extension Float: XMLElementDeserializable, XMLAttributeDeserializable {
@@ -821,7 +821,7 @@ extension Float: XMLElementDeserializable, XMLAttributeDeserializable {
         return value
     }
 
-	public func validate() {}
+    public func validate() {}
 }
 
 extension Bool: XMLElementDeserializable, XMLAttributeDeserializable {
@@ -855,5 +855,5 @@ extension Bool: XMLElementDeserializable, XMLAttributeDeserializable {
     }
     // swiftlint:enable line_length
 
-	public func validate() {}
+    public func validate() {}
 }
