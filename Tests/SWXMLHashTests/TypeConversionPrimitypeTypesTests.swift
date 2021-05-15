@@ -167,7 +167,6 @@ class TypeConversionPrimitypeTypesTests: XCTestCase {
         }
     }
 
-    // swiftlint:disable nesting
     func testShouldConvertArrayOfAttributeIntsToNonOptionalWithStringRawRepresentable() {
         enum Keys: String {
             case value
@@ -206,7 +205,6 @@ class TypeConversionPrimitypeTypesTests: XCTestCase {
             XCTFail("\(error)")
         }
     }
-    // swiftlint:enable nesting
 
     func testShouldConvertEmptyArrayOfIntsToNonOptional() {
         do {

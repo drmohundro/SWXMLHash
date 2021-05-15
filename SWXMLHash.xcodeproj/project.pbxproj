@@ -65,6 +65,9 @@
 		CDDEC7711BF632DD00AB138B /* SWXMLHash.h in Headers */ = {isa = PBXBuildFile; fileRef = CD6083F4196CA106000B4F8D /* SWXMLHash.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CDEA72731C00B0D900C10B28 /* SWXMLHash.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD60840B196CA11D000B4F8D /* SWXMLHash.swift */; };
 		CDEA72741C00B0E300C10B28 /* SWXMLHash.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD60840B196CA11D000B4F8D /* SWXMLHash.swift */; };
+		E25A0776261CF79300C68B90 /* XMLParsingValidationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25A0775261CF79300C68B90 /* XMLParsingValidationTests.swift */; };
+		E25A0777261CF79300C68B90 /* XMLParsingValidationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25A0775261CF79300C68B90 /* XMLParsingValidationTests.swift */; };
+		E25A0778261CF79300C68B90 /* XMLParsingValidationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25A0775261CF79300C68B90 /* XMLParsingValidationTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -150,6 +153,7 @@
 		CDDEC74C1BF6311A00AB138B /* SWXMLHash.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SWXMLHash.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDDEC7551BF6311B00AB138B /* SWXMLHash tvOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SWXMLHash tvOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDDEC7681BF6316C00AB138B /* SWXMLHash.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SWXMLHash.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E25A0775261CF79300C68B90 /* XMLParsingValidationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XMLParsingValidationTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -280,6 +284,7 @@
 				CDC6D13E1D32D98400570DE5 /* TypeConversionPrimitypeTypesTests.swift */,
 				CDC6D11E1D32D70800570DE5 /* WhiteSpaceParsingTests.swift */,
 				CDC6D11A1D32D6CE00570DE5 /* XMLParsingTests.swift */,
+				E25A0775261CF79300C68B90 /* XMLParsingValidationTests.swift */,
 			);
 			name = Tests;
 			path = Tests/SWXMLHashTests;
@@ -616,6 +621,7 @@
 				CDC6D12F1D32D79F00570DE5 /* SWXMLHashConfigTests.swift in Sources */,
 				6C42BED1205183A100137D31 /* shim.swift in Sources */,
 				CDC6D13F1D32D98400570DE5 /* TypeConversionPrimitypeTypesTests.swift in Sources */,
+				E25A0776261CF79300C68B90 /* XMLParsingValidationTests.swift in Sources */,
 				CDC6D1431D32D9D200570DE5 /* TypeConversionArrayOfNonPrimitiveTypesTests.swift in Sources */,
 				CDC6D11F1D32D70800570DE5 /* WhiteSpaceParsingTests.swift in Sources */,
 				CDC6D1231D32D73900570DE5 /* MixedTextWithXMLElementsTests.swift in Sources */,
@@ -645,6 +651,7 @@
 				CDC6D1301D32D79F00570DE5 /* SWXMLHashConfigTests.swift in Sources */,
 				6C42BED2205183A100137D31 /* shim.swift in Sources */,
 				CDC6D1401D32D98400570DE5 /* TypeConversionPrimitypeTypesTests.swift in Sources */,
+				E25A0777261CF79300C68B90 /* XMLParsingValidationTests.swift in Sources */,
 				CDC6D1441D32D9D200570DE5 /* TypeConversionArrayOfNonPrimitiveTypesTests.swift in Sources */,
 				CDC6D1201D32D70800570DE5 /* WhiteSpaceParsingTests.swift in Sources */,
 				CDC6D1241D32D73900570DE5 /* MixedTextWithXMLElementsTests.swift in Sources */,
@@ -674,6 +681,7 @@
 				CDC6D1311D32D79F00570DE5 /* SWXMLHashConfigTests.swift in Sources */,
 				6C42BED3205183A100137D31 /* shim.swift in Sources */,
 				CDC6D1411D32D98400570DE5 /* TypeConversionPrimitypeTypesTests.swift in Sources */,
+				E25A0778261CF79300C68B90 /* XMLParsingValidationTests.swift in Sources */,
 				CDC6D1451D32D9D200570DE5 /* TypeConversionArrayOfNonPrimitiveTypesTests.swift in Sources */,
 				CDC6D1211D32D70800570DE5 /* WhiteSpaceParsingTests.swift in Sources */,
 				CDC6D1251D32D73900570DE5 /* MixedTextWithXMLElementsTests.swift in Sources */,
