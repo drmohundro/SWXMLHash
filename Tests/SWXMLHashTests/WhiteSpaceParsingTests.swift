@@ -43,7 +43,7 @@ class WhiteSpaceParsingTests: XCTestCase {
         let path = bundle.path(forResource: "test", ofType: "xml")!
 #endif
         let data = try! Data(contentsOf: URL(fileURLWithPath: path))
-        xml = SWXMLHash.parse(data)
+        xml = XMLHash.parse(data)
     }
 
     // issue #6

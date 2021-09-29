@@ -64,7 +64,7 @@ class LazyXMLParsingTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        xml = SWXMLHash.config { config in config.shouldProcessLazily = true }.parse(xmlToParse)
+        xml = XMLHash.config { config in config.shouldProcessLazily = true }.parse(xmlToParse)
     }
 
     func testShouldBeAbleToParseIndividualElements() {
@@ -126,7 +126,7 @@ class LazyXMLParsingTests: XCTestCase {
 
     func testShouldHandleInterleavingXMLElements() {
         let interleavedXml = "<html><body><p>one</p><div>two</div><p>three</p><div>four</div></body></html>"
-        let parsed = SWXMLHash.parse(interleavedXml)
+        let parsed = XMLHash.parse(interleavedXml)
 
         let result = parsed["html"]["body"].children.map({ $0.element!.text }).joined(separator: ", ")
         XCTAssertEqual(result, "one, two, three, four")
@@ -134,7 +134,7 @@ class LazyXMLParsingTests: XCTestCase {
 
     func testShouldBeAbleToProvideADescriptionForTheDocument() {
         let descriptionXml = "<root><foo><what id=\"myId\">puppies</what></foo></root>"
-        let parsed = SWXMLHash.parse(descriptionXml)
+        let parsed = XMLHash.parse(descriptionXml)
 
         XCTAssertEqual(parsed.description, "<root><foo><what id=\"myId\">puppies</what></foo></root>")
     }

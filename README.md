@@ -116,7 +116,7 @@ To set any of the configuration options, you use the `configure` method, like
 so:
 
 ```swift
-let xml = SWXMLHash.config {
+let xml = XMLHash.config {
               config in
               // set any config options here
           }.parse(xmlToParse)
@@ -162,7 +162,7 @@ All examples below can be found in the included
 ### Initialization
 
 ```swift
-let xml = SWXMLHash.parse(xmlToParse)
+let xml = XMLHash.parse(xmlToParse)
 ```
 
 Alternatively, if you're parsing a large XML file and need the best performance,
@@ -172,17 +172,17 @@ for performance reasons. See the error handling for one caveat regarding lazy
 loading.
 
 ```swift
-let xml = SWXMLHash.config {
+let xml = XMLHash.config {
               config in
               config.shouldProcessLazily = true
           }.parse(xmlToParse)
 ```
 
 The above approach uses the new config method, but there is also a `lazy` method
-directly off of `SWXMLHash`.
+directly off of `XMLHash`.
 
 ```swift
-let xml = SWXMLHash.lazy(xmlToParse)
+let xml = XMLHash.lazy(xmlToParse)
 ```
 
 ### Single Element Lookup

@@ -70,7 +70,7 @@ class XMLParsingValidationTests: XCTestCase {
 
     func testValidatePriceOutOfBounds() {
         do {
-            let xml = SWXMLHash.parse(xmlToParseOOB)
+            let xml = XMLHash.parse(xmlToParseOOB)
             let _: BasicItem = try xml["root"]["basicItem"].value()
             XCTFail("Unexpected lack of exception.")
         } catch BasicItemValidation.priceOutOfBounds(let price) {
@@ -82,7 +82,7 @@ class XMLParsingValidationTests: XCTestCase {
 
     func testValidatePriceInBounds() {
         do {
-            let xml = SWXMLHash.parse(xmlToParseIB)
+            let xml = XMLHash.parse(xmlToParseIB)
             let value: BasicItem = try xml["root"]["basicItem"].value()
             XCTAssertEqual(value.price, 99.14, "Unexpected price.")
         } catch BasicItemValidation.priceOutOfBounds(let price) {

@@ -1,5 +1,5 @@
 //
-//  SWXMLHash+TypeConversion.swift
+//  XMLHash+TypeConversion.swift
 //  SWXMLHash
 //
 //  Copyright (c) 2016 Maciek Grzybowskio
