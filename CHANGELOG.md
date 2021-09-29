@@ -1,3 +1,7 @@
+## v6.0.0 (September 28, 2021)
+
+- Rename main class from `SWXMLHash` to `XMLHash` so that the module name doesn't conflict with the class name. There are a decent number of issues related to naming conflicts so hopefully this will avoid them. Fixes [#242](https://github.com/drmohundro/SWXMLHash/issues/242).
+
 ## v5.0.2 (February 6, 2021)
 
 - Bring in Swift Package Manager fixes [#232](https://github.com/drmohundro/SWXMLHash/pull/232), [#237](https://github.com/drmohundro/SWXMLHash/pull/237), and [#238](https://github.com/drmohundro/SWXMLHash/pull/238).

@@ -51,7 +51,7 @@ platform :ios, '10.0'
 use_frameworks!
 
 target 'YOUR_TARGET_NAME' do
-  pod 'SWXMLHash', '~> 5.0.0'
+  pod 'SWXMLHash', '~> 6.0.0'
 end
 ```
 
@@ -73,7 +73,7 @@ $ brew install carthage
 Then add the following line to your `Cartfile`:
 
 ```
-github "drmohundro/SWXMLHash" ~> 5.0
+github "drmohundro/SWXMLHash" ~> 6.0
 ```
 
 ### Swift Package Manager
@@ -83,7 +83,7 @@ Swift Package Manager requires Swift version 4.0 or higher. First, create a
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/drmohundro/SWXMLHash.git", from: "5.0.0")
+    .package(url: "https://github.com/drmohundro/SWXMLHash.git", from: "6.0.0")
 ]
 ```
 
