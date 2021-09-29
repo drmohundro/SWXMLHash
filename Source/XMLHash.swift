@@ -1,5 +1,5 @@
 //
-//  SWXMLHash.swift
+//  XMLHash.swift
 //  SWXMLHash
 //
 //  Copyright (c) 2014 David Mohundro
