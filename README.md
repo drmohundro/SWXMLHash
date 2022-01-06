@@ -423,9 +423,13 @@ extension Date: XMLElementDeserializable, XMLAttributeDeserializable {
         return validDate
     }
 
+    public func validate() throws {
+        // empty validate... only necessary for custom validatio logic after parsing
+    }
+
     private static func stringToDate(_ dateAsString: String) -> Date? {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "EEE, dd MMM yyyy HH:mm:ss zzz"
+        dateFormatter.dateFormat = "EEEE, dd MMMM yyyy HH:mm:ss SSS"
         return dateFormatter.date(from: dateAsString)
     }
 }
