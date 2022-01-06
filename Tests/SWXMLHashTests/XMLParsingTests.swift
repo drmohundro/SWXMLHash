@@ -98,7 +98,6 @@ class XMLParsingTests: XCTestCase {
         XCTAssertEqual(xml!["root"]["catalog"]["book"][1].element?.attribute(by: "id")?.text, "bk102")
     }
 
-    // swiftlint:disable identifier_name
     func testShouldBeAbleToParseAttributesWithStringRawRepresentable() {
         enum Keys: String {
             case root; case catalog; case book; case id
