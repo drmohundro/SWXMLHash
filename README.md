@@ -424,7 +424,7 @@ extension Date: XMLElementDeserializable, XMLAttributeDeserializable {
     }
 
     public func validate() throws {
-        // empty validate... only necessary for custom validatio logic after parsing
+        // empty validate... only necessary for custom validation logic after parsing
     }
 
     private static func stringToDate(_ dateAsString: String) -> Date? {
