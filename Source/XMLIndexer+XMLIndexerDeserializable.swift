@@ -142,8 +142,10 @@ public extension XMLIndexer {
             return try element.value(ofAttribute: attr)
         case .stream(let opStream):
             return try opStream.findElements().value(ofAttribute: attr)
+        case .xmlError(let indexingError):
+            throw XMLDeserializationError.nodeIsInvalid(node: indexingError.description)
         default:
-            throw XMLDeserializationError.nodeIsInvalid(node: self)
+            throw XMLDeserializationError.nodeIsInvalid(node: "Unexpected error deserializing XMLAttribute \(attr) -> T")
         }
     }
 
@@ -181,8 +183,10 @@ public extension XMLIndexer {
             return try [element].map { try $0.value(ofAttribute: attr) }
         case .stream(let opStream):
             return try opStream.findElements().value(ofAttribute: attr)
+        case .xmlError(let indexingError):
+            throw XMLDeserializationError.nodeIsInvalid(node: indexingError.description)
         default:
-            throw XMLDeserializationError.nodeIsInvalid(node: self)
+            throw XMLDeserializationError.nodeIsInvalid(node: "Unexpected error deserializing XMLAttribute \(attr) -> [T]")
         }
     }
 
@@ -223,8 +227,10 @@ public extension XMLIndexer {
             return [element].map { $0.value(ofAttribute: attr) }
         case .stream(let opStream):
             return try opStream.findElements().value(ofAttribute: attr)
+        case .xmlError(let indexingError):
+            throw XMLDeserializationError.nodeIsInvalid(node: indexingError.description)
         default:
-            throw XMLDeserializationError.nodeIsInvalid(node: self)
+            throw XMLDeserializationError.nodeIsInvalid(node: "Unexpected error deserializing XMLAttribute \(attr) -> [T?]")
         }
     }
 
@@ -244,8 +250,10 @@ public extension XMLIndexer {
             return deserialized
         case .stream(let opStream):
             return try opStream.findElements().value()
+        case .xmlError(let indexingError):
+            throw XMLDeserializationError.nodeIsInvalid(node: indexingError.description)
         default:
-            throw XMLDeserializationError.nodeIsInvalid(node: self)
+            throw XMLDeserializationError.nodeIsInvalid(node: "Unexpected error deserializing XMLElement -> T")
         }
     }
 
@@ -365,8 +373,10 @@ public extension XMLIndexer {
             return deserialized
         case .stream(let opStream):
             return try opStream.findElements().value()
+        case .xmlError(let indexingError):
+            throw XMLDeserializationError.nodeIsInvalid(node: indexingError.description)
         default:
-            throw XMLDeserializationError.nodeIsInvalid(node: self)
+            throw XMLDeserializationError.nodeIsInvalid(node: "Unexpected error deserializing XMLIndexer -> T")
         }
     }
 
@@ -411,8 +421,10 @@ public extension XMLIndexer {
             }
         case .stream(let opStream):
             return try opStream.findElements().value()
+        case .xmlError(let indexingError):
+            throw XMLDeserializationError.nodeIsInvalid(node: indexingError.description)
         default:
-            throw XMLDeserializationError.nodeIsInvalid(node: self)
+            throw XMLDeserializationError.nodeIsInvalid(node: "Unexpected error deserializing XMLIndexer -> [T]")
         }
     }
 
@@ -465,8 +477,11 @@ public extension XMLIndexer {
             }
         case .stream(let opStream):
             return try opStream.findElements().value()
+            
+        case .xmlError(let indexingError):
+            throw XMLDeserializationError.nodeIsInvalid(node: indexingError.description)
         default:
-            throw XMLDeserializationError.nodeIsInvalid(node: self)
+            throw XMLDeserializationError.nodeIsInvalid(node: "Unexpected error deserializing XMLIndexer -> [T?]")
         }
     }
 }
@@ -643,7 +658,7 @@ public extension XMLElement {
 /// The error that is thrown if there is a problem with deserialization
 public enum XMLDeserializationError: Error, CustomStringConvertible {
     case implementationIsMissing(method: String)
-    case nodeIsInvalid(node: XMLIndexer)
+    case nodeIsInvalid(node: String)
     case nodeHasNoValue
     case typeConversionFailed(type: String, element: XMLElement)
     case attributeDoesNotExist(element: XMLElement, attribute: String)

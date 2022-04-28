@@ -99,6 +99,7 @@ class TypeConversionBasicTypesTests: XCTestCase {
 
     func testShouldThrowWhenConvertingMissingToNonOptional() {
         XCTAssertThrowsError(try (parser!["root"]["missing"].value() as String)) { error in
+            print(error)
             guard error is XMLDeserializationError else {
                 XCTFail("Wrong type of error")
                 return
@@ -149,6 +150,7 @@ class TypeConversionBasicTypesTests: XCTestCase {
 
     func testShouldThrowWhenConvertingMissingAttributeToNonOptional() {
         XCTAssertThrowsError(try (parser!["root"]["attr"].value(ofAttribute: "missing") as String)) { error in
+            print(error)
             guard error is XMLDeserializationError else {
                 XCTFail("Wrong type of error")
                 return
@@ -186,6 +188,7 @@ class TypeConversionBasicTypesTests: XCTestCase {
             case missing
         }
         XCTAssertThrowsError(try (parser!["root"]["attr"].value(ofAttribute: Keys.missing) as String)) { error in
+            print(error)
             guard error is XMLDeserializationError else {
                 XCTFail("Wrong type of error")
                 return
@@ -212,6 +215,7 @@ class TypeConversionBasicTypesTests: XCTestCase {
 
     func testIntShouldThrowWhenConvertingEmptyToNonOptional() {
         XCTAssertThrowsError(try (parser!["root"]["empty"].value() as Int)) { error in
+            print(error)
             guard error is XMLDeserializationError else {
                 XCTFail("Wrong type of error")
                 return
@@ -221,6 +225,7 @@ class TypeConversionBasicTypesTests: XCTestCase {
 
     func testIntShouldThrowWhenConvertingMissingToNonOptional() {
         XCTAssertThrowsError(try (parser!["root"]["missing"].value() as Int)) { error in
+            print(error)
             guard error is XMLDeserializationError else {
                 XCTFail("Wrong type of error")
                 return
@@ -239,6 +244,7 @@ class TypeConversionBasicTypesTests: XCTestCase {
 
     func testIntShouldConvertEmptyToOptional() {
         XCTAssertThrowsError(try (parser!["root"]["empty"].value() as Int?)) { error in
+            print(error)
             guard error is XMLDeserializationError else {
                 XCTFail("Wrong type of error")
                 return
@@ -280,6 +286,7 @@ class TypeConversionBasicTypesTests: XCTestCase {
 
     func testDoubleShouldThrowWhenConvertingEmptyToNonOptional() {
         XCTAssertThrowsError(try (parser!["root"]["empty"].value() as Double)) { error in
+            print(error)
             guard error is XMLDeserializationError else {
                 XCTFail("Wrong type of error")
                 return
@@ -289,6 +296,7 @@ class TypeConversionBasicTypesTests: XCTestCase {
 
     func testDoubleShouldThrowWhenConvertingMissingToNonOptional() {
         XCTAssertThrowsError(try (parser!["root"]["missing"].value() as Double)) { error in
+            print(error)
             guard error is XMLDeserializationError else {
                 XCTFail("Wrong type of error")
                 return
@@ -307,6 +315,7 @@ class TypeConversionBasicTypesTests: XCTestCase {
 
     func testDoubleShouldConvertEmptyToOptional() {
         XCTAssertThrowsError(try (parser!["root"]["empty"].value() as Double?)) { error in
+            print(error)
             guard error is XMLDeserializationError else {
                 XCTFail("Wrong type of error")
                 return
@@ -348,6 +357,7 @@ class TypeConversionBasicTypesTests: XCTestCase {
 
     func testFloatShouldThrowWhenConvertingEmptyToNonOptional() {
         XCTAssertThrowsError(try (parser!["root"]["empty"].value() as Float)) { error in
+            print(error)
             guard error is XMLDeserializationError else {
                 XCTFail("Wrong type of error")
                 return
@@ -357,6 +367,7 @@ class TypeConversionBasicTypesTests: XCTestCase {
 
     func testFloatShouldThrowWhenConvertingMissingToNonOptional() {
         XCTAssertThrowsError(try (parser!["root"]["missing"].value() as Float)) { error in
+            print(error)
             guard error is XMLDeserializationError else {
                 XCTFail("Wrong type of error")
                 return
@@ -375,6 +386,7 @@ class TypeConversionBasicTypesTests: XCTestCase {
 
     func testFloatShouldConvertEmptyToOptional() {
         XCTAssertThrowsError(try (parser!["root"]["empty"].value() as Float?)) { error in
+            print(error)
             guard error is XMLDeserializationError else {
                 XCTFail("Wrong type of error")
                 return
@@ -418,6 +430,7 @@ class TypeConversionBasicTypesTests: XCTestCase {
 
     func testBoolShouldThrowWhenConvertingEmptyToNonOptional() {
         XCTAssertThrowsError(try (parser!["root"]["empty"].value() as Bool)) { error in
+            print(error)
             guard error is XMLDeserializationError else {
                 XCTFail("Wrong type of error")
                 return
@@ -427,6 +440,7 @@ class TypeConversionBasicTypesTests: XCTestCase {
 
     func testBoolShouldThrowWhenConvertingMissingToNonOptional() {
         XCTAssertThrowsError(try (parser!["root"]["missing"].value() as Bool)) { error in
+            print(error)
             guard error is XMLDeserializationError else {
                 XCTFail("Wrong type of error")
                 return
@@ -447,6 +461,7 @@ class TypeConversionBasicTypesTests: XCTestCase {
 
     func testBoolShouldConvertEmptyToOptional() {
         XCTAssertThrowsError(try (parser!["root"]["empty"].value() as Bool?)) { error in
+            print(error)
             guard error is XMLDeserializationError else {
                 XCTFail("Wrong type of error")
                 return
@@ -490,6 +505,7 @@ class TypeConversionBasicTypesTests: XCTestCase {
 
     func testBasicItemShouldThrowWhenConvertingEmptyToNonOptional() {
         XCTAssertThrowsError(try (parser!["root"]["empty"].value() as BasicItem)) { error in
+            print(error)
             guard error is XMLDeserializationError else {
                 XCTFail("Wrong type of error")
                 return
@@ -499,6 +515,7 @@ class TypeConversionBasicTypesTests: XCTestCase {
 
     func testBasicItemShouldThrowWhenConvertingMissingToNonOptional() {
         XCTAssertThrowsError(try (parser!["root"]["missing"].value() as BasicItem)) { error in
+            print(error)
             guard error is XMLDeserializationError else {
                 XCTFail("Wrong type of error")
                 return
@@ -517,6 +534,7 @@ class TypeConversionBasicTypesTests: XCTestCase {
 
     func testBasicItemShouldConvertEmptyToOptional() {
         XCTAssertThrowsError(try (parser!["root"]["empty"].value() as BasicItem?)) { error in
+            print(error)
             guard error is XMLDeserializationError else {
                 XCTFail("Wrong type of error")
                 return
@@ -556,6 +574,7 @@ class TypeConversionBasicTypesTests: XCTestCase {
 
     func testAttributeItemShouldThrowWhenConvertingEmptyToNonOptional() {
         XCTAssertThrowsError(try (parser!["root"]["empty"].value() as AttributeItem)) { error in
+            print(error)
             guard error is XMLDeserializationError else {
                 XCTFail("Wrong type of error")
                 return
@@ -565,6 +584,7 @@ class TypeConversionBasicTypesTests: XCTestCase {
 
     func testAttributeItemShouldThrowWhenConvertingMissingToNonOptional() {
         XCTAssertThrowsError(try (parser!["root"]["missing"].value() as AttributeItem)) { error in
+            print(error)
             guard error is XMLDeserializationError else {
                 XCTFail("Wrong type of error")
                 return
@@ -583,6 +603,7 @@ class TypeConversionBasicTypesTests: XCTestCase {
 
     func testAttributeItemShouldConvertEmptyToOptional() {
         XCTAssertThrowsError(try (parser!["root"]["empty"].value() as AttributeItem?)) { error in
+            print(error)
             guard error is XMLDeserializationError else {
                 XCTFail("Wrong type of error")
                 return
