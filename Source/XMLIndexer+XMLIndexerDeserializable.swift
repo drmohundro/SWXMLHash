@@ -477,7 +477,6 @@ public extension XMLIndexer {
             }
         case .stream(let opStream):
             return try opStream.findElements().value()
-            
         case .xmlError(let indexingError):
             throw XMLDeserializationError.nodeIsInvalid(node: indexingError.description)
         default:
