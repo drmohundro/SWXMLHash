@@ -474,50 +474,6 @@ public struct ParsingError: Error {
     public let column: Int
 }
 
-/// Error type that is thrown when an indexing or parsing operation fails.
-public enum IndexingError: Error {
-    case attribute(attr: String)
-    case attributeValue(attr: String, value: String)
-    case key(key: String)
-    case index(idx: Int)
-    case initialize(instance: AnyObject)
-    case encoding
-    case error
-
-// swiftlint:disable identifier_name
-    // unavailable
-    @available(*, unavailable, renamed: "attribute(attr:)")
-    public static func Attribute(attr: String) -> IndexingError {
-        fatalError("unavailable")
-    }
-
-    @available(*, unavailable, renamed: "attributeValue(attr:value:)")
-    public static func AttributeValue(attr: String, value: String) -> IndexingError {
-        fatalError("unavailable")
-    }
-
-    @available(*, unavailable, renamed: "key(key:)")
-    public static func Key(key: String) -> IndexingError {
-        fatalError("unavailable")
-    }
-
-    @available(*, unavailable, renamed: "index(idx:)")
-    public static func Index(idx: Int) -> IndexingError {
-        fatalError("unavailable")
-    }
-
-    @available(*, unavailable, renamed: "initialize(instance:)")
-    public static func Init(instance: AnyObject) -> IndexingError {
-        fatalError("unavailable")
-    }
-
-    @available(*, unavailable, renamed: "error")
-    public static var Error: IndexingError {
-        fatalError("unavailable")
-    }
-// swiftlint:enable identifier_name
-}
-
 /// Returned from XMLHash, allows easy element lookup into XML data.
 public enum XMLIndexer {
     case element(XMLElement)
@@ -801,28 +757,6 @@ extension XMLIndexer: CustomStringConvertible {
             return elem.description
         default:
             return ""
-        }
-    }
-}
-
-extension IndexingError: CustomStringConvertible {
-    /// The description for the `IndexingError`.
-    public var description: String {
-        switch self {
-        case .attribute(let attr):
-            return "XML Attribute Error: Missing attribute [\"\(attr)\"]"
-        case let .attributeValue(attr, value):
-            return "XML Attribute Error: Missing attribute [\"\(attr)\"] with value [\"\(value)\"]"
-        case .key(let key):
-            return "XML Element Error: Incorrect key [\"\(key)\"]"
-        case .index(let index):
-            return "XML Element Error: Incorrect index [\"\(index)\"]"
-        case .initialize(let instance):
-            return "XML Indexer Error: initialization with Object [\"\(instance)\"]"
-        case .encoding:
-            return "String Encoding Error"
-        case .error:
-            return "Unknown Error"
         }
     }
 }
