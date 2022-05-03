@@ -11,6 +11,30 @@
 		54B83CC61C849D9B00D588B5 /* XMLIndexer+XMLIndexerDeserializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B83CC41C849D9B00D588B5 /* XMLIndexer+XMLIndexerDeserializable.swift */; };
 		54B83CC71C849D9B00D588B5 /* XMLIndexer+XMLIndexerDeserializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B83CC41C849D9B00D588B5 /* XMLIndexer+XMLIndexerDeserializable.swift */; };
 		54B83CC81C849D9B00D588B5 /* XMLIndexer+XMLIndexerDeserializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B83CC41C849D9B00D588B5 /* XMLIndexer+XMLIndexerDeserializable.swift */; };
+		5AF0E03C7AC0B144A711143C /* XMLElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF0E09CA8C0AAEABBD56BB4 /* XMLElement.swift */; };
+		5AF0E228F0D4FD1B85A66B5E /* XMLContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF0EADFD21AC848F6BECA1D /* XMLContent.swift */; };
+		5AF0E2C961494B70E578CFF2 /* XMLContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF0EADFD21AC848F6BECA1D /* XMLContent.swift */; };
+		5AF0E2DFC1636E975797A394 /* XMLAttribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF0EF51D084FE1024D1CE0D /* XMLAttribute.swift */; };
+		5AF0E2F3CA5A347BBE64EDC5 /* TextElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF0E710E1B7BA748FBC986B /* TextElement.swift */; };
+		5AF0E3BD03782E18AA13F24A /* TextElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF0E710E1B7BA748FBC986B /* TextElement.swift */; };
+		5AF0E4FBCBF97B710D484E96 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF0ECA326E0FDA144CE093F /* String+Extensions.swift */; };
+		5AF0E509C3E12F83B1E8D2B3 /* XMLContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF0EADFD21AC848F6BECA1D /* XMLContent.swift */; };
+		5AF0E51E7FB4BC99D267F72F /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF0ECA326E0FDA144CE093F /* String+Extensions.swift */; };
+		5AF0E5270F4914C039407BD0 /* XMLElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF0E09CA8C0AAEABBD56BB4 /* XMLElement.swift */; };
+		5AF0E586635337278611A179 /* XMLIndexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF0ECC2B709D6BF9A68F3D1 /* XMLIndexer.swift */; };
+		5AF0E6E95E6DE770F0383CF4 /* XMLIndexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF0ECC2B709D6BF9A68F3D1 /* XMLIndexer.swift */; };
+		5AF0E72422B26DCA16716C20 /* XMLAttribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF0EF51D084FE1024D1CE0D /* XMLAttribute.swift */; };
+		5AF0E83E20CB0E145957F255 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF0ECA326E0FDA144CE093F /* String+Extensions.swift */; };
+		5AF0E848394370F0E94BF9A0 /* XMLContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF0EADFD21AC848F6BECA1D /* XMLContent.swift */; };
+		5AF0E9F306850236785A4512 /* XMLIndexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF0ECC2B709D6BF9A68F3D1 /* XMLIndexer.swift */; };
+		5AF0EA10D807D39E5A877DCA /* TextElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF0E710E1B7BA748FBC986B /* TextElement.swift */; };
+		5AF0EA56B730695C216E4571 /* XMLIndexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF0ECC2B709D6BF9A68F3D1 /* XMLIndexer.swift */; };
+		5AF0EAD8FF3226490385B398 /* XMLAttribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF0EF51D084FE1024D1CE0D /* XMLAttribute.swift */; };
+		5AF0EBE38E3E25CE4A5276E7 /* XMLElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF0E09CA8C0AAEABBD56BB4 /* XMLElement.swift */; };
+		5AF0ED095AF755874AD7EBFF /* XMLAttribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF0EF51D084FE1024D1CE0D /* XMLAttribute.swift */; };
+		5AF0ED9738E0194A03FE6D4C /* TextElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF0E710E1B7BA748FBC986B /* TextElement.swift */; };
+		5AF0EE0166578A68DEB25C84 /* XMLElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF0E09CA8C0AAEABBD56BB4 /* XMLElement.swift */; };
+		5AF0EEA3155F6F08B3F3DB71 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF0ECA326E0FDA144CE093F /* String+Extensions.swift */; };
 		6317F1A6282179E200F6C364 /* Float+XMLDeserialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6317F1A5282179E200F6C364 /* Float+XMLDeserialization.swift */; };
 		6317F1A7282179E200F6C364 /* Float+XMLDeserialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6317F1A5282179E200F6C364 /* Float+XMLDeserialization.swift */; };
 		6317F1A8282179E200F6C364 /* Float+XMLDeserialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6317F1A5282179E200F6C364 /* Float+XMLDeserialization.swift */; };
@@ -194,6 +218,12 @@
 
 /* Begin PBXFileReference section */
 		54B83CC41C849D9B00D588B5 /* XMLIndexer+XMLIndexerDeserializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XMLIndexer+XMLIndexerDeserializable.swift"; sourceTree = "<group>"; };
+		5AF0E09CA8C0AAEABBD56BB4 /* XMLElement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XMLElement.swift; sourceTree = "<group>"; };
+		5AF0E710E1B7BA748FBC986B /* TextElement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextElement.swift; sourceTree = "<group>"; };
+		5AF0EADFD21AC848F6BECA1D /* XMLContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XMLContent.swift; sourceTree = "<group>"; };
+		5AF0ECA326E0FDA144CE093F /* String+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
+		5AF0ECC2B709D6BF9A68F3D1 /* XMLIndexer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XMLIndexer.swift; sourceTree = "<group>"; };
+		5AF0EF51D084FE1024D1CE0D /* XMLAttribute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XMLAttribute.swift; sourceTree = "<group>"; };
 		6317F1A5282179E200F6C364 /* Float+XMLDeserialization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Float+XMLDeserialization.swift"; sourceTree = "<group>"; };
 		63ED3C002821A723006A8A08 /* String+XMLDeserialization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+XMLDeserialization.swift"; sourceTree = "<group>"; };
 		63ED3C012821A723006A8A08 /* XMLDeserialization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XMLDeserialization.swift; sourceTree = "<group>"; };
@@ -376,6 +406,12 @@
 				CD6083F4196CA106000B4F8D /* SWXMLHash.h */,
 				CD60840B196CA11D000B4F8D /* XMLHash.swift */,
 				63ED3C282821AF4D006A8A08 /* XMLHashOptions.swift */,
+				5AF0EADFD21AC848F6BECA1D /* XMLContent.swift */,
+				5AF0E710E1B7BA748FBC986B /* TextElement.swift */,
+				5AF0EF51D084FE1024D1CE0D /* XMLAttribute.swift */,
+				5AF0E09CA8C0AAEABBD56BB4 /* XMLElement.swift */,
+				5AF0ECA326E0FDA144CE093F /* String+Extensions.swift */,
+				5AF0ECC2B709D6BF9A68F3D1 /* XMLIndexer.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -749,6 +785,12 @@
 				63ED3C6A2821D247006A8A08 /* Stack.swift in Sources */,
 				63ED3C5E2821D247006A8A08 /* IndexOp.swift in Sources */,
 				63ED3C6F2821D311006A8A08 /* ParsingError.swift in Sources */,
+				5AF0E848394370F0E94BF9A0 /* XMLContent.swift in Sources */,
+				5AF0E2F3CA5A347BBE64EDC5 /* TextElement.swift in Sources */,
+				5AF0E2DFC1636E975797A394 /* XMLAttribute.swift in Sources */,
+				5AF0EBE38E3E25CE4A5276E7 /* XMLElement.swift in Sources */,
+				5AF0E83E20CB0E145957F255 /* String+Extensions.swift in Sources */,
+				5AF0E9F306850236785A4512 /* XMLIndexer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -796,6 +838,12 @@
 				63ED3C6B2821D247006A8A08 /* Stack.swift in Sources */,
 				63ED3C5F2821D247006A8A08 /* IndexOp.swift in Sources */,
 				63ED3C702821D311006A8A08 /* ParsingError.swift in Sources */,
+				5AF0E228F0D4FD1B85A66B5E /* XMLContent.swift in Sources */,
+				5AF0E3BD03782E18AA13F24A /* TextElement.swift in Sources */,
+				5AF0E72422B26DCA16716C20 /* XMLAttribute.swift in Sources */,
+				5AF0EE0166578A68DEB25C84 /* XMLElement.swift in Sources */,
+				5AF0EEA3155F6F08B3F3DB71 /* String+Extensions.swift in Sources */,
+				5AF0EA56B730695C216E4571 /* XMLIndexer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -843,6 +891,12 @@
 				63ED3C6C2821D247006A8A08 /* Stack.swift in Sources */,
 				63ED3C602821D247006A8A08 /* IndexOp.swift in Sources */,
 				63ED3C712821D311006A8A08 /* ParsingError.swift in Sources */,
+				5AF0E2C961494B70E578CFF2 /* XMLContent.swift in Sources */,
+				5AF0ED9738E0194A03FE6D4C /* TextElement.swift in Sources */,
+				5AF0EAD8FF3226490385B398 /* XMLAttribute.swift in Sources */,
+				5AF0E03C7AC0B144A711143C /* XMLElement.swift in Sources */,
+				5AF0E51E7FB4BC99D267F72F /* String+Extensions.swift in Sources */,
+				5AF0E6E95E6DE770F0383CF4 /* XMLIndexer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -890,6 +944,12 @@
 				63ED3C6D2821D247006A8A08 /* Stack.swift in Sources */,
 				63ED3C612821D247006A8A08 /* IndexOp.swift in Sources */,
 				63ED3C722821D311006A8A08 /* ParsingError.swift in Sources */,
+				5AF0E509C3E12F83B1E8D2B3 /* XMLContent.swift in Sources */,
+				5AF0EA10D807D39E5A877DCA /* TextElement.swift in Sources */,
+				5AF0ED095AF755874AD7EBFF /* XMLAttribute.swift in Sources */,
+				5AF0E5270F4914C039407BD0 /* XMLElement.swift in Sources */,
+				5AF0E4FBCBF97B710D484E96 /* String+Extensions.swift in Sources */,
+				5AF0E586635337278611A179 /* XMLIndexer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
