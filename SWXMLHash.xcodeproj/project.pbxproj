@@ -272,6 +272,39 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		63ED3C4D2821B1DB006A8A08 /* DeserializationTypes */ = {
+			isa = PBXGroup;
+			children = (
+				63ED3C062821A723006A8A08 /* Bool+XMLDeserialization.swift */,
+				63ED3C032821A723006A8A08 /* Double+XMLDeserialization.swift */,
+				6317F1A5282179E200F6C364 /* Float+XMLDeserialization.swift */,
+				63ED3C072821A723006A8A08 /* Int+XMLDeserialization.swift */,
+				63ED3C002821A723006A8A08 /* String+XMLDeserialization.swift */,
+			);
+			path = DeserializationTypes;
+			sourceTree = "<group>";
+		};
+		63ED3C4E2821B206006A8A08 /* Errors */ = {
+			isa = PBXGroup;
+			children = (
+				63ED3C2D2821B100006A8A08 /* IndexingError.swift */,
+				6317F1A02821756400F6C364 /* XMLDeserializationError.swift */,
+			);
+			name = Errors;
+			sourceTree = "<group>";
+		};
+		63ED3C4F2821C9D4006A8A08 /* Deserialization */ = {
+			isa = PBXGroup;
+			children = (
+				63ED3C022821A723006A8A08 /* XMLAttributeDeserializable.swift */,
+				63ED3C012821A723006A8A08 /* XMLDeserialization.swift */,
+				63ED3C042821A723006A8A08 /* XMLElementDeserializable.swift */,
+				54B83CC41C849D9B00D588B5 /* XMLIndexer+XMLIndexerDeserializable.swift */,
+				63ED3C052821A723006A8A08 /* XMLIndexerDeserializable.swift */,
+			);
+			path = Deserialization;
+			sourceTree = "<group>";
+		};
 		CD291F1E1BF635BE009A1FA6 /* tvOS */ = {
 			isa = PBXGroup;
 			children = (
@@ -305,23 +338,14 @@
 		CD6083F1196CA106000B4F8D /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				63ED3C062821A723006A8A08 /* Bool+XMLDeserialization.swift */,
-				63ED3C032821A723006A8A08 /* Double+XMLDeserialization.swift */,
-				6317F1A5282179E200F6C364 /* Float+XMLDeserialization.swift */,
-				63ED3C2D2821B100006A8A08 /* IndexingError.swift */,
-				63ED3C072821A723006A8A08 /* Int+XMLDeserialization.swift */,
+				63ED3C4F2821C9D4006A8A08 /* Deserialization */,
+				63ED3C4D2821B1DB006A8A08 /* DeserializationTypes */,
+				63ED3C4E2821B206006A8A08 /* Errors */,
 				6C42BED4205183AF00137D31 /* shim.swift */,
-				63ED3C002821A723006A8A08 /* String+XMLDeserialization.swift */,
 				CD6083F2196CA106000B4F8D /* Supporting Files */,
 				CD6083F4196CA106000B4F8D /* SWXMLHash.h */,
-				63ED3C022821A723006A8A08 /* XMLAttributeDeserializable.swift */,
-				63ED3C012821A723006A8A08 /* XMLDeserialization.swift */,
-				6317F1A02821756400F6C364 /* XMLDeserializationError.swift */,
-				63ED3C042821A723006A8A08 /* XMLElementDeserializable.swift */,
 				CD60840B196CA11D000B4F8D /* XMLHash.swift */,
 				63ED3C282821AF4D006A8A08 /* XMLHashOptions.swift */,
-				54B83CC41C849D9B00D588B5 /* XMLIndexer+XMLIndexerDeserializable.swift */,
-				63ED3C052821A723006A8A08 /* XMLIndexerDeserializable.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";

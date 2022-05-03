@@ -50,4 +50,3 @@ public class XMLHashOptions {
     /// attempt to handle HTML which isn't always XML-compatible
     public var detectParsingErrors = false
 }
-
