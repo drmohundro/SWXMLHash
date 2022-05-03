@@ -79,9 +79,13 @@ public extension XMLIndexer {
     func value<T: XMLAttributeDeserializable>(ofAttribute attr: String) throws -> [T] {
         switch self {
         case .list(let elements):
-            return try elements.map { try $0.value(ofAttribute: attr) }
+            return try elements.map {
+                try $0.value(ofAttribute: attr)
+            }
         case .element(let element):
-            return try [element].map { try $0.value(ofAttribute: attr) }
+            return try [element].map {
+                try $0.value(ofAttribute: attr)
+            }
         case .stream(let opStream):
             return try opStream.findElements().value(ofAttribute: attr)
         case .xmlError(let indexingError):
@@ -102,9 +106,13 @@ public extension XMLIndexer {
     func value<T: XMLAttributeDeserializable>(ofAttribute attr: String) throws -> [T]? {
         switch self {
         case .list(let elements):
-            return try elements.map { try $0.value(ofAttribute: attr) }
+            return try elements.map {
+                try $0.value(ofAttribute: attr)
+            }
         case .element(let element):
-            return try [element].map { try $0.value(ofAttribute: attr) }
+            return try [element].map {
+                try $0.value(ofAttribute: attr)
+            }
         case .stream(let opStream):
             return try opStream.findElements().value(ofAttribute: attr)
         default:
@@ -123,9 +131,13 @@ public extension XMLIndexer {
     func value<T: XMLAttributeDeserializable>(ofAttribute attr: String) throws -> [T?] {
         switch self {
         case .list(let elements):
-            return elements.map { $0.value(ofAttribute: attr) }
+            return elements.map {
+                $0.value(ofAttribute: attr)
+            }
         case .element(let element):
-            return [element].map { $0.value(ofAttribute: attr) }
+            return [element].map {
+                $0.value(ofAttribute: attr)
+            }
         case .stream(let opStream):
             return try opStream.findElements().value(ofAttribute: attr)
         case .xmlError(let indexingError):
@@ -306,13 +318,13 @@ public extension XMLIndexer {
         switch self {
         case .list(let elements):
             return try elements.map {
-                let deserialized = try T.deserialize( XMLIndexer($0) )
+                let deserialized = try T.deserialize(XMLIndexer($0))
                 try deserialized.validate()
                 return deserialized
             }
         case .element(let element):
             return try [element].map {
-                let deserialized = try T.deserialize( XMLIndexer($0) )
+                let deserialized = try T.deserialize(XMLIndexer($0))
                 try deserialized.validate()
                 return deserialized
             }
@@ -380,7 +392,11 @@ public extension XMLIndexer {
             throw XMLDeserializationError.nodeIsInvalid(node: "Unexpected error deserializing XMLIndexer -> [T?]")
         }
     }
+}
 
+/*: Provides XMLIndexer XMLAttributeDeserializable deserialization from String backed RawRepresentables
+    Added by [PeeJWeeJ](https://github.com/PeeJWeeJ) */
+public extension XMLIndexer {
     /**
      Attempts to deserialize the value of the specified attribute of the current XMLIndexer
      element to `T` using a String backed RawRepresentable (E.g. `String` backed `enum` cases)
@@ -483,7 +499,9 @@ extension XMLElement {
     public func value<T: XMLAttributeDeserializable>(ofAttribute attr: String) -> T? {
         if let attr = self.attribute(by: attr) {
             let deserialized = try? T.deserialize(attr)
-            if deserialized != nil { try? deserialized?.validate() }
+            if deserialized != nil {
+                try? deserialized?.validate()
+            }
             return deserialized
         } else {
             return nil
@@ -504,7 +522,11 @@ extension XMLElement {
 
         throw XMLDeserializationError.nodeHasNoValue
     }
+}
 
+/*: Provides XMLIndexer XMLAttributeDeserializable deserialization from String backed RawRepresentables
+    Added by [PeeJWeeJ](https://github.com/PeeJWeeJ) */
+public extension XMLElement {
     /**
      Attempts to deserialize the specified attribute of the current XMLElement to `T`
      using a String backed RawRepresentable (E.g. `String` backed `enum` cases)
