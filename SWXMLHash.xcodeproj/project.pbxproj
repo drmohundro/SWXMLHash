@@ -11,6 +11,10 @@
 		54B83CC61C849D9B00D588B5 /* XMLIndexer+XMLIndexerDeserializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B83CC41C849D9B00D588B5 /* XMLIndexer+XMLIndexerDeserializable.swift */; };
 		54B83CC71C849D9B00D588B5 /* XMLIndexer+XMLIndexerDeserializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B83CC41C849D9B00D588B5 /* XMLIndexer+XMLIndexerDeserializable.swift */; };
 		54B83CC81C849D9B00D588B5 /* XMLIndexer+XMLIndexerDeserializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B83CC41C849D9B00D588B5 /* XMLIndexer+XMLIndexerDeserializable.swift */; };
+		6317F1A12821756400F6C364 /* XMLDeserializationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6317F1A02821756400F6C364 /* XMLDeserializationError.swift */; };
+		6317F1A22821756400F6C364 /* XMLDeserializationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6317F1A02821756400F6C364 /* XMLDeserializationError.swift */; };
+		6317F1A32821756400F6C364 /* XMLDeserializationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6317F1A02821756400F6C364 /* XMLDeserializationError.swift */; };
+		6317F1A42821756400F6C364 /* XMLDeserializationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6317F1A02821756400F6C364 /* XMLDeserializationError.swift */; };
 		6C42BED1205183A100137D31 /* shim.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C42BECC2051834B00137D31 /* shim.swift */; };
 		6C42BED2205183A100137D31 /* shim.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C42BECC2051834B00137D31 /* shim.swift */; };
 		6C42BED3205183A100137D31 /* shim.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C42BECC2051834B00137D31 /* shim.swift */; };
@@ -126,6 +130,7 @@
 
 /* Begin PBXFileReference section */
 		54B83CC41C849D9B00D588B5 /* XMLIndexer+XMLIndexerDeserializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XMLIndexer+XMLIndexerDeserializable.swift"; sourceTree = "<group>"; };
+		6317F1A02821756400F6C364 /* XMLDeserializationError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XMLDeserializationError.swift; sourceTree = "<group>"; };
 		6C0CE0F01D7440F8005F1248 /* LinuxShims.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinuxShims.swift; sourceTree = "<group>"; };
 		6C42BECC2051834B00137D31 /* shim.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = shim.swift; sourceTree = "<group>"; };
 		6C42BED4205183AF00137D31 /* shim.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = shim.swift; sourceTree = "<group>"; };
@@ -250,6 +255,7 @@
 				CD6083F4196CA106000B4F8D /* SWXMLHash.h */,
 				CD60840B196CA11D000B4F8D /* XMLHash.swift */,
 				54B83CC41C849D9B00D588B5 /* XMLIndexer+XMLIndexerDeserializable.swift */,
+				6317F1A02821756400F6C364 /* XMLDeserializationError.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -605,6 +611,7 @@
 			files = (
 				6C42BED8205183B000137D31 /* shim.swift in Sources */,
 				CD60840C196CA11D000B4F8D /* XMLHash.swift in Sources */,
+				6317F1A12821756400F6C364 /* XMLDeserializationError.swift in Sources */,
 				54B83CC51C849D9B00D588B5 /* XMLIndexer+XMLIndexerDeserializable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -635,6 +642,7 @@
 			files = (
 				6C42BED5205183B000137D31 /* shim.swift in Sources */,
 				CD7934C61A7581F500867857 /* XMLHash.swift in Sources */,
+				6317F1A22821756400F6C364 /* XMLDeserializationError.swift in Sources */,
 				54B83CC61C849D9B00D588B5 /* XMLIndexer+XMLIndexerDeserializable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -665,6 +673,7 @@
 			files = (
 				6C42BED6205183B000137D31 /* shim.swift in Sources */,
 				CDEA72731C00B0D900C10B28 /* XMLHash.swift in Sources */,
+				6317F1A32821756400F6C364 /* XMLDeserializationError.swift in Sources */,
 				54B83CC71C849D9B00D588B5 /* XMLIndexer+XMLIndexerDeserializable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -695,6 +704,7 @@
 			files = (
 				6C42BED7205183B000137D31 /* shim.swift in Sources */,
 				CDEA72741C00B0E300C10B28 /* XMLHash.swift in Sources */,
+				6317F1A42821756400F6C364 /* XMLDeserializationError.swift in Sources */,
 				54B83CC81C849D9B00D588B5 /* XMLIndexer+XMLIndexerDeserializable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
