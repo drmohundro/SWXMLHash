@@ -188,7 +188,7 @@ class TypeConversionBasicTypesTests: XCTestCase {
             case missing
         }
         XCTAssertThrowsError(try (parser!["root"]["attr"].value(ofAttribute: Keys.missing) as String)) { error in
-            print(error)
+            print(error.localizedDescription)
             guard error is XMLDeserializationError else {
                 XCTFail("Wrong type of error")
                 return

@@ -28,7 +28,7 @@
 import Foundation
 
 /// The error that is thrown if there is a problem with deserialization
-public enum XMLDeserializationError: Error, CustomStringConvertible {
+public enum XMLDeserializationError: Error {
     case implementationIsMissing(method: String)
     case nodeIsInvalid(node: String)
     case nodeHasNoValue
@@ -57,10 +57,33 @@ public enum XMLDeserializationError: Error, CustomStringConvertible {
     public static func AttributeDeserializationFailed(_ attr: String, _ value: String) throws -> XMLDeserializationError {
         fatalError("unavailable")
     }
-// swiftlint:enable identifier_name
+}
 
+/// Implementation for CustomStringConvertible
+extension XMLDeserializationError: CustomStringConvertible {
     /// The text description for the error thrown
     public var description: String {
+        switch self {
+        case .implementationIsMissing(let method):
+            return "This deserialization method is not implemented: \(method)"
+        case .nodeIsInvalid(let node):
+            return "This node is invalid: \(node)"
+        case .nodeHasNoValue:
+            return "This node is empty"
+        case let .typeConversionFailed(type, node):
+            return "Can't convert node \(node) to value of type \(type)"
+        case let .attributeDoesNotExist(element, attribute):
+            return "Element \(element) does not contain attribute: \(attribute)"
+        case let .attributeDeserializationFailed(type, attribute):
+            return "Can't convert attribute \(attribute) to value of type \(type)"
+        }
+    }
+}
+
+/// Implementation for LocalizedError
+extension XMLDeserializationError: LocalizedError {
+    /// The textual error description for the error
+    public var errorDescription: String? {
         switch self {
         case .implementationIsMissing(let method):
             return "This deserialization method is not implemented: \(method)"

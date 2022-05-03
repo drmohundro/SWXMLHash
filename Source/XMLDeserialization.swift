@@ -1,5 +1,5 @@
 //
-//  XMLDeserializationError.swift
+//  XMLDeserialization.swift
 //  SWXMLHash
 //
 //  Copyright (c) 2016 Maciek Grzybowskio, 2022 David Mohundro

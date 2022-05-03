@@ -1,5 +1,5 @@
 //
-//  XMLHash+TypeConversion.swift
+//  XMLIndexer.XMLIndexerDeserializable.swift
 //  SWXMLHash
 //
 //  Copyright (c) 2016 Maciek Grzybowskio
@@ -380,11 +380,7 @@ public extension XMLIndexer {
             throw XMLDeserializationError.nodeIsInvalid(node: "Unexpected error deserializing XMLIndexer -> [T?]")
         }
     }
-}
 
-/*: Provides XMLIndexer XMLAttributeDeserializable deserialization from String backed RawRepresentables
-    Added by [PeeJWeeJ](https://github.com/PeeJWeeJ) */
-public extension XMLIndexer {
     /**
      Attempts to deserialize the value of the specified attribute of the current XMLIndexer
      element to `T` using a String backed RawRepresentable (E.g. `String` backed `enum` cases)
@@ -508,11 +504,7 @@ extension XMLElement {
 
         throw XMLDeserializationError.nodeHasNoValue
     }
-}
 
-/*: Provides XMLElement XMLAttributeDeserializable deserialization from String backed RawRepresentables
-    Added by [PeeJWeeJ](https://github.com/PeeJWeeJ) */
-public extension XMLElement {
     /**
      Attempts to deserialize the specified attribute of the current XMLElement to `T`
      using a String backed RawRepresentable (E.g. `String` backed `enum` cases)
