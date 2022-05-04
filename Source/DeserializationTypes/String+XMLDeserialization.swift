@@ -25,7 +25,7 @@
 
 import Foundation
 
-extension String: XMLDeserialization {
+extension String: XMLValueDeserialization {
     /**
     Attempts to deserialize XML element content to a String
 

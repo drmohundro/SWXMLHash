@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		54B83CC51C849D9B00D588B5 /* XMLIndexer+XMLIndexerDeserializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B83CC41C849D9B00D588B5 /* XMLIndexer+XMLIndexerDeserializable.swift */; };
-		54B83CC61C849D9B00D588B5 /* XMLIndexer+XMLIndexerDeserializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B83CC41C849D9B00D588B5 /* XMLIndexer+XMLIndexerDeserializable.swift */; };
-		54B83CC71C849D9B00D588B5 /* XMLIndexer+XMLIndexerDeserializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B83CC41C849D9B00D588B5 /* XMLIndexer+XMLIndexerDeserializable.swift */; };
-		54B83CC81C849D9B00D588B5 /* XMLIndexer+XMLIndexerDeserializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B83CC41C849D9B00D588B5 /* XMLIndexer+XMLIndexerDeserializable.swift */; };
+		54B83CC51C849D9B00D588B5 /* XMLIndexer+XMLDeserialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B83CC41C849D9B00D588B5 /* XMLIndexer+XMLDeserialization.swift */; };
+		54B83CC61C849D9B00D588B5 /* XMLIndexer+XMLDeserialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B83CC41C849D9B00D588B5 /* XMLIndexer+XMLDeserialization.swift */; };
+		54B83CC71C849D9B00D588B5 /* XMLIndexer+XMLDeserialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B83CC41C849D9B00D588B5 /* XMLIndexer+XMLDeserialization.swift */; };
+		54B83CC81C849D9B00D588B5 /* XMLIndexer+XMLDeserialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B83CC41C849D9B00D588B5 /* XMLIndexer+XMLDeserialization.swift */; };
 		5AF0E03C7AC0B144A711143C /* XMLElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF0E09CA8C0AAEABBD56BB4 /* XMLElement.swift */; };
 		5AF0E228F0D4FD1B85A66B5E /* XMLContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF0EADFD21AC848F6BECA1D /* XMLContent.swift */; };
 		5AF0E2C961494B70E578CFF2 /* XMLContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF0EADFD21AC848F6BECA1D /* XMLContent.swift */; };
@@ -43,10 +43,10 @@
 		63ED3C092821A723006A8A08 /* String+XMLDeserialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63ED3C002821A723006A8A08 /* String+XMLDeserialization.swift */; };
 		63ED3C0A2821A723006A8A08 /* String+XMLDeserialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63ED3C002821A723006A8A08 /* String+XMLDeserialization.swift */; };
 		63ED3C0B2821A723006A8A08 /* String+XMLDeserialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63ED3C002821A723006A8A08 /* String+XMLDeserialization.swift */; };
-		63ED3C0C2821A723006A8A08 /* XMLDeserialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63ED3C012821A723006A8A08 /* XMLDeserialization.swift */; };
-		63ED3C0D2821A723006A8A08 /* XMLDeserialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63ED3C012821A723006A8A08 /* XMLDeserialization.swift */; };
-		63ED3C0E2821A723006A8A08 /* XMLDeserialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63ED3C012821A723006A8A08 /* XMLDeserialization.swift */; };
-		63ED3C0F2821A723006A8A08 /* XMLDeserialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63ED3C012821A723006A8A08 /* XMLDeserialization.swift */; };
+		63ED3C0C2821A723006A8A08 /* XMLValueDeserialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63ED3C012821A723006A8A08 /* XMLValueDeserialization.swift */; };
+		63ED3C0D2821A723006A8A08 /* XMLValueDeserialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63ED3C012821A723006A8A08 /* XMLValueDeserialization.swift */; };
+		63ED3C0E2821A723006A8A08 /* XMLValueDeserialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63ED3C012821A723006A8A08 /* XMLValueDeserialization.swift */; };
+		63ED3C0F2821A723006A8A08 /* XMLValueDeserialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63ED3C012821A723006A8A08 /* XMLValueDeserialization.swift */; };
 		63ED3C102821A723006A8A08 /* XMLAttributeDeserializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63ED3C022821A723006A8A08 /* XMLAttributeDeserializable.swift */; };
 		63ED3C112821A723006A8A08 /* XMLAttributeDeserializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63ED3C022821A723006A8A08 /* XMLAttributeDeserializable.swift */; };
 		63ED3C122821A723006A8A08 /* XMLAttributeDeserializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63ED3C022821A723006A8A08 /* XMLAttributeDeserializable.swift */; };
@@ -59,10 +59,10 @@
 		63ED3C192821A723006A8A08 /* XMLElementDeserializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63ED3C042821A723006A8A08 /* XMLElementDeserializable.swift */; };
 		63ED3C1A2821A723006A8A08 /* XMLElementDeserializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63ED3C042821A723006A8A08 /* XMLElementDeserializable.swift */; };
 		63ED3C1B2821A723006A8A08 /* XMLElementDeserializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63ED3C042821A723006A8A08 /* XMLElementDeserializable.swift */; };
-		63ED3C1C2821A723006A8A08 /* XMLIndexerDeserializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63ED3C052821A723006A8A08 /* XMLIndexerDeserializable.swift */; };
-		63ED3C1D2821A723006A8A08 /* XMLIndexerDeserializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63ED3C052821A723006A8A08 /* XMLIndexerDeserializable.swift */; };
-		63ED3C1E2821A723006A8A08 /* XMLIndexerDeserializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63ED3C052821A723006A8A08 /* XMLIndexerDeserializable.swift */; };
-		63ED3C1F2821A723006A8A08 /* XMLIndexerDeserializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63ED3C052821A723006A8A08 /* XMLIndexerDeserializable.swift */; };
+		63ED3C1C2821A723006A8A08 /* XMLObjectDeserialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63ED3C052821A723006A8A08 /* XMLObjectDeserialization.swift */; };
+		63ED3C1D2821A723006A8A08 /* XMLObjectDeserialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63ED3C052821A723006A8A08 /* XMLObjectDeserialization.swift */; };
+		63ED3C1E2821A723006A8A08 /* XMLObjectDeserialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63ED3C052821A723006A8A08 /* XMLObjectDeserialization.swift */; };
+		63ED3C1F2821A723006A8A08 /* XMLObjectDeserialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63ED3C052821A723006A8A08 /* XMLObjectDeserialization.swift */; };
 		63ED3C202821A723006A8A08 /* Bool+XMLDeserialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63ED3C062821A723006A8A08 /* Bool+XMLDeserialization.swift */; };
 		63ED3C212821A723006A8A08 /* Bool+XMLDeserialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63ED3C062821A723006A8A08 /* Bool+XMLDeserialization.swift */; };
 		63ED3C222821A723006A8A08 /* Bool+XMLDeserialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63ED3C062821A723006A8A08 /* Bool+XMLDeserialization.swift */; };
@@ -217,7 +217,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		54B83CC41C849D9B00D588B5 /* XMLIndexer+XMLIndexerDeserializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XMLIndexer+XMLIndexerDeserializable.swift"; sourceTree = "<group>"; };
+		54B83CC41C849D9B00D588B5 /* XMLIndexer+XMLDeserialization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XMLIndexer+XMLDeserialization.swift"; sourceTree = "<group>"; };
 		5AF0E09CA8C0AAEABBD56BB4 /* XMLElement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XMLElement.swift; sourceTree = "<group>"; };
 		5AF0E710E1B7BA748FBC986B /* TextElement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextElement.swift; sourceTree = "<group>"; };
 		5AF0EADFD21AC848F6BECA1D /* XMLContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XMLContent.swift; sourceTree = "<group>"; };
@@ -226,11 +226,11 @@
 		5AF0EF51D084FE1024D1CE0D /* XMLAttribute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XMLAttribute.swift; sourceTree = "<group>"; };
 		6317F1A5282179E200F6C364 /* Float+XMLDeserialization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Float+XMLDeserialization.swift"; sourceTree = "<group>"; };
 		63ED3C002821A723006A8A08 /* String+XMLDeserialization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+XMLDeserialization.swift"; sourceTree = "<group>"; };
-		63ED3C012821A723006A8A08 /* XMLDeserialization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XMLDeserialization.swift; sourceTree = "<group>"; };
+		63ED3C012821A723006A8A08 /* XMLValueDeserialization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XMLValueDeserialization.swift; sourceTree = "<group>"; };
 		63ED3C022821A723006A8A08 /* XMLAttributeDeserializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XMLAttributeDeserializable.swift; sourceTree = "<group>"; };
 		63ED3C032821A723006A8A08 /* Double+XMLDeserialization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Double+XMLDeserialization.swift"; sourceTree = "<group>"; };
 		63ED3C042821A723006A8A08 /* XMLElementDeserializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XMLElementDeserializable.swift; sourceTree = "<group>"; };
-		63ED3C052821A723006A8A08 /* XMLIndexerDeserializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XMLIndexerDeserializable.swift; sourceTree = "<group>"; };
+		63ED3C052821A723006A8A08 /* XMLObjectDeserialization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XMLObjectDeserialization.swift; sourceTree = "<group>"; };
 		63ED3C062821A723006A8A08 /* Bool+XMLDeserialization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bool+XMLDeserialization.swift"; sourceTree = "<group>"; };
 		63ED3C072821A723006A8A08 /* Int+XMLDeserialization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Int+XMLDeserialization.swift"; sourceTree = "<group>"; };
 		63ED3C282821AF4D006A8A08 /* XMLHashOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XMLHashOptions.swift; sourceTree = "<group>"; };
@@ -353,10 +353,10 @@
 			isa = PBXGroup;
 			children = (
 				63ED3C022821A723006A8A08 /* XMLAttributeDeserializable.swift */,
-				63ED3C012821A723006A8A08 /* XMLDeserialization.swift */,
+				63ED3C012821A723006A8A08 /* XMLValueDeserialization.swift */,
 				63ED3C042821A723006A8A08 /* XMLElementDeserializable.swift */,
-				54B83CC41C849D9B00D588B5 /* XMLIndexer+XMLIndexerDeserializable.swift */,
-				63ED3C052821A723006A8A08 /* XMLIndexerDeserializable.swift */,
+				54B83CC41C849D9B00D588B5 /* XMLIndexer+XMLDeserialization.swift */,
+				63ED3C052821A723006A8A08 /* XMLObjectDeserialization.swift */,
 			);
 			path = Deserialization;
 			sourceTree = "<group>";
@@ -765,7 +765,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				63ED3C1C2821A723006A8A08 /* XMLIndexerDeserializable.swift in Sources */,
+				63ED3C1C2821A723006A8A08 /* XMLObjectDeserialization.swift in Sources */,
 				63ED3C102821A723006A8A08 /* XMLAttributeDeserializable.swift in Sources */,
 				63ED3C142821A723006A8A08 /* Double+XMLDeserialization.swift in Sources */,
 				63ED3C662821D247006A8A08 /* FullXMLParser.swift in Sources */,
@@ -776,12 +776,12 @@
 				63ED3C292821AF4D006A8A08 /* XMLHashOptions.swift in Sources */,
 				63ED3C182821A723006A8A08 /* XMLElementDeserializable.swift in Sources */,
 				CD60840C196CA11D000B4F8D /* XMLHash.swift in Sources */,
-				63ED3C0C2821A723006A8A08 /* XMLDeserialization.swift in Sources */,
+				63ED3C0C2821A723006A8A08 /* XMLValueDeserialization.swift in Sources */,
 				63ED3C082821A723006A8A08 /* String+XMLDeserialization.swift in Sources */,
 				63ED3C562821D230006A8A08 /* XMLDeserializationError.swift in Sources */,
 				63ED3C242821A723006A8A08 /* Int+XMLDeserialization.swift in Sources */,
 				63ED3C522821D230006A8A08 /* IndexingError.swift in Sources */,
-				54B83CC51C849D9B00D588B5 /* XMLIndexer+XMLIndexerDeserializable.swift in Sources */,
+				54B83CC51C849D9B00D588B5 /* XMLIndexer+XMLDeserialization.swift in Sources */,
 				63ED3C6A2821D247006A8A08 /* Stack.swift in Sources */,
 				63ED3C5E2821D247006A8A08 /* IndexOp.swift in Sources */,
 				63ED3C6F2821D311006A8A08 /* ParsingError.swift in Sources */,
@@ -818,7 +818,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				63ED3C1D2821A723006A8A08 /* XMLIndexerDeserializable.swift in Sources */,
+				63ED3C1D2821A723006A8A08 /* XMLObjectDeserialization.swift in Sources */,
 				63ED3C112821A723006A8A08 /* XMLAttributeDeserializable.swift in Sources */,
 				63ED3C152821A723006A8A08 /* Double+XMLDeserialization.swift in Sources */,
 				63ED3C672821D247006A8A08 /* FullXMLParser.swift in Sources */,
@@ -829,12 +829,12 @@
 				63ED3C2A2821AF4D006A8A08 /* XMLHashOptions.swift in Sources */,
 				63ED3C192821A723006A8A08 /* XMLElementDeserializable.swift in Sources */,
 				CD7934C61A7581F500867857 /* XMLHash.swift in Sources */,
-				63ED3C0D2821A723006A8A08 /* XMLDeserialization.swift in Sources */,
+				63ED3C0D2821A723006A8A08 /* XMLValueDeserialization.swift in Sources */,
 				63ED3C092821A723006A8A08 /* String+XMLDeserialization.swift in Sources */,
 				63ED3C572821D230006A8A08 /* XMLDeserializationError.swift in Sources */,
 				63ED3C252821A723006A8A08 /* Int+XMLDeserialization.swift in Sources */,
 				63ED3C532821D230006A8A08 /* IndexingError.swift in Sources */,
-				54B83CC61C849D9B00D588B5 /* XMLIndexer+XMLIndexerDeserializable.swift in Sources */,
+				54B83CC61C849D9B00D588B5 /* XMLIndexer+XMLDeserialization.swift in Sources */,
 				63ED3C6B2821D247006A8A08 /* Stack.swift in Sources */,
 				63ED3C5F2821D247006A8A08 /* IndexOp.swift in Sources */,
 				63ED3C702821D311006A8A08 /* ParsingError.swift in Sources */,
@@ -871,7 +871,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				63ED3C1E2821A723006A8A08 /* XMLIndexerDeserializable.swift in Sources */,
+				63ED3C1E2821A723006A8A08 /* XMLObjectDeserialization.swift in Sources */,
 				63ED3C122821A723006A8A08 /* XMLAttributeDeserializable.swift in Sources */,
 				63ED3C162821A723006A8A08 /* Double+XMLDeserialization.swift in Sources */,
 				63ED3C682821D247006A8A08 /* FullXMLParser.swift in Sources */,
@@ -882,12 +882,12 @@
 				63ED3C2B2821AF4D006A8A08 /* XMLHashOptions.swift in Sources */,
 				63ED3C1A2821A723006A8A08 /* XMLElementDeserializable.swift in Sources */,
 				CDEA72731C00B0D900C10B28 /* XMLHash.swift in Sources */,
-				63ED3C0E2821A723006A8A08 /* XMLDeserialization.swift in Sources */,
+				63ED3C0E2821A723006A8A08 /* XMLValueDeserialization.swift in Sources */,
 				63ED3C0A2821A723006A8A08 /* String+XMLDeserialization.swift in Sources */,
 				63ED3C582821D230006A8A08 /* XMLDeserializationError.swift in Sources */,
 				63ED3C262821A723006A8A08 /* Int+XMLDeserialization.swift in Sources */,
 				63ED3C542821D230006A8A08 /* IndexingError.swift in Sources */,
-				54B83CC71C849D9B00D588B5 /* XMLIndexer+XMLIndexerDeserializable.swift in Sources */,
+				54B83CC71C849D9B00D588B5 /* XMLIndexer+XMLDeserialization.swift in Sources */,
 				63ED3C6C2821D247006A8A08 /* Stack.swift in Sources */,
 				63ED3C602821D247006A8A08 /* IndexOp.swift in Sources */,
 				63ED3C712821D311006A8A08 /* ParsingError.swift in Sources */,
@@ -924,7 +924,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				63ED3C1F2821A723006A8A08 /* XMLIndexerDeserializable.swift in Sources */,
+				63ED3C1F2821A723006A8A08 /* XMLObjectDeserialization.swift in Sources */,
 				63ED3C132821A723006A8A08 /* XMLAttributeDeserializable.swift in Sources */,
 				63ED3C172821A723006A8A08 /* Double+XMLDeserialization.swift in Sources */,
 				63ED3C692821D247006A8A08 /* FullXMLParser.swift in Sources */,
@@ -935,12 +935,12 @@
 				63ED3C2C2821AF4D006A8A08 /* XMLHashOptions.swift in Sources */,
 				63ED3C1B2821A723006A8A08 /* XMLElementDeserializable.swift in Sources */,
 				CDEA72741C00B0E300C10B28 /* XMLHash.swift in Sources */,
-				63ED3C0F2821A723006A8A08 /* XMLDeserialization.swift in Sources */,
+				63ED3C0F2821A723006A8A08 /* XMLValueDeserialization.swift in Sources */,
 				63ED3C0B2821A723006A8A08 /* String+XMLDeserialization.swift in Sources */,
 				63ED3C592821D230006A8A08 /* XMLDeserializationError.swift in Sources */,
 				63ED3C272821A723006A8A08 /* Int+XMLDeserialization.swift in Sources */,
 				63ED3C552821D230006A8A08 /* IndexingError.swift in Sources */,
-				54B83CC81C849D9B00D588B5 /* XMLIndexer+XMLIndexerDeserializable.swift in Sources */,
+				54B83CC81C849D9B00D588B5 /* XMLIndexer+XMLDeserialization.swift in Sources */,
 				63ED3C6D2821D247006A8A08 /* Stack.swift in Sources */,
 				63ED3C612821D247006A8A08 /* IndexOp.swift in Sources */,
 				63ED3C722821D311006A8A08 /* ParsingError.swift in Sources */,

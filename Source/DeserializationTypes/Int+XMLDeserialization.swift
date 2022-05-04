@@ -25,7 +25,7 @@
 
 import Foundation
 
-extension Int: XMLDeserialization {
+extension Int: XMLValueDeserialization {
     /**
     Attempts to deserialize XML element content to a Int
 

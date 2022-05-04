@@ -25,7 +25,7 @@
 
 import Foundation
 
-extension Double: XMLDeserialization, XMLElementDeserializable {
+extension Double: XMLValueDeserialization {
     /**
     Attempts to deserialize XML element content to a Double
 

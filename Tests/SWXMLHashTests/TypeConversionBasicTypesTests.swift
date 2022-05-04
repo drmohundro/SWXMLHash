@@ -637,7 +637,7 @@ class TypeConversionBasicTypesTests: XCTestCase {
 
 enum BasicItemValidation: Error { case priceOutOfBounds(Double) }
 
-struct BasicItem: XMLIndexerDeserializable {
+struct BasicItem: XMLObjectDeserialization {
     let name: String
     let price: Double
     let id: String

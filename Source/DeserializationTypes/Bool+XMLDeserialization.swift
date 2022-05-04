@@ -25,7 +25,7 @@
 
 import Foundation
 
-extension Bool: XMLDeserialization, XMLElementDeserializable {
+extension Bool: XMLValueDeserialization {
     // swiftlint:disable line_length
     /**
      Attempts to deserialize XML element content to a Bool. This uses NSString's 'boolValue'

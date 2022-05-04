@@ -134,7 +134,7 @@ class TypeConversionComplexTypesTests: XCTestCase {
     }
 }
 
-struct ComplexItem: XMLIndexerDeserializable {
+struct ComplexItem: XMLObjectDeserialization {
     let name: String
     let priceOptional: Double?
     let basics: [BasicItem]

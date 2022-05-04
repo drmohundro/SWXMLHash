@@ -26,7 +26,7 @@
 import Foundation
 
 /// Provides XMLIndexer deserialization / type transformation support
-public protocol XMLIndexerDeserializable {
+public protocol XMLObjectDeserialization {
     /// Method for deserializing elements from XMLIndexer
     static func deserialize(_ element: XMLIndexer) throws -> Self
     /// Method for validating elements post deserialization
@@ -34,7 +34,7 @@ public protocol XMLIndexerDeserializable {
 }
 
 /// Provides XMLIndexer deserialization / type transformation support
-public extension XMLIndexerDeserializable {
+public extension XMLObjectDeserialization {
     /**
     A default implementation that will throw an error if it is called
 

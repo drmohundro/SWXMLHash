@@ -1,5 +1,5 @@
 //
-//  XMLIndexer.XMLIndexerDeserializable.swift
+//  XMLIndexer+XMLObjectDeserialization.swift
 //  SWXMLHash
 //
 //  Copyright (c) 2016 Maciek Grzybowskio
@@ -274,7 +274,7 @@ public extension XMLIndexer {
     - returns: the deserialized `T` value
     - throws: an XMLDeserializationError is there is a problem with deserialization
     */
-    func value<T: XMLIndexerDeserializable>() throws -> T {
+    func value<T: XMLObjectDeserialization>() throws -> T {
         switch self {
         case .element:
             let deserialized = try T.deserialize(self)
@@ -295,7 +295,7 @@ public extension XMLIndexer {
     - returns: the deserialized `T?` value
     - throws: an XMLDeserializationError is there is a problem with deserialization
     */
-    func value<T: XMLIndexerDeserializable>() throws -> T? {
+    func value<T: XMLObjectDeserialization>() throws -> T? {
         switch self {
         case .element:
             let deserialized = try T.deserialize(self)
@@ -314,7 +314,7 @@ public extension XMLIndexer {
     - returns: the deserialized `[T]` value
     - throws: an XMLDeserializationError is there is a problem with deserialization
     */
-    func value<T>() throws -> [T] where T: XMLIndexerDeserializable {
+    func value<T>() throws -> [T] where T: XMLObjectDeserialization {
         switch self {
         case .list(let elements):
             return try elements.map {
@@ -343,7 +343,7 @@ public extension XMLIndexer {
     - returns: the deserialized `[T]?` value
     - throws: an XMLDeserializationError is there is a problem with deserialization
     */
-    func value<T: XMLIndexerDeserializable>() throws -> [T]? {
+    func value<T: XMLObjectDeserialization>() throws -> [T]? {
         switch self {
         case .list(let elements):
             return try elements.map {
@@ -370,7 +370,7 @@ public extension XMLIndexer {
     - returns: the deserialized `[T?]` value
     - throws: an XMLDeserializationError is there is a problem with deserialization
     */
-    func value<T: XMLIndexerDeserializable>() throws -> [T?] {
+    func value<T: XMLObjectDeserialization>() throws -> [T?] {
         switch self {
         case .list(let elements):
             return try elements.map {

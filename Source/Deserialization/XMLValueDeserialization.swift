@@ -27,7 +27,7 @@ import Foundation
 
 /// This protocol implements both XMLAttributeDeserializable and XMLElementDeserializable meaning
 /// that it can be used to easily provide custom deserialization for your types.
-public protocol XMLDeserialization: XMLAttributeDeserializable, XMLElementDeserializable {
+public protocol XMLValueDeserialization: XMLAttributeDeserializable, XMLElementDeserializable {
     /// Method for deserializing elements from XMLElement
     static func deserialize(_ element: XMLElement) throws -> Self
 
@@ -39,7 +39,7 @@ public protocol XMLDeserialization: XMLAttributeDeserializable, XMLElementDeseri
 }
 
 /// Provides XMLAttribute deserialization / type transformation support
-public extension XMLDeserialization {
+public extension XMLValueDeserialization {
     /**
     A default implementation that will throw an error if it is called
 

@@ -25,7 +25,7 @@
 
 import Foundation
 
-extension Float: XMLDeserialization {
+extension Float: XMLValueDeserialization {
     /**
     Attempts to deserialize XML element content to a Float
 
