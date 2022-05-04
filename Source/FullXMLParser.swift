@@ -25,6 +25,10 @@
 
 import Foundation
 
+#if os(Linux)
+import FoundationXML
+#endif
+
 /// The implementation of XMLParserDelegate and where the parsing actually happens.
 class FullXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
     required init(_ options: XMLHashOptions) {
