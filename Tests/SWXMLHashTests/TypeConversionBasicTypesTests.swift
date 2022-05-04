@@ -494,7 +494,7 @@ class TypeConversionBasicTypesTests: XCTestCase {
 
     let correctBasicItem = BasicItem(name: "the name of basic item", price: 99.14, id: "1234")
 
-    func testBasicItemShouldConvertBasicitemToNonOptional() {
+    func testBasicItemShouldConvertBasicItemToNonOptional() {
         do {
             let value: BasicItem = try parser!["root"]["basicItem"].value()
             XCTAssertEqual(value, correctBasicItem)
@@ -523,7 +523,7 @@ class TypeConversionBasicTypesTests: XCTestCase {
         }
     }
 
-    func testBasicItemShouldConvertBasicitemToOptional() {
+    func testBasicItemShouldConvertBasicItemToOptional() {
         do {
             let value: BasicItem? = try parser!["root"]["basicItem"].value()
             XCTAssertEqual(value, correctBasicItem)
@@ -755,10 +755,10 @@ extension TypeConversionBasicTypesTests {
             ("testBoolShouldConvertMissingToOptional", testBoolShouldConvertMissingToOptional),
             ("testBoolShouldConvertAttributeToNonOptional", testBoolShouldConvertAttributeToNonOptional),
             ("testBoolShouldConvertAttributeToOptional", testBoolShouldConvertAttributeToOptional),
-            ("testBasicItemShouldConvertBasicitemToNonOptional", testBasicItemShouldConvertBasicitemToNonOptional),
+            ("testBasicItemShouldConvertBasicItemToNonOptional", testBasicItemShouldConvertBasicItemToNonOptional),
             ("testBasicItemShouldThrowWhenConvertingEmptyToNonOptional", testBasicItemShouldThrowWhenConvertingEmptyToNonOptional),
             ("testBasicItemShouldThrowWhenConvertingMissingToNonOptional", testBasicItemShouldThrowWhenConvertingMissingToNonOptional),
-            ("testBasicItemShouldConvertBasicitemToOptional", testBasicItemShouldConvertBasicitemToOptional),
+            ("testBasicItemShouldConvertBasicItemToOptional", testBasicItemShouldConvertBasicItemToOptional),
             ("testBasicItemShouldConvertEmptyToOptional", testBasicItemShouldConvertEmptyToOptional),
             ("testBasicItemShouldConvertMissingToOptional", testBasicItemShouldConvertMissingToOptional),
             ("testAttributeItemShouldConvertAttributeItemToNonOptional", testAttributeItemShouldConvertAttributeItemToNonOptional),

@@ -111,7 +111,7 @@ public enum XMLIndexer {
 
     public func filterChildren(_ included: (_ elem: XMLElement, _ index: Int) -> Bool) -> XMLIndexer {
         let children = handleFilteredResults(list: childElements, included: included)
-        if let current = self.element {
+        if let current = element {
             let filteredElem = XMLElement(name: current.name, index: current.index, options: current.options)
             filteredElem.children = children.allElements
             return .element(filteredElem)
@@ -176,7 +176,7 @@ public enum XMLIndexer {
     Initializes the XMLIndexer
 
     - parameter _: should be an instance of XMLElement, but supports other values for error handling
-    - throws: an Error if the object passed in isn't an XMLElement or LaxyXMLParser
+    - throws: an Error if the object passed in isn't an XMLElement or LazyXMLParser
     */
     public init(_ rawObject: AnyObject) throws {
         switch rawObject {
@@ -240,7 +240,7 @@ public enum XMLIndexer {
     */
     public subscript(key: String) -> XMLIndexer {
         do {
-            return try self.byKey(key)
+            return try byKey(key)
         } catch let error as IndexingError {
             return .xmlError(error)
         } catch {

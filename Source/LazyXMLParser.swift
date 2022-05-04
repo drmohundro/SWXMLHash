@@ -72,7 +72,7 @@ class LazyXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
 
         let currentNode = parentStack
                 .top()
-                .addElement(elementName, withAttributes: attributeDict, caseInsensitive: self.options.caseInsensitive)
+                .addElement(elementName, withAttributes: attributeDict, caseInsensitive: options.caseInsensitive)
         parentStack.push(currentNode)
     }
 

@@ -16,7 +16,7 @@ I monitor [StackOverflow](http://stackoverflow.com) under the [SWXMLHash tag](ht
 When reporting issues, please include:
 
 * Which version of Xcode you're using
-* Which OS or platform you're targetting
+* Which OS or platform you're targeting
 * Any stack trace or compiler error
 * Code snippets that reproduce the behavior
 

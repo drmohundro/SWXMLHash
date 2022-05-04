@@ -32,7 +32,7 @@ public class IndexOp {
 
     init(_ key: String) {
         self.key = key
-        self.index = -1
+        index = -1
     }
 
     func toString() -> String {

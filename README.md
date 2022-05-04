@@ -92,7 +92,7 @@ dependencies: [
 ### Manual Installation
 
 To install manually, you'll need to clone the SWXMLHash repository. You can do
-this in a separate directory or you can make use of git submodules - in this
+this in a separate directory, or you can make use of git submodules - in this
 case, git submodules are recommended so that your repository has details about
 which commit of SWXMLHash you're using. Once this is done, you can just drop the
 `SWXMLHash.swift` file into your project.
@@ -134,8 +134,8 @@ The available options at this time are:
     will be returned as "\<table\>")
   - Defaults to `false`
 - `caseInsensitive`
-  - This setting allows for key lookups to be case insensitive. Typically XML is
-    a case sensitive language, but this option lets you bypass this if
+  - This setting allows for key lookups to be case-insensitive. Typically, XML is
+    a case-sensitive language, but this option lets you bypass this if
     necessary.
   - Defaults to `false`
 - `encoding`
@@ -349,7 +349,7 @@ Given:
 </root>
 ```
 
-The following will return return "Midnight Rain". Filtering can be by any part
+The following will return "Midnight Rain". Filtering can be by any part
 of the `XMLElement` class or by index as well.
 
 ```swift

@@ -171,7 +171,7 @@ extension XMLElement {
 //
 // On macOS, `XMLElement` is defined in Foundation.
 // So, the code referencing `XMLElement` generates above error.
-// Following code allow to using `SWXMLhash.XMLElement` in client codes.
+// Following code allow to using `SWXMLHash.XMLElement` in client codes.
 extension XMLHash {
     public typealias XMLElement = XMLHashXMLElement
 }

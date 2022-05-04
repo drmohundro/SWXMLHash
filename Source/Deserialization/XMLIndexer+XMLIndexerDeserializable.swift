@@ -481,7 +481,7 @@ extension XMLElement {
      - returns: The deserialized `T` value
      */
     public func value<T: XMLAttributeDeserializable>(ofAttribute attr: String) throws -> T {
-        if let attr = self.attribute(by: attr) {
+        if let attr = attribute(by: attr) {
             let deserialized = try T.deserialize(attr)
             try deserialized.validate()
             return deserialized
@@ -497,7 +497,7 @@ extension XMLElement {
      - returns: The deserialized `T?` value, or nil if the attribute does not exist.
      */
     public func value<T: XMLAttributeDeserializable>(ofAttribute attr: String) -> T? {
-        if let attr = self.attribute(by: attr) {
+        if let attr = attribute(by: attr) {
             let deserialized = try? T.deserialize(attr)
             if deserialized != nil {
                 try? deserialized?.validate()

@@ -21,7 +21,7 @@
 
 ## v4.8.0 (March 6, 2019)
 
-- Added support for using String backed RawRepresentables in place of Strings for revelant APIs (via
+- Added support for using String backed RawRepresentables in place of Strings for relevant APIs (via
   [#204](https://github.com/drmohundro/SWXMLHash/pull/207))
 
 ## v4.7.6 (December 11, 2018)
