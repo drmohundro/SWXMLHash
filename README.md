@@ -402,7 +402,7 @@ With the following implementation for `Date` element and attribute
 deserialization:
 
 ```swift
-extension Date: XMLDeserialization {
+extension Date: XMLValueDeserialization {
     public static func deserialize(_ element: XMLElement) throws -> Date {
         let date = stringToDate(element.text)
 
@@ -480,10 +480,10 @@ Given:
 </root>
 ```
 
-with `Book` struct implementing `XMLIndexerDeserializable`:
+with `Book` struct implementing `XMLObjectDeserialization`:
 
 ```swift
-struct Book: XMLIndexerDeserializable {
+struct Book: XMLObjectDeserialization {
     let title: String
     let price: Double
     let year: Int
@@ -513,7 +513,7 @@ let books: [Book] = try xml["root"]["books"]["book"].value()
 <img src="https://raw.githubusercontent.com/ncreated/SWXMLHash/assets/types-conversion%402x.png" width="600" alt="Types Conversion" />
 
 You can convert any XML to your custom type by implementing
-`XMLIndexerDeserializable` for any non-leaf node (e.g. `<book>` in the example
+`XMLObjectDeserialization` for any non-leaf node (e.g. `<book>` in the example
 above).
 
 For leaf nodes (e.g. `<title>` in the example above), built-in converters
@@ -546,7 +546,7 @@ deserialization, etc.).
 ### I'm getting an "Ambiguous reference to member 'subscript'" when I call `.value()`.
 
 `.value()` is used for deserialization - you have to have something that
-implements `XMLIndexerDeserializable` (or `XMLElementDeserializable` if it is a
+implements `XMLObjectDeserialization` (or `XMLElementDeserializable` if it is a
 single element versus a group of elements) and that can handle deserialization
 to the left-hand side of expression.
 
