@@ -79,7 +79,7 @@ class TypeConversionComplexTypesTests: XCTestCase {
         parser = XMLHash.parse(xmlWithComplexType)
     }
 
-    func testShouldConvertComplexitemToNonOptional() {
+    func testShouldConvertComplexItemToNonOptional() {
         do {
             let value: ComplexItem = try parser!["root"]["complexItem"].value()
             XCTAssertEqual(value, correctComplexItem)
@@ -106,7 +106,7 @@ class TypeConversionComplexTypesTests: XCTestCase {
         }
     }
 
-    func testShouldConvertComplexitemToOptional() {
+    func testShouldConvertComplexItemToOptional() {
         do {
             let value: ComplexItem? = try parser!["root"]["complexItem"].value()
             XCTAssertEqual(value, correctComplexItem)
@@ -134,7 +134,7 @@ class TypeConversionComplexTypesTests: XCTestCase {
     }
 }
 
-struct ComplexItem: XMLIndexerDeserializable {
+struct ComplexItem: XMLObjectDeserialization {
     let name: String
     let priceOptional: Double?
     let basics: [BasicItem]
@@ -159,10 +159,10 @@ extension ComplexItem: Equatable {
 extension TypeConversionComplexTypesTests {
     static var allTests: [(String, (TypeConversionComplexTypesTests) -> () throws -> Void)] {
         [
-            ("testShouldConvertComplexitemToNonOptional", testShouldConvertComplexitemToNonOptional),
+            ("testShouldConvertComplexItemToNonOptional", testShouldConvertComplexItemToNonOptional),
             ("testShouldThrowWhenConvertingEmptyToNonOptional", testShouldThrowWhenConvertingEmptyToNonOptional),
             ("testShouldThrowWhenConvertingMissingToNonOptional", testShouldThrowWhenConvertingMissingToNonOptional),
-            ("testShouldConvertComplexitemToOptional", testShouldConvertComplexitemToOptional),
+            ("testShouldConvertComplexItemToOptional", testShouldConvertComplexItemToOptional),
             ("testShouldConvertEmptyToOptional", testShouldConvertEmptyToOptional),
             ("testShouldConvertMissingToOptional", testShouldConvertMissingToOptional)
         ]

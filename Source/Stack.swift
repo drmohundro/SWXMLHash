@@ -1,9 +1,8 @@
 //
-//  TypesConversionBasicTests.swift
+//  Stack.swift
 //  SWXMLHash
 //
-//  Copyright (c) 2016 Norio Nomura
-
+//  Copyright (c) 2014 David Mohundro
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -24,19 +23,28 @@
 //  THE SOFTWARE.
 //
 
-@testable import SWXMLHashTests
-import XCTest
+import Foundation
 
-XCTMain([
-    testCase(LazyTypesConversionTests.allTests),
-    testCase(LazyWhiteSpaceParsingTests.allTests),
-    testCase(LazyXMLParsingTests.allTests),
-    testCase(MixedTextWithXMLElementsTests.allTests),
-    testCase(XMLHashConfigTests.allTests),
-    testCase(TypeConversionArrayOfNonPrimitiveTypesTests.allTests),
-    testCase(TypeConversionBasicTypesTests.allTests),
-    testCase(TypeConversionComplexTypesTests.allTests),
-    testCase(TypeConversionPrimitiveTypesTests.allTests),
-    testCase(WhiteSpaceParsingTests.allTests),
-    testCase(XMLParsingTests.allTests)
-])
+struct Stack<T> {
+    var items = [T]()
+
+    mutating func push(_ item: T) {
+        items.append(item)
+    }
+
+    mutating func pop() -> T {
+        items.removeLast()
+    }
+
+    mutating func drop() {
+        _ = pop()
+    }
+
+    mutating func removeAll() {
+        items.removeAll(keepingCapacity: false)
+    }
+
+    func top() -> T {
+        items[items.count - 1]
+    }
+}

@@ -91,7 +91,7 @@ class TypeConversionArrayOfNonPrimitiveTypesTests: XCTestCase {
         parser = XMLHash.parse(xmlWithArraysOfTypes)
     }
 
-    func testShouldConvertArrayOfGoodBasicitemsItemsToNonOptional() {
+    func testShouldConvertArrayOfGoodBasicItemsToNonOptional() {
         do {
             let value: [BasicItem] = try parser!["root"]["arrayOfGoodBasicItems"]["basicItem"].value()
             XCTAssertEqual(value, correctBasicItems)
@@ -100,7 +100,7 @@ class TypeConversionArrayOfNonPrimitiveTypesTests: XCTestCase {
         }
     }
 
-    func testShouldConvertArrayOfGoodBasicitemsItemsToOptional() {
+    func testShouldConvertArrayOfGoodBasicItemsToOptional() {
         do {
             let value: [BasicItem]? = try parser!["root"]["arrayOfGoodBasicItems"]["basicItem"].value()
             XCTAssertNotNil(value)
@@ -112,7 +112,7 @@ class TypeConversionArrayOfNonPrimitiveTypesTests: XCTestCase {
         }
     }
 
-    func testShouldConvertArrayOfGoodBasicitemsItemsToArrayOfOptionals() {
+    func testShouldConvertArrayOfGoodBasicItemsToArrayOfOptionals() {
         do {
             let value: [BasicItem?] = try parser!["root"]["arrayOfGoodBasicItems"]["basicItem"].value()
             XCTAssertEqual(value.compactMap({ $0 }), correctBasicItems)
@@ -121,7 +121,7 @@ class TypeConversionArrayOfNonPrimitiveTypesTests: XCTestCase {
         }
     }
 
-    func testShouldThrowWhenConvertingArrayOfBadBasicitemsToNonOptional() {
+    func testShouldThrowWhenConvertingArrayOfBadBasicItemsToNonOptional() {
         XCTAssertThrowsError(try (parser!["root"]["arrayOfBadBasicItems"]["basicItem"].value() as [BasicItem])) { error in
             guard error is XMLDeserializationError else {
                 XCTFail("Wrong type of error")
@@ -130,7 +130,7 @@ class TypeConversionArrayOfNonPrimitiveTypesTests: XCTestCase {
         }
     }
 
-    func testShouldThrowWhenConvertingArrayOfBadBasicitemsToOptional() {
+    func testShouldThrowWhenConvertingArrayOfBadBasicItemsToOptional() {
         XCTAssertThrowsError(try (parser!["root"]["arrayOfBadBasicItems"]["basicItem"].value() as [BasicItem]?)) { error in
             guard error is XMLDeserializationError else {
                 XCTFail("Wrong type of error")
@@ -139,7 +139,7 @@ class TypeConversionArrayOfNonPrimitiveTypesTests: XCTestCase {
         }
     }
 
-    func testShouldThrowWhenConvertingArrayOfBadBasicitemsToArrayOfOptionals() {
+    func testShouldThrowWhenConvertingArrayOfBadBasicItemsToArrayOfOptionals() {
         XCTAssertThrowsError(try (parser!["root"]["arrayOfBadBasicItems"]["basicItem"].value() as [BasicItem?])) { error in
             guard error is XMLDeserializationError else {
                 XCTFail("Wrong type of error")
@@ -262,12 +262,12 @@ class TypeConversionArrayOfNonPrimitiveTypesTests: XCTestCase {
 extension TypeConversionArrayOfNonPrimitiveTypesTests {
     static var allTests: [(String, (TypeConversionArrayOfNonPrimitiveTypesTests) -> () throws -> Void)] {
         [
-            ("testShouldConvertArrayOfGoodBasicitemsItemsToNonOptional", testShouldConvertArrayOfGoodBasicitemsItemsToNonOptional),
-            ("testShouldConvertArrayOfGoodBasicitemsItemsToOptional", testShouldConvertArrayOfGoodBasicitemsItemsToOptional),
-            ("testShouldConvertArrayOfGoodBasicitemsItemsToArrayOfOptionals", testShouldConvertArrayOfGoodBasicitemsItemsToArrayOfOptionals),
-            ("testShouldThrowWhenConvertingArrayOfBadBasicitemsToNonOptional", testShouldThrowWhenConvertingArrayOfBadBasicitemsToNonOptional),
-            ("testShouldThrowWhenConvertingArrayOfBadBasicitemsToOptional", testShouldThrowWhenConvertingArrayOfBadBasicitemsToOptional),
-            ("testShouldThrowWhenConvertingArrayOfBadBasicitemsToArrayOfOptionals", testShouldThrowWhenConvertingArrayOfBadBasicitemsToArrayOfOptionals),
+            ("testShouldConvertArrayOfGoodBasicItemsToNonOptional", testShouldConvertArrayOfGoodBasicItemsToNonOptional),
+            ("testShouldConvertArrayOfGoodBasicItemsToOptional", testShouldConvertArrayOfGoodBasicItemsToOptional),
+            ("testShouldConvertArrayOfGoodBasicItemsToArrayOfOptionals", testShouldConvertArrayOfGoodBasicItemsToArrayOfOptionals),
+            ("testShouldThrowWhenConvertingArrayOfBadBasicItemsToNonOptional", testShouldThrowWhenConvertingArrayOfBadBasicItemsToNonOptional),
+            ("testShouldThrowWhenConvertingArrayOfBadBasicItemsToOptional", testShouldThrowWhenConvertingArrayOfBadBasicItemsToOptional),
+            ("testShouldThrowWhenConvertingArrayOfBadBasicItemsToArrayOfOptionals", testShouldThrowWhenConvertingArrayOfBadBasicItemsToArrayOfOptionals),
             ("testShouldConvertArrayOfEmptyMissingToOptional", testShouldConvertArrayOfEmptyMissingToOptional),
             ("testShouldConvertArrayOfGoodAttributeItemsToNonOptional", testShouldConvertArrayOfGoodAttributeItemsToNonOptional),
             ("testShouldConvertArrayOfGoodAttributeItemsToOptional", testShouldConvertArrayOfGoodAttributeItemsToOptional),

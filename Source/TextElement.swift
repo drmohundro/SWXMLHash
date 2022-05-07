@@ -1,9 +1,8 @@
 //
-//  TypesConversionBasicTests.swift
+//  TextElement.swift
 //  SWXMLHash
 //
-//  Copyright (c) 2016 Norio Nomura
-
+//  Copyright (c) 2022 David Mohundro
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -24,19 +23,21 @@
 //  THE SOFTWARE.
 //
 
-@testable import SWXMLHashTests
-import XCTest
+import Foundation
 
-XCTMain([
-    testCase(LazyTypesConversionTests.allTests),
-    testCase(LazyWhiteSpaceParsingTests.allTests),
-    testCase(LazyXMLParsingTests.allTests),
-    testCase(MixedTextWithXMLElementsTests.allTests),
-    testCase(XMLHashConfigTests.allTests),
-    testCase(TypeConversionArrayOfNonPrimitiveTypesTests.allTests),
-    testCase(TypeConversionBasicTypesTests.allTests),
-    testCase(TypeConversionComplexTypesTests.allTests),
-    testCase(TypeConversionPrimitiveTypesTests.allTests),
-    testCase(WhiteSpaceParsingTests.allTests),
-    testCase(XMLParsingTests.allTests)
-])
+/// Models a text element
+public class TextElement: XMLContent {
+    /// The underlying text value
+    public let text: String
+
+    init(text: String) {
+        self.text = text
+    }
+}
+
+extension TextElement: CustomStringConvertible {
+    /// The text value for a `TextElement` instance.
+    public var description: String {
+        text
+    }
+}

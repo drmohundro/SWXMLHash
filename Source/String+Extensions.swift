@@ -1,9 +1,8 @@
 //
-//  TypesConversionBasicTests.swift
+//  String+Extensions.swift
 //  SWXMLHash
 //
-//  Copyright (c) 2016 Norio Nomura
-
+//  Copyright (c) 2022 David Mohundro
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -24,19 +23,17 @@
 //  THE SOFTWARE.
 //
 
-@testable import SWXMLHashTests
-import XCTest
+import Foundation
 
-XCTMain([
-    testCase(LazyTypesConversionTests.allTests),
-    testCase(LazyWhiteSpaceParsingTests.allTests),
-    testCase(LazyXMLParsingTests.allTests),
-    testCase(MixedTextWithXMLElementsTests.allTests),
-    testCase(XMLHashConfigTests.allTests),
-    testCase(TypeConversionArrayOfNonPrimitiveTypesTests.allTests),
-    testCase(TypeConversionBasicTypesTests.allTests),
-    testCase(TypeConversionComplexTypesTests.allTests),
-    testCase(TypeConversionPrimitiveTypesTests.allTests),
-    testCase(WhiteSpaceParsingTests.allTests),
-    testCase(XMLParsingTests.allTests)
-])
+internal extension String {
+    func compare(_ str2: String?, _ insensitive: Bool) -> Bool {
+        guard let str2 = str2 else {
+            return false
+        }
+        let str1 = self
+        if insensitive {
+            return str1.caseInsensitiveCompare(str2) == .orderedSame
+        }
+        return str1 == str2
+    }
+}

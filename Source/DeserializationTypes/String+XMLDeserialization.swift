@@ -1,9 +1,8 @@
 //
-//  TypesConversionBasicTests.swift
+//  String+XMLDeserializationError.swift
 //  SWXMLHash
 //
-//  Copyright (c) 2016 Norio Nomura
-
+//  Copyright (c) 2016 Maciek Grzybowskio, 2022 David Mohundro
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -24,19 +23,30 @@
 //  THE SOFTWARE.
 //
 
-@testable import SWXMLHashTests
-import XCTest
+import Foundation
 
-XCTMain([
-    testCase(LazyTypesConversionTests.allTests),
-    testCase(LazyWhiteSpaceParsingTests.allTests),
-    testCase(LazyXMLParsingTests.allTests),
-    testCase(MixedTextWithXMLElementsTests.allTests),
-    testCase(XMLHashConfigTests.allTests),
-    testCase(TypeConversionArrayOfNonPrimitiveTypesTests.allTests),
-    testCase(TypeConversionBasicTypesTests.allTests),
-    testCase(TypeConversionComplexTypesTests.allTests),
-    testCase(TypeConversionPrimitiveTypesTests.allTests),
-    testCase(WhiteSpaceParsingTests.allTests),
-    testCase(XMLParsingTests.allTests)
-])
+extension String: XMLValueDeserialization {
+    /**
+    Attempts to deserialize XML element content to a String
+
+    - parameters:
+        - element: the XMLElement to be deserialized
+    - throws: an XMLDeserializationError.typeConversionFailed if the element cannot be deserialized
+    - returns: the deserialized String value
+    */
+    public static func deserialize(_ element: XMLElement) -> String {
+        element.text
+    }
+
+    /**
+     Attempts to deserialize XML Attribute content to a String
+
+     - parameter attribute: the XMLAttribute to be deserialized
+     - returns: the deserialized String value
+     */
+    public static func deserialize(_ attribute: XMLAttribute) -> String {
+        attribute.text
+    }
+
+    public func validate() {}
+}

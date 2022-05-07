@@ -1,5 +1,5 @@
 //
-//  TypeConversionPrimitypeTypesTests.swift
+//  TypeConversionPrimitiveTypesTests.swift
 //  SWXMLHash
 //
 //  Copyright (c) 2016 David Mohundro
@@ -28,7 +28,7 @@ import XCTest
 
 // swiftlint:disable line_length
 
-class TypeConversionPrimitypeTypesTests: XCTestCase {
+class TypeConversionPrimitiveTypesTests: XCTestCase {
     var parser: XMLIndexer?
     let xmlWithArraysOfTypes = """
         <root>
@@ -234,8 +234,8 @@ class TypeConversionPrimitypeTypesTests: XCTestCase {
     }
 }
 
-extension TypeConversionPrimitypeTypesTests {
-    static var allTests: [(String, (TypeConversionPrimitypeTypesTests) -> () throws -> Void)] {
+extension TypeConversionPrimitiveTypesTests {
+    static var allTests: [(String, (TypeConversionPrimitiveTypesTests) -> () throws -> Void)] {
         [
             ("testShouldConvertArrayOfGoodIntsToNonOptional", testShouldConvertArrayOfGoodIntsToNonOptional),
             ("testShouldConvertArrayOfGoodIntsToOptional", testShouldConvertArrayOfGoodIntsToOptional),

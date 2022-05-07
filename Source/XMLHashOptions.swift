@@ -1,9 +1,8 @@
 //
-//  TypesConversionBasicTests.swift
+//  XMLHashOptions.swift
 //  SWXMLHash
 //
-//  Copyright (c) 2016 Norio Nomura
-
+//  Copyright (c) 2022 David Mohundro
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -24,19 +23,30 @@
 //  THE SOFTWARE.
 //
 
-@testable import SWXMLHashTests
-import XCTest
+import Foundation
 
-XCTMain([
-    testCase(LazyTypesConversionTests.allTests),
-    testCase(LazyWhiteSpaceParsingTests.allTests),
-    testCase(LazyXMLParsingTests.allTests),
-    testCase(MixedTextWithXMLElementsTests.allTests),
-    testCase(XMLHashConfigTests.allTests),
-    testCase(TypeConversionArrayOfNonPrimitiveTypesTests.allTests),
-    testCase(TypeConversionBasicTypesTests.allTests),
-    testCase(TypeConversionComplexTypesTests.allTests),
-    testCase(TypeConversionPrimitiveTypesTests.allTests),
-    testCase(WhiteSpaceParsingTests.allTests),
-    testCase(XMLParsingTests.allTests)
-])
+/// Parser options
+public class XMLHashOptions {
+    internal init() {}
+
+    /// determines whether to parse the XML with lazy parsing or not
+    public var shouldProcessLazily = false
+
+    /// determines whether to parse XML namespaces or not (forwards to
+    /// `XMLParser.shouldProcessNamespaces`)
+    public var shouldProcessNamespaces = false
+
+    /// Matching element names, element values, attribute names, attribute values
+    /// will be case insensitive. This will not affect parsing (data does not change)
+    public var caseInsensitive = false
+
+    /// Encoding used for XML parsing. Default is set to UTF8
+    public var encoding = String.Encoding.utf8
+
+    /// Any contextual information set by the user for encoding
+    public var userInfo = [CodingUserInfoKey: Any]()
+
+    /// Detect XML parsing errors... defaults to false as this library will
+    /// attempt to handle HTML which isn't always XML-compatible
+    public var detectParsingErrors = false
+}

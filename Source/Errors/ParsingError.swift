@@ -1,9 +1,8 @@
 //
-//  TypesConversionBasicTests.swift
+//  ParsingError.swift
 //  SWXMLHash
 //
-//  Copyright (c) 2016 Norio Nomura
-
+//  Copyright (c) 2022 David Mohundro
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -24,19 +23,21 @@
 //  THE SOFTWARE.
 //
 
-@testable import SWXMLHashTests
-import XCTest
+import Foundation
 
-XCTMain([
-    testCase(LazyTypesConversionTests.allTests),
-    testCase(LazyWhiteSpaceParsingTests.allTests),
-    testCase(LazyXMLParsingTests.allTests),
-    testCase(MixedTextWithXMLElementsTests.allTests),
-    testCase(XMLHashConfigTests.allTests),
-    testCase(TypeConversionArrayOfNonPrimitiveTypesTests.allTests),
-    testCase(TypeConversionBasicTypesTests.allTests),
-    testCase(TypeConversionComplexTypesTests.allTests),
-    testCase(TypeConversionPrimitiveTypesTests.allTests),
-    testCase(WhiteSpaceParsingTests.allTests),
-    testCase(XMLParsingTests.allTests)
-])
+public struct ParsingError: Error {
+    public let line: Int
+    public let column: Int
+}
+
+extension ParsingError: CustomStringConvertible {
+    public var description: String {
+        "There was a parsing error on line: \(line), column: \(column)"
+    }
+}
+
+extension ParsingError: LocalizedError {
+    public var errorDescription: String? {
+        "There was a parsing error on line: \(line), column: \(column)"
+    }
+}

@@ -83,7 +83,7 @@ let booksXML = """
 </root>
 """
 
-struct Book: XMLIndexerDeserializable {
+struct Book: XMLObjectDeserialization {
     let title: String
     let price: Double
     let year: Int

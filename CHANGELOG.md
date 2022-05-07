@@ -1,3 +1,10 @@
+## v7.0.0 (May 6, 2022)
+
+- Added `XMLValueDeserialization` which implements both `XMLElementDeserializable` and `XMLAttributeDeserializable`. It makes it a lot easier and simpler to implement custom deserialization for types (e.g. Dates)
+- Renamed `XMLIndexerDeserializable` to `XMLObjectDeserialization`. This is a more useful name and better indicates its purpose as compared to the `XMLValueDeserialization`.
+- Changed all errors types so that they implement `LocalizedError` (previously, they implemented `CustomStringConvertible`). This should help a lot with handling errors.
+- Internally, all files have been heavily reorganized - types are now in their own files.
+
 ## v6.0.0 (September 28, 2021)
 
 - Rename main class from `SWXMLHash` to `XMLHash` so that the module name doesn't conflict with the class name. There are a decent number of issues related to naming conflicts so hopefully this will avoid them. Fixes [#242](https://github.com/drmohundro/SWXMLHash/issues/242).
@@ -21,7 +28,7 @@
 
 ## v4.8.0 (March 6, 2019)
 
-- Added support for using String backed RawRepresentables in place of Strings for revelant APIs (via
+- Added support for using String backed RawRepresentables in place of Strings for relevant APIs (via
   [#204](https://github.com/drmohundro/SWXMLHash/pull/207))
 
 ## v4.7.6 (December 11, 2018)
