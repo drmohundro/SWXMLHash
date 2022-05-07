@@ -51,7 +51,7 @@ platform :ios, '10.0'
 use_frameworks!
 
 target 'YOUR_TARGET_NAME' do
-  pod 'SWXMLHash', '~> 6.0.0'
+  pod 'SWXMLHash', '~> 7.0.0'
 end
 ```
 
@@ -73,7 +73,7 @@ $ brew install carthage
 Then add the following line to your `Cartfile`:
 
 ```
-github "drmohundro/SWXMLHash" ~> 6.0
+github "drmohundro/SWXMLHash" ~> 7.0
 ```
 
 ### Swift Package Manager
@@ -83,7 +83,7 @@ Swift Package Manager requires Swift version 4.0 or higher. First, create a
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/drmohundro/SWXMLHash.git", from: "6.0.0")
+    .package(url: "https://github.com/drmohundro/SWXMLHash.git", from: "7.0.0")
 ]
 ```
 
@@ -94,12 +94,10 @@ dependencies: [
 To install manually, you'll need to clone the SWXMLHash repository. You can do
 this in a separate directory, or you can make use of git submodules - in this
 case, git submodules are recommended so that your repository has details about
-which commit of SWXMLHash you're using. Once this is done, you can just drop the
-`SWXMLHash.swift` file into your project.
+which commit of SWXMLHash you're using. Once this is done, you can just drop all
+of the relevant swift files into your project.
 
-> NOTE: if you're targeting iOS 7, you'll have to install manually because
-> embedded frameworks require a minimum deployment target of iOS 8 or OSX
-> Mavericks.
+If you're using a workspace, though, you can just include the entire `SWXMLHash.xcodeproj`.
 
 ## Getting Started
 
@@ -388,60 +386,11 @@ lazy parsing doesn't actually occur until the `element` or `all` method are
 called - as a result, there isn't any way to know prior to asking for an element
 if it exists or not.
 
-### Simple Type Conversion
+### XML Deserialization Into Objects
 
-Given:
-
-```xml
-<root>
-  <elem>Monday, 23 January 2016 12:01:12 111</elem>
-</root>
-```
-
-With the following implementation for `Date` element and attribute
-deserialization:
-
-```swift
-extension Date: XMLValueDeserialization {
-    public static func deserialize(_ element: XMLElement) throws -> Date {
-        let date = stringToDate(element.text)
-
-        guard let validDate = date else {
-            throw XMLDeserializationError.typeConversionFailed(type: "Date", element: element)
-        }
-
-        return validDate
-    }
-
-    public static func deserialize(_ attribute: XMLAttribute) throws -> Date {
-        let date = stringToDate(attribute.text)
-
-        guard let validDate = date else {
-            throw XMLDeserializationError.attributeDeserializationFailed(type: "Date", attribute: attribute)
-        }
-
-        return validDate
-    }
-
-    public func validate() throws {
-        // empty validate... only necessary for custom validation logic after parsing
-    }
-
-    private static func stringToDate(_ dateAsString: String) -> Date? {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "EEEE, dd MMMM yyyy HH:mm:ss SSS"
-        return dateFormatter.date(from: dateAsString)
-    }
-}
-```
-
-The below will return a date value:
-
-```swift
-let dt: Date = try xml["root"]["elem"].value()
-```
-
-### Complex Types Conversion
+Even more often, you'll want to deserialize an XML tree into an
+array of custom types. This is where `XMLObjectDeserialization`
+comes into play.
 
 Given:
 
@@ -529,6 +478,63 @@ Types conversion supports error handling, optionals and arrays. For more
 examples, look into `SWXMLHashTests.swift` or play with types conversion
 directly in the Swift playground.
 
+### Custom Value Conversion
+
+Value deserialization is where a specific string value needs to be deserialized
+into a custom type. So, date is a good example here - you'd rather deal with
+date types than doing string parsing, right? That's what the `XMLValueDeserialization`
+attribute is for.
+
+Given:
+
+```xml
+<root>
+  <elem>Monday, 23 January 2016 12:01:12 111</elem>
+</root>
+```
+
+With the following implementation for `Date` value deserialization:
+
+```swift
+extension Date: XMLValueDeserialization {
+    public static func deserialize(_ element: XMLElement) throws -> Date {
+        let date = stringToDate(element.text)
+
+        guard let validDate = date else {
+            throw XMLDeserializationError.typeConversionFailed(type: "Date", element: element)
+        }
+
+        return validDate
+    }
+
+    public static func deserialize(_ attribute: XMLAttribute) throws -> Date {
+        let date = stringToDate(attribute.text)
+
+        guard let validDate = date else {
+            throw XMLDeserializationError.attributeDeserializationFailed(type: "Date", attribute: attribute)
+        }
+
+        return validDate
+    }
+
+    public func validate() throws {
+        // empty validate... only necessary for custom validation logic after parsing
+    }
+
+    private static func stringToDate(_ dateAsString: String) -> Date? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "EEEE, dd MMMM yyyy HH:mm:ss SSS"
+        return dateFormatter.date(from: dateAsString)
+    }
+}
+```
+
+The below will return a date value:
+
+```swift
+let dt: Date = try xml["root"]["elem"].value()
+```
+
 ## FAQ
 
 ### Does SWXMLHash handle URLs for me?
@@ -612,7 +618,7 @@ extension NSDate: XMLElementDeserializable {
 
 ### How do I handle deserialization with an enum?
 
-Check out this great suggestion/example from @woolie up at https://github.com/drmohundro/SWXMLHash/discussions/245.
+Check out this great suggestion/example from @woolie up at <https://github.com/drmohundro/SWXMLHash/discussions/245>.
 
 ### Have a different question?
 
