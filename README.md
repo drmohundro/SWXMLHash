@@ -497,7 +497,7 @@ With the following implementation for `Date` value deserialization:
 
 ```swift
 extension Date: XMLValueDeserialization {
-    public static func deserialize(_ element: XMLElement) throws -> Date {
+    public static func deserialize(_ element: XMLHash.XMLElement) throws -> Date {
         let date = stringToDate(element.text)
 
         guard let validDate = date else {
@@ -619,6 +619,11 @@ extension NSDate: XMLElementDeserializable {
 ### How do I handle deserialization with an enum?
 
 Check out this great suggestion/example from @woolie up at <https://github.com/drmohundro/SWXMLHash/discussions/245>.
+
+### I'm seeing an ""'XMLElement' is ambiguous" Error
+
+This is related to <https://github.com/drmohundro/SWXMLHash/issues/256> - `XMLElement` has actually been renamed
+multiple times to attempt to avoid conflicts, but the easiest approach is to just scope it via `XMLHash.XMLElement`.
 
 ### Have a different question?
 
