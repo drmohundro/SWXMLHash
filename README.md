@@ -625,6 +625,17 @@ Check out this great suggestion/example from @woolie up at <https://github.com/d
 This is related to <https://github.com/drmohundro/SWXMLHash/issues/256> - `XMLElement` has actually been renamed
 multiple times to attempt to avoid conflicts, but the easiest approach is to just scope it via `XMLHash.XMLElement`.
 
+### Will SWXMLHash work in a web context (e.g. Vapor)?
+
+See <https://github.com/drmohundro/SWXMLHash/discussions/264> where this is discussed. The only change needed is to
+add the following import logic:
+
+```swift
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
+```
+
 ### Have a different question?
 
 Feel free to shoot me an email, post a
