@@ -556,3 +556,5 @@ public extension XMLElement {
         value(ofAttribute: attr.rawValue)
     }
 }
+
+// swiftlint:enable line_length

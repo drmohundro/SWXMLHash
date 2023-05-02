@@ -126,8 +126,6 @@ class XMLParsingTests: XCTestCase {
         }
     }
 
-    // swiftlint:enable identifier_name
-
     func testShouldBeAbleToLookUpElementsByNameAndAttributeCaseInsensitive() {
         do {
             let xmlInsensitive = XMLHash.config({ config in
@@ -417,3 +415,6 @@ extension XMLParsingTests {
         ]
     }
 }
+
+// swiftlint:enable line_length
+// swiftlint:enable type_body_length

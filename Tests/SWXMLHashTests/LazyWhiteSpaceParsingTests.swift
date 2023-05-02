@@ -28,7 +28,6 @@ import SWXMLHash
 import XCTest
 
 // swiftlint:disable line_length
-// swiftlint:disable force_try
 
 class LazyWhiteSpaceParsingTests: XCTestCase {
     var xml: XMLIndexer?
@@ -43,6 +42,7 @@ class LazyWhiteSpaceParsingTests: XCTestCase {
         let bundle = Bundle(for: WhiteSpaceParsingTests.self)
         let path = bundle.path(forResource: "test", ofType: "xml")!
 #endif
+        // swiftlint:disable:next force_try
         let data = try! Data(contentsOf: URL(fileURLWithPath: path))
         xml = XMLHash.lazy(data)
     }
@@ -65,3 +65,5 @@ extension LazyWhiteSpaceParsingTests {
         ]
     }
 }
+
+// swiftlint:enable line_length

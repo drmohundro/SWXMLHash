@@ -258,3 +258,5 @@ extension TypeConversionPrimitiveTypesTests {
         ]
     }
 }
+
+// swiftlint:enable line_length

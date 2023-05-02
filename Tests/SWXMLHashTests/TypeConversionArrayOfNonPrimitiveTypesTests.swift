@@ -279,3 +279,6 @@ extension TypeConversionArrayOfNonPrimitiveTypesTests {
         ]
     }
 }
+
+// swiftlint:enable line_length
+// swiftlint:enable type_name
