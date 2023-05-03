@@ -2,7 +2,7 @@
 
 [![Swift](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fdrmohundro%2FSWXMLHash%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/drmohundro/SWXMLHash)
 [![Platforms](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fdrmohundro%2FSWXMLHash%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/drmohundro/SWXMLHash)
-[![CocoaPods Compatible](https://img.shields.io/cocoapods/v/SWXMLHash.svg)](https://cocoapods.org/pods/SWXMLHash)
+[![CocoaPods Compatible](https://img.shields.io/cocoapods/v/SWXMLHash)](https://cocoapods.org/pods/SWXMLHash)
 [![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![Swift Package Manager](https://img.shields.io/badge/Swift_Package_Manager-compatible-orange?style=flat-square)](https://img.shields.io/badge/Swift_Package_Manager-compatible-orange?style=flat-square)
 [![Join the chat at https://gitter.im/drmohundro/SWXMLHash](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/drmohundro/SWXMLHash?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
