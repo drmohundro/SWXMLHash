@@ -772,3 +772,7 @@ extension TypeConversionBasicTypesTests {
         ]
     }
 }
+
+// swiftlint:enable identifier_name
+// swiftlint:enable line_length
+// swiftlint:enable type_body_length

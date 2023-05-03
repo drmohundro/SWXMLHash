@@ -36,7 +36,7 @@ public enum XMLDeserializationError: Error {
     case attributeDoesNotExist(element: XMLElement, attribute: String)
     case attributeDeserializationFailed(type: String, attribute: XMLAttribute)
 
-// swiftlint:disable identifier_name
+    // swiftlint:disable identifier_name
     @available(*, unavailable, renamed: "implementationIsMissing(method:)")
     public static func ImplementationIsMissing(method: String) -> XMLDeserializationError {
         fatalError("unavailable")
@@ -57,6 +57,7 @@ public enum XMLDeserializationError: Error {
     public static func AttributeDeserializationFailed(_ attr: String, _ value: String) throws -> XMLDeserializationError {
         fatalError("unavailable")
     }
+    // swiftlint:enable identifier_name
 }
 
 /// Implementation for CustomStringConvertible
@@ -100,3 +101,5 @@ extension XMLDeserializationError: LocalizedError {
         }
     }
 }
+
+// swiftlint:enable line_length

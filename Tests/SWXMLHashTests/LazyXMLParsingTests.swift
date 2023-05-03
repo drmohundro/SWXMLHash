@@ -178,3 +178,5 @@ extension LazyXMLParsingTests {
         ]
     }
 }
+
+// swiftlint:enable line_length

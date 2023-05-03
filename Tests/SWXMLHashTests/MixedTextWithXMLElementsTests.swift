@@ -49,3 +49,5 @@ extension MixedTextWithXMLElementsTests {
         ]
     }
 }
+
+// swiftlint:enable line_length

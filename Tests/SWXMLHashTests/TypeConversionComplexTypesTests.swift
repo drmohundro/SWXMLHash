@@ -26,8 +26,6 @@
 import SWXMLHash
 import XCTest
 
-// swiftlint:disable identifier_name
-
 class TypeConversionComplexTypesTests: XCTestCase {
     var parser: XMLIndexer?
     let xmlWithComplexType = """
@@ -151,6 +149,7 @@ struct ComplexItem: XMLObjectDeserialization {
 }
 
 extension ComplexItem: Equatable {
+    // swiftlint:disable:next identifier_name
     static func == (a: ComplexItem, b: ComplexItem) -> Bool {
         a.name == b.name && a.priceOptional == b.priceOptional && a.basics == b.basics && a.attrs == b.attrs
     }
