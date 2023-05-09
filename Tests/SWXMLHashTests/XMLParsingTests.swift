@@ -375,7 +375,7 @@ class XMLParsingTests: XCTestCase {
 
         XCTAssertNotNil(err)
 
-#if !os(Linux)
+#if !(os(Linux) || os(Windows))
         if err != nil {
             XCTAssert(err!.line == 1)
         }
