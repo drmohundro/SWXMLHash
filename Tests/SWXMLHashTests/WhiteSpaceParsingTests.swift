@@ -37,7 +37,7 @@ class WhiteSpaceParsingTests: XCTestCase {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
 #if SWIFT_PACKAGE
-        let path = NSString.path(withComponents: NSString(string: #file).pathComponents.dropLast() + ["test.xml"])
+        let path = URL(fileURLWithPath: #file).deletingLastPathComponent().appendingPathComponent("test.xml").path
 #else
         let bundle = Bundle(for: WhiteSpaceParsingTests.self)
         let path = bundle.path(forResource: "test", ofType: "xml")!
