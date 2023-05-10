@@ -1,4 +1,4 @@
-## v7.0.1 (May 9, 2023)
+## v7.0.2 (May 9, 2023)
 
 - Added Windows support (via [#273](https://github.com/drmohundro/SWXMLHash/pull/273))
 
