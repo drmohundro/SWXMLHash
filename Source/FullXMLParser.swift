@@ -25,7 +25,7 @@
 
 import Foundation
 
-#if os(Linux)
+#if os(Linux) || os(Windows)
 import FoundationXML
 #endif
 
