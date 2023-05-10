@@ -1,3 +1,7 @@
+## v7.0.1 (May 9, 2023)
+
+- Added Windows support (via [#273](https://github.com/drmohundro/SWXMLHash/pull/273))
+
 ## v7.0.0 (May 6, 2022)
 
 - Added `XMLValueDeserialization` which implements both `XMLElementDeserializable` and `XMLAttributeDeserializable`. It makes it a lot easier and simpler to implement custom deserialization for types (e.g. Dates)
