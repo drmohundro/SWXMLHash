@@ -1,4 +1,4 @@
-FROM swiftlang/swift:nightly-6.0-focal
+FROM swift:6.0
 
 ENV APP_HOME ./app
 RUN mkdir $APP_HOME
