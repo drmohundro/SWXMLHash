@@ -1,4 +1,4 @@
-// swift-tools-version:5.3
+// swift-tools-version:5.9
 
 //
 //  Package.swift
@@ -29,6 +29,12 @@ import PackageDescription
 
 let package = Package(
     name: "SWXMLHash",
+    platforms: [
+        .iOS(.v12),
+        .macOS(.v10_13),
+        .tvOS(.v12),
+        .watchOS(.v4)
+    ],
     products: [
         .library(
             name: "SWXMLHash",

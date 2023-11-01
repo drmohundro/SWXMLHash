@@ -86,6 +86,12 @@ class XMLParsingTests: XCTestCase {
         XCTAssertEqual(xml!["root"]["catalog"]["book"][1]["author"].element?.text, "Ralls, Kim")
     }
 
+    func testShouldBeAbleToGetParent() {
+        XCTAssertNotNil(xml!["root"]["catalog"]["book"][1]["author"].element?.parent)
+        XCTAssertEqual(xml!["root"]["catalog"]["book"][1]["author"].element?.parent?.name, "book")
+        XCTAssertEqual(xml!["root"]["catalog"]["book"][1]["author"].element?.parent?.attribute(by: "id")?.text, "bk102")
+    }
+
     func testShouldBeAbleToParseElementGroupsByIndex() {
         XCTAssertEqual(try xml!["root"]["catalog"]["book"].byIndex(1)["author"].element?.text, "Ralls, Kim")
     }

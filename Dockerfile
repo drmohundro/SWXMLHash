@@ -1,4 +1,4 @@
-FROM swift:5.1
+FROM swift:5.9
 
 ENV APP_HOME ./app
 RUN mkdir $APP_HOME

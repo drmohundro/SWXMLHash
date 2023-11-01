@@ -30,6 +30,8 @@ public class XMLElement: XMLContent {
     /// The name of the element
     public let name: String
 
+    public private(set) var parent: XMLElement?
+
     /// Whether the element is case insensitive or not
     public var caseInsensitive: Bool {
         options.caseInsensitive
@@ -116,6 +118,7 @@ public class XMLElement: XMLContent {
 
     func addElement(_ name: String, withAttributes attributes: [String: String], caseInsensitive: Bool) -> XMLElement {
         let element = XMLElement(name: name, index: count, options: options)
+        element.parent = self
         count += 1
 
         children.append(element)
