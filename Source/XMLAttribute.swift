@@ -28,11 +28,6 @@ import Foundation
 public struct XMLAttribute {
     public let name: String
     public let text: String
-
-    init(name: String, text: String) {
-        self.name = name
-        self.text = text
-    }
 }
 
 extension XMLAttribute: CustomStringConvertible {

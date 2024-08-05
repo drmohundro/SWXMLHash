@@ -56,6 +56,7 @@ class XMLParsingTests: XCTestCase {
               <genre>Fantasy</genre>
               <price>5.95</price>
               <publish_date>2000-11-17</publish_date>
+              <foo />
               <description>After the collapse of a nanotechnology society in England, the young survivors lay the foundation for a new society.</description>
             </book>
           </catalog>
@@ -84,6 +85,20 @@ class XMLParsingTests: XCTestCase {
 
     func testShouldBeAbleToParseElementGroups() {
         XCTAssertEqual(xml!["root"]["catalog"]["book"][1]["author"].element?.text, "Ralls, Kim")
+    }
+
+    func testForBugReported() {
+        let testXml = """
+        <event><detail><archive /></detail></event>
+        """
+
+        let parser = XMLHash.parse(testXml)
+
+        XCTAssertNotNil(parser["event"]["detail"]["archive"].element)
+        XCTAssertNil(parser["event"]["detail"]["notThere"].element)
+
+        // XCTAssertNotNil(xml!["root"]["catalog"]["book"][2]["foo"].element)
+        // XCTAssertNil(xml!["root"]["catalog"]["book"][1]["foo"].element)
     }
 
     func testShouldBeAbleToParseElementGroupsByIndex() {
