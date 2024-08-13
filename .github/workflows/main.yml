@@ -17,7 +17,7 @@ jobs:
         run: |
           set -o pipefail
           xcodebuild $ACTION $WORKSPACE -scheme "SWXMLHash OSX" | xcpretty
-          xcodebuild $ACTION $WORKSPACE -scheme "SWXMLHash iOS" -sdk iphonesimulator -destination "OS=16.2,name=iPhone 13" | xcpretty
+          xcodebuild $ACTION $WORKSPACE -scheme "SWXMLHash iOS" -sdk iphonesimulator -destination "OS=17.2,name=iPhone 15" | xcpretty
           xcodebuild $ACTION $WORKSPACE -scheme "SWXMLHash tvOS" -sdk appletvsimulator -destination "name=Apple TV" | xcpretty
           xcodebuild build $WORKSPACE -scheme "SWXMLHash watchOS" -sdk watchsimulator | xcpretty
           bash <(curl -s https://codecov.io/bash) -t ${{secrets.CODECOV_TOKEN}}

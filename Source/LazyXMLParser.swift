@@ -95,11 +95,10 @@ class LazyXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
             return
         }
 
-        if let cdataText = String(data: CDATABlock, encoding: String.Encoding.utf8) {
-            let current = parentStack.top()
+        let cdataText = String(decoding: CDATABlock, as: UTF8.self)
+        let current = parentStack.top()
 
-            current.addText(cdataText)
-        }
+        current.addText(cdataText)
     }
 
     func parser(_ parser: XMLParser,

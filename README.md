@@ -2,14 +2,12 @@
 
 [![Swift](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fdrmohundro%2FSWXMLHash%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/drmohundro/SWXMLHash)
 [![Platforms](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fdrmohundro%2FSWXMLHash%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/drmohundro/SWXMLHash)
+[![Swift Package Manager](https://img.shields.io/badge/Swift_Package_Manager-compatible-orange?style=flat-square)](https://img.shields.io/badge/Swift_Package_Manager-compatible-orange?style=flat-square)
 [![CocoaPods Compatible](https://img.shields.io/cocoapods/v/SWXMLHash)](https://cocoapods.org/pods/SWXMLHash)
 [![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
-[![Swift Package Manager](https://img.shields.io/badge/Swift_Package_Manager-compatible-orange?style=flat-square)](https://img.shields.io/badge/Swift_Package_Manager-compatible-orange?style=flat-square)
-[![Join the chat at https://gitter.im/drmohundro/SWXMLHash](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/drmohundro/SWXMLHash?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![codebeat](https://codebeat.co/badges/893cc640-c5d9-45b2-a3ff-426e6e6b7b80)](https://codebeat.co/projects/github-com-drmohundro-swxmlhash)
 
 SWXMLHash is a relatively simple way to parse XML in Swift. If you're familiar
-with `NSXMLParser`, this library is a simple wrapper around it. Conceptually, it
+with `XMLParser` (formerly `NSXMLParser`), this library is a wrapper around it. Conceptually, it
 provides a translation from XML to a dictionary of arrays (aka hash).
 
 The API takes a lot of inspiration from
@@ -34,16 +32,29 @@ The API takes a lot of inspiration from
 
 ## Installation
 
-SWXMLHash can be installed using [CocoaPods](http://cocoapods.org/),
-[Carthage](https://github.com/Carthage/Carthage),
-[Swift Package Manager](https://swift.org/package-manager/), or manually.
+SWXMLHash can be installed using [Swift Package Manager](https://swift.org/package-manager/), [CocoaPods](http://cocoapods.org/),
+[Carthage](https://github.com/Carthage/Carthage), or manually.
+
+### Swift Package Manager
+
+The [Swift Package Manager](https://swift.org/package-manager/) is a tool built by Apple as part of [the Swift project](https://swift.org/) for integrating libraries and frameworks into your Swift apps.
+
+To add SWXMLHash as a dependency, update the `dependencies` in your `Package.swift` to include a reference like so:
+
+```swift
+dependencies: [
+    .package(url: "https://github.com/drmohundro/SWXMLHash.git", from: "7.0.0")
+]
+```
+
+`swift build` should then pull in and compile SWXMLHash to begin using.
 
 ### CocoaPods
 
 To install CocoaPods, run:
 
 ```bash
-$ gem install cocoapods
+gem install cocoapods
 ```
 
 Then create a `Podfile` with the following contents:
@@ -60,7 +71,7 @@ end
 Finally, run the following command to install it:
 
 ```bash
-$ pod install
+pod install
 ```
 
 ### Carthage
@@ -68,8 +79,8 @@ $ pod install
 To install Carthage, run (using Homebrew):
 
 ```bash
-$ brew update
-$ brew install carthage
+brew update
+brew install carthage
 ```
 
 Then add the following line to your `Cartfile`:
@@ -77,19 +88,6 @@ Then add the following line to your `Cartfile`:
 ```
 github "drmohundro/SWXMLHash" ~> 7.0
 ```
-
-### Swift Package Manager
-
-Swift Package Manager requires Swift version 4.0 or higher. First, create a
-`Package.swift` file. It should look like:
-
-```swift
-dependencies: [
-    .package(url: "https://github.com/drmohundro/SWXMLHash.git", from: "7.0.0")
-]
-```
-
-`swift build` should then pull in and compile SWXMLHash for you to begin using.
 
 ### Manual Installation
 
@@ -99,7 +97,7 @@ case, git submodules are recommended so that your repository has details about
 which commit of SWXMLHash you're using. Once this is done, you can just drop all
 of the relevant swift files into your project.
 
-If you're using a workspace, though, you can just include the entire `SWXMLHash.xcodeproj`.
+If you're using a workspace, though, you can include the entire `SWXMLHash.xcodeproj`.
 
 ## Getting Started
 
@@ -107,7 +105,7 @@ If you're just getting started with SWXMLHash, I'd recommend cloning the
 repository down and opening the workspace. I've included a Swift playground in
 the workspace which makes it easy to experiment with the API and the calls.
 
-<img src="https://raw.githubusercontent.com/drmohundro/SWXMLHash/assets/swift-playground@2x.png" width="600" alt="Swift Playground" />
+![Swift Playground](https://raw.githubusercontent.com/drmohundro/SWXMLHash/assets/swift-playground@2x.png)
 
 ## Configuration
 
@@ -178,7 +176,7 @@ let xml = XMLHash.config {
           }.parse(xmlToParse)
 ```
 
-The above approach uses the new config method, but there is also a `lazy` method
+The above approach uses the config method, but there is also a `lazy` method
 directly off of `XMLHash`.
 
 ```swift
@@ -362,7 +360,7 @@ print(subIndexer.children[0].element?.text)
 
 ### Error Handling
 
-Using Swift 2.0's new error handling feature:
+Using Do-Catch with Errors:
 
 ```swift
 do {
@@ -461,7 +459,7 @@ The below will return an array of `Book` structs:
 let books: [Book] = try xml["root"]["books"]["book"].value()
 ```
 
-<img src="https://raw.githubusercontent.com/ncreated/SWXMLHash/assets/types-conversion%402x.png" width="600" alt="Types Conversion" />
+![Types Conversion](https://raw.githubusercontent.com/ncreated/SWXMLHash/assets/types-conversion%402x.png)
 
 You can convert any XML to your custom type by implementing
 `XMLObjectDeserialization` for any non-leaf node (e.g. `<book>` in the example
@@ -551,7 +549,7 @@ a string and then parsing it.
 No, not at the moment - SWXMLHash only supports parsing XML (via indexing,
 deserialization, etc.).
 
-### I'm getting an "Ambiguous reference to member 'subscript'" when I call `.value()`.
+### I'm getting an "Ambiguous reference to member 'subscript'" when I call `.value()`
 
 `.value()` is used for deserialization - you have to have something that
 implements `XMLObjectDeserialization` (or `XMLElementDeserializable` if it is a
