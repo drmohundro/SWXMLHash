@@ -87,11 +87,10 @@ class FullXMLParser: NSObject, SimpleXmlParser, XMLParserDelegate {
     }
 
     func parser(_ parser: XMLParser, foundCDATA CDATABlock: Data) {
-        if let cdataText = String(data: CDATABlock, encoding: String.Encoding.utf8) {
-            let current = parentStack.top()
+        let cdataText = String(decoding: CDATABlock, as: UTF8.self)
+        let current = parentStack.top()
 
-            current.addText(cdataText)
-        }
+        current.addText(cdataText)
     }
 
     func parser(_ parser: XMLParser, parseErrorOccurred parseError: Error) {
