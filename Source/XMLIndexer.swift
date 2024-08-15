@@ -33,30 +33,6 @@ public enum XMLIndexer {
     case xmlError(IndexingError)
     case parsingError(ParsingError)
 
-// swiftlint:disable identifier_name
-    // unavailable
-    @available(*, unavailable, renamed: "element(_:)")
-    public static func Element(_: XMLElement) -> XMLIndexer {
-        fatalError("unavailable")
-    }
-    @available(*, unavailable, renamed: "list(_:)")
-    public static func List(_: [XMLElement]) -> XMLIndexer {
-        fatalError("unavailable")
-    }
-    @available(*, unavailable, renamed: "stream(_:)")
-    public static func Stream(_: IndexOps) -> XMLIndexer {
-        fatalError("unavailable")
-    }
-    @available(*, unavailable, renamed: "xmlError(_:)")
-    public static func XMLError(_: IndexingError) -> XMLIndexer {
-        fatalError("unavailable")
-    }
-    @available(*, unavailable, renamed: "withAttribute(_:_:)")
-    public static func withAttr(_ attr: String, _ value: String) throws -> XMLIndexer {
-        fatalError("unavailable")
-    }
-// swiftlint:enable identifier_name
-
     /// The underlying XMLElement at the currently indexed level of XML.
     public var element: XMLElement? {
         switch self {
@@ -102,11 +78,6 @@ public enum XMLIndexer {
             }
         }
         return list
-    }
-
-    @available(*, unavailable, renamed: "filterChildren(_:)")
-    public func filter(_ included: (_ elem: XMLElement, _ index: Int) -> Bool) -> XMLIndexer {
-        filterChildren(included)
     }
 
     public func filterChildren(_ included: (_ elem: XMLElement, _ index: Int) -> Bool) -> XMLIndexer {
@@ -185,7 +156,7 @@ public enum XMLIndexer {
         case let value as LazyXMLParser:
             self = .stream(IndexOps(parser: value))
         default:
-            throw IndexingError.initialize(instance: rawObject)
+            throw IndexingError.initialize(description: "\(rawObject)")
         }
     }
 

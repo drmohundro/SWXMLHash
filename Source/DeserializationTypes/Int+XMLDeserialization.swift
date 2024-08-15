@@ -36,7 +36,7 @@ extension Int: XMLValueDeserialization {
     */
     public static func deserialize(_ element: XMLElement) throws -> Int {
         guard let value = Int(try element.nonEmptyTextOrThrow()) else {
-            throw XMLDeserializationError.typeConversionFailed(type: "Int", element: element)
+            throw XMLDeserializationError.typeConversionFailed(type: "Int", element: XMLElementSendable(element))
         }
         return value
     }

@@ -176,4 +176,16 @@ extension XMLHash {
     public typealias XMLElement = XMLHashXMLElement
 }
 
+public struct XMLElementSendable: Sendable, CustomStringConvertible {
+    var elemDescription: String
+
+    init(_ elem: XMLElement) {
+        self.elemDescription = elem.description
+    }
+
+    public var description: String {
+        elemDescription
+    }
+}
+
 public typealias XMLHashXMLElement = XMLElement

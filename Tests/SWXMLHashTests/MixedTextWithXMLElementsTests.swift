@@ -24,29 +24,21 @@
 //
 
 import SWXMLHash
-import XCTest
+import Testing
 
 // swiftlint:disable line_length
 
-class MixedTextWithXMLElementsTests: XCTestCase {
+struct MixedTextWithXMLElementsTests {
     var xml: XMLIndexer?
 
-    override func setUp() {
-        super.setUp()
+    init() {
         let xmlContent = "<everything><news><content>Here is a cool thing <a href=\"google.com\">A</a> and second cool thing <a href=\"fb.com\">B</a></content></news></everything>"
         xml = XMLHash.parse(xmlContent)
     }
 
-    func testShouldBeAbleToGetAllContentsInsideOfAnElement() {
-        XCTAssertEqual(xml!["everything"]["news"]["content"].description, "<content>Here is a cool thing <a href=\"google.com\">A</a> and second cool thing <a href=\"fb.com\">B</a></content>")
-    }
-}
-
-extension MixedTextWithXMLElementsTests {
-    static var allTests: [(String, (MixedTextWithXMLElementsTests) -> () throws -> Void)] {
-        [
-            ("testShouldBeAbleToGetAllContentsInsideOfAnElement", testShouldBeAbleToGetAllContentsInsideOfAnElement)
-        ]
+    @Test
+    func shouldBeAbleToGetAllContentsInsideOfAnElement() {
+        #expect(xml!["everything"]["news"]["content"].description == "<content>Here is a cool thing <a href=\"google.com\">A</a> and second cool thing <a href=\"fb.com\">B</a></content>")
     }
 }
 

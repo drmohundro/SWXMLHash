@@ -36,7 +36,7 @@ extension Double: XMLValueDeserialization {
     */
     public static func deserialize(_ element: XMLElement) throws -> Double {
         guard let value = Double(try element.nonEmptyTextOrThrow()) else {
-            throw XMLDeserializationError.typeConversionFailed(type: "Double", element: element)
+            throw XMLDeserializationError.typeConversionFailed(type: "Double", element: XMLElementSendable(element))
         }
         return value
     }

@@ -24,7 +24,7 @@
 //
 
 import SWXMLHash
-import XCTest
+import Testing
 
 extension BasicItem {
     func validate() throws {
@@ -32,7 +32,7 @@ extension BasicItem {
    }
 }
 
-class XMLParsingValidationTests: XCTestCase {
+struct XMLParsingValidationTests {
     let xmlToParseOOB = """
         <root>
           <string>the string value</string>
@@ -68,36 +68,29 @@ class XMLParsingValidationTests: XCTestCase {
         </root>
 """
 
-    func testValidatePriceOutOfBounds() {
+    @Test
+    func validatePriceOutOfBounds() {
         do {
             let xml = XMLHash.parse(xmlToParseOOB)
             let _: BasicItem = try xml["root"]["basicItem"].value()
-            XCTFail("Unexpected lack of exception.")
+            Issue.record("Unexpected lack of exception.")
         } catch BasicItemValidation.priceOutOfBounds(let price) {
-            XCTAssertEqual(price, -99.14, "Unexpected price.")
+            #expect(price == -99.14, "Unexpected price.")
         } catch {
-            XCTFail("Unexpected exception.")
+            Issue.record("Unexpected exception.")
         }
     }
 
-    func testValidatePriceInBounds() {
+    @Test
+    func validatePriceInBounds() {
         do {
             let xml = XMLHash.parse(xmlToParseIB)
             let value: BasicItem = try xml["root"]["basicItem"].value()
-            XCTAssertEqual(value.price, 99.14, "Unexpected price.")
+            #expect(value.price == 99.14, "Unexpected price.")
         } catch BasicItemValidation.priceOutOfBounds(let price) {
-            XCTFail("Unexpected BasicItemValidation, the value of \(price) should be valid.")
+            Issue.record("Unexpected BasicItemValidation, the value of \(price) should be valid.")
         } catch {
-            XCTFail("Unexpected exception.")
+            Issue.record("Unexpected exception.")
         }
-    }
-}
-
-extension XMLParsingValidationTests {
-    static var allTests: [(String, (XMLParsingValidationTests) -> () throws -> Void)] {
-        [
-            ("testValidatePriceOutOfBounds", testValidatePriceOutOfBounds),
-            ("testValidatePriceInBounds", testValidatePriceInBounds)
-        ]
     }
 }

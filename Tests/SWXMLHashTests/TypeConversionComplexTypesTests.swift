@@ -24,9 +24,9 @@
 //
 
 import SWXMLHash
-import XCTest
+import Testing
 
-class TypeConversionComplexTypesTests: XCTestCase {
+struct TypeConversionComplexTypesTests {
     var parser: XMLIndexer?
     let xmlWithComplexType = """
         <root>
@@ -72,62 +72,58 @@ class TypeConversionComplexTypesTests: XCTestCase {
         ]
     )
 
-    override func setUp() {
-        super.setUp()
+    init() {
         parser = XMLHash.parse(xmlWithComplexType)
     }
 
-    func testShouldConvertComplexItemToNonOptional() {
+    @Test
+    func shouldConvertComplexItemToNonOptional() {
         do {
             let value: ComplexItem = try parser!["root"]["complexItem"].value()
-            XCTAssertEqual(value, correctComplexItem)
+            #expect(value == correctComplexItem)
         } catch {
-            XCTFail("\(error)")
+            Issue.record("\(error)")
         }
     }
 
-    func testShouldThrowWhenConvertingEmptyToNonOptional() {
-        XCTAssertThrowsError(try (parser!["root"]["empty"].value() as ComplexItem)) { error in
-            guard error is XMLDeserializationError else {
-                XCTFail("Wrong type of error")
-                return
-            }
+    @Test
+    func shouldThrowWhenConvertingEmptyToNonOptional() {
+        #expect(throws: XMLDeserializationError.self) {
+            try (parser!["root"]["empty"].value() as ComplexItem)
         }
     }
 
-    func testShouldThrowWhenConvertingMissingToNonOptional() {
-        XCTAssertThrowsError(try (parser!["root"]["missing"].value() as ComplexItem)) { error in
-            guard error is XMLDeserializationError else {
-                XCTFail("Wrong type of error")
-                return
-            }
+    @Test
+    func shouldThrowWhenConvertingMissingToNonOptional() {
+        #expect(throws: XMLDeserializationError.self) {
+            try (parser!["root"]["missing"].value() as ComplexItem)
         }
     }
 
-    func testShouldConvertComplexItemToOptional() {
+    @Test
+    func shouldConvertComplexItemToOptional() {
         do {
             let value: ComplexItem? = try parser!["root"]["complexItem"].value()
-            XCTAssertEqual(value, correctComplexItem)
+            #expect(value == correctComplexItem)
         } catch {
-            XCTFail("\(error)")
+            Issue.record("\(error)")
         }
     }
 
-    func testShouldConvertEmptyToOptional() {
-        XCTAssertThrowsError(try (parser!["root"]["empty"].value() as ComplexItem?)) { error in
-            guard error is XMLDeserializationError else {
-                XCTFail("Wrong type of error")
-                return
-            }
+    @Test
+    func shouldConvertEmptyToOptional() {
+        #expect(throws: XMLDeserializationError.self) {
+            try (parser!["root"]["empty"].value() as ComplexItem?)
         }
     }
 
-    func testShouldConvertMissingToOptional() {
+    @Test
+    func shouldConvertMissingToOptional() {
         do {
             let value: ComplexItem? = try parser!["root"]["missing"].value()
-            XCTAssertNil(value)
+            #expect(value == nil)
         } catch {
-            XCTFail("\(error)")
+            Issue.record("\(error)")
         }
     }
 }
@@ -152,18 +148,5 @@ extension ComplexItem: Equatable {
     // swiftlint:disable:next identifier_name
     static func == (a: ComplexItem, b: ComplexItem) -> Bool {
         a.name == b.name && a.priceOptional == b.priceOptional && a.basics == b.basics && a.attrs == b.attrs
-    }
-}
-
-extension TypeConversionComplexTypesTests {
-    static var allTests: [(String, (TypeConversionComplexTypesTests) -> () throws -> Void)] {
-        [
-            ("testShouldConvertComplexItemToNonOptional", testShouldConvertComplexItemToNonOptional),
-            ("testShouldThrowWhenConvertingEmptyToNonOptional", testShouldThrowWhenConvertingEmptyToNonOptional),
-            ("testShouldThrowWhenConvertingMissingToNonOptional", testShouldThrowWhenConvertingMissingToNonOptional),
-            ("testShouldConvertComplexItemToOptional", testShouldConvertComplexItemToOptional),
-            ("testShouldConvertEmptyToOptional", testShouldConvertEmptyToOptional),
-            ("testShouldConvertMissingToOptional", testShouldConvertMissingToOptional)
-        ]
     }
 }

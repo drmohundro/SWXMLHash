@@ -25,44 +25,30 @@
 
 import Foundation
 import SWXMLHash
-import XCTest
+import Testing
 
 // swiftlint:disable line_length
 
-class LazyWhiteSpaceParsingTests: XCTestCase {
+struct LazyWhiteSpaceParsingTests {
     var xml: XMLIndexer?
 
-    override func setUp() {
-        super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    init() {
+        let path = URL(fileURLWithPath: #filePath).deletingLastPathComponent().appendingPathComponent("test.xml").path
 
-#if SWIFT_PACKAGE
-        let path = URL(fileURLWithPath: #file).deletingLastPathComponent().appendingPathComponent("test.xml").path
-#else
-        let bundle = Bundle(for: WhiteSpaceParsingTests.self)
-        let path = bundle.path(forResource: "test", ofType: "xml")!
-#endif
         // swiftlint:disable:next force_try
         let data = try! Data(contentsOf: URL(fileURLWithPath: path))
         xml = XMLHash.lazy(data)
     }
 
     // issue #6
-    func testShouldBeAbleToPullTextBetweenElementsWithoutWhitespace() {
-        XCTAssertEqual(xml!["niotemplate"]["section"][0]["constraint"][1].element?.text, "H:|-15-[title]-15-|")
+    @Test
+    func shouldBeAbleToPullTextBetweenElementsWithoutWhitespace() {
+        #expect(xml!["niotemplate"]["section"][0]["constraint"][1].element?.text == "H:|-15-[title]-15-|")
     }
 
-    func testShouldBeAbleToCorrectlyParseCDATASectionsWithWhitespace() {
-        XCTAssertEqual(xml!["niotemplate"]["other"].element?.text, "\n        \n  this\n  has\n  white\n  space\n        \n    ")
-    }
-}
-
-extension LazyWhiteSpaceParsingTests {
-    static var allTests: [(String, (LazyWhiteSpaceParsingTests) -> () throws -> Void)] {
-        [
-            ("testShouldBeAbleToPullTextBetweenElementsWithoutWhitespace", testShouldBeAbleToPullTextBetweenElementsWithoutWhitespace),
-            ("testShouldBeAbleToCorrectlyParseCDATASectionsWithWhitespace", testShouldBeAbleToCorrectlyParseCDATASectionsWithWhitespace)
-        ]
+    @Test
+    func shouldBeAbleToCorrectlyParseCDATASectionsWithWhitespace() {
+        #expect(xml!["niotemplate"]["other"].element?.text == "\n        \n  this\n  has\n  white\n  space\n        \n    ")
     }
 }
 

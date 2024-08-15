@@ -1,10 +1,10 @@
-// swift-tools-version:4.2
+// swift-tools-version:5.10
 
 //
-//  SWXMLHash.swift
+//  Package@swift-5.3.swift
 //  SWXMLHash
 //
-//  Copyright (c) 2014 David Mohundro
+//  Copyright (c) 2024 David Mohundro
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -38,12 +38,16 @@ let package = Package(
     targets: [
         .target(
             name: "SWXMLHash",
-            path: "Source"
+            path: "Source",
+            exclude: ["Info.plist"]
         ),
         .testTarget(
             name: "SWXMLHashTests",
-            dependencies: ["SWXMLHash"]
+            dependencies: ["SWXMLHash"],
+            exclude: ["Info.plist", "test.xml"]
         )
     ],
-    swiftLanguageVersions: [.v3, .v4, .v4_2]
+    swiftLanguageVersions: [
+        .v5
+    ]
 )

@@ -24,9 +24,9 @@
 //
 
 import SWXMLHash
-import XCTest
+import Testing
 
-class XMLHashConfigTests: XCTestCase {
+struct XMLHashConfigTests {
     var parser: XMLIndexer?
     let xmlWithNamespace = """
         <root xmlns:h=\"http://www.w3.org/TR/html4/\"
@@ -40,22 +40,14 @@ class XMLHashConfigTests: XCTestCase {
         </root>
     """
 
-    override func setUp() {
-        super.setUp()
+    init() {
         parser = XMLHash.config { conf in
             conf.shouldProcessNamespaces = true
         }.parse(xmlWithNamespace)
     }
 
-    func testShouldAllowProcessingNamespacesOrNot() {
-        XCTAssertEqual(parser!["root"]["table"]["tr"]["td"][0].element?.text, "Apples")
-    }
-}
-
-extension XMLHashConfigTests {
-    static var allTests: [(String, (XMLHashConfigTests) -> () throws -> Void)] {
-        [
-            ("testShouldAllowProcessingNamespacesOrNot", testShouldAllowProcessingNamespacesOrNot)
-        ]
+    @Test
+    func shouldAllowProcessingNamespacesOrNot() {
+        #expect(parser!["root"]["table"]["tr"]["td"][0].element?.text == "Apples")
     }
 }

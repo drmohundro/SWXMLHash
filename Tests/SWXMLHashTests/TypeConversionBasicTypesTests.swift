@@ -24,7 +24,7 @@
 //
 
 import SWXMLHash
-import XCTest
+import Testing
 
 // swiftlint:disable identifier_name
 // swiftlint:disable file_length
@@ -54,7 +54,7 @@ struct SampleUserInfo {
     }
 }
 
-class TypeConversionBasicTypesTests: XCTestCase {
+struct TypeConversionBasicTypesTests {
     var parser: XMLIndexer?
     let xmlWithBasicTypes = """
         <root>
@@ -74,422 +74,375 @@ class TypeConversionBasicTypesTests: XCTestCase {
         </root>
     """
 
-    override func setUp() {
-        super.setUp()
+    init() {
         parser = XMLHash.parse(xmlWithBasicTypes)
     }
 
-    func testShouldConvertValueToNonOptional() {
+    @Test
+    func shouldConvertValueToNonOptional() {
         do {
             let value: String = try parser!["root"]["string"].value()
-            XCTAssertEqual(value, "the string value")
+            #expect(value == "the string value")
         } catch {
-            XCTFail("\(error)")
+            Issue.record("\(error)")
         }
     }
 
-    func testShouldConvertEmptyToNonOptional() {
+    @Test
+    func shouldConvertEmptyToNonOptional() {
         do {
             let value: String = try parser!["root"]["empty"].value()
-            XCTAssertEqual(value, "")
+            #expect(value.isEmpty)
         } catch {
-            XCTFail("\(error)")
+            Issue.record("\(error)")
         }
     }
 
-    func testShouldThrowWhenConvertingMissingToNonOptional() {
-        XCTAssertThrowsError(try (parser!["root"]["missing"].value() as String)) { error in
-            print(error)
-            guard error is XMLDeserializationError else {
-                XCTFail("Wrong type of error")
-                return
-            }
+    @Test
+    func shouldThrowWhenConvertingMissingToNonOptional() {
+        #expect(throws: XMLDeserializationError.self) {
+            try (parser!["root"]["missing"].value() as String)
         }
     }
 
-    func testShouldConvertValueToOptional() {
+    @Test
+    func shouldConvertValueToOptional() {
         do {
             let value: String? = try parser!["root"]["string"].value()
-            XCTAssertEqual(value, "the string value")
+            #expect(value == "the string value")
         } catch {
-            XCTFail("\(error)")
+            Issue.record("\(error)")
         }
     }
 
-    func testShouldConvertEmptyToOptional() {
+    @Test
+    func shouldConvertEmptyToOptional() {
         do {
             let value: String? = try parser!["root"]["empty"].value()
-            XCTAssertEqual(value, "")
+            #expect(value?.isEmpty == true)
         } catch {
-            XCTFail("\(error)")
+            Issue.record("\(error)")
         }
     }
 
-    func testShouldConvertMissingToOptional() {
+    @Test
+    func shouldConvertMissingToOptional() {
         do {
             let value: String? = try parser!["root"]["missing"].value()
-            XCTAssertNil(value)
+            #expect(value == nil)
         } catch {
-            XCTFail("\(error)")
+            Issue.record("\(error)")
         }
     }
 
-    func testShouldConvertAttributeToNonOptional() {
+    @Test
+    func shouldConvertAttributeToNonOptional() {
         do {
             let value: String = try parser!["root"]["attr"].value(ofAttribute: "string")
-            XCTAssertEqual(value, "stringValue")
+            #expect(value == "stringValue")
         } catch {
-            XCTFail("\(error)")
+            Issue.record("\(error)")
         }
     }
 
-    func testShouldConvertAttributeToOptional() {
+    @Test
+    func shouldConvertAttributeToOptional() {
         let value: String? = parser!["root"]["attr"].value(ofAttribute: "string")
-        XCTAssertEqual(value, "stringValue")
+        #expect(value == "stringValue")
     }
 
-    func testShouldThrowWhenConvertingMissingAttributeToNonOptional() {
-        XCTAssertThrowsError(try (parser!["root"]["attr"].value(ofAttribute: "missing") as String)) { error in
-            print(error)
-            guard error is XMLDeserializationError else {
-                XCTFail("Wrong type of error")
-                return
-            }
+    @Test
+    func shouldThrowWhenConvertingMissingAttributeToNonOptional() {
+        #expect(throws: XMLDeserializationError.self) {
+            try (parser!["root"]["attr"].value(ofAttribute: "missing") as String)
         }
     }
 
-    func testShouldConvertMissingAttributeToOptional() {
+    @Test
+    func shouldConvertMissingAttributeToOptional() {
         let value: String? = parser!["root"]["attr"].value(ofAttribute: "missing")
-        XCTAssertNil(value)
+        #expect(value == nil)
     }
 
-    func testShouldConvertAttributeToNonOptionalWithStringRawRepresentable() {
+    @Test
+    func shouldConvertAttributeToNonOptionalWithStringRawRepresentable() {
         enum Keys: String {
             case string
         }
         do {
             let value: String = try parser!["root"]["attr"].value(ofAttribute: Keys.string)
-            XCTAssertEqual(value, "stringValue")
+            #expect(value == "stringValue")
         } catch {
-            XCTFail("\(error)")
+            Issue.record("\(error)")
         }
     }
 
-    func testShouldConvertAttributeToOptionalWithStringRawRepresentable() {
+    @Test
+    func shouldConvertAttributeToOptionalWithStringRawRepresentable() {
         enum Keys: String {
             case string
         }
         let value: String? = parser!["root"]["attr"].value(ofAttribute: Keys.string)
-        XCTAssertEqual(value, "stringValue")
+        #expect(value == "stringValue")
     }
 
-    func testShouldThrowWhenConvertingMissingAttributeToNonOptionalWithStringRawRepresentable() {
+    @Test
+    func shouldThrowWhenConvertingMissingAttributeToNonOptionalWithStringRawRepresentable() {
         enum Keys: String {
             case missing
         }
-        XCTAssertThrowsError(try (parser!["root"]["attr"].value(ofAttribute: Keys.missing) as String)) { error in
-            print(error.localizedDescription)
-            guard error is XMLDeserializationError else {
-                XCTFail("Wrong type of error")
-                return
-            }
+        #expect(throws: XMLDeserializationError.self) {
+            try (parser!["root"]["attr"].value(ofAttribute: Keys.missing) as String)
         }
     }
 
-    func testShouldConvertMissingAttributeToOptionalWithStringRawRepresentable() {
+    @Test
+    func shouldConvertMissingAttributeToOptionalWithStringRawRepresentable() {
         enum Keys: String {
             case missing
         }
         let value: String? = parser!["root"]["attr"].value(ofAttribute: Keys.missing)
-        XCTAssertNil(value)
+        #expect(value == nil)
     }
 
     func testIntShouldConvertValueToNonOptional() {
         do {
             let value: Int = try parser!["root"]["int"].value()
-            XCTAssertEqual(value, 100)
+            #expect(value == 100)
         } catch {
-            XCTFail("\(error)")
+            Issue.record("\(error)")
         }
     }
 
     func testIntShouldThrowWhenConvertingEmptyToNonOptional() {
-        XCTAssertThrowsError(try (parser!["root"]["empty"].value() as Int)) { error in
-            print(error)
-            guard error is XMLDeserializationError else {
-                XCTFail("Wrong type of error")
-                return
-            }
+        #expect(throws: XMLDeserializationError.self) {
+            try (parser!["root"]["empty"].value() as Int)
         }
     }
 
     func testIntShouldThrowWhenConvertingMissingToNonOptional() {
-        XCTAssertThrowsError(try (parser!["root"]["missing"].value() as Int)) { error in
-            print(error)
-            guard error is XMLDeserializationError else {
-                XCTFail("Wrong type of error")
-                return
-            }
+        #expect(throws: XMLDeserializationError.self) {
+            try (parser!["root"]["missing"].value() as Int)
         }
     }
 
     func testIntShouldConvertValueToOptional() {
         do {
             let value: Int? = try parser!["root"]["int"].value()
-            XCTAssertEqual(value, 100)
+            #expect(value == 100)
         } catch {
-            XCTFail("\(error)")
+            Issue.record("\(error)")
         }
     }
 
     func testIntShouldConvertEmptyToOptional() {
-        XCTAssertThrowsError(try (parser!["root"]["empty"].value() as Int?)) { error in
-            print(error)
-            guard error is XMLDeserializationError else {
-                XCTFail("Wrong type of error")
-                return
-            }
+        #expect(throws: XMLDeserializationError.self) {
+            try (parser!["root"]["empty"].value() as Int?)
         }
     }
 
     func testIntShouldConvertMissingToOptional() {
         do {
             let value: Int? = try parser!["root"]["missing"].value()
-            XCTAssertNil(value)
+            #expect(value == nil)
         } catch {
-            XCTFail("\(error)")
+            Issue.record("\(error)")
         }
     }
 
     func testIntShouldConvertAttributeToNonOptional() {
         do {
             let value: Int = try parser!["root"]["attr"].value(ofAttribute: "int")
-            XCTAssertEqual(value, 200)
+            #expect(value == 200)
         } catch {
-            XCTFail("\(error)")
+            Issue.record("\(error)")
         }
     }
 
     func testIntShouldConvertAttributeToOptional() {
         let value: Int? = parser!["root"]["attr"].value(ofAttribute: "int")
-        XCTAssertEqual(value, 200)
+        #expect(value == 200)
     }
 
     func testDoubleShouldConvertValueToNonOptional() {
         do {
             let value: Double = try parser!["root"]["double"].value()
-            XCTAssertEqual(value, 100.45)
+            #expect(value == 100.45)
         } catch {
-            XCTFail("\(error)")
+            Issue.record("\(error)")
         }
     }
 
     func testDoubleShouldThrowWhenConvertingEmptyToNonOptional() {
-        XCTAssertThrowsError(try (parser!["root"]["empty"].value() as Double)) { error in
-            print(error)
-            guard error is XMLDeserializationError else {
-                XCTFail("Wrong type of error")
-                return
-            }
+        #expect(throws: XMLDeserializationError.self) {
+            try (parser!["root"]["empty"].value() as Double)
         }
     }
 
     func testDoubleShouldThrowWhenConvertingMissingToNonOptional() {
-        XCTAssertThrowsError(try (parser!["root"]["missing"].value() as Double)) { error in
-            print(error)
-            guard error is XMLDeserializationError else {
-                XCTFail("Wrong type of error")
-                return
-            }
+        #expect(throws: XMLDeserializationError.self) {
+            try (parser!["root"]["missing"].value() as Double)
         }
     }
 
     func testDoubleShouldConvertValueToOptional() {
         do {
             let value: Double? = try parser!["root"]["double"].value()
-            XCTAssertEqual(value, 100.45)
+            #expect(value == 100.45)
         } catch {
-            XCTFail("\(error)")
+            Issue.record("\(error)")
         }
     }
 
     func testDoubleShouldConvertEmptyToOptional() {
-        XCTAssertThrowsError(try (parser!["root"]["empty"].value() as Double?)) { error in
-            print(error)
-            guard error is XMLDeserializationError else {
-                XCTFail("Wrong type of error")
-                return
-            }
+        #expect(throws: XMLDeserializationError.self) {
+            try (parser!["root"]["empty"].value() as Double?)
         }
     }
 
     func testDoubleShouldConvertMissingToOptional() {
         do {
             let value: Double? = try parser!["root"]["missing"].value()
-            XCTAssertNil(value)
+            #expect(value == nil)
         } catch {
-            XCTFail("\(error)")
+            Issue.record("\(error)")
         }
     }
 
     func testDoubleShouldConvertAttributeToNonOptional() {
         do {
             let value: Double = try parser!["root"]["attr"].value(ofAttribute: "double")
-            XCTAssertEqual(value, 200.15)
+            #expect(value == 200.15)
         } catch {
-            XCTFail("\(error)")
+            Issue.record("\(error)")
         }
     }
 
     func testDoubleShouldConvertAttributeToOptional() {
         let value: Double? = parser!["root"]["attr"].value(ofAttribute: "double")
-        XCTAssertEqual(value, 200.15)
+        #expect(value == 200.15)
     }
 
     func testFloatShouldConvertValueToNonOptional() {
         do {
             let value: Float = try parser!["root"]["float"].value()
-            XCTAssertEqual(value, 44.12)
+            #expect(value == 44.12)
         } catch {
-            XCTFail("\(error)")
+            Issue.record("\(error)")
         }
     }
 
     func testFloatShouldThrowWhenConvertingEmptyToNonOptional() {
-        XCTAssertThrowsError(try (parser!["root"]["empty"].value() as Float)) { error in
-            print(error)
-            guard error is XMLDeserializationError else {
-                XCTFail("Wrong type of error")
-                return
-            }
+        #expect(throws: XMLDeserializationError.self) {
+            try (parser!["root"]["empty"].value() as Float)
         }
     }
 
     func testFloatShouldThrowWhenConvertingMissingToNonOptional() {
-        XCTAssertThrowsError(try (parser!["root"]["missing"].value() as Float)) { error in
-            print(error)
-            guard error is XMLDeserializationError else {
-                XCTFail("Wrong type of error")
-                return
-            }
+        #expect(throws: XMLDeserializationError.self) {
+            try (parser!["root"]["missing"].value() as Float)
         }
     }
 
     func testFloatShouldConvertValueToOptional() {
         do {
             let value: Float? = try parser!["root"]["float"].value()
-            XCTAssertEqual(value, 44.12)
+            #expect(value == 44.12)
         } catch {
-            XCTFail("\(error)")
+            Issue.record("\(error)")
         }
     }
 
     func testFloatShouldConvertEmptyToOptional() {
-        XCTAssertThrowsError(try (parser!["root"]["empty"].value() as Float?)) { error in
-            print(error)
-            guard error is XMLDeserializationError else {
-                XCTFail("Wrong type of error")
-                return
-            }
+        #expect(throws: XMLDeserializationError.self) {
+            try (parser!["root"]["empty"].value() as Float?)
         }
     }
 
     func testFloatShouldConvertMissingToOptional() {
         do {
             let value: Float? = try parser!["root"]["missing"].value()
-            XCTAssertNil(value)
+            #expect(value == nil)
         } catch {
-            XCTFail("\(error)")
+            Issue.record("\(error)")
         }
     }
 
     func testFloatShouldConvertAttributeToNonOptional() {
         do {
             let value: Float = try parser!["root"]["attr"].value(ofAttribute: "float")
-            XCTAssertEqual(value, 205.42)
+            #expect(value == 205.42)
         } catch {
-            XCTFail("\(error)")
+            Issue.record("\(error)")
         }
     }
 
     func testFloatShouldConvertAttributeToOptional() {
         let value: Float? = parser!["root"]["attr"].value(ofAttribute: "float")
-        XCTAssertEqual(value, 205.42)
+        #expect(value == 205.42)
     }
 
     func testBoolShouldConvertValueToNonOptional() {
         do {
             let value1: Bool = try parser!["root"]["bool1"].value()
             let value2: Bool = try parser!["root"]["bool2"].value()
-            XCTAssertFalse(value1)
-            XCTAssertTrue(value2)
+            #expect(!value1)
+            #expect(value2)
         } catch {
-            XCTFail("\(error)")
+            Issue.record("\(error)")
         }
     }
 
     func testBoolShouldThrowWhenConvertingEmptyToNonOptional() {
-        XCTAssertThrowsError(try (parser!["root"]["empty"].value() as Bool)) { error in
-            print(error)
-            guard error is XMLDeserializationError else {
-                XCTFail("Wrong type of error")
-                return
-            }
+        #expect(throws: XMLDeserializationError.self) {
+            try (parser!["root"]["empty"].value() as Bool)
         }
     }
 
     func testBoolShouldThrowWhenConvertingMissingToNonOptional() {
-        XCTAssertThrowsError(try (parser!["root"]["missing"].value() as Bool)) { error in
-            print(error)
-            guard error is XMLDeserializationError else {
-                XCTFail("Wrong type of error")
-                return
-            }
+        #expect(throws: XMLDeserializationError.self) {
+            try (parser!["root"]["missing"].value() as Bool)
         }
     }
 
     func testBoolShouldConvertValueToOptional() {
         do {
             let value1: Bool? = try parser!["root"]["bool1"].value()
-            XCTAssertEqual(value1, false)
+            #expect(value1 == false)
             let value2: Bool? = try parser!["root"]["bool2"].value()
-            XCTAssertEqual(value2, true)
+            #expect(value2 == true)
         } catch {
-            XCTFail("\(error)")
+            Issue.record("\(error)")
         }
     }
 
     func testBoolShouldConvertEmptyToOptional() {
-        XCTAssertThrowsError(try (parser!["root"]["empty"].value() as Bool?)) { error in
-            print(error)
-            guard error is XMLDeserializationError else {
-                XCTFail("Wrong type of error")
-                return
-            }
+        #expect(throws: XMLDeserializationError.self) {
+            try (parser!["root"]["empty"].value() as Bool?)
         }
     }
 
     func testBoolShouldConvertMissingToOptional() {
         do {
             let value: Bool? = try parser!["root"]["missing"].value()
-            XCTAssertNil(value)
+            #expect(value == nil)
         } catch {
-            XCTFail("\(error)")
+            Issue.record("\(error)")
         }
     }
 
     func testBoolShouldConvertAttributeToNonOptional() {
         do {
             let value: Bool = try parser!["root"]["attr"].value(ofAttribute: "bool1")
-            XCTAssertEqual(value, false)
+            #expect(!value)
         } catch {
-            XCTFail("\(error)")
+            Issue.record("\(error)")
         }
     }
 
     func testBoolShouldConvertAttributeToOptional() {
         let value: Bool? = parser!["root"]["attr"].value(ofAttribute: "bool2")
-        XCTAssertEqual(value, true)
+        #expect(value == true)
     }
 
     let correctBasicItem = BasicItem(name: "the name of basic item", price: 99.14, id: "1234")
@@ -497,57 +450,45 @@ class TypeConversionBasicTypesTests: XCTestCase {
     func testBasicItemShouldConvertBasicItemToNonOptional() {
         do {
             let value: BasicItem = try parser!["root"]["basicItem"].value()
-            XCTAssertEqual(value, correctBasicItem)
+            #expect(value == correctBasicItem)
         } catch {
-            XCTFail("\(error)")
+            Issue.record("\(error)")
         }
     }
 
     func testBasicItemShouldThrowWhenConvertingEmptyToNonOptional() {
-        XCTAssertThrowsError(try (parser!["root"]["empty"].value() as BasicItem)) { error in
-            print(error)
-            guard error is XMLDeserializationError else {
-                XCTFail("Wrong type of error")
-                return
-            }
+        #expect(throws: XMLDeserializationError.self) {
+            try (parser!["root"]["empty"].value() as BasicItem)
         }
     }
 
     func testBasicItemShouldThrowWhenConvertingMissingToNonOptional() {
-        XCTAssertThrowsError(try (parser!["root"]["missing"].value() as BasicItem)) { error in
-            print(error)
-            guard error is XMLDeserializationError else {
-                XCTFail("Wrong type of error")
-                return
-            }
+        #expect(throws: XMLDeserializationError.self) {
+            try (parser!["root"]["missing"].value() as BasicItem)
         }
     }
 
     func testBasicItemShouldConvertBasicItemToOptional() {
         do {
             let value: BasicItem? = try parser!["root"]["basicItem"].value()
-            XCTAssertEqual(value, correctBasicItem)
+            #expect(value == correctBasicItem)
         } catch {
-            XCTFail("\(error)")
+            Issue.record("\(error)")
         }
     }
 
     func testBasicItemShouldConvertEmptyToOptional() {
-        XCTAssertThrowsError(try (parser!["root"]["empty"].value() as BasicItem?)) { error in
-            print(error)
-            guard error is XMLDeserializationError else {
-                XCTFail("Wrong type of error")
-                return
-            }
+        #expect(throws: XMLDeserializationError.self) {
+            try (parser!["root"]["empty"].value() as BasicItem?)
         }
     }
 
     func testBasicItemShouldConvertMissingToOptional() {
         do {
             let value: BasicItem? = try parser!["root"]["missing"].value()
-            XCTAssertNil(value)
+            #expect(value == nil)
         } catch {
-            XCTFail("\(error)")
+            Issue.record("\(error)")
         }
     }
 
@@ -557,80 +498,69 @@ class TypeConversionBasicTypesTests: XCTestCase {
     func testAttributeItemShouldConvertAttributeItemToNonOptional() {
         do {
             let value: AttributeItem = try parser!["root"]["attributeItem"].value()
-            XCTAssertEqual(value, correctAttributeItem)
+            #expect(value == correctAttributeItem)
         } catch {
-            XCTFail("\(error)")
+            Issue.record("\(error)")
         }
     }
 
     func testAttributeItemStringRawRepresentableShouldConvertAttributeItemToNonOptional() {
         do {
             let value: AttributeItemStringRawRepresentable = try parser!["root"]["attributeItem"].value()
-            XCTAssertEqual(value, correctAttributeItemStringRawRepresentable)
+            #expect(value == correctAttributeItemStringRawRepresentable)
         } catch {
-            XCTFail("\(error)")
+            Issue.record("\(error)")
         }
     }
 
     func testAttributeItemShouldThrowWhenConvertingEmptyToNonOptional() {
-        XCTAssertThrowsError(try (parser!["root"]["empty"].value() as AttributeItem)) { error in
-            print(error)
-            guard error is XMLDeserializationError else {
-                XCTFail("Wrong type of error")
-                return
-            }
+        #expect(throws: XMLDeserializationError.self) {
+            try (parser!["root"]["empty"].value() as AttributeItem)
         }
     }
 
     func testAttributeItemShouldThrowWhenConvertingMissingToNonOptional() {
-        XCTAssertThrowsError(try (parser!["root"]["missing"].value() as AttributeItem)) { error in
-            print(error)
-            guard error is XMLDeserializationError else {
-                XCTFail("Wrong type of error")
-                return
-            }
+        #expect(throws: XMLDeserializationError.self) {
+            try (parser!["root"]["missing"].value() as AttributeItem)
         }
     }
 
     func testAttributeItemShouldConvertAttributeItemToOptional() {
         do {
             let value: AttributeItem? = try parser!["root"]["attributeItem"].value()
-            XCTAssertEqual(value, correctAttributeItem)
+            #expect(value == correctAttributeItem)
         } catch {
-            XCTFail("\(error)")
+            Issue.record("\(error)")
         }
     }
 
     func testAttributeItemShouldConvertEmptyToOptional() {
-        XCTAssertThrowsError(try (parser!["root"]["empty"].value() as AttributeItem?)) { error in
-            print(error)
-            guard error is XMLDeserializationError else {
-                XCTFail("Wrong type of error")
-                return
-            }
+        #expect(throws: XMLDeserializationError.self) {
+            try (parser!["root"]["empty"].value() as AttributeItem?)
         }
     }
 
     func testAttributeItemShouldConvertMissingToOptional() {
         do {
             let value: AttributeItem? = try parser!["root"]["missing"].value()
-            XCTAssertNil(value)
+            #expect(value == nil)
         } catch {
-            XCTFail("\(error)")
+            Issue.record("\(error)")
         }
     }
 
-    func testShouldBeAbleToGetUserInfoDuringDeserialization() {
-        parser = XMLHash.config { config in
+    @Test
+    func shouldBeAbleToGetUserInfoDuringDeserialization() {
+        let parser = XMLHash.config { config in
             let options = SampleUserInfo(apiVersion: .v1)
             config.userInfo = [ SampleUserInfo.key: options ]
         }.parse(xmlWithBasicTypes)
 
         do {
-            let value: BasicItem = try parser!["root"]["basicItem"].value()
-            XCTAssertEqual(value.name, "the name of basic item (v1)")
+            let value: BasicItem = try parser["root"]["basicItem"].value()
+            #expect(value.name == "the name of basic item (v1)")
         } catch {
-            XCTFail("\(error)")
+            Issue.record("\(error)")
         }
     }
 }
@@ -703,73 +633,6 @@ struct AttributeItemStringRawRepresentable: XMLElementDeserializable {
 extension AttributeItemStringRawRepresentable: Equatable {
     static func == (a: AttributeItemStringRawRepresentable, b: AttributeItemStringRawRepresentable) -> Bool {
         a.name == b.name && a.price == b.price
-    }
-}
-
-extension TypeConversionBasicTypesTests {
-    static var allTests: [(String, (TypeConversionBasicTypesTests) -> () throws -> Void)] {
-        [
-            ("testShouldConvertValueToNonOptional", testShouldConvertValueToNonOptional),
-            ("testShouldConvertEmptyToNonOptional", testShouldConvertEmptyToNonOptional),
-            ("testShouldThrowWhenConvertingMissingToNonOptional", testShouldThrowWhenConvertingMissingToNonOptional),
-            ("testShouldConvertValueToOptional", testShouldConvertValueToOptional),
-            ("testShouldConvertEmptyToOptional", testShouldConvertEmptyToOptional),
-            ("testShouldConvertMissingToOptional", testShouldConvertMissingToOptional),
-            ("testShouldConvertAttributeToNonOptional", testShouldConvertAttributeToNonOptional),
-            ("testShouldConvertAttributeToOptional", testShouldConvertAttributeToOptional),
-            ("testShouldThrowWhenConvertingMissingAttributeToNonOptional", testShouldThrowWhenConvertingMissingAttributeToNonOptional),
-            ("testShouldConvertMissingAttributeToOptional", testShouldConvertMissingAttributeToOptional),
-            ("testShouldConvertAttributeToNonOptionalWithStringRawRepresentable", testShouldConvertAttributeToNonOptionalWithStringRawRepresentable),
-            ("testShouldConvertAttributeToOptionalWithStringRawRepresentable", testShouldConvertAttributeToOptionalWithStringRawRepresentable),
-            ("testShouldThrowWhenConvertingMissingAttributeToNonOptionalWithStringRawRepresentable", testShouldThrowWhenConvertingMissingAttributeToNonOptionalWithStringRawRepresentable),
-            ("testShouldConvertMissingAttributeToOptionalWithStringRawRepresentable", testShouldConvertMissingAttributeToOptionalWithStringRawRepresentable),
-            ("testIntShouldConvertValueToNonOptional", testIntShouldConvertValueToNonOptional),
-            ("testIntShouldThrowWhenConvertingEmptyToNonOptional", testIntShouldThrowWhenConvertingEmptyToNonOptional),
-            ("testIntShouldThrowWhenConvertingMissingToNonOptional", testIntShouldThrowWhenConvertingMissingToNonOptional),
-            ("testIntShouldConvertValueToOptional", testIntShouldConvertValueToOptional),
-            ("testIntShouldConvertEmptyToOptional", testIntShouldConvertEmptyToOptional),
-            ("testIntShouldConvertMissingToOptional", testIntShouldConvertMissingToOptional),
-            ("testIntShouldConvertAttributeToNonOptional", testIntShouldConvertAttributeToNonOptional),
-            ("testIntShouldConvertAttributeToOptional", testIntShouldConvertAttributeToOptional),
-            ("testDoubleShouldConvertValueToNonOptional", testDoubleShouldConvertValueToNonOptional),
-            ("testDoubleShouldThrowWhenConvertingEmptyToNonOptional", testDoubleShouldThrowWhenConvertingEmptyToNonOptional),
-            ("testDoubleShouldThrowWhenConvertingMissingToNonOptional", testDoubleShouldThrowWhenConvertingMissingToNonOptional),
-            ("testDoubleShouldConvertValueToOptional", testDoubleShouldConvertValueToOptional),
-            ("testDoubleShouldConvertEmptyToOptional", testDoubleShouldConvertEmptyToOptional),
-            ("testDoubleShouldConvertMissingToOptional", testDoubleShouldConvertMissingToOptional),
-            ("testDoubleShouldConvertAttributeToNonOptional", testDoubleShouldConvertAttributeToNonOptional),
-            ("testDoubleShouldConvertAttributeToOptional", testDoubleShouldConvertAttributeToOptional),
-            ("testFloatShouldConvertValueToNonOptional", testFloatShouldConvertValueToNonOptional),
-            ("testFloatShouldThrowWhenConvertingEmptyToNonOptional", testFloatShouldThrowWhenConvertingEmptyToNonOptional),
-            ("testFloatShouldThrowWhenConvertingMissingToNonOptional", testFloatShouldThrowWhenConvertingMissingToNonOptional),
-            ("testFloatShouldConvertValueToOptional", testFloatShouldConvertValueToOptional),
-            ("testFloatShouldConvertEmptyToOptional", testFloatShouldConvertEmptyToOptional),
-            ("testFloatShouldConvertMissingToOptional", testFloatShouldConvertMissingToOptional),
-            ("testFloatShouldConvertAttributeToNonOptional", testFloatShouldConvertAttributeToNonOptional),
-            ("testFloatShouldConvertAttributeToOptional", testFloatShouldConvertAttributeToOptional),
-            ("testBoolShouldConvertValueToNonOptional", testBoolShouldConvertValueToNonOptional),
-            ("testBoolShouldThrowWhenConvertingEmptyToNonOptional", testBoolShouldThrowWhenConvertingEmptyToNonOptional),
-            ("testBoolShouldThrowWhenConvertingMissingToNonOptional", testBoolShouldThrowWhenConvertingMissingToNonOptional),
-            ("testBoolShouldConvertValueToOptional", testBoolShouldConvertValueToOptional),
-            ("testBoolShouldConvertEmptyToOptional", testBoolShouldConvertEmptyToOptional),
-            ("testBoolShouldConvertMissingToOptional", testBoolShouldConvertMissingToOptional),
-            ("testBoolShouldConvertAttributeToNonOptional", testBoolShouldConvertAttributeToNonOptional),
-            ("testBoolShouldConvertAttributeToOptional", testBoolShouldConvertAttributeToOptional),
-            ("testBasicItemShouldConvertBasicItemToNonOptional", testBasicItemShouldConvertBasicItemToNonOptional),
-            ("testBasicItemShouldThrowWhenConvertingEmptyToNonOptional", testBasicItemShouldThrowWhenConvertingEmptyToNonOptional),
-            ("testBasicItemShouldThrowWhenConvertingMissingToNonOptional", testBasicItemShouldThrowWhenConvertingMissingToNonOptional),
-            ("testBasicItemShouldConvertBasicItemToOptional", testBasicItemShouldConvertBasicItemToOptional),
-            ("testBasicItemShouldConvertEmptyToOptional", testBasicItemShouldConvertEmptyToOptional),
-            ("testBasicItemShouldConvertMissingToOptional", testBasicItemShouldConvertMissingToOptional),
-            ("testAttributeItemShouldConvertAttributeItemToNonOptional", testAttributeItemShouldConvertAttributeItemToNonOptional),
-            ("testAttributeItemStringRawRepresentableShouldConvertAttributeItemToNonOptional", testAttributeItemStringRawRepresentableShouldConvertAttributeItemToNonOptional),
-            ("testAttributeItemShouldThrowWhenConvertingEmptyToNonOptional", testAttributeItemShouldThrowWhenConvertingEmptyToNonOptional),
-            ("testAttributeItemShouldThrowWhenConvertingMissingToNonOptional", testAttributeItemShouldThrowWhenConvertingMissingToNonOptional),
-            ("testAttributeItemShouldConvertAttributeItemToOptional", testAttributeItemShouldConvertAttributeItemToOptional),
-            ("testAttributeItemShouldConvertEmptyToOptional", testAttributeItemShouldConvertEmptyToOptional),
-            ("testAttributeItemShouldConvertMissingToOptional", testAttributeItemShouldConvertMissingToOptional),
-            ("testShouldBeAbleToGetUserInfoDuringDeserialization", testShouldBeAbleToGetUserInfoDuringDeserialization)
-        ]
     }
 }
 
