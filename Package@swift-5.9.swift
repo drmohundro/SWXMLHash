@@ -1,9 +1,10 @@
+// swift-tools-version:5.9
+
 //
-//  TypesConversionBasicTests.swift
+//  Package@swift-5.3.swift
 //  SWXMLHash
 //
-//  Copyright (c) 2016 Norio Nomura
-
+//  Copyright (c) 2024 David Mohundro
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -24,19 +25,29 @@
 //  THE SOFTWARE.
 //
 
-@testable import SWXMLHashTests
-import XCTest
+import PackageDescription
 
-XCTMain([
-    testCase(LazyTypesConversionTests.allTests),
-    testCase(LazyWhiteSpaceParsingTests.allTests),
-    testCase(LazyXMLParsingTests.allTests),
-    testCase(MixedTextWithXMLElementsTests.allTests),
-    testCase(XMLHashConfigTests.allTests),
-    testCase(TypeConversionArrayOfNonPrimitiveTypesTests.allTests),
-    testCase(TypeConversionBasicTypesTests.allTests),
-    testCase(TypeConversionComplexTypesTests.allTests),
-    testCase(TypeConversionPrimitiveTypesTests.allTests),
-    testCase(WhiteSpaceParsingTests.allTests),
-    testCase(XMLParsingTests.allTests)
-])
+let package = Package(
+    name: "SWXMLHash",
+    products: [
+        .library(
+            name: "SWXMLHash",
+            targets: ["SWXMLHash"]
+        )
+    ],
+    targets: [
+        .target(
+            name: "SWXMLHash",
+            path: "Source",
+            exclude: ["Info.plist"]
+        ),
+        .testTarget(
+            name: "SWXMLHashTests",
+            dependencies: ["SWXMLHash"],
+            exclude: ["Info.plist", "test.xml"]
+        )
+    ],
+    swiftLanguageVersions: [
+        .v5
+    ]
+)

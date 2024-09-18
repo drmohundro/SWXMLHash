@@ -1,3 +1,9 @@
+## v8.0.0 (September 17, 2024)
+
+- Added Swift 6.0 support (via [#283](https://github.com/drmohundro/SWXMLHash/pull/283))
+  - The tests are now all using swift-testing
+  - Prior deprecations have been removed
+
 ## v7.0.2 (May 9, 2023)
 
 - Added Windows support (via [#273](https://github.com/drmohundro/SWXMLHash/pull/273))

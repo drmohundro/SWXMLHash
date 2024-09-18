@@ -25,7 +25,7 @@
 
 import Foundation
 
-public struct XMLAttribute {
+public struct XMLAttribute: Sendable {
     public let name: String
     public let text: String
 }

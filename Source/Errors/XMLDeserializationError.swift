@@ -23,8 +23,6 @@
 //  THE SOFTWARE.
 //
 
-// swiftlint:disable line_length
-
 import Foundation
 
 /// The error that is thrown if there is a problem with deserialization
@@ -32,32 +30,9 @@ public enum XMLDeserializationError: Error {
     case implementationIsMissing(method: String)
     case nodeIsInvalid(node: String)
     case nodeHasNoValue
-    case typeConversionFailed(type: String, element: XMLElement)
-    case attributeDoesNotExist(element: XMLElement, attribute: String)
+    case typeConversionFailed(type: String, element: XMLElementSendable)
+    case attributeDoesNotExist(element: XMLElementSendable, attribute: String)
     case attributeDeserializationFailed(type: String, attribute: XMLAttribute)
-
-    // swiftlint:disable identifier_name
-    @available(*, unavailable, renamed: "implementationIsMissing(method:)")
-    public static func ImplementationIsMissing(method: String) -> XMLDeserializationError {
-        fatalError("unavailable")
-    }
-    @available(*, unavailable, renamed: "nodeHasNoValue(_:)")
-    public static func NodeHasNoValue(_: IndexOps) -> XMLDeserializationError {
-        fatalError("unavailable")
-    }
-    @available(*, unavailable, renamed: "typeConversionFailed(_:)")
-    public static func TypeConversionFailed(_: IndexingError) -> XMLDeserializationError {
-        fatalError("unavailable")
-    }
-    @available(*, unavailable, renamed: "attributeDoesNotExist(_:_:)")
-    public static func AttributeDoesNotExist(_ attr: String, _ value: String) throws -> XMLDeserializationError {
-        fatalError("unavailable")
-    }
-    @available(*, unavailable, renamed: "attributeDeserializationFailed(_:_:)")
-    public static func AttributeDeserializationFailed(_ attr: String, _ value: String) throws -> XMLDeserializationError {
-        fatalError("unavailable")
-    }
-    // swiftlint:enable identifier_name
 }
 
 /// Implementation for CustomStringConvertible
@@ -101,5 +76,3 @@ extension XMLDeserializationError: LocalizedError {
         }
     }
 }
-
-// swiftlint:enable line_length

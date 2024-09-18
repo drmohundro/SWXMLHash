@@ -5,46 +5,139 @@ on: [push, pull_request]
 jobs:
   mac-test:
     name: Mac Test
-    runs-on: macOS-latest
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        include:
+          - platform: macOS
+            scheme: "SWXMLHash OSX"
+            action: "build-for-testing test-without-building"
 
+          - platform: iOS
+            scheme: "SWXMLHash iOS"
+            action: "build-for-testing test-without-building"
+            sdk-and-dest: '-sdk iphonesimulator -destination "OS=17.2,name=iPhone 15"'
+
+          - platform: tvOS
+            scheme: "SWXMLHash tvOS"
+            sdk-and-dest: '-sdk appletvsimulator -destination "name=Apple TV"'
+
+          - platform: watchOS
+            scheme: "SWXMLHash watchOS"
+            action: "build-for-testing test-without-building"
+            sdk-and-dest: "-sdk watchsimulator"
     steps:
       - name: Checkout
-        uses: actions/checkout@master
-      - name: Build and test
+        uses: actions/checkout@v4
+
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: "16.0"
+
+      - name: Build and Test
         env:
           WORKSPACE: "-workspace SWXMLHash.xcworkspace"
-          ACTION: "build-for-testing test-without-building"
         run: |
-          set -o pipefail
-          xcodebuild $ACTION $WORKSPACE -scheme "SWXMLHash OSX" | xcpretty
-          xcodebuild $ACTION $WORKSPACE -scheme "SWXMLHash iOS" -sdk iphonesimulator -destination "OS=17.2,name=iPhone 15" | xcpretty
-          xcodebuild $ACTION $WORKSPACE -scheme "SWXMLHash tvOS" -sdk appletvsimulator -destination "name=Apple TV" | xcpretty
-          xcodebuild build $WORKSPACE -scheme "SWXMLHash watchOS" -sdk watchsimulator | xcpretty
-          bash <(curl -s https://codecov.io/bash) -t ${{secrets.CODECOV_TOKEN}}
+          xcodebuild ${{ matrix.action }} $WORKSPACE -scheme ${{ matrix.scheme }} ${{ matrix.sdk-and-dest }} | xcpretty
+
+      # TODO: I'd like to use this action instead of the above xcodebuild command, but I'm getting a destination error:
+      # xcodebuild: error: Unable to find a destination matching the provided destination specifier:
+      #   		{ id:D918798E-6DEE-48F7-850A-A4C0D9328F0A }
+      #
+      # - uses: mxcl/xcodebuild@v3.0.0
+      #   with:
+      #     platform: ${{ matrix.platform }}
+      #     workspace: "SWXMLHash.xcworkspace"
 
   linux-test:
     name: Linux Test
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - image: swift:5.8-focal
+            skip-testing: true
 
+          - image: swift:5.8-jammy
+            skip-testing: true
+
+          - image: swift:5.8-rhel-ubi9
+            skip-testing: true
+
+          - image: swift:5.9-focal
+            skip-testing: true
+
+          - image: swift:5.9-jammy
+            skip-testing: true
+
+          - image: swift:5.9-rhel-ubi9
+            skip-testing: true
+
+          - image: swift:5.10-focal
+            skip-testing: true
+
+          - image: swift:5.10-jammy
+            skip-testing: true
+
+          - image: swift:5.10-rhel-ubi9
+            skip-testing: true
+
+          - image: swift:6.0-focal
+            perform-testing: true
+
+          - image: swift:6.0-jammy
+            perform-testing: true
+
+          - image: swift:6.0-rhel-ubi9
+            perform-testing: true
+    container:
+      image: ${{ matrix.image }}
+    timeout-minutes: 10
     steps:
       - name: Checkout
-        uses: actions/checkout@master
-      - name: Build and test
+        uses: actions/checkout@v4
+      - name: Build
+        if: ${{ matrix.skip-testing }}
         run: |
-          eval "$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)"
+          swift build
+      - name: Build and test
+        if: ${{ matrix.perform-testing }}
+        run: |
+          swift build --build-tests
           swift test
 
   windows-test:
     name: Windows Test
     runs-on: windows-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - branch: swift-5.10-release
+            tag: 5.10-RELEASE
+            skip-testing: true
+
+          - branch: swift-6.0-release
+            tag: 6.0-RELEASE
+            perform-testing: true
 
     steps:
       - name: Install Swift
         uses: compnerd/gha-setup-swift@main
         with:
-          branch: swift-5.8-release
-          tag: 5.8-RELEASE
+          branch: ${{ matrix.branch}}
+          tag: ${{ matrix.tag }}
+
       - name: Checkout
-        uses: actions/checkout@master
+        uses: actions/checkout@v4
+      - name: Build
+        if: ${{ matrix.skip-testing }}
+        run: |
+          swift build
       - name: Build and test
-        run: swift test
+        if: ${{ matrix.perform-testing }}
+        run: |
+          swift build --build-tests
+          swift test

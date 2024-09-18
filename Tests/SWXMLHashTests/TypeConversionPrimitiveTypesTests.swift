@@ -24,11 +24,9 @@
 //
 
 import SWXMLHash
-import XCTest
+import Testing
 
-// swiftlint:disable line_length
-
-class TypeConversionPrimitiveTypesTests: XCTestCase {
+struct TypeConversionPrimitiveTypesTests {
     var parser: XMLIndexer?
     let xmlWithArraysOfTypes = """
         <root>
@@ -48,215 +46,187 @@ class TypeConversionPrimitiveTypesTests: XCTestCase {
         </root>
     """
 
-    override func setUp() {
-        super.setUp()
+    init() {
         parser = XMLHash.parse(xmlWithArraysOfTypes)
     }
 
-    func testShouldConvertArrayOfGoodIntsToNonOptional() {
+    @Test
+    func shouldConvertArrayOfGoodIntsToNonOptional() {
         do {
             let value: [Int] = try parser!["root"]["arrayOfGoodInts"]["int"].value()
-            XCTAssertEqual(value, [0, 1, 2, 3])
+            #expect(value == [0, 1, 2, 3])
         } catch {
-            XCTFail("\(error)")
+            Issue.record("\(error)")
         }
     }
 
-    func testShouldConvertArrayOfGoodIntsToOptional() {
+    @Test
+    func shouldConvertArrayOfGoodIntsToOptional() {
         do {
             let value: [Int]? = try parser!["root"]["arrayOfGoodInts"]["int"].value()
-            XCTAssertNotNil(value)
+            #expect(value != nil)
             if let value = value {
-                XCTAssertEqual(value, [0, 1, 2, 3])
+                #expect(value == [0, 1, 2, 3])
             }
         } catch {
-            XCTFail("\(error)")
+            Issue.record("\(error)")
         }
     }
 
-    func testShouldConvertArrayOfGoodIntsToArrayOfOptionals() {
+    @Test
+    func shouldConvertArrayOfGoodIntsToArrayOfOptionals() {
         do {
             let value: [Int?] = try parser!["root"]["arrayOfGoodInts"]["int"].value()
-            XCTAssertEqual(value.compactMap({ $0 }), [0, 1, 2, 3])
+            #expect(value.compactMap({ $0 }) == [0, 1, 2, 3])
         } catch {
-            XCTFail("\(error)")
+            Issue.record("\(error)")
         }
     }
 
-    func testShouldThrowWhenConvertingArrayOfBadIntsToNonOptional() {
-        XCTAssertThrowsError(try (parser!["root"]["arrayOfBadInts"]["int"].value() as [Int])) { error in
-            guard error is XMLDeserializationError else {
-                XCTFail("Wrong type of error")
-                return
-            }
+    @Test
+    func shouldThrowWhenConvertingArrayOfBadIntsToNonOptional() {
+        #expect(throws: XMLDeserializationError.self) {
+            try (parser!["root"]["arrayOfBadInts"]["int"].value() as [Int])
         }
     }
 
-    func testShouldThrowWhenConvertingArrayOfBadIntsToOptional() {
-        XCTAssertThrowsError(try (parser!["root"]["arrayOfBadInts"]["int"].value() as [Int]?)) { error in
-            guard error is XMLDeserializationError else {
-                XCTFail("Wrong type of error")
-                return
-            }
+    @Test
+    func shouldThrowWhenConvertingArrayOfBadIntsToOptional() {
+        #expect(throws: XMLDeserializationError.self) {
+            try (parser!["root"]["arrayOfBadInts"]["int"].value() as [Int]?)
         }
     }
 
-    func testShouldThrowWhenConvertingArrayOfBadIntsToArrayOfOptionals() {
-        XCTAssertThrowsError(try (parser!["root"]["arrayOfBadInts"]["int"].value() as [Int?])) { error in
-            guard error is XMLDeserializationError else {
-                XCTFail("Wrong type of error")
-                return
-            }
+    @Test
+    func shouldThrowWhenConvertingArrayOfBadIntsToArrayOfOptionals() {
+        #expect(throws: XMLDeserializationError.self) {
+            try (parser!["root"]["arrayOfBadInts"]["int"].value() as [Int?])
         }
     }
 
-    func testShouldThrowWhenConvertingArrayOfMixedIntsToNonOptional() {
-        XCTAssertThrowsError(try (parser!["root"]["arrayOfMixedInts"]["int"].value() as [Int])) { error in
-            guard error is XMLDeserializationError else {
-                XCTFail("Wrong type of error")
-                return
-            }
+    @Test
+    func shouldThrowWhenConvertingArrayOfMixedIntsToNonOptional() {
+        #expect(throws: XMLDeserializationError.self) {
+            try (parser!["root"]["arrayOfMixedInts"]["int"].value() as [Int])
         }
     }
 
-    func testShouldThrowWhenConvertingArrayOfMixedIntsToOptional() {
-        XCTAssertThrowsError(try (parser!["root"]["arrayOfMixedInts"]["int"].value() as [Int]?)) { error in
-            guard error is XMLDeserializationError else {
-                XCTFail("Wrong type of error")
-                return
-            }
+    @Test
+    func shouldThrowWhenConvertingArrayOfMixedIntsToOptional() {
+        #expect(throws: XMLDeserializationError.self) {
+            try (parser!["root"]["arrayOfMixedInts"]["int"].value() as [Int]?)
         }
     }
 
-    func testShouldThrowWhenConvertingArrayOfMixedIntsToArrayOfOptionals() {
-        XCTAssertThrowsError(try (parser!["root"]["arrayOfMixedInts"]["int"].value() as [Int?])) { error in
-            guard error is XMLDeserializationError else {
-                XCTFail("Wrong type of error")
-                return
-            }
+    @Test
+    func shouldThrowWhenConvertingArrayOfMixedIntsToArrayOfOptionals() {
+        #expect(throws: XMLDeserializationError.self) {
+            try (parser!["root"]["arrayOfMixedInts"]["int"].value() as [Int?])
         }
     }
 
-    func testShouldConvertArrayOfAttributeIntsToNonOptional() {
+    @Test
+    func shouldConvertArrayOfAttributeIntsToNonOptional() {
         do {
             let value: [Int] = try parser!["root"]["arrayOfAttributeInts"]["int"].value(ofAttribute: "value")
-            XCTAssertEqual(value, [0, 1, 2, 3])
+            #expect(value == [0, 1, 2, 3])
         } catch {
-            XCTFail("\(error)")
+            Issue.record("\(error)")
         }
     }
 
-    func testShouldConvertArrayOfAttributeIntsToOptional() {
+    @Test
+    func shouldConvertArrayOfAttributeIntsToOptional() {
         do {
             let value: [Int]? = try parser!["root"]["arrayOfAttributeInts"]["int"].value(ofAttribute: "value")
-            XCTAssertNotNil(value)
+            #expect(value != nil)
             if let value = value {
-                XCTAssertEqual(value, [0, 1, 2, 3])
+                #expect(value == [0, 1, 2, 3])
             }
         } catch {
-            XCTFail("\(error)")
+            Issue.record("\(error)")
         }
     }
 
-    func testShouldConvertArrayOfAttributeIntsToArrayOfOptionals() {
+    @Test
+    func shouldConvertArrayOfAttributeIntsToArrayOfOptionals() {
         do {
             let value: [Int?] = try parser!["root"]["arrayOfAttributeInts"]["int"].value(ofAttribute: "value")
-            XCTAssertEqual(value.compactMap({ $0 }), [0, 1, 2, 3])
+            #expect(value.compactMap({ $0 }) == [0, 1, 2, 3])
         } catch {
-            XCTFail("\(error)")
+            Issue.record("\(error)")
         }
     }
 
-    func testShouldConvertArrayOfAttributeIntsToNonOptionalWithStringRawRepresentable() {
+    @Test
+    func shouldConvertArrayOfAttributeIntsToNonOptionalWithStringRawRepresentable() {
         enum Keys: String {
             case value
         }
         do {
             let value: [Int] = try parser!["root"]["arrayOfAttributeInts"]["int"].value(ofAttribute: Keys.value)
-            XCTAssertEqual(value, [0, 1, 2, 3])
+            #expect(value == [0, 1, 2, 3])
         } catch {
-            XCTFail("\(error)")
+            Issue.record("\(error)")
         }
     }
 
-    func testShouldConvertArrayOfAttributeIntsToOptionalWithStringRawRepresentable() {
+    @Test
+    func shouldConvertArrayOfAttributeIntsToOptionalWithStringRawRepresentable() {
         enum Keys: String {
             case value
         }
         do {
             let value: [Int]? = try parser!["root"]["arrayOfAttributeInts"]["int"].value(ofAttribute: Keys.value)
-            XCTAssertNotNil(value)
+            #expect(value != nil)
             if let value = value {
-                XCTAssertEqual(value, [0, 1, 2, 3])
+                #expect(value == [0, 1, 2, 3])
             }
         } catch {
-            XCTFail("\(error)")
+            Issue.record("\(error)")
         }
     }
 
-    func testShouldConvertArrayOfAttributeIntsToArrayOfOptionalsWithStringRawRepresentable() {
+    @Test
+    func shouldConvertArrayOfAttributeIntsToArrayOfOptionalsWithStringRawRepresentable() {
         enum Keys: String {
             case value
         }
         do {
             let value: [Int?] = try parser!["root"]["arrayOfAttributeInts"]["int"].value(ofAttribute: Keys.value)
-            XCTAssertEqual(value.compactMap({ $0 }), [0, 1, 2, 3])
+            #expect(value.compactMap({ $0 }) == [0, 1, 2, 3])
         } catch {
-            XCTFail("\(error)")
+            Issue.record("\(error)")
         }
     }
 
-    func testShouldConvertEmptyArrayOfIntsToNonOptional() {
+    @Test
+    func shouldConvertEmptyArrayOfIntsToNonOptional() {
         do {
             let value: [Int] = try parser!["root"]["empty"]["int"].value()
-            XCTAssertEqual(value, [])
+            #expect(value == [])
         } catch {
-            XCTFail("\(error)")
+            Issue.record("\(error)")
         }
     }
 
-    func testShouldConvertEmptyArrayOfIntsToOptional() {
+    @Test
+    func shouldConvertEmptyArrayOfIntsToOptional() {
         do {
             let value: [Int]? = try parser!["root"]["empty"]["int"].value()
-            XCTAssertNil(value)
+            #expect(value == nil)
         } catch {
-            XCTFail("\(error)")
+            Issue.record("\(error)")
         }
     }
 
-    func testShouldConvertEmptyArrayOfIntsToArrayOfOptionals() {
+    @Test
+    func shouldConvertEmptyArrayOfIntsToArrayOfOptionals() {
         do {
             let value: [Int?] = try parser!["root"]["empty"]["int"].value()
-            XCTAssertEqual(value.count, 0)
+            #expect(value.isEmpty)
         } catch {
-            XCTFail("\(error)")
+            Issue.record("\(error)")
         }
     }
 }
-
-extension TypeConversionPrimitiveTypesTests {
-    static var allTests: [(String, (TypeConversionPrimitiveTypesTests) -> () throws -> Void)] {
-        [
-            ("testShouldConvertArrayOfGoodIntsToNonOptional", testShouldConvertArrayOfGoodIntsToNonOptional),
-            ("testShouldConvertArrayOfGoodIntsToOptional", testShouldConvertArrayOfGoodIntsToOptional),
-            ("testShouldConvertArrayOfGoodIntsToArrayOfOptionals", testShouldConvertArrayOfGoodIntsToArrayOfOptionals),
-            ("testShouldThrowWhenConvertingArrayOfBadIntsToNonOptional", testShouldThrowWhenConvertingArrayOfBadIntsToNonOptional),
-            ("testShouldThrowWhenConvertingArrayOfBadIntsToOptional", testShouldThrowWhenConvertingArrayOfBadIntsToOptional),
-            ("testShouldThrowWhenConvertingArrayOfBadIntsToArrayOfOptionals", testShouldThrowWhenConvertingArrayOfBadIntsToArrayOfOptionals),
-            ("testShouldThrowWhenConvertingArrayOfMixedIntsToNonOptional", testShouldThrowWhenConvertingArrayOfMixedIntsToNonOptional),
-            ("testShouldThrowWhenConvertingArrayOfMixedIntsToOptional", testShouldThrowWhenConvertingArrayOfMixedIntsToOptional),
-            ("testShouldThrowWhenConvertingArrayOfMixedIntsToArrayOfOptionals", testShouldThrowWhenConvertingArrayOfMixedIntsToArrayOfOptionals),
-            ("testShouldConvertArrayOfAttributeIntsToNonOptional", testShouldConvertArrayOfAttributeIntsToNonOptional),
-            ("testShouldConvertArrayOfAttributeIntsToOptional", testShouldConvertArrayOfAttributeIntsToOptional),
-            ("testShouldConvertArrayOfAttributeIntsToArrayOfOptionals", testShouldConvertArrayOfAttributeIntsToArrayOfOptionals),
-            ("testShouldConvertArrayOfAttributeIntsToNonOptionalWithStringRawRepresentable", testShouldConvertArrayOfAttributeIntsToNonOptionalWithStringRawRepresentable),
-            ("testShouldConvertArrayOfAttributeIntsToOptionalWithStringRawRepresentable", testShouldConvertArrayOfAttributeIntsToOptionalWithStringRawRepresentable),
-            ("testShouldConvertArrayOfAttributeIntsToArrayOfOptionalsWithStringRawRepresentable", testShouldConvertArrayOfAttributeIntsToArrayOfOptionalsWithStringRawRepresentable),
-            ("testShouldConvertEmptyArrayOfIntsToNonOptional", testShouldConvertEmptyArrayOfIntsToNonOptional),
-            ("testShouldConvertEmptyArrayOfIntsToOptional", testShouldConvertEmptyArrayOfIntsToOptional),
-            ("testShouldConvertEmptyArrayOfIntsToArrayOfOptionals", testShouldConvertEmptyArrayOfIntsToArrayOfOptionals)
-        ]
-    }
-}
-
-// swiftlint:enable line_length

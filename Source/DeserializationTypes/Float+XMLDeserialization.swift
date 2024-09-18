@@ -36,7 +36,7 @@ extension Float: XMLValueDeserialization {
     */
     public static func deserialize(_ element: XMLElement) throws -> Float {
         guard let value = Float(try element.nonEmptyTextOrThrow()) else {
-            throw XMLDeserializationError.typeConversionFailed(type: "Float", element: element)
+            throw XMLDeserializationError.typeConversionFailed(type: "Float", element: XMLElementSendable(element))
         }
         return value
     }

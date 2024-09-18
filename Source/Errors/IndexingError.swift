@@ -31,42 +31,9 @@ public enum IndexingError: Error {
     case attributeValue(attr: String, value: String)
     case key(key: String)
     case index(idx: Int)
-    case initialize(instance: AnyObject)
+    case initialize(description: String)
     case encoding
     case error
-
-// swiftlint:disable identifier_name
-    // unavailable
-    @available(*, unavailable, renamed: "attribute(attr:)")
-    public static func Attribute(attr: String) -> IndexingError {
-        fatalError("unavailable")
-    }
-
-    @available(*, unavailable, renamed: "attributeValue(attr:value:)")
-    public static func AttributeValue(attr: String, value: String) -> IndexingError {
-        fatalError("unavailable")
-    }
-
-    @available(*, unavailable, renamed: "key(key:)")
-    public static func Key(key: String) -> IndexingError {
-        fatalError("unavailable")
-    }
-
-    @available(*, unavailable, renamed: "index(idx:)")
-    public static func Index(idx: Int) -> IndexingError {
-        fatalError("unavailable")
-    }
-
-    @available(*, unavailable, renamed: "initialize(instance:)")
-    public static func Init(instance: AnyObject) -> IndexingError {
-        fatalError("unavailable")
-    }
-
-    @available(*, unavailable, renamed: "error")
-    public static var Error: IndexingError {
-        fatalError("unavailable")
-    }
-// swiftlint:enable identifier_name
 }
 
 extension IndexingError: CustomStringConvertible {
@@ -81,8 +48,8 @@ extension IndexingError: CustomStringConvertible {
             return "XML Element Error: Incorrect key [\"\(key)\"]"
         case .index(let index):
             return "XML Element Error: Incorrect index [\"\(index)\"]"
-        case .initialize(let instance):
-            return "XML Indexer Error: initialization with Object [\"\(instance)\"]"
+        case .initialize(let description):
+            return "XML Indexer Error: initialization with Object [\"\(description)\"]"
         case .encoding:
             return "String Encoding Error"
         case .error:

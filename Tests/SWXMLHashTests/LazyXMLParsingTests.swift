@@ -24,11 +24,11 @@
 //
 
 import SWXMLHash
-import XCTest
+import Testing
 
 // swiftlint:disable line_length
 
-class LazyXMLParsingTests: XCTestCase {
+struct LazyXMLParsingTests {
     let xmlToParse = """
         <root>
           <header>header mixed content<title>Test Title Header</title>more mixed content</header>
@@ -62,120 +62,113 @@ class LazyXMLParsingTests: XCTestCase {
 
     var xml: XMLIndexer?
 
-    override func setUp() {
-        super.setUp()
+    init() {
         xml = XMLHash.config { config in config.shouldProcessLazily = true }.parse(xmlToParse)
     }
 
-    func testShouldBeAbleToParseIndividualElements() {
-        XCTAssertEqual(xml!["root"]["header"]["title"].element?.text, "Test Title Header")
+    @Test
+    func shouldBeAbleToParseIndividualElements() {
+        #expect(xml!["root"]["header"]["title"].element?.text == "Test Title Header")
     }
 
-    func testShouldBeAbleToHandleSubsequentParseCalls() {
-        XCTAssertEqual(xml!["root"]["header"]["title"].element?.text, "Test Title Header")
-        XCTAssertEqual(xml!["root"]["catalog"]["book"][1]["author"].element?.text, "Ralls, Kim")
+    @Test
+    func shouldBeAbleToHandleSubsequentParseCalls() {
+        #expect(xml!["root"]["header"]["title"].element?.text == "Test Title Header")
+        #expect(xml!["root"]["catalog"]["book"][1]["author"].element?.text == "Ralls, Kim")
     }
 
-    func testShouldBeAbleToParseElementGroups() {
-        XCTAssertEqual(xml!["root"]["catalog"]["book"][1]["author"].element?.text, "Ralls, Kim")
+    @Test
+    func shouldBeAbleToParseElementGroups() {
+        #expect(xml!["root"]["catalog"]["book"][1]["author"].element?.text == "Ralls, Kim")
     }
 
-    func testShouldBeAbleToParseAttributes() {
-        XCTAssertEqual(xml!["root"]["catalog"]["book"][1].element?.attribute(by: "id")?.text, "bk102")
+    @Test
+    func shouldBeAbleToParseAttributes() {
+        #expect(xml!["root"]["catalog"]["book"][1].element?.attribute(by: "id")?.text == "bk102")
     }
 
-    func testShouldBeAbleToLookUpElementsByNameAndAttribute() {
+    @Test
+    func shouldBeAbleToLookUpElementsByNameAndAttribute() {
         do {
             let value = try xml!["root"]["catalog"]["book"].withAttribute("id", "bk102")["author"].element?.text
-            XCTAssertEqual(value, "Ralls, Kim")
+            #expect(value == "Ralls, Kim")
         } catch {
-            XCTFail("\(error)")
+            Issue.record("\(error)")
         }
     }
 
-    func testShouldBeAbleToIterateElementGroups() {
+    @Test
+    func shouldBeAbleToIterateElementGroups() {
         let result = xml!["root"]["catalog"]["book"].all.map({ $0["genre"].element!.text }).joined(separator: ", ")
-        XCTAssertEqual(result, "Computer, Fantasy, Fantasy")
+        #expect(result == "Computer, Fantasy, Fantasy")
     }
 
-    func testShouldBeAbleToIterateElementGroupsEvenIfOnlyOneElementIsFound() {
-        XCTAssertEqual(xml!["root"]["header"]["title"].all.count, 1)
+    @Test
+    func shouldBeAbleToIterateElementGroupsEvenIfOnlyOneElementIsFound() {
+        #expect(xml!["root"]["header"]["title"].all.count == 1)
     }
 
-    func testShouldBeAbleToIndexElementGroupsEvenIfOnlyOneElementIsFound() {
-        XCTAssertEqual(xml!["root"]["header"]["title"][0].element?.text, "Test Title Header")
+    @Test
+    func shouldBeAbleToIndexElementGroupsEvenIfOnlyOneElementIsFound() {
+        #expect(xml!["root"]["header"]["title"][0].element?.text == "Test Title Header")
     }
 
-    func testShouldBeAbleToIterateUsingForIn() {
+    @Test
+    func shouldBeAbleToIterateUsingForIn() {
         var count = 0
         for _ in xml!["root"]["catalog"]["book"].all {
             count += 1
         }
 
-        XCTAssertEqual(count, 3)
+        #expect(count == 3)
     }
 
-    func testShouldBeAbleToEnumerateChildren() {
+    @Test
+    func shouldBeAbleToEnumerateChildren() {
         let result = xml!["root"]["catalog"]["book"][0].children.map({ $0.element!.name }).joined(separator: ", ")
-        XCTAssertEqual(result, "author, title, genre, price, publish_date, description")
+        #expect(result == "author, title, genre, price, publish_date, description")
     }
 
-    func testShouldBeAbleToHandleMixedContent() {
-        XCTAssertEqual(xml!["root"]["header"].element?.text, "header mixed contentmore mixed content")
+    @Test
+    func shouldBeAbleToHandleMixedContent() {
+        #expect(xml!["root"]["header"].element?.text == "header mixed contentmore mixed content")
     }
 
-    func testShouldHandleInterleavingXMLElements() {
+    @Test
+    func shouldHandleInterleavingXMLElements() {
         let interleavedXml = "<html><body><p>one</p><div>two</div><p>three</p><div>four</div></body></html>"
         let parsed = XMLHash.parse(interleavedXml)
 
         let result = parsed["html"]["body"].children.map({ $0.element!.text }).joined(separator: ", ")
-        XCTAssertEqual(result, "one, two, three, four")
+        #expect(result == "one, two, three, four")
     }
 
-    func testShouldBeAbleToProvideADescriptionForTheDocument() {
+    @Test
+    func shouldBeAbleToProvideADescriptionForTheDocument() {
         let descriptionXml = "<root><foo><what id=\"myId\">puppies</what></foo></root>"
         let parsed = XMLHash.parse(descriptionXml)
 
-        XCTAssertEqual(parsed.description, "<root><foo><what id=\"myId\">puppies</what></foo></root>")
+        #expect(parsed.description == "<root><foo><what id=\"myId\">puppies</what></foo></root>")
     }
 
-    func testShouldReturnNilWhenKeysDontMatch() {
-        XCTAssertNil(xml!["root"]["what"]["header"]["foo"].element?.name)
+    @Test
+    func shouldReturnNilWhenKeysDontMatch() {
+        #expect(xml!["root"]["what"]["header"]["foo"].element?.name == nil)
     }
 
-    func testShouldBeAbleToFilterOnIndexer() {
+    @Test
+    func shouldBeAbleToFilterOnIndexer() {
         let subIndexer = xml!["root"]["catalog"]["book"]
             .filterAll { elem, _ in elem.attribute(by: "id")!.text == "bk102" }
             .filterChildren { _, index in index >= 1 && index <= 3 }
 
-        XCTAssertEqual(subIndexer.children[0].element?.name, "title")
-        XCTAssertEqual(subIndexer.children[1].element?.name, "genre")
-        XCTAssertEqual(subIndexer.children[2].element?.name, "price")
+        #expect(subIndexer.children[0].element?.name == "title")
+        #expect(subIndexer.children[1].element?.name == "genre")
+        #expect(subIndexer.children[2].element?.name == "price")
 
-        XCTAssertEqual(subIndexer.children[0].element?.text, "Midnight Rain")
-        XCTAssertEqual(subIndexer.children[1].element?.text, "Fantasy")
-        XCTAssertEqual(subIndexer.children[2].element?.text, "5.95")
-    }
-}
-
-extension LazyXMLParsingTests {
-    static var allTests: [(String, (LazyXMLParsingTests) -> () throws -> Void)] {
-        [
-            ("testShouldBeAbleToParseIndividualElements", testShouldBeAbleToParseIndividualElements),
-            ("testShouldBeAbleToParseElementGroups", testShouldBeAbleToParseElementGroups),
-            ("testShouldBeAbleToParseAttributes", testShouldBeAbleToParseAttributes),
-            ("testShouldBeAbleToLookUpElementsByNameAndAttribute", testShouldBeAbleToLookUpElementsByNameAndAttribute),
-            ("testShouldBeAbleToIterateElementGroups", testShouldBeAbleToIterateElementGroups),
-            ("testShouldBeAbleToIterateElementGroupsEvenIfOnlyOneElementIsFound", testShouldBeAbleToIterateElementGroupsEvenIfOnlyOneElementIsFound),
-            ("testShouldBeAbleToIndexElementGroupsEvenIfOnlyOneElementIsFound", testShouldBeAbleToIndexElementGroupsEvenIfOnlyOneElementIsFound),
-            ("testShouldBeAbleToIterateUsingForIn", testShouldBeAbleToIterateUsingForIn),
-            ("testShouldBeAbleToEnumerateChildren", testShouldBeAbleToEnumerateChildren),
-            ("testShouldBeAbleToHandleMixedContent", testShouldBeAbleToHandleMixedContent),
-            ("testShouldHandleInterleavingXMLElements", testShouldHandleInterleavingXMLElements),
-            ("testShouldBeAbleToProvideADescriptionForTheDocument", testShouldBeAbleToProvideADescriptionForTheDocument),
-            ("testShouldReturnNilWhenKeysDontMatch", testShouldReturnNilWhenKeysDontMatch),
-            ("testShouldBeAbleToFilterOnIndexer", testShouldBeAbleToFilterOnIndexer)
-        ]
+        #expect(subIndexer.children[0].element?.text == "Midnight Rain")
+        #expect(subIndexer.children[1].element?.text == "Fantasy")
+        #expect(subIndexer.children[2].element?.text == "5.95")
     }
 }
 

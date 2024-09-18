@@ -486,7 +486,7 @@ extension XMLElement {
             try deserialized.validate()
             return deserialized
         } else {
-            throw XMLDeserializationError.attributeDoesNotExist(element: self, attribute: attr)
+            throw XMLDeserializationError.attributeDoesNotExist(element: XMLElementSendable(self), attribute: attr)
         }
     }
 

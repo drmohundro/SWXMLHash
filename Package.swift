@@ -1,4 +1,4 @@
-// swift-tools-version:5.3
+// swift-tools-version:6.0
 
 //
 //  Package.swift
@@ -35,6 +35,9 @@ let package = Package(
             targets: ["SWXMLHash"]
         )
     ],
+    dependencies: [
+        .package(url: "https://github.com/apple/swift-testing.git", from: "0.10.0")
+    ],
     targets: [
         .target(
             name: "SWXMLHash",
@@ -43,11 +46,14 @@ let package = Package(
         ),
         .testTarget(
             name: "SWXMLHashTests",
-            dependencies: ["SWXMLHash"],
+            dependencies: [
+                "SWXMLHash",
+                .product(name: "Testing", package: "swift-testing")
+            ],
             exclude: ["Info.plist", "test.xml"]
         )
     ],
-    swiftLanguageVersions: [
-        .v5
+    swiftLanguageModes: [
+        .v6
     ]
 )

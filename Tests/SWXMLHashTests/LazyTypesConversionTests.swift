@@ -24,9 +24,10 @@
 //
 
 import SWXMLHash
-import XCTest
+import Testing
 
-class LazyTypesConversionTests: XCTestCase {
+@Suite("LazyTypesConversionTests")
+struct LazyTypesConversionTests {
     var parser: XMLIndexer?
     let xmlWithBasicTypes = """
         <root>
@@ -45,50 +46,42 @@ class LazyTypesConversionTests: XCTestCase {
         </root>
     """
 
-    override func setUp() {
-        super.setUp()
+    init() {
         parser = XMLHash.config { cfg in cfg.shouldProcessLazily = true }.parse(xmlWithBasicTypes)
     }
 
-    func testShouldConvertValueToNonOptional() {
+    @Test
+    func shouldConvertValueToNonOptional() {
         do {
             let value: String = try parser!["root"]["string"].value()
-            XCTAssertEqual(value, "the string value")
+            #expect(value == "the string value")
         } catch {
-            XCTFail("\(error)")
+            Issue.record(error)
         }
     }
 
-    func testShouldConvertAttributeToNonOptional() {
+    @Test
+    func shouldConvertAttributeToNonOptional() {
         do {
             let value: Int = try parser!["root"]["attribute"].value(ofAttribute: "int")
-            XCTAssertEqual(value, 1)
+            #expect(value == 1)
         } catch {
-            XCTFail("\(error)")
+            Issue.record(error)
         }
     }
 
-    func testShouldBeAbleToGetUserInfoDuringDeserialization() {
-        parser = XMLHash.config { config in
+    @Test
+    func shouldBeAbleToGetUserInfoDuringDeserialization() {
+        let parser = XMLHash.config { config in
             let options = SampleUserInfo(apiVersion: .v1)
             config.userInfo = [ SampleUserInfo.key: options ]
         }.parse(xmlWithBasicTypes)
 
         do {
-            let value: BasicItem = try parser!["root"]["basicItem"].value()
-            XCTAssertEqual(value.name, "the name of basic item (v1)")
+            let value: BasicItem = try parser["root"]["basicItem"].value()
+            #expect(value.name == "the name of basic item (v1)")
         } catch {
-            XCTFail("\(error)")
+            Issue.record(error)
         }
-    }
-}
-
-extension LazyTypesConversionTests {
-    static var allTests: [(String, (LazyTypesConversionTests) -> () throws -> Void)] {
-        [
-            ("testShouldConvertValueToNonOptional", testShouldConvertValueToNonOptional),
-            ("testShouldConvertAttributeToNonOptional", testShouldConvertAttributeToNonOptional),
-            ("testShouldBeAbleToGetUserInfoDuringDeserialization", testShouldBeAbleToGetUserInfoDuringDeserialization)
-        ]
     }
 }
