@@ -89,6 +89,13 @@ struct XMLParsingTests {
     }
 
     @Test
+    func shouldBeAbleToGetParent() {
+        #expect(xml!["root"]["catalog"]["book"][1]["author"].element?.parent != nil)
+        #expect(xml!["root"]["catalog"]["book"][1]["author"].element?.parent?.name == "book")
+        #expect(xml!["root"]["catalog"]["book"][1]["author"].element?.parent?.attribute(by: "id")?.text == "bk102")
+    }
+
+    @Test
     func shouldBeAbleToParseElementGroupsByIndex() {
         // swiftlint:disable:next force_try
         #expect(try! xml!["root"]["catalog"]["book"].byIndex(1)["author"].element?.text == "Ralls, Kim")

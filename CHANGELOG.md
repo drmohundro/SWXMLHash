@@ -1,3 +1,7 @@
+## v8.1.0 (September 27, 2024)
+
+- Added the `parent` property to `XMLElement` (via [#278](https://github.com/drmohundro/SWXMLHash/pull/278) which closes [#277](https://github.com/drmohundro/SWXMLHash/issues/277))
+
 ## v8.0.0 (September 17, 2024)
 
 - Added Swift 6.0 support (via [#283](https://github.com/drmohundro/SWXMLHash/pull/283))
