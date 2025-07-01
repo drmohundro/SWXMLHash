@@ -109,18 +109,14 @@ jobs:
 
   windows-test:
     name: Windows Test
-    runs-on: windows-latest
+    runs-on: windows-2022
     timeout-minutes: 10
     strategy:
       fail-fast: false
       matrix:
         include:
-          - branch: swift-5.10-release
-            tag: 5.10-RELEASE
-            skip-testing: true
-
-          - branch: swift-6.0-release
-            tag: 6.0-RELEASE
+          - branch: swift-6.1-release
+            tag: 6.1-RELEASE
             perform-testing: true
 
     steps:
