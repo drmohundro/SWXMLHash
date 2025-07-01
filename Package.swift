@@ -35,9 +35,6 @@ let package = Package(
             targets: ["SWXMLHash"]
         )
     ],
-    dependencies: [
-        .package(url: "https://github.com/apple/swift-testing.git", from: "0.10.0")
-    ],
     targets: [
         .target(
             name: "SWXMLHash",
@@ -47,8 +44,7 @@ let package = Package(
         .testTarget(
             name: "SWXMLHashTests",
             dependencies: [
-                "SWXMLHash",
-                .product(name: "Testing", package: "swift-testing")
+                "SWXMLHash"
             ],
             exclude: ["Info.plist", "test.xml"]
         )
