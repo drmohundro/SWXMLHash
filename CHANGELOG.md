@@ -1,3 +1,7 @@
+## v8.1.1 (July 1, 2025)
+
+- Fix memory leak related to parent property (via #286 which closes #285).
+
 ## v8.1.0 (September 27, 2024)
 
 - Added the `parent` property to `XMLElement` (via [#278](https://github.com/drmohundro/SWXMLHash/pull/278) which closes [#277](https://github.com/drmohundro/SWXMLHash/issues/277))
@@ -196,7 +200,7 @@
 - Linux support is partially available and there is a Travis CI build for it as
   well.
   - Currently failing functionality is because of
-    https://bugs.swift.org/browse/SR-2301.
+    <https://bugs.swift.org/browse/SR-2301>.
 - (3.0.1 because I was having trouble publishing the CocoaPod...)
 
 ## v2.5.1 (August 23, 2016)

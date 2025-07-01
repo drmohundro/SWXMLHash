@@ -30,7 +30,7 @@ public class XMLElement: XMLContent {
     /// The name of the element
     public let name: String
 
-    public private(set) var parent: XMLElement?
+    public private(set) weak var parent: XMLElement?
 
     /// Whether the element is case insensitive or not
     public var caseInsensitive: Bool {
