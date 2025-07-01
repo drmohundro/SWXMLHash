@@ -214,7 +214,6 @@ struct TypeConversionArrayOfNonPrimitiveTypesTests {
 
             let values: [AttributeItem] = try subParser.value()
 
-            #expect(values != nil)
             #expect(values[0].name == "attr 2")
             #expect(values[0].price == 2.2)
             #expect(values[1].name == "attr 3")
@@ -230,7 +229,6 @@ struct TypeConversionArrayOfNonPrimitiveTypesTests {
 
             let value: BasicItem = try subParser.value()
 
-            #expect(value != nil)
             #expect(value.id == "1234a")
         } catch {
             Issue.record("\(error)")
@@ -243,7 +241,6 @@ struct TypeConversionArrayOfNonPrimitiveTypesTests {
 
             let values: [BasicItem] = try subParser.value()
 
-            #expect(values != nil)
             #expect(values[0].id == "1234b")
             #expect(values[1].id == "1234c")
         } catch {
