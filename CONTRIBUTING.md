@@ -2,10 +2,10 @@
 
 ## Topics
 
-* [Getting Help](#getting-help)
-* [Reporting Issues](#reporting-issues)
-* [Development](#development)
-* [Thank You!](#thank-you)
+- [Getting Help](#getting-help)
+- [Reporting Issues](#reporting-issues)
+- [Development](#development)
+- [Thank You!](#thank-you)
 
 ## Getting Help
 
@@ -15,24 +15,24 @@ I monitor [StackOverflow](http://stackoverflow.com) under the [SWXMLHash tag](ht
 
 When reporting issues, please include:
 
-* Which version of Xcode you're using
-* Which OS or platform you're targeting
-* Any stack trace or compiler error
-* Code snippets that reproduce the behavior
+- Which version of Xcode you're using
+- Which OS or platform you're targeting
+- Any stack trace or compiler error
+- Code snippets that reproduce the behavior
 
 Both bug reports and feature requests are welcome!
 
 ## Development
 
-SWXMLHash currently uses XCTest for its tests. To run the tests, you can either run them from within Xcode or you can run `rake test`.
+SWXMLHash currently uses Swift Testing for its tests. To run the tests, you can either run them from within Xcode or you can run `swift test`.
 
 The coding style used is dictated by [SwiftLint](https://github.com/realm/SwiftLint). You can get SwiftLint by running `brew install swiftlint`. To run it, just clone the repository and run `swiftlint`. There is a `.swiftlint.yml` for lint configuration.
 
 Prior to submitting a pull request, please verify that:
 
-* The code compiles
-* All tests pass
-* SwiftLint reports no issues
+- The code compiles
+- All tests pass
+- SwiftLint reports no issues
 
 ## Thank You
 
