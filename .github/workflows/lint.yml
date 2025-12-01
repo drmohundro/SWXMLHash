@@ -3,6 +3,9 @@ name: SwiftLint
 on:
   [push, pull_request]
 
+permissions:
+  contents: read
+
 jobs:
   docker-lint:
     name: Docker Lint
