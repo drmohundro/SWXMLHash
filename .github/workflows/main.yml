@@ -1,6 +1,6 @@
 name: Main
 
-on: [push, pull_request]
+on: [ push, pull_request ]
 
 permissions:
   contents: read
@@ -19,11 +19,11 @@ jobs:
           - platform: iOS
             scheme: "SWXMLHash iOS"
             action: "build-for-testing test-without-building"
-            sdk-and-dest: '-sdk iphonesimulator -destination "OS=17.2,name=iPhone 15"'
+            sdk-and-dest: "-sdk iphonesimulator -destination \"OS=17.2,name=iPhone 15\""
 
           - platform: tvOS
             scheme: "SWXMLHash tvOS"
-            sdk-and-dest: '-sdk appletvsimulator -destination "name=Apple TV"'
+            sdk-and-dest: "-sdk appletvsimulator -destination \"name=Apple TV\""
 
           - platform: watchOS
             scheme: "SWXMLHash watchOS"
@@ -31,9 +31,12 @@ jobs:
             sdk-and-dest: "-sdk watchsimulator"
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
 
-      - uses: maxim-lobanov/setup-xcode@v1
+      - uses: maxim-lobanov/setup-xcode@ed7a3b1fda3918c0306d1b724322adc0b8cc0a90
+        # using @v1
         with:
           xcode-version: "16.2"
 
@@ -42,7 +45,6 @@ jobs:
           WORKSPACE: "-workspace SWXMLHash.xcworkspace"
         run: |
           xcodebuild ${{ matrix.action }} $WORKSPACE -scheme ${{ matrix.scheme }} ${{ matrix.sdk-and-dest }} | xcpretty
-
       # TODO: I'd like to use this action instead of the above xcodebuild command, but I'm getting a destination error:
       # xcodebuild: error: Unable to find a destination matching the provided destination specifier:
       #   		{ id:D918798E-6DEE-48F7-850A-A4C0D9328F0A }
@@ -99,7 +101,9 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
       - name: Build
         if: ${{ matrix.skip-testing }}
         run: |
@@ -124,13 +128,16 @@ jobs:
 
     steps:
       - name: Install Swift
-        uses: compnerd/gha-setup-swift@main
+        uses: compnerd/gha-setup-swift@eeda069c5bc95ac8a9ac5cea7d4f588ae5420ca5
+        # using @main
         with:
           branch: ${{ matrix.branch}}
           tag: ${{ matrix.tag }}
 
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
       - name: Build
         if: ${{ matrix.skip-testing }}
         run: |
