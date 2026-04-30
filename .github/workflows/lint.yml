@@ -1,7 +1,6 @@
 name: SwiftLint
 
-on:
-  [push, pull_request]
+on: [ push, pull_request ]
 
 permissions:
   contents: read
@@ -12,8 +11,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
       - name: SwiftLint
-        uses: norio-nomura/action-swiftlint@3.2.1
+        uses: norio-nomura/action-swiftlint@9f4dcd7fd46b4e75d7935cf2f4df406d5cae3684
+        # using @3.2.1
         with:
           args: --strict
