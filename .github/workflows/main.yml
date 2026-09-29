@@ -19,7 +19,7 @@ jobs:
           - platform: iOS
             scheme: "SWXMLHash iOS"
             action: "build-for-testing test-without-building"
-            sdk-and-dest: "-sdk iphonesimulator -destination \"OS=17.2,name=iPhone 15\""
+            sdk-and-dest: "-sdk iphonesimulator -destination \"name=iPhone 16,OS=latest\""
 
           - platform: tvOS
             scheme: "SWXMLHash tvOS"
@@ -38,7 +38,7 @@ jobs:
       - uses: maxim-lobanov/setup-xcode@ed7a3b1fda3918c0306d1b724322adc0b8cc0a90
         # using @v1
         with:
-          xcode-version: "16.2"
+          xcode-version: latest-stable
 
       - name: Build and Test
         env:
@@ -61,24 +61,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - image: swift:5.8-focal
-            skip-testing: true
-
-          - image: swift:5.8-jammy
-            skip-testing: true
-
-          - image: swift:5.8-rhel-ubi9
-            skip-testing: true
-
-          - image: swift:5.9-focal
-            skip-testing: true
-
-          - image: swift:5.9-jammy
-            skip-testing: true
-
-          - image: swift:5.9-rhel-ubi9
-            skip-testing: true
-
           - image: swift:5.10-focal
             skip-testing: true
 
@@ -95,6 +77,15 @@ jobs:
             perform-testing: true
 
           - image: swift:6.0-rhel-ubi9
+            perform-testing: true
+
+          - image: swift:6.4-jammy
+            perform-testing: true
+
+          - image: swift:6.4-noble
+            perform-testing: true
+
+          - image: swift:6.4-rhel-ubi9
             perform-testing: true
     container:
       image: ${{ matrix.image }}
@@ -118,32 +109,18 @@ jobs:
     name: Windows Test
     runs-on: windows-2022
     timeout-minutes: 10
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - branch: swift-6.1-release
-            tag: 6.1-RELEASE
-            perform-testing: true
-
     steps:
       - name: Install Swift
-        uses: compnerd/gha-setup-swift@eeda069c5bc95ac8a9ac5cea7d4f588ae5420ca5
-        # using @main
+        uses: SwiftyLab/setup-swift@9014d4136569075c696d4151c7810ecde8712907
+        # using @v1.14.1
         with:
-          branch: ${{ matrix.branch}}
-          tag: ${{ matrix.tag }}
+          swift-version: "6.4"
 
       - name: Checkout
         uses: actions/checkout@v6
         with:
           persist-credentials: false
-      - name: Build
-        if: ${{ matrix.skip-testing }}
-        run: |
-          swift build
       - name: Build and test
-        if: ${{ matrix.perform-testing }}
         run: |
           swift build --build-tests
           swift test

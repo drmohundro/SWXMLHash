@@ -27,8 +27,8 @@ The API takes a lot of inspiration from
 
 ## Requirements
 
-- iOS 8.0+ / Mac OS X 10.9+ / tvOS 9.0+ / watchOS 2.0+
-- Xcode 8.0+
+- iOS 11.0+ / macOS 10.13+ / tvOS 11.0+ / watchOS 4.0+
+- Xcode 16.0+ / Swift 6.0+
 
 ## Installation
 
