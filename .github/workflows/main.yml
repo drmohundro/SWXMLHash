@@ -109,32 +109,18 @@ jobs:
     name: Windows Test
     runs-on: windows-2022
     timeout-minutes: 10
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - branch: swift-6.4-release
-            tag: 6.4-RELEASE
-            perform-testing: true
-
     steps:
       - name: Install Swift
-        uses: compnerd/gha-setup-swift@eeda069c5bc95ac8a9ac5cea7d4f588ae5420ca5
-        # using @main
+        uses: SwiftyLab/setup-swift@9014d4136569075c696d4151c7810ecde8712907
+        # using @v1.14.1
         with:
-          branch: ${{ matrix.branch}}
-          tag: ${{ matrix.tag }}
+          swift-version: "6.4"
 
       - name: Checkout
         uses: actions/checkout@v6
         with:
           persist-credentials: false
-      - name: Build
-        if: ${{ matrix.skip-testing }}
-        run: |
-          swift build
       - name: Build and test
-        if: ${{ matrix.perform-testing }}
         run: |
           swift build --build-tests
           swift test
